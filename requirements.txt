@@ -1,0 +1,8 @@
+langchain==0.1.12
+huggingface-hub==0.21.4
+langchain-community==0.0.28
+langchain-core==0.1.32
+python-dotenv==1.0.1
+chainlit==1.0.401
+chromadb==0.4.24
+transformers==4.38.2

@@ -1,0 +1,11 @@
+# Enviroment
+# .gitignore
+venv/
+
+#Lib
+.chainlit/
+__pycache__/
+
+chainlit.md
+tempCodeRunnerFile.py
+
