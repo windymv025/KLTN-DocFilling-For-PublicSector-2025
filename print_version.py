@@ -1,5 +1,6 @@
 import pkg_resources
 # version = pkg_resources.get_distribution("langchain").version
+# This file will help print version of all the packages in the environment
 
 print("langchain=="+ pkg_resources.get_distribution("langchain").version)
 print("huggingface-hub=="+ pkg_resources.get_distribution("huggingface-hub").version)
