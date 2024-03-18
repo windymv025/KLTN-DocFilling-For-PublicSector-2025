@@ -54,7 +54,8 @@ template1 = '''
     ''' 
 
 prompt = ChatPromptTemplate.from_template(template1) # Agent
-template1, prompt1 = txt_prompt()
+template1, prompt1 = txt_prompt() # Fill form
+prompt_miss_info =  Identify_missing_info() # Missing Info
 
 # Sau khi hết timeout(user chưa nhập gì cả) thì chạy lại
 async def ask_helper(func, **kwargs):
@@ -93,10 +94,10 @@ async def on_chat_start():
     settings = await cl.ChatSettings(
         [
         Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
-        Slider(id="Temperature",label="Temperature",initial=0.1,min=0,max=1,step=0.05,),
+        Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
         Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
-        Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.05),
-        Slider(id="mnt", label = "Max new tokens", initial = 3000, min = 0, max = 5000, step = 100)
+        Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
         ]
     ).send()
     # -............................ Ảnh bìa ............................
@@ -109,7 +110,7 @@ async def on_chat_start():
     user = cl.user_session.get("user")
     chat_profile = cl.user_session.get("chat_profile")
     await cl.Message(
-        content=f"Bắt đầu chat với {user.identifier} dùng {chat_profile} chat profile"
+        content=f"Bắt đầu chat user có ID: {user.identifier}"
     ).send()
     # LLM
     llm = HuggingFaceEndpoint(
@@ -157,8 +158,16 @@ async def on_chat_start():
     agent_executor = AgentExecutor(
         agent=agent, tools=tools, verbose=True, memory=memory
     )
+    # Missing Information
+    miss_info = (
+        prompt_miss_info
+        | llm
+        | StrOutputParser()
+    )
+    # User session
     cl.user_session.set("agent", agent_executor)  
     cl.user_session.set("runnable", runnable)
+    cl.user_session.set('miss_info', miss_info)
 
 # ---------------------------------------- On message --------------------------------------
 @cl.on_message
@@ -177,18 +186,37 @@ async def main(message: cl.Message):
     collection = client.get_or_create_collection(name="my_programming_collection")
     runnable = cl.user_session.get("runnable")
     text = cl.user_session.get("text")
-    res = await runnable.ainvoke(
+
+    msg = cl.Message(content="")
+    async for chunk in runnable.astream(
         {
             "context": message.content,
             "question": text,
         },
-        callbacks=[cl.AsyncLangchainCallbackHandler(stream_final_answer=True, answer_prefix_tokens=["FINAL","ANSWER"])]
-    )
-    await cl.Message(content = res).send()
+        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
+    ):
+        await msg.stream_token(chunk)
+
+    await msg.send()
+    output = get_output_form(msg.content)
+    # Miss information
+    miss_info = cl.user_session.get('miss_info')
+    msg_miss_info = cl.Message(content="")
+    async for chunk in miss_info.astream(
+        {
+            "output": output,
+        },
+        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
+    ):
+        await msg_miss_info.stream_token(chunk)
+
+    await msg_miss_info.send()
+
+    miss_info_items = get_output_miss_info(msg_miss_info.content)
     # Memory
     memory = cl.user_session.get("memory")
     memory.chat_memory.add_user_message(message.content)
-    memory.chat_memory.add_ai_message(res)
+    memory.chat_memory.add_ai_message(msg.content)
 
 # ------------------------------ Câu lệnh in ra khi user dừng -------------------------------
 @cl.on_stop
@@ -249,10 +277,10 @@ async def on_chat_resume(thread: ThreadDict):
     settings = await cl.ChatSettings(
         [
         Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
-        Slider(id="Temperature",label="Temperature",initial=0.1,min=0,max=1,step=0.05,),
+        Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
         Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
-        Slider(id="Top-p",label = "Top-p",initial = 0.8,min = 0,max = 1,step = 0.05),
-        Slider(id="mnt", label = "Max new tokens", initial = 0.8, min = 0, max = 1, step = 0.05)
+        Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
         ]
     ).send()
     await cl.Message(
@@ -279,3 +307,9 @@ async def on_chat_resume(thread: ThreadDict):
         | StrOutputParser()
     )
     cl.user_session.set("runnable", runnable)
+    # Missing Info
+    miss_info = (
+        prompt_miss_info
+        | llm
+        | StrOutputParser()
+    )
