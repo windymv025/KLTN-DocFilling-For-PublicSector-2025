@@ -16,7 +16,6 @@ from langchain.tools import BaseTool
 from langchain_community.tools import HumanInputRun
 # Chainlit
 import chainlit as cl
-from chainlit.sync import run_sync
 from chainlit.input_widget import Select, Switch, Slider
 from chainlit.playground.config import add_llm_provider
 from chainlit.playground.providers.langchain import LangchainGenericProvider
@@ -26,34 +25,11 @@ from chainlit.types import ThreadDict
 from operator import itemgetter
 from txt_filling import *
 
+# Biến global
+STT = 0
 
-# Template để chatbot có thể hỏi lại User nếu cần thêm thông tin
-template1 = '''
-    <start_of_turn>user
-    Answer the following questions as best you can. You have access to the following tools:
-
-    {tools}
-
-    Use the following format:
-
-    Question: the input question you must answer
-    Thought: you should always think about what to do
-    Action: the action to take, should be one of [{tool_names}]
-    Action Input: the input to the action
-    Observation: the result of the action
-    ... (this Thought/Action/Action Input/Observation can repeat N times)
-    Thought: I now know the final answer
-    Final Answer: the final answer to the original input question
-
-    Begin!
-
-    Question: {input}
-    Thought:{agent_scratchpad}
-    <end_of_turn>
-    <start_of_turn>model
-    ''' 
-
-prompt = ChatPromptTemplate.from_template(template1) # Agent
+# Prompt
+prompt = prompt_query_user() 
 template1, prompt1 = txt_prompt() # Fill form
 prompt_miss_info =  Identify_missing_info() # Missing Info
 
@@ -63,29 +39,6 @@ async def ask_helper(func, **kwargs):
     while not res:
         res = await func(**kwargs).send()
     return res
-
-# ------------------------------------- Tool to ask user ------------------------------------------
-
-class HumanInputChainlit(BaseTool):
-    """Tool that adds the capability to ask user for input."""
-
-    name = "Human"
-    description = ( # You can provide few-shot examples as a part of the description.
-        "You can ask a human for guidance when you think you "
-        "got stuck or you are not sure what to do next. "
-        "The input should be a question for the human."
-    )
-
-    def _run(self, query: str, run_manager=None) -> str:
-        """Use the Human input tool."""
-        res = run_sync(ask_helper(cl.AskUserMessage, content=query).send())
-        return res["content"]
-    
-    async def _arun(self, query: str, run_manager=None) -> str:
-        """Use the Human input tool."""
-        res = await ask_helper(cl.AskUserMessage, content=query).send()
-        return res["output"]
-
 
 # ----------------------- On start -----------------------------
 @cl.on_chat_start
@@ -97,7 +50,8 @@ async def on_chat_start():
         Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
         Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
         Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
-        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
+        Switch(id="New", label="New", initial=False),
         ]
     ).send()
     # -............................ Ảnh bìa ............................
@@ -108,7 +62,6 @@ async def on_chat_start():
     ).send()
     # ............................. Chat profile ................................
     user = cl.user_session.get("user")
-    chat_profile = cl.user_session.get("chat_profile")
     await cl.Message(
         content=f"Bắt đầu chat user có ID: {user.identifier}"
     ).send()
@@ -143,21 +96,6 @@ async def on_chat_start():
         | llm
         | StrOutputParser()
     )
-    llm_chat = ChatHuggingFace(llm=llm)
-    # Agent
-    tools = [  
-    HumanInputChainlit(),
-    Tool(
-        name = "Agent",
-        func = llm_chat.invoke,
-        description = "I will query you if I need additional information",
-        coroutine = llm_chat.ainvoke,
-    )]
-    agent = create_react_agent(tools = tools, llm = llm, prompt = prompt) # Create an agent that uses ReAct prompting.
-    memory = ConversationBufferMemory(memory_key="chat_history")
-    agent_executor = AgentExecutor(
-        agent=agent, tools=tools, verbose=True, memory=memory
-    )
     # Missing Information
     miss_info = (
         prompt_miss_info
@@ -165,28 +103,30 @@ async def on_chat_start():
         | StrOutputParser()
     )
     # User session
-    cl.user_session.set("agent", agent_executor)  
     cl.user_session.set("runnable", runnable)
     cl.user_session.set('miss_info', miss_info)
+    
 
 # ---------------------------------------- On message --------------------------------------
 @cl.on_message
 async def main(message: cl.Message):
-    # # Agent
-    # agent = cl.user_session.get("agent")  # type: AgentExecutor
-    # res_agent = await agent.ainvoke(
-    # {
-    #     "input": message.content,
-    # }, 
-    # callbacks=[cl.AsyncLangchainCallbackHandler(stream_final_answer=True, answer_prefix_tokens=["FINAL","ANSWER"])]
+    # # --------------------------- Database --------------------------
+    # user = cl.user_session.get("user")
+
+    # client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
+    # collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
+
+    # #Add context to database
+    # global STT
+    # context = message.content
+    # collection.add(
+    #     ids=[user.identifier + str(STT)],
+    #     documents=[context]
     # )
-    # await cl.Message(content=res_agent).send()
-    # Runnable
-    client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
-    collection = client.get_or_create_collection(name="my_programming_collection")
+    # STT += 1
+
     runnable = cl.user_session.get("runnable")
     text = cl.user_session.get("text")
-
     msg = cl.Message(content="")
     async for chunk in runnable.astream(
         {
@@ -210,9 +150,16 @@ async def main(message: cl.Message):
     ):
         await msg_miss_info.stream_token(chunk)
 
-    await msg_miss_info.send()
-
-    miss_info_items = get_output_miss_info(msg_miss_info.content)
+    list_items = get_output_miss_info(msg_miss_info.content)
+    print(list_items)
+    # Query user 
+    count =  len(list_items)
+    while(count):
+        query = f"Thông tin về '{list_items[len(list_items)-count]}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
+        res = await cl.AskUserMessage(content = query, timeout=30).send()
+        if res:
+            await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
+        count -= 1
     # Memory
     memory = cl.user_session.get("memory")
     memory.chat_memory.add_user_message(message.content)
@@ -313,3 +260,4 @@ async def on_chat_resume(thread: ThreadDict):
         | llm
         | StrOutputParser()
     )
+    cl.user_session.set('miss_info', miss_info)

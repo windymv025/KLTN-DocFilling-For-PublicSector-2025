@@ -1,7 +1,11 @@
 from langchain.prompts import ChatPromptTemplate
 import re
 import chromadb
-
+# Agent
+from langchain.tools import BaseTool
+#
+import chainlit as cl
+from chainlit.sync import run_sync
 # -------------------------- prompt cho điền file .txt, đã triển khai theo cấu trúc CoT ------------------------------------
 def txt_prompt():
     template = """
@@ -397,8 +401,7 @@ def Identify_missing_info():
     2. Địa chỉ hộ khẩu thường trú
     3. 20
     4. 20
-    5. Lý do 
-    <end_of_turn>
+    5. Lý do<end_of_turn>
 
 
     <start_of_turn>user
@@ -412,13 +415,80 @@ def Identify_missing_info():
 
 def get_output_miss_info(output):
     output_form = re.findall(r"Result:(.+)", output, re.DOTALL)[0]
-    output_form = output_form.replace('<eos>','')
-    return output_form
+    miss_info= output_form.replace('<eos>','')
+    pattern = r"\d+\.\s*(.*?)(?=\d+\.|\Z)"
+    matches = re.findall(pattern, miss_info, re.DOTALL)
+    list_items = []
+    for match in matches:
+        list_items.append(match.strip())
+    return list_items
 
-# # ---------------------------- Database -----------------------------
-# # in disk client
-# client = chromadb.PersistentClient(path="./vectorstore")
-# collection = client.get_or_create_collection(name="my_programming_collection")
+# ---------------------------- Query user -------------------------------
+# Template để chatbot có thể hỏi lại User nếu cần thêm thông tin
+def prompt_query_user():
+    template1 = '''
+        <start_of_turn>user
+        Answer the following questions as best you can. You have access to the following tools:
+
+        {tools}
+
+        Use the following format:
+
+        Question: the input question you must answer
+        Thought: you should always think about what to do
+        Action: the action to take, should be one of [{tool_names}]
+        Action Input: the input to the action
+        Observation: the result of the action
+        ... (this Thought/Action/Action Input/Observation can repeat N times)
+        Thought: I now know the final answer
+        Final Answer: the final answer to the original input question
+
+        Begin!
+
+        Question: {input}
+        Thought:{agent_scratchpad}
+        <end_of_turn>
+        <start_of_turn>model
+        ''' 
+
+    prompt = ChatPromptTemplate.from_template(template1) # Agent
+    return prompt
 
 
+# ------------------------------------- Tool to ask user ------------------------------------------
 
+# class HumanInputChainlit(BaseTool):
+#     """Tool that adds the capability to ask user for input."""
+
+#     name = "Human"
+#     description = ( # You can provide few-shot examples as a part of the description.
+#         "You can query a human to have a missing information."
+#         "The input should be a question for the human."
+#     )
+
+#     def _run(self, query: str, run_manager=None) -> str:
+#         """Use the Human input tool."""
+#         res = run_sync(ask_helper(cl.AskUserMessage, content=query).send())
+#         return res["content"]
+    
+#     async def _arun(self, query: str, run_manager=None) -> str:
+#         """Use the Human input tool."""
+#         res = await ask_helper(cl.AskUserMessage, content=query).send()
+#         return res["output"]
+
+
+# llm_chat = ChatHuggingFace(llm=llm)
+# # Agent
+# tools = [  
+# HumanInputChainlit(),
+# Tool(
+#     name = "Agent",
+#     func = llm_chat.invoke,
+#     description = "I will query you if I need additional information",
+#     coroutine = llm_chat.ainvoke,
+# )]
+# agent = create_react_agent(tools = tools, llm = llm, prompt = prompt) # Create an agent that uses ReAct prompting.
+# memory = ConversationBufferMemory(memory_key="chat_history")
+# agent_executor = AgentExecutor(
+#     agent=agent, tools=tools, verbose=True, memory=memory
+# )
