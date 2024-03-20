@@ -9,4 +9,4 @@ __pycache__/
 chainlit.md
 tempCodeRunnerFile.py
 
-vectorstore/
+vectorstore

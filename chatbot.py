@@ -6,14 +6,6 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.memory import ConversationBufferMemory
 # Database
 import chromadb
-# Agent
-from ReAct_Agent import *
-from langchain.agents import Tool, AgentExecutor
-from langchain_core.agents import AgentAction, AgentFinish
-from langchain_core.exceptions import OutputParserException
-from typing import *
-from langchain.tools import BaseTool
-from langchain_community.tools import HumanInputRun
 # Chainlit
 import chainlit as cl
 from chainlit.input_widget import Select, Switch, Slider
@@ -25,20 +17,12 @@ from chainlit.types import ThreadDict
 from operator import itemgetter
 from txt_filling import *
 
-# Biến global
-STT = 0
 
 # Prompt
 prompt = prompt_query_user() 
 template1, prompt1 = txt_prompt() # Fill form
 prompt_miss_info =  Identify_missing_info() # Missing Info
 
-# Sau khi hết timeout(user chưa nhập gì cả) thì chạy lại
-async def ask_helper(func, **kwargs):
-    res = await func(**kwargs).send()
-    while not res:
-        res = await func(**kwargs).send()
-    return res
 
 # ----------------------- On start -----------------------------
 @cl.on_chat_start
@@ -51,9 +35,11 @@ async def on_chat_start():
         Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
         Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
         Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
-        Switch(id="New", label="New", initial=False),
+        Switch(id="New", label="New", initial=True),
         ]
     ).send()
+    cl.user_session.set('new', settings['New'])
+
     # -............................ Ảnh bìa ............................
     image = cl.Image(path="./fill_form.jpg", name="image1", display="inline")
     await cl.Message(
@@ -110,27 +96,35 @@ async def on_chat_start():
 # ---------------------------------------- On message --------------------------------------
 @cl.on_message
 async def main(message: cl.Message):
-    # # --------------------------- Database --------------------------
-    # user = cl.user_session.get("user")
+    # --------------------------- Database --------------------------
+    user = cl.user_session.get("user")
 
-    # client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
-    # collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
-
-    # #Add context to database
-    # global STT
-    # context = message.content
-    # collection.add(
-    #     ids=[user.identifier + str(STT)],
-    #     documents=[context]
-    # )
-    # STT += 1
+    client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
+    collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
+    context = ''
+    STT = 0
+    is_new = cl.user_session.get('new') # Biến dùng để xác định đây là nhập cũ hay mới
+    if is_new:
+        STT = collection.count() + 1
+        context = message.content
+        collection.add(
+            ids=[user.identifier + str(STT)],
+            documents=[context]
+        )
+        context = message.content
+    else:
+        result = collection.query(query_texts=[message.content], n_results=1)
+        context = result["documents"][0]
+        STT = result["ids"][0]
+        print(STT)
+    print(collection.get())
 
     runnable = cl.user_session.get("runnable")
     text = cl.user_session.get("text")
     msg = cl.Message(content="")
     async for chunk in runnable.astream(
         {
-            "context": message.content,
+            "context": context,
             "question": text,
         },
         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
@@ -151,7 +145,6 @@ async def main(message: cl.Message):
         await msg_miss_info.stream_token(chunk)
 
     list_items = get_output_miss_info(msg_miss_info.content)
-    print(list_items)
     # Query user 
     count =  len(list_items)
     while(count):
@@ -159,6 +152,13 @@ async def main(message: cl.Message):
         res = await cl.AskUserMessage(content = query, timeout=30).send()
         if res:
             await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
+        old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
+        print(old_context)
+        new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
+        collection.update(
+            ids=[user.identifier + str(STT)],
+            documents=[new_context]
+        )
         count -= 1
     # Memory
     memory = cl.user_session.get("memory")
