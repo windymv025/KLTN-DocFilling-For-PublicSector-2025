@@ -15,11 +15,11 @@ from chainlit.types import ThreadDict
 
 # Import file khác
 from operator import itemgetter
+from uniform_text import *
 from txt_filling import *
 
 
 # Prompt
-prompt = prompt_query_user() 
 template1, prompt1 = txt_prompt() # Fill form
 prompt_miss_info =  Identify_missing_info() # Missing Info
 
@@ -38,29 +38,13 @@ async def on_chat_start():
         Switch(id="New", label="New", initial=True),
         ]
     ).send()
-    cl.user_session.set('new', settings['New'])
-
+    cl.user_session.set('settings', settings)
     # -............................ Ảnh bìa ............................
     image = cl.Image(path="./fill_form.jpg", name="image1", display="inline")
     await cl.Message(
         content="Tôi là chatbot có nhiệm vụ chính là điền thông tin vào document.",
         elements=[image],
-    ).send()
-    # ............................. Chat profile ................................
-    user = cl.user_session.get("user")
-    await cl.Message(
-        content=f"Bắt đầu chat user có ID: {user.identifier}"
-    ).send()
-    # LLM
-    llm = HuggingFaceEndpoint(
-        repo_id = settings['repo_id'], 
-        top_k = settings['Top-k'],
-        top_p = settings['Top-p'],
-        temperature = settings['Temperature'],
-        max_new_tokens = settings['mnt'],
-        huggingfacehub_api_token = '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',
-    )    
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
+    ).send()  
     # ................................ Đưa form vào chatbot bất cứ khi nào cũng được................................
     files = None
     while files == None:
@@ -71,7 +55,22 @@ async def on_chat_start():
     with open(text_file.path, "r", encoding="utf-8") as f:
         text = f.read()  
     await cl.Message(content=f"`{text_file.name}` uploaded, it contains {len(text)} characters!").send() # Thông báo cho người dùng biết đã up file thành công
-    cl.user_session.set("text",text)
+    cl.user_session.set("text",generate_uniform(text))
+
+# ---------------------------------------- On message --------------------------------------
+@cl.on_message
+async def main(message: cl.Message):
+    settings = cl.user_session.get('settings')
+    # ................................ LLM ......................................
+    llm = HuggingFaceEndpoint(
+        repo_id = settings['repo_id'], 
+        top_k = settings['Top-k'],
+        top_p = settings['Top-p'],
+        temperature = settings['Temperature'],
+        max_new_tokens = settings['mnt'],
+        huggingfacehub_api_token = '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',
+    )
+    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
     # Code tiếp tục đoạn chat trước đó
     memory = cl.user_session.get("memory")  # type: ConversationBufferMemory
     runnable = (
@@ -88,43 +87,36 @@ async def on_chat_start():
         | llm
         | StrOutputParser()
     )
-    # User session
-    cl.user_session.set("runnable", runnable)
-    cl.user_session.set('miss_info', miss_info)
-    
-
-# ---------------------------------------- On message --------------------------------------
-@cl.on_message
-async def main(message: cl.Message):
     # --------------------------- Database --------------------------
-    user = cl.user_session.get("user")
+    # user = cl.user_session.get("user")
 
-    client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
-    collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
-    context = ''
-    STT = 0
-    is_new = cl.user_session.get('new') # Biến dùng để xác định đây là nhập cũ hay mới
-    if is_new:
-        STT = collection.count() + 1
-        context = message.content
-        collection.add(
-            ids=[user.identifier + str(STT)],
-            documents=[context]
-        )
-        context = message.content
-    else:
-        result = collection.query(query_texts=[message.content], n_results=1)
-        context = result["documents"][0]
-        STT = result["ids"][0]
-        print(STT)
-    print(collection.get())
-
-    runnable = cl.user_session.get("runnable")
+    # client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
+    # collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
+    # context = ''
+    # STT = 0
+    # is_new = settings['New'] # Biến dùng để xác định đây là nhập cũ hay mới
+    # if is_new:
+    #     STT = collection.count() + 1
+    #     context = message.content
+    #     collection.add(
+    #         ids=[user.identifier + str(STT)],
+    #         documents=[context]
+    #     )
+    #     context = message.content
+    # else:
+    #     result = collection.query(query_texts=[message.content], n_results=1)
+    #     context = result["documents"][0]
+    #     STT = result["ids"][0]
+    #     print(STT)
+    # print(collection.get())
+    # print('Context: ', context)
+    # ------------------ Output ----------------------------
     text = cl.user_session.get("text")
+    print(text)
     msg = cl.Message(content="")
     async for chunk in runnable.astream(
         {
-            "context": context,
+            "context": message.content,
             "question": text,
         },
         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
@@ -132,13 +124,13 @@ async def main(message: cl.Message):
         await msg.stream_token(chunk)
 
     await msg.send()
-    output = get_output_form(msg.content)
+    data = get_output_form(msg.content)
+    output_form = fill_form(data, text)
     # Miss information
-    miss_info = cl.user_session.get('miss_info')
     msg_miss_info = cl.Message(content="")
     async for chunk in miss_info.astream(
         {
-            "output": output,
+            "output": output_form,
         },
         config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
     ):
@@ -152,13 +144,13 @@ async def main(message: cl.Message):
         res = await cl.AskUserMessage(content = query, timeout=30).send()
         if res:
             await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
-        old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
-        print(old_context)
-        new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
-        collection.update(
-            ids=[user.identifier + str(STT)],
-            documents=[new_context]
-        )
+        # old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
+        # print(old_context)
+        # new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
+        # collection.update(
+        #     ids=[user.identifier + str(STT)],
+        #     documents=[new_context]
+        # )
         count -= 1
     # Memory
     memory = cl.user_session.get("memory")
@@ -230,34 +222,5 @@ async def on_chat_resume(thread: ThreadDict):
         Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
         ]
     ).send()
-    await cl.Message(
-        content=f"Tiếp tục cuộc hội thoại."
-    ).send()
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
-    # LLM
-    llm = HuggingFaceEndpoint(
-        repo_id = settings['repo_id'], 
-        top_k = settings['Top-k'],
-        top_p = settings['Top-p'],
-        temperature = settings['Temperature'],
-        max_new_tokens = settings['mnt'],
-        huggingfacehub_api_token = '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',
-    )
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
-    memory = cl.user_session.get("memory")  # type: ConversationBufferMemory
-    runnable = (
-        RunnablePassthrough.assign(
-            history=RunnableLambda(memory.load_memory_variables) | itemgetter("history")
-        )
-        | prompt1
-        | llm
-        | StrOutputParser()
-    )
-    cl.user_session.set("runnable", runnable)
-    # Missing Info
-    miss_info = (
-        prompt_miss_info
-        | llm
-        | StrOutputParser()
-    )
-    cl.user_session.set('miss_info', miss_info)
+    cl.user_session.set('settings', settings)
+    await cl.Message(content=f"Tiếp tục cuộc hội thoại.").send()
