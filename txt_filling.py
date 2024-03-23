@@ -41,8 +41,7 @@ def txt_prompt():
 
     Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'
-    Output1:
+    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
     + Họ, chữ đệm và tên(1): Lê Dũng
     + Họ, chữ đệm và tên gọi khác (nếu có)(2): Không có
     + Ngày sinh: 05
@@ -61,8 +60,7 @@ def txt_prompt():
     + Nơi ở hiện tại: Phú Túc
     + Nghề nghiệp: Bác Sĩ
     + Trình độ học vấn: Đại học
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2).
-    Output2:
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below:
     1. Ban lãnh đạo cùng phòng nhân sự Công ty: (Blank_1)
     2. Tôi tên là: (Blank_2)
     3. Sinh ngày: (Blank_3)
@@ -103,8 +101,7 @@ def txt_prompt():
     14. Nơi ở hiện tại: (Blank_16)
     15. Nghề nghiệp: (Blank_17) 16. Trình độ học vấn: (Blank_18)<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'
-    Output1:
+    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
     + Họ tên: Nguyễn Đức Nam
     + Sinh viên năm 3
     + Ngày sinh: 26/02/2003
@@ -112,8 +109,7 @@ def txt_prompt():
     + Quê: Bình Định
     + Quốc tịch: Việt Nam
     + CCCD: 12345
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2).
-    Output2:
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below:
     1. Họ, chữ đệm và tên(1): (Blank_1)
     2. Họ, chữ đệm và tên gọi khác (nếu có)(2): (Blank_2)
     3. Ngày sinh: (Blank_3)
@@ -167,8 +163,7 @@ def txt_prompt():
     Số CCCD (hoặc hộ chiếu): (Blank_9)
     Cấp ngày: (Blank_10) tháng (Blank_11) năm (Blank_12) Nơi cấp: (Blank_13)<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'
-    Output1:
+    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
     + Họ tên: Lê Hữu Hưng
     + Giới tính: Nam
     + Sinh ngày: 01/03/2003
@@ -176,8 +171,7 @@ def txt_prompt():
     + Quốc Tịch: Việt Nam
     + CMND: 12345
     + Hiện tại đang sống ở KTX khu B.
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2).
-    Output2:
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below: 
     1. Tôi là: (Blank_1)
     2. Quốc tịch: (Blank_2)
     3. Sinh ngày   : (Blank_3)
@@ -222,16 +216,14 @@ def txt_prompt():
     Lý do: (Blank_12)
     Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn.<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'
-    Output1:
+    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
     + Họ tên: Đoàn Thị Hoàn
     + MSSV: 21120463
     + Lớp: 21TNT1
     + Ngành: Trí tuệ Nhân tạo
     + Ngành sinh: 19/05/1965
     + Số điện thoại: 0355896611
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with x as a number, such as: (Blank_1), (Blank_2).
-    Output2:
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with x as a number, such as: (Blank_1), (Blank_2). The items are listed below:
     1. Tôi tên: (Blank_1)
     2. MSSV: (Blank_2)
     3. Ngành học  : (Blank_3)
@@ -270,7 +262,7 @@ def txt_prompt():
 
 
 def get_output_form(res):
-    output_form = re.findall(r"\*\*Final Result:\*\*(.+)", res, re.DOTALL)[0]
+    output_form = re.findall(r"Final Result:(.+)", res, re.DOTALL)[0]
     output_form = output_form.replace('<eos>','')
     return output_form
 
@@ -281,6 +273,7 @@ def Identify_missing_info():
     Identify items with missing information in this following Form:
     Form: 
         Tờ khai căn cước công dân
+        
     1. Họ, chữ đệm và tên(1): Lê Hữu Hưng
     2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Rỗng
     3. ngày, tháng, năm sinh: 01/03/2003
