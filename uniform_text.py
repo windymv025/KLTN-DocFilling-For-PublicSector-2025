@@ -59,6 +59,23 @@ Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng An
 Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.
 '''
 
+Question4 = """
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1):……………………..…………………………..……………………………………………………………..………………………..
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1):………………………………………………………………………..…..……………
+3. Ngày, tháng, năm sinh:…….……./…….……./……………….; 4. Giới tính (Nam/nữ):…………....…………..
+5. Số CMND/CCCD: ..................................................................
+6. Dân tộc:…………………….……; 7. Tôn giáo:…………………….……… 8. Quốc tịch: ………………………….………
+9. Tình trạng hôn nhân:……………………………..………… 10. Nhóm máu (nếu có):………………………………
+11. Nơi đăng ký khai sinh:…………………………………………………………………………………………………………………
+12. Quê quán: ………………………………………………………………………………………………………………………………..………
+13. Nơi thường trú:…………………………………………………………………………………………………………………..………………
+…………………………………………………………………………………………………………………………………………………………………………………………………………….
+14. Nơi ở hiện tại:………………………………………………………………………………………….………………………
+…………………………………………………………………………………………………………………………………………………………………………………………………………….
+15. Nghề nghiệp:………………………………… 16. Trình độ học vấn:……………………………………………….……… 
+"""
+
 #Write min function
 def min(a, b):
     if a == -1 and b != -1:
@@ -116,4 +133,4 @@ def generate_uniform(Question):
     return Question
 
 # # Test the function with the given question
-print(generate_uniform(Question))
+print(generate_uniform(Question4))

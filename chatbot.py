@@ -6,17 +6,8 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.memory import ConversationBufferMemory
 # Database
 import chromadb
-# Agent
-from ReAct_Agent import *
-from langchain.agents import Tool, AgentExecutor
-from langchain_core.agents import AgentAction, AgentFinish
-from langchain_core.exceptions import OutputParserException
-from typing import *
-from langchain.tools import BaseTool
-from langchain_community.tools import HumanInputRun
 # Chainlit
 import chainlit as cl
-from chainlit.sync import run_sync
 from chainlit.input_widget import Select, Switch, Slider
 from chainlit.playground.config import add_llm_provider
 from chainlit.playground.providers.langchain import LangchainGenericProvider
@@ -24,67 +15,13 @@ from chainlit.types import ThreadDict
 
 # Import file khác
 from operator import itemgetter
+from uniform_text import *
 from txt_filling import *
 
 
-# Template để chatbot có thể hỏi lại User nếu cần thêm thông tin
-template1 = '''
-    <start_of_turn>user
-    Answer the following questions as best you can. You have access to the following tools:
-
-    {tools}
-
-    Use the following format:
-
-    Question: the input question you must answer
-    Thought: you should always think about what to do
-    Action: the action to take, should be one of [{tool_names}]
-    Action Input: the input to the action
-    Observation: the result of the action
-    ... (this Thought/Action/Action Input/Observation can repeat N times)
-    Thought: I now know the final answer
-    Final Answer: the final answer to the original input question
-
-    Begin!
-
-    Question: {input}
-    Thought:{agent_scratchpad}
-    <end_of_turn>
-    <start_of_turn>model
-    ''' 
-
-prompt = ChatPromptTemplate.from_template(template1) # Agent
+# Prompt
 template1, prompt1 = txt_prompt() # Fill form
 prompt_miss_info =  Identify_missing_info() # Missing Info
-
-# Sau khi hết timeout(user chưa nhập gì cả) thì chạy lại
-async def ask_helper(func, **kwargs):
-    res = await func(**kwargs).send()
-    while not res:
-        res = await func(**kwargs).send()
-    return res
-
-# ------------------------------------- Tool to ask user ------------------------------------------
-
-class HumanInputChainlit(BaseTool):
-    """Tool that adds the capability to ask user for input."""
-
-    name = "Human"
-    description = ( # You can provide few-shot examples as a part of the description.
-        "You can ask a human for guidance when you think you "
-        "got stuck or you are not sure what to do next. "
-        "The input should be a question for the human."
-    )
-
-    def _run(self, query: str, run_manager=None) -> str:
-        """Use the Human input tool."""
-        res = run_sync(ask_helper(cl.AskUserMessage, content=query).send())
-        return res["content"]
-    
-    async def _arun(self, query: str, run_manager=None) -> str:
-        """Use the Human input tool."""
-        res = await ask_helper(cl.AskUserMessage, content=query).send()
-        return res["output"]
 
 
 # ----------------------- On start -----------------------------
@@ -97,31 +34,17 @@ async def on_chat_start():
         Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
         Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
         Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
-        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
+        Switch(id="New", label="New", initial=True),
         ]
     ).send()
+    cl.user_session.set('settings', settings)
     # -............................ Ảnh bìa ............................
     image = cl.Image(path="./fill_form.jpg", name="image1", display="inline")
     await cl.Message(
         content="Tôi là chatbot có nhiệm vụ chính là điền thông tin vào document.",
         elements=[image],
-    ).send()
-    # ............................. Chat profile ................................
-    user = cl.user_session.get("user")
-    chat_profile = cl.user_session.get("chat_profile")
-    await cl.Message(
-        content=f"Bắt đầu chat user có ID: {user.identifier}"
-    ).send()
-    # LLM
-    llm = HuggingFaceEndpoint(
-        repo_id = settings['repo_id'], 
-        top_k = settings['Top-k'],
-        top_p = settings['Top-p'],
-        temperature = settings['Temperature'],
-        max_new_tokens = settings['mnt'],
-        huggingfacehub_api_token = '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',
-    )    
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
+    ).send()  
     # ................................ Đưa form vào chatbot bất cứ khi nào cũng được................................
     files = None
     while files == None:
@@ -132,7 +55,22 @@ async def on_chat_start():
     with open(text_file.path, "r", encoding="utf-8") as f:
         text = f.read()  
     await cl.Message(content=f"`{text_file.name}` uploaded, it contains {len(text)} characters!").send() # Thông báo cho người dùng biết đã up file thành công
-    cl.user_session.set("text",text)
+    cl.user_session.set("text",generate_uniform(text))
+
+# ---------------------------------------- On message --------------------------------------
+@cl.on_message
+async def main(message: cl.Message):
+    settings = cl.user_session.get('settings')
+    # ................................ LLM ......................................
+    llm = HuggingFaceEndpoint(
+        repo_id = settings['repo_id'], 
+        top_k = settings['Top-k'],
+        top_p = settings['Top-p'],
+        temperature = settings['Temperature'],
+        max_new_tokens = settings['mnt'],
+        huggingfacehub_api_token = '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',
+    )
+    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
     # Code tiếp tục đoạn chat trước đó
     memory = cl.user_session.get("memory")  # type: ConversationBufferMemory
     runnable = (
@@ -143,50 +81,38 @@ async def on_chat_start():
         | llm
         | StrOutputParser()
     )
-    llm_chat = ChatHuggingFace(llm=llm)
-    # Agent
-    tools = [  
-    HumanInputChainlit(),
-    Tool(
-        name = "Agent",
-        func = llm_chat.invoke,
-        description = "I will query you if I need additional information",
-        coroutine = llm_chat.ainvoke,
-    )]
-    agent = create_react_agent(tools = tools, llm = llm, prompt = prompt) # Create an agent that uses ReAct prompting.
-    memory = ConversationBufferMemory(memory_key="chat_history")
-    agent_executor = AgentExecutor(
-        agent=agent, tools=tools, verbose=True, memory=memory
-    )
     # Missing Information
     miss_info = (
         prompt_miss_info
         | llm
         | StrOutputParser()
     )
-    # User session
-    cl.user_session.set("agent", agent_executor)  
-    cl.user_session.set("runnable", runnable)
-    cl.user_session.set('miss_info', miss_info)
+    # --------------------------- Database --------------------------
+    # user = cl.user_session.get("user")
 
-# ---------------------------------------- On message --------------------------------------
-@cl.on_message
-async def main(message: cl.Message):
-    # # Agent
-    # agent = cl.user_session.get("agent")  # type: AgentExecutor
-    # res_agent = await agent.ainvoke(
-    # {
-    #     "input": message.content,
-    # }, 
-    # callbacks=[cl.AsyncLangchainCallbackHandler(stream_final_answer=True, answer_prefix_tokens=["FINAL","ANSWER"])]
-    # )
-    # await cl.Message(content=res_agent).send()
-    # Runnable
-    client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
-    collection = client.get_or_create_collection(name="my_programming_collection")
-    runnable = cl.user_session.get("runnable")
+    # client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
+    # collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
+    # context = ''
+    # STT = 0
+    # is_new = settings['New'] # Biến dùng để xác định đây là nhập cũ hay mới
+    # if is_new:
+    #     STT = collection.count() + 1
+    #     context = message.content
+    #     collection.add(
+    #         ids=[user.identifier + str(STT)],
+    #         documents=[context]
+    #     )
+    #     context = message.content
+    # else:
+    #     result = collection.query(query_texts=[message.content], n_results=1)
+    #     context = result["documents"][0]
+    #     STT = result["ids"][0]
+    #     print(STT)
+    # print(collection.get())
+    # print('Context: ', context)
+    # ------------------ Output ----------------------------
     text = cl.user_session.get("text")
-
+    print(text)
     msg = cl.Message(content="")
     async for chunk in runnable.astream(
         {
@@ -200,19 +126,31 @@ async def main(message: cl.Message):
     await msg.send()
     output = get_output_form(msg.content)
     # Miss information
-    miss_info = cl.user_session.get('miss_info')
-    msg_miss_info = cl.Message(content="")
-    async for chunk in miss_info.astream(
-        {
-            "output": output,
-        },
-        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
-    ):
-        await msg_miss_info.stream_token(chunk)
+    # msg_miss_info = cl.Message(content="")
+    # async for chunk in miss_info.astream(
+    #     {
+    #         "output": output,
+    #     },
+    #     config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
+    # ):
+    #     await msg_miss_info.stream_token(chunk)
 
-    await msg_miss_info.send()
-
-    miss_info_items = get_output_miss_info(msg_miss_info.content)
+    # list_items = get_output_miss_info(msg_miss_info.content)
+    # Query user 
+    # count =  len(list_items)
+    # while(count):
+    #     query = f"Thông tin về '{list_items[len(list_items)-count]}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
+    #     res = await cl.AskUserMessage(content = query, timeout=30).send()
+    #     if res:
+    #         await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
+    #     old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
+    #     print(old_context)
+    #     new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
+    #     collection.update(
+    #         ids=[user.identifier + str(STT)],
+    #         documents=[new_context]
+    #     )
+    #     count -= 1
     # Memory
     memory = cl.user_session.get("memory")
     memory.chat_memory.add_user_message(message.content)
@@ -283,33 +221,5 @@ async def on_chat_resume(thread: ThreadDict):
         Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
         ]
     ).send()
-    await cl.Message(
-        content=f"Tiếp tục cuộc hội thoại."
-    ).send()
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
-    # LLM
-    llm = HuggingFaceEndpoint(
-        repo_id = settings['repo_id'], 
-        top_k = settings['Top-k'],
-        top_p = settings['Top-p'],
-        temperature = settings['Temperature'],
-        max_new_tokens = settings['mnt'],
-        huggingfacehub_api_token = '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',
-    )
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
-    memory = cl.user_session.get("memory")  # type: ConversationBufferMemory
-    runnable = (
-        RunnablePassthrough.assign(
-            history=RunnableLambda(memory.load_memory_variables) | itemgetter("history")
-        )
-        | prompt1
-        | llm
-        | StrOutputParser()
-    )
-    cl.user_session.set("runnable", runnable)
-    # Missing Info
-    miss_info = (
-        prompt_miss_info
-        | llm
-        | StrOutputParser()
-    )
+    cl.user_session.set('settings', settings)
+    await cl.Message(content=f"Tiếp tục cuộc hội thoại.").send()
