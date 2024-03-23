@@ -124,33 +124,35 @@ async def main(message: cl.Message):
         await msg.stream_token(chunk)
 
     await msg.send()
-    output = get_output_form(msg.content)
+    # ----------------- Fill form ---------------------------
+    data = get_output_form(msg.content)
+    output_form = fill_form(data, text)
     # Miss information
-    # msg_miss_info = cl.Message(content="")
-    # async for chunk in miss_info.astream(
-    #     {
-    #         "output": output,
-    #     },
-    #     config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
-    # ):
-    #     await msg_miss_info.stream_token(chunk)
+    msg_miss_info = cl.Message(content="")
+    async for chunk in miss_info.astream(
+        {
+            "output": output_form,
+        },
+        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
+    ):
+        await msg_miss_info.stream_token(chunk)
 
-    # list_items = get_output_miss_info(msg_miss_info.content)
+    list_items = get_output_miss_info(msg_miss_info.content)
     # Query user 
-    # count =  len(list_items)
-    # while(count):
-    #     query = f"Thông tin về '{list_items[len(list_items)-count]}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
-    #     res = await cl.AskUserMessage(content = query, timeout=30).send()
-    #     if res:
-    #         await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
-    #     old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
-    #     print(old_context)
-    #     new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
-    #     collection.update(
-    #         ids=[user.identifier + str(STT)],
-    #         documents=[new_context]
-    #     )
-    #     count -= 1
+    count =  len(list_items)
+    while(count):
+        query = f"Thông tin về '{list_items[len(list_items)-count]}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
+        res = await cl.AskUserMessage(content = query, timeout=30).send()
+        if res:
+            await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
+        # old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
+        # print(old_context)
+        # new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
+        # collection.update(
+        #     ids=[user.identifier + str(STT)],
+        #     documents=[new_context]
+        # )
+        count -= 1
     # Memory
     memory = cl.user_session.get("memory")
     memory.chat_memory.add_user_message(message.content)

@@ -117,7 +117,6 @@ def generate_uniform(Question):
         while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
             end_index  += 1
         
-        print("done at here: ",end_index)
         if end_index == 212:
             a = 2+3
         try:
@@ -127,10 +126,15 @@ def generate_uniform(Question):
 
         # Find the indices of the next placeholders
         first_index = min(Question.find(type1), Question.find(type2))
-        print(Question)
-        print(first_index)
-    
+
     return Question
 
-# # Test the function with the given question
-print(generate_uniform(Question4))
+
+def fill_form(data, form):
+    data_dict = dict(re.findall(r'\(Blank_(\d+)\): (.+)', data))
+    def replace(match):
+        blank_number = match.group(1)
+        return data_dict.get(blank_number, '')
+
+    form = re.sub(r'\(Blank(\d+)\)', replace, form)
+    return form
