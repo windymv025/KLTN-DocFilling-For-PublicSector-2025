@@ -99,9 +99,7 @@ def generate_uniform(Question):
     # Loop through the question and replace the placeholders with the numbered placeholders
     while first_index != -1:
         # Replace the first occurrence of the placeholder with the formatted numbered placeholder
-        print("step 1")
         Question = Question[:first_index] + "{" + str(placeholder_counter) + "}" + Question[first_index:]
-        print("step 2")
         #Index }
         start_index = first_index+2+(len(str(placeholder_counter)))
         end_index = start_index
