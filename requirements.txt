@@ -6,3 +6,4 @@ python-dotenv==1.0.1
 chainlit==1.0.401
 chromadb==0.4.24
 transformers==4.38.2
+google-generativeai == 0.4.1

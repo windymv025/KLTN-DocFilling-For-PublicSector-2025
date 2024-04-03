@@ -38,7 +38,6 @@ def generate_uniform(Question):
 
         while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
             end_index  += 1
-
         if end_index == 212:
             a = 2+3
         try:
