@@ -53,7 +53,7 @@ def generate_uniform(Question):
 
 
 def fill_form(data, form):
-    data_dict = dict(re.findall(r'\(Blank_(\d+)\): (.+)', data))
+    data_dict = dict(re.findall(r'\(Blank(\d+)\): (.+)', data))
     def replace(match):
         blank_number = match.group(1)
         return data_dict.get(blank_number, '')

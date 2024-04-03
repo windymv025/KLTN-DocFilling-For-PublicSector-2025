@@ -10,78 +10,51 @@ from chainlit.sync import run_sync
 def txt_prompt():
     template = """
     <start_of_turn>user
-    Context: 
-    			TỜ KHAI CĂN CƯỚC CÔNG DÂN
-
-        1. Họ, chữ đệm và tên(1): Lê Dũng
-        2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không có
-        3. Ngày, tháng, năm sinh: 05/09/1964; 4. Giới tính (Nam/nữ): Nam
-        5. Số CMND/CCCD: 005568561645
-        6. Dân tộc: Kinh; 7. Tôn giáo: Không 8. Quốc tịch: Việt Nam
-        9. Tình trạng hôn nhân: Có 10. Nhóm máu (nếu có): O
-        11. Nơi đăng ký khai sinh: Gia Lai
-        12. Quê quán: Phú Dương, Phú Vang, Thừa Thiên Huế
-        13. Nơi thường trú: Phú Túc
-        14. Nơi ở hiện tại: Phú Túc
-        15. Nghề nghiệp: Bác Sĩ 16. Trình độ học vấn: Đại học
-
+    Context: Tôi là Nguyễn Văn A, số điện thoại là 034887774, hiện đại ở KTX UFM, số CCCD: 97785674, email: jjjjff@gmail.com
     Question:
                 ĐƠN XIN VIỆC
 
-    Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank_1)
-    Tôi tên là: (Blank_2)
-    Sinh ngày: (Blank_3)
-    Chỗ ở hiện nay: (Blank_4)
-    Số điện thoại liên hệ: (Blank_5)
-    Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank_6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
+    Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank1)
+    Tôi tên là: (Blank2)
+    Sinh ngày: (Blank3)
+    Chỗ ở hiện nay: (Blank4)
+    Số điện thoại liên hệ: (Blank5)
+    Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
 
-    Tôi đã tốt nghiệp loại (Blank_7) tại trường (Blank_8)
-    Bên cạnh đó, tôi có tham gia các khóa học(Blank_9)
+    Tôi đã tốt nghiệp loại (Blank7) tại trường (Blank8)
+    Bên cạnh đó, tôi có tham gia các khóa học(Blank9)
     Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng Anh giao tiếp tốt và biết sử dụng các phần mềm kế toán.
 
     Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
-    + Họ, chữ đệm và tên(1): Lê Dũng
-    + Họ, chữ đệm và tên gọi khác (nếu có)(2): Không có
-    + Ngày sinh: 05
-    + Tháng sinh: 09
-    + Năm sinh: 1964
-    + Giới tính (Nam/nữ): Nam
-    + Số CMND/CCCD: 005568561645
-    + Dân tộc: Kinh
-    + Tôn giáo: Không
-    + Quốc tịch: Việt Nam
-    + Tình trạng hôn nhân: Có
-    + Nhóm máu (nếu có): O
-    + Nơi đăng ký khai sinh: Gia Lai
-    + Quê quán: Phú Dương, Phú Vang, Thừa Thiên Huế
-    + Nơi thường trú: Phú Túc
-    + Nơi ở hiện tại: Phú Túc
-    + Nghề nghiệp: Bác Sĩ
-    + Trình độ học vấn: Đại học
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below:
-    1. Ban lãnh đạo cùng phòng nhân sự Công ty: (Blank_1)
-    2. Tôi tên là: (Blank_2)
-    3. Sinh ngày: (Blank_3)
-    4. Chỗ ở hiện nay: (Blank_4)
-    5. Số điện thoại liên hệ: (Blank_5)
-    6. vị trí: (Blank_6)
-    7. tốt nghiệp loại: (Blank_7)
-    8. tại trường: (Blank_8)
-    9. khóa học: (Blank_9)
+    Extract information from the Context. Information is separated by commas. Information is listed below:
+    + Họ và tên: Nguyễn Văn A
+    + Số điện thoại(SDT): 034887774
+    + Nơi ở hiện tại: KTX UFM
+    + CCCD: 97785674
+    + email: jjjjff@gmail.com
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blankx) syntax with * as a number, such as: (Blank1), (Blank2). The items are listed below:
+    1. Ban lãnh đạo cùng phòng nhân sự Công ty: (Blank1)
+    2. Tôi tên là: (Blank2)
+    3. Sinh ngày: (Blank3)
+    4. Chỗ ở hiện nay: (Blank4)
+    5. Số điện thoại liên hệ: (Blank5)
+    6. vị trí: (Blank6)
+    7. tốt nghiệp loại: (Blank7)
+    8. tại trường: (Blank8)
+    9. khóa học: (Blank9)
 
     Check the information that needs to be filled in the Question in the information extracted from the Context. If so, write that information in. If not, fill in 'Rỗng'.
     Final Result:
-    (Blank_1): Rỗng
-    (Blank_2): Lê Dũng
-    (Blank_3): 05/09/1964
-    (Blank_4): Phú Túc
-    (Blank_5): Rỗng
-    (Blank_6): Rỗng
-    (Blank_7): Rỗng
-    (Blank_8): Rỗng
-    (Blank_9): Rỗng<end_of_turn>
+    (Blank1): Rỗng
+    (Blank2): Nguyễn Văn A
+    (Blank3): Rỗng
+    (Blank4): KTX UFM
+    (Blank5): 034887774
+    (Blank6): Rỗng
+    (Blank7): Rỗng
+    (Blank8): Rỗng
+    (Blank9): Rỗng<end_of_turn>
 
     <start_of_turn>user
     Context: Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CCCD là 12345.
@@ -89,19 +62,19 @@ def txt_prompt():
                 TỜ KHAI CĂN CƯỚC CÔNG DÂN
 
                 
-    1. Họ, chữ đệm và tên(1): (Blank_1)
-    2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank_2)
-    3. Ngày, tháng, năm sinh:(Blank_3)/(Blank_4)/(Blank_5); 4. Giới tính (Nam/nữ): (Blank_6)
-    5. Số CMND/CCCD: (Blank_7)
-    6. Dân tộc: (Blank_8); 7. Tôn giáo: (Blank_9) 8. Quốc tịch: (Blank_10)
-    9. Tình trạng hôn nhân: (Blank_11) 10. Nhóm máu (nếu có): (Blank_12)
-    11. Nơi đăng ký khai sinh: (Blank_13)
-    12. Quê quán: (Blank_14)
-    13. Nơi thường trú: (Blank_15)
-    14. Nơi ở hiện tại: (Blank_16)
-    15. Nghề nghiệp: (Blank_17) 16. Trình độ học vấn: (Blank_18)<end_of_turn>
+    1. Họ, chữ đệm và tên(1): (Blank1)
+    2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
+    3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
+    5. Số CMND/CCCD: (Blank7)
+    6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
+    9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
+    11. Nơi đăng ký khai sinh: (Blank13)
+    12. Quê quán: (Blank14)
+    13. Nơi thường trú: (Blank15)
+    14. Nơi ở hiện tại: (Blank16)
+    15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
+    Extract information from the Context. Information is separated by commas. Information is listed below:
     + Họ tên: Nguyễn Đức Nam
     + Sinh viên năm 3
     + Ngày sinh: 26/02/2003
@@ -109,61 +82,61 @@ def txt_prompt():
     + Quê: Bình Định
     + Quốc tịch: Việt Nam
     + CCCD: 12345
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below:
-    1. Họ, chữ đệm và tên(1): (Blank_1)
-    2. Họ, chữ đệm và tên gọi khác (nếu có)(2): (Blank_2)
-    3. Ngày sinh: (Blank_3)
-    4. Tháng sinh: (Blank_4)
-    5. Năm sinh: (Blank_5)
-    6. Giới tính (Nam/nữ): (Blank_6)
-    7. Số CMND/CCCD: (Blank_7)
-    8. Dân tộc: (Blank_8)
-    9. Tôn giáo: (Blank_9)
-    10. Quốc tịch: (Blank_10)
-    11. Tình trạng hôn nhân: (Blank_11)
-    12. Nhóm máu (nếu có): (Blank_12)
-    13. Nơi đăng ký khai sinh: (Blank_13)
-    14. Quê quán: (Blank_14)
-    15. Nơi thường trú: (Blank_15)
-    16. Nơi ở hiện tại: (Blank_16)
-    17. Nghề nghiệp: (Blank_17)
-    18. Trình độ học vấn: (Blank_18)
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blankx) syntax with * as a number, such as: (Blank1), (Blank2). The items are listed below:
+    1. Họ, chữ đệm và tên(1): (Blank1)
+    2. Họ, chữ đệm và tên gọi khác (nếu có)(2): (Blank2)
+    3. Ngày sinh: (Blank3)
+    4. Tháng sinh: (Blank4)
+    5. Năm sinh: (Blank5)
+    6. Giới tính (Nam/nữ): (Blank6)
+    7. Số CMND/CCCD: (Blank7)
+    8. Dân tộc: (Blank8)
+    9. Tôn giáo: (Blank9)
+    10. Quốc tịch: (Blank10)
+    11. Tình trạng hôn nhân: (Blank11)
+    12. Nhóm máu (nếu có): (Blank12)
+    13. Nơi đăng ký khai sinh: (Blank13)
+    14. Quê quán: (Blank14)
+    15. Nơi thường trú: (Blank15)
+    16. Nơi ở hiện tại: (Blank16)
+    17. Nghề nghiệp: (Blank17)
+    18. Trình độ học vấn: (Blank18)
 
     Check the information that needs to be filled in the Question in the information extracted from the Context. If so, write that information in. If not, fill in 'Rỗng'.
     Final Result:
-    (Blank_1): Nguyễn Đức Nam
-    (Blank_2): Rỗng
-    (Blank_3): 26
-    (Blank_4): 02
-    (Blank_5): 2003
-    (Blank_6): Rỗng
-    (Blank_7): 12345
-    (Blank_8): Kinh
-    (Blank_9): Rỗng
-    (Blank_10): Việt Nam
-    (Blank_11): Rỗng 
-    (Blank_12): Rỗng
-    (Blank_13): Rỗng
-    (Blank_14): Bình Định
-    (Blank_15): Rỗng
-    (Blank_16): Rỗng
-    (Blank_17): Rỗng
-    (Blank_18): Rỗng<end_of_turn>
+    (Blank1): Nguyễn Đức Nam
+    (Blank2): Rỗng
+    (Blank3): 26
+    (Blank4): 02
+    (Blank5): 2003
+    (Blank6): Rỗng
+    (Blank7): 12345
+    (Blank8): Kinh
+    (Blank9): Rỗng
+    (Blank10): Việt Nam
+    (Blank11): Rỗng 
+    (Blank12): Rỗng
+    (Blank13): Rỗng
+    (Blank14): Bình Định
+    (Blank15): Rỗng
+    (Blank16): Rỗng
+    (Blank17): Rỗng
+    (Blank18): Rỗng<end_of_turn>
 
     <start_of_turn>user
     Context: Họ và tên: Lê Hữu Hưng, giới tính nam, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai, số CCCD là 12345, đang sống tại KTX B, email: lhh@gmail.com.
     Question:
             ĐƠN XIN CẤP LẠI CCCD
     
-    Tôi là: (Blank_1) Quốc tịch: (Blank_2)
-    Sinh ngày: (Blank_3) tháng (Blank_4) năm (Blank_5)
-    Nơi đăng ký hộ khẩu thường trú: (Blank_6)
-    Nơi cư trú: (Blank_7)
-    Điện thoại: (Blank_8)
-    Số CCCD (hoặc hộ chiếu): (Blank_9)
-    Cấp ngày: (Blank_10) tháng (Blank_11) năm (Blank_12) Nơi cấp: (Blank_13)<end_of_turn>
+    Tôi là: (Blank1) Quốc tịch: (Blank2)
+    Sinh ngày: (Blank3) tháng (Blank4) năm (Blank5)
+    Nơi đăng ký hộ khẩu thường trú: (Blank6)
+    Nơi cư trú: (Blank7)
+    Điện thoại: (Blank8)
+    Số CCCD (hoặc hộ chiếu): (Blank9)
+    Cấp ngày: (Blank10) tháng (Blank11) năm (Blank12) Nơi cấp: (Blank13)<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
+    Extract information from the Context. Information is separated by commas. Information is listed below:
     + Họ tên: Lê Hữu Hưng
     + Giới tính: Nam
     + Sinh ngày: 01/03/2003
@@ -171,86 +144,85 @@ def txt_prompt():
     + Quốc Tịch: Việt Nam
     + CMND: 12345
     + Hiện tại đang sống ở KTX khu B.
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with * as a number, such as: (Blank_1), (Blank_2). The items are listed below: 
-    1. Tôi là: (Blank_1)
-    2. Quốc tịch: (Blank_2)
-    3. Sinh ngày   : (Blank_3)
-    4. tháng     : (Blank_4)
-    5. năm: (Blank_5)
-    6. Nơi đăng ký hộ khẩu thường trú: (Blank_6)
-    7. Nơi cư trú: (Blank_7)
-    8. Điện thoại: (Blank_8)
-    9. Số CCCD (hoặc hộ chiếu): (Blank_9)
-    10. Cấp ngày   : (Blank_10)
-    11. tháng  : (Blank_11)
-    12. năm  : (Blank_12)
-    13. Nơi cấp: (Blank_13)
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blankx) syntax with * as a number, such as: (Blank1), (Blank2). The items are listed below: 
+    1. Tôi là: (Blank1)
+    2. Quốc tịch: (Blank2)
+    3. Sinh ngày   : (Blank3)
+    4. tháng     : (Blank4)
+    5. năm: (Blank5)
+    6. Nơi đăng ký hộ khẩu thường trú: (Blank6)
+    7. Nơi cư trú: (Blank7)
+    8. Điện thoại: (Blank8)
+    9. Số CCCD (hoặc hộ chiếu): (Blank9)
+    10. Cấp ngày   : (Blank10)
+    11. tháng  : (Blank11)
+    12. năm  : (Blank12)
+    13. Nơi cấp: (Blank13)
 
     Check the information that needs to be filled in the Question in the information extracted from the Context. If so, write that information in. If not, fill in 'Rỗng'.
     Final Result:
-    (Blank_1): Lê Hữu Hưng
-    (Blank_2): Việt Nam
-    (Blank_3): 01
-    (Blank_4): 03
-    (Blank_5): 2003
-    (Blank_6): Rỗng
-    (Blank_7): KTX Khu B
-    (Blank_8): Rỗng
-    (Blank_9): 12345
-    (Blank_10): Rỗng
-    (Blank_11): Rỗng
-    (Blank_12): Rỗng
-    (Blank_13): Rỗng<end_of_turn>
+    (Blank1): Lê Hữu Hưng
+    (Blank2): Việt Nam
+    (Blank3): 01
+    (Blank4): 03
+    (Blank5): 2003
+    (Blank6): Rỗng
+    (Blank7): KTX Khu B
+    (Blank8): Rỗng
+    (Blank9): 12345
+    (Blank10): Rỗng
+    (Blank11): Rỗng
+    (Blank12): Rỗng
+    (Blank13): Rỗng<end_of_turn>
 
     <start_of_turn>user
     Context: Tôi tên Đoàn Thị Hoàn, MSSV: 21120463, học lớp 21TNT1, ngành Trí tuệ Nhân tạo. Tôi sinh ngày 19/05/1965, số điện thoại là 035589611.
     Question:
             ĐƠN XIN NGHỈ HỌC
 
-    Tôi tên: (Blank_1)	 MSSV:	(Blank_2)
-    Ngành học: (Blank_3)	 Lớp: 	(Blank_4)
-    Ngày sinh: (Blank_5) 	 Nơi sinh: (Blank_6)	
-    Địa chỉ hộ khẩu thường trú:	(Blank_7)
-    Điện thoại: (Blank_8)
-    Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: (Blank_9) năm học: 20(Blank_10) – 20(Blank_11)
-    Lý do: (Blank_12)
+    Tôi tên: (Blank1)	 MSSV:	(Blank2)
+    Ngành học: (Blank3)	 Lớp: 	(Blank4)
+    Ngày sinh: (Blank5) 	 Nơi sinh: (Blank6)	
+    Địa chỉ hộ khẩu thường trú:	(Blank7)
+    Điện thoại: (Blank8)
+    Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: (Blank9) năm học: 20(Blank10) – 20(Blank11)
+    Lý do: (Blank12)
     Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn.<end_of_turn>
     <start_of_turn>model
-    Extract information from the Context. After ',' sign or before ':'. Information is listed below:
+    Extract information from the Context. Information is separated by commas. Information is listed below:
     + Họ tên: Đoàn Thị Hoàn
     + MSSV: 21120463
     + Lớp: 21TNT1
     + Ngành: Trí tuệ Nhân tạo
     + Ngành sinh: 19/05/1965
     + Số điện thoại: 0355896611
-    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blank_x) syntax with x as a number, such as: (Blank_1), (Blank_2). The items are listed below:
-    1. Tôi tên: (Blank_1)
-    2. MSSV: (Blank_2)
-    3. Ngành học  : (Blank_3)
-    4. Lớp: (Blank_4)
-    5. Ngày sinh  : (Blank_5)
-    6. Nơi sinh: (Blank_6)
-    7. Địa chỉ hộ khẩu thường chú: (Blank_7)
-    8. Điện thoại: (Blank_8)
-    9. 20: (Blank_9)
-    10. 20  : (Blank_10)
-    11. năm học: (Blank_11)
-    12. Lý do: (Blank_12)
+    List the items that need to be filled in in the Question. The item that needs to be filled in is the part before (Blankx) syntax with x as a number, such as: (Blank1), (Blank2). The items are listed below:
+    1. Tôi tên: (Blank1)
+    2. MSSV: (Blank2)
+    3. Ngành học  : (Blank3)
+    4. Lớp: (Blank4)
+    5. Ngày sinh  : (Blank5)
+    6. Nơi sinh: (Blank6)
+    7. Địa chỉ hộ khẩu thường chú: (Blank7)
+    8. Điện thoại: (Blank8)
+    9. 20: (Blank9)
+    10. 20  : (Blank10)
+    11. năm học: (Blank11)
+    12. Lý do: (Blank12)
 
-    Check the information that needs to be filled in the Question in the information extracted from the Context. If so, write that information in. If not, fill in 'Rỗng'.
-    Final Result:
-    (Blank_1): Đoàn Thị Hoàn
-    (Blank_2): 21120463
-    (Blank_3): Trí tuệ Nhân Tạo
-    (Blank_4): 21TNT1
-    (Blank_5): 30/08/1968
-    (Blank_6): Rỗng
-    (Blank_7): Rỗng
-    (Blank_8): 035589611
-    (Blank_9): Rỗng
-    (Blank_10): Rỗng
-    (Blank_11): Rỗng
-    (Blank_12): Rỗng    
+    Check the information that needs to be filled in the Question in the information extracted from the Context. If so, write that information in. If not, fill in 'Rỗng'.:
+    (Blank1): Đoàn Thị Hoàn
+    (Blank2): 21120463
+    (Blank3): Trí tuệ Nhân Tạo
+    (Blank4): 21TNT1
+    (Blank5): 30/08/1968
+    (Blank6): Rỗng
+    (Blank7): Rỗng
+    (Blank8): 035589611
+    (Blank9): Rỗng
+    (Blank10): Rỗng
+    (Blank11): Rỗng
+    (Blank12): Rỗng    
     <start_of_turn>user
     Chat history: {history}
     Context: {context}
@@ -262,7 +234,10 @@ def txt_prompt():
 
 
 def get_output_form(res):
-    output_form = re.findall(r"Final Result:(.+)", res, re.DOTALL)[0]
+    try:
+        output_form = re.findall(r"Final Result:(.+)", res, re.DOTALL)[0]
+    except:
+        output_form = re.findall(r"\*\*Final Result:\*\*(.+)", res, re.DOTALL)[0]
     output_form = output_form.replace('<eos>','')
     return output_form
 
