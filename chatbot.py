@@ -1,11 +1,10 @@
 from langchain_community.llms import HuggingFaceEndpoint
-from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import Runnable, RunnablePassthrough, RunnableConfig, RunnableLambda
 from langchain.prompts import ChatPromptTemplate
 from langchain.memory import ConversationBufferMemory
 # Database
-import chromadb
+from langchain_community.utilities import SQLDatabase
 # Chainlit
 import chainlit as cl
 from chainlit.input_widget import Select, Switch, Slider
@@ -32,7 +31,7 @@ async def on_chat_start():
         [
         Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
         Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
-        Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
+        Slider(id="Top-k",label = "Top-k", initial = 20, min = 1, max = 100, step = 1),
         Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
         Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
         Switch(id="New", label="New", initial=True),
@@ -88,31 +87,9 @@ async def main(message: cl.Message):
         | StrOutputParser()
     )
     # --------------------------- Database --------------------------
-    # user = cl.user_session.get("user")
-
-    # client = chromadb.PersistentClient(path="./vectorstore") # path defaults to .chroma
-    # collection = client.get_or_create_collection(name="my_programming_" + user.identifier)
-    # context = ''
-    # STT = 0
-    # is_new = settings['New'] # Biến dùng để xác định đây là nhập cũ hay mới
-    # if is_new:
-    #     STT = collection.count() + 1
-    #     context = message.content
-    #     collection.add(
-    #         ids=[user.identifier + str(STT)],
-    #         documents=[context]
-    #     )
-    #     context = message.content
-    # else:
-    #     result = collection.query(query_texts=[message.content], n_results=1)
-    #     context = result["documents"][0]
-    #     STT = result["ids"][0]
-    #     print(STT)
-    # print(collection.get())
-    # print('Context: ', context)
+    user = cl.user_session.get("user")
     # ------------------ Output ----------------------------
     text = cl.user_session.get("text")
-    print(text)
     msg = cl.Message(content="")
     async for chunk in runnable.astream(
         {
@@ -124,8 +101,13 @@ async def main(message: cl.Message):
         await msg.stream_token(chunk)
 
     await msg.send()
+    print(msg.content)
     data = get_output_form(msg.content)
+    print('1:',data)
     output_form = fill_form(data, text)
+    print('2:',output_form)
+    with open('./Output/result.txt','w',encoding='utf-8') as file:
+        file.write(output_form)
     # Miss information
     msg_miss_info = cl.Message(content="")
     async for chunk in miss_info.astream(
@@ -144,13 +126,6 @@ async def main(message: cl.Message):
         res = await cl.AskUserMessage(content = query, timeout=30).send()
         if res:
             await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
-        # old_context = collection.get(ids = [user.identifier + str(STT)], include=["documents"])['documents'][0]
-        # print(old_context)
-        # new_context = old_context + ', ' + f"{list_items[len(list_items)-count]} là {res['output']}"
-        # collection.update(
-        #     ids=[user.identifier + str(STT)],
-        #     documents=[new_context]
-        # )
         count -= 1
     # Memory
     memory = cl.user_session.get("memory")
@@ -217,9 +192,10 @@ async def on_chat_resume(thread: ThreadDict):
         [
         Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
         Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
-        Slider(id="Top-k",label = "Top-k", initial = 30, min = 1, max = 100, step = 1),
+        Slider(id="Top-k",label = "Top-k", initial = 20, min = 1, max = 100, step = 1),
         Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
-        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100)
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
+        Switch(id="New", label="New", initial=True),
         ]
     ).send()
     cl.user_session.set('settings', settings)
