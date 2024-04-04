@@ -1,4 +1,5 @@
 import google.generativeai as genai
+import re
  
 genai.configure(api_key="AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50")
  
@@ -53,6 +54,7 @@ model = genai.GenerativeModel(model_name="gemini-pro",
 # 12. Quê quán: Bình Định
 # 13. Nơi thường trú: Singapore
 # """
+
 Abstract = """
 TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
 
@@ -67,70 +69,62 @@ I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BH
 [12]. Số nhà, đường/phố, thôn/xóm: 	Hóa Lạc
 [13]. Xã: Cát Thành	[14]	Huyện: Phù Cát	[15]. Tỉnh: Bình Định
 [16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
-
 """
-list_keys = ["Họ tên", "Ngày sinh", "Tháng sinh", "Năm sinh", "Ngày tháng năm sinh", "Giới tính", "Số CMND", "Dân tộc", "Tôn giáo", "Quốc tịch", "Tình trạng hôn nhân", "Nhóm máu", "Nơi đăng ký khai sinh", "Quê quán", "Nơi thường trú", "Số điện thoại"]
+
 results = []
 
-def get_value(data):
-  # Find the index of ':'
-  colon_index = data.find(':')
-  # Extract the value after ':'
-  if colon_index != -1:
-      value = data[colon_index + 1:].strip(' []')
-      # print(value)
-  else:
-      print("Colon ':' not found in the string.")
-  return value
+def extract_info(Abstract, list_keys):
+  list_info = []
+  for key in list_keys:
+    Question = key
+    prompt_parts = [
+    f"""
+    Your task is to extract information from abstract, combine with section in Question. Your response is information corresponding to the question with format [Question:Information]. If you don't have answer, reply with [Question:Rỗng]. Only output print out, no additional text.
+    <Examples>
+    Abstract: '''Tôi tên là Lê Hữu Hưng, giới tính nam, sinh viên năm 3, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai (lãnh thổ Việt Nam), số CMND là 12345.'''
+    Question: 'Họ tên'.
+    Answer: [Họ tên: Lê Hữu Hưng]
 
-for key in list_keys:
-  Question = key
+    Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.'''
+    Question: 'Ngày sinh'
+    Answer: [Ngày sinh: 26]
 
-  prompt_parts = [
-  f"""
-  Your task is to extract information from abstract, combine with section in Question. Your response is information corresponding to the question with format [Question:Information]. If you don't have answer, reply with [Question:Rỗng]. Only output print out, no additional text.
-  <Examples>
-  Abstract: '''Tôi tên là Lê Hữu Hưng, giới tính nam, sinh viên năm 3, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai (lãnh thổ Việt Nam), số CMND là 12345.'''
-  Question: 'Họ tên'.
-  Answer: [Họ tên: Lê Hữu Hưng]
+    Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.'''
+    Question: 'Số điện thoại'
+    Answer: [Số điện thoại: Rỗng]
 
-  Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.'''
-  Question: 'Ngày sinh'
-  Answer: [Ngày sinh: 26]
+    Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.
+    Question: 'Ngày tháng năm sinh'
+    Answer: [Ngày tháng năm sinh: 26/02/2003]
 
-  Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.'''
-  Question: 'Số điện thoại'
-  Answer: [Số điện thoại: Rỗng]
+    Abstract: '''TỜ KHAI CĂN CƯỚC CÔNG DÂN
+    1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
+    2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
+    3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
+    5. Số CMND/CCCD: 052203654
+    6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
+    9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A'''
+    Question: 'Số điện thoại'
+    Answer: [Số điện thoại: Rỗng]
 
-  Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.
-  Question: "Ngày tháng năm sinh"
-  Answer: [Ngày tháng năm sinh: 26/02/2003]
-
-  Abstract: '''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-  1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
-  2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
-  3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
-  5. Số CMND/CCCD: 052203654
-  6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
-  9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A'''
-  Question: 'Số điện thoại'
-  Answer: [Số điện thoại: Rỗng]
-
-  Abstract: '''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-  1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
-  2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
-  3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
-  5. Số CMND/CCCD: 052203654
-  6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
-  9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A'''
-  Question: 'Tháng sinh'
-  Answer: [Tháng sinh: 1]
-  </Examples>
-  Abstract: {Abstract}
-  Question: {Question}
-  """]
- 
-  response = model.generate_content(prompt_parts)
-  print(response.text)
-  results.append(get_value(response.text))
-
+    Abstract: '''TỜ KHAI CĂN CƯỚC CÔNG DÂN
+    1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
+    2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
+    3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
+    5. Số CMND/CCCD: 052203654
+    6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
+    9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A'''
+    Question: 'Tháng sinh'
+    Answer: [Tháng sinh: 1]
+    </Examples>
+    Abstract: {Abstract}
+    Question: {Question}
+    """]
+  
+    response = model.generate_content(prompt_parts)
+    pattern = r'(?<=:\s)(.+)'
+    text = re.search(pattern, response.text)
+    text = text.group(0).replace("]","")
+    print(text)
+    list_info.append(text)
+  return list_info
