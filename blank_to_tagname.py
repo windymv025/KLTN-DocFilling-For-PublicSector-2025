@@ -1,10 +1,8 @@
-import google.generativeai as genai
+from langchain_google_genai import GoogleGenerativeAI, HarmBlockThreshold, HarmCategory
+from langchain_core.prompts import PromptTemplate
 import re
-from extract_context import *
 from uniform_text import *
 
- 
-genai.configure(api_key="AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50")
  
 # Set up the model
 generation_config = {
@@ -14,90 +12,17 @@ generation_config = {
   "max_output_tokens": 4096,
 }
  
-safety_settings = [
-  {
-    "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  },
-  {
-    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-  }
-]
- 
-model = genai.GenerativeModel(model_name="gemini-pro",
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
+llm = GoogleGenerativeAI(model="gemini-pro",
+                         safety_settings={
+                            HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                            HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                            HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE
+                         },
+                         generation_config=generation_config,
+                         google_api_key="AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50")
 
-##=========================promp=========================##
-# Root prompt
-# prompt_parts = [
-# '''
-# Your task is to extract model names from machine learning paper abstracts. Your response is an array of the model names in the format [\"model_name\"]. If you don't find model names in the abstract or you are not sure, return [\"NA\"]
-# Abstract: Large Language Models (LLMs), such as ChatGPT and GPT-4, have revolutionized natural language processing research and demonstrated potential in Artificial General Intelligence (AGI). However, the expensive training and deployment of LLMs present challenges to transparent and open academic research. To address these issues, this project open-sources the Chinese LLaMA and Alpaca…
-# ''']
-
-# Abstract = "Tôi tên Văn A, số điện thoại 321, đang mong muốn học bằng lái xe A2, hiện tại đang ở KTX khu B."
-# Abstract = """
-# TỜ KHAI CĂN CƯỚC CÔNG DÂN
-# 1. Họ, chữ đệm và tên(1): Hồ Quý Phi
-# 2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Kang
-# 3. Ngày, tháng, năm sinh:27/01/2003; 4. Giới tính (Nam/nữ): Nữ
-# 5. Số CMND/CCCD: 547
-# 6. Dân tộc:Hoa; 7. Tôn giáo:Phật 8. Quốc tịch: Anh
-# 9. Tình trạng hôn nhân: Kết hôn 10. Nhóm máu (nếu có): B
-# 11. Nơi đăng ký khai sinh: USA
-# 12. Quê quán: Bình Định
-# 13. Nơi thường trú: Singapore
-# """
-
-# Abstract = """
-# TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
-# I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
-# [01]. Họ và tên (viết chữ in hoa): (Blank1)	[02]. Giới tính: (Blank2)
-# [03]. Ngày, tháng, năm sinh: (Blank3)/(Blank4)/(Blank5)	  [04]. Quốc tịch: (Blank6)
-# [05]. Dân tộc: (Blank7)	[06]. Số CCCD/ĐDCN/Hộ chiếu: (Blank8)	
-# [07]. Điện thoại: (Blank9)	[08]. Email (nếu có): (Blank10)	
-# [09]. Nơi đăng ký khai sinh: (Blank11) [09.1]. Xã: (Blank12)	[09.2]. Huyện: (Blank13) [09.3]. Tỉnh: (Blank14)
-# [10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): (Blank15)
-# [11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: (Blank16)
-# [12]. Số nhà, đường/phố, thôn/xóm: (Blank17)	
-# [13]. Xã: (Blank18)	[14]	Huyện: (Blank19)	[15]. Tỉnh: (Blank20) 	
-# [16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
-# """
-
-# Abstract = """
-# Mẫu số 16:  Ban hành kèm theo Thông tư số 28/2015/TT-BLĐTBXH ngày 31 tháng 7 năm 2015 của Bộ trưởng Bộ Lao động-Thương binh và Xã hội
-# 			CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-# 			    Độc lập - Tự do - Hạnh phúc
-
-# THÔNG BÁO VỀ VIỆC TÌM KIẾM VIỆC LÀM
-# Tháng hưởng trợ cấp thất nghiệp thứ: (Blank1)
-
-# Kính gửi:  Trung tâm Dịch vụ việc làm (Blank2)
-# Tên tôi là: (Blank3)sinh ngày (Blank4) / (Blank5) / (Blank6)
-# Số chứng minh nhân dân: (Blank7)
-# Ngày cấp: (Blank8)/(Blank9)/(Blank10) nơi cấp: (Blank11)
-# Chỗ ở hiện nay: (Blank12)
-# Số điện thoại :(Blank13)
-# Theo Quyết định số(Blank14) ngày(Blank15)/(Blank16)/(Blank17) tôi được hưởng trợ cấp thất nghiệp(Blank18)tháng, kể từ ngày(Blank19)/(Blank20)/(Blank21) đến ngày(Blank22)/(Blank23)/(Blank24) tại tỉnh/thành phố(Blank25)
-# Tôi thông báo kết quả tìm kiếm việc làm theo quy định, cụ thể như sau:
-# (1) Đơn vị thứ nhất (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-# (Blank26)
-# (2) Đơn vị thứ hai (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-# (Blank27)
-#  ((Blank28)) Tên đơn vị thứ ((Blank29)): (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-# (Blank30)
-# Tình trạng việc làm hiện nay: (Blank31)
-# """
+##========================= Abstract Exemplar =========================##
 
 # Abstract = """TỜ KHAI CĂN CƯỚC CÔNG DÂN           
 #     1. Họ, chữ đệm và tên(1): (Blank1)
@@ -112,20 +37,20 @@ model = genai.GenerativeModel(model_name="gemini-pro",
 #     14. Nơi ở hiện tại: (Blank16)
 #     15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)"""
 
-Abstract = """
-TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
-I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
-[01]. Họ và tên (viết chữ in hoa): (Blank1)	[02]. Giới tính: (Blank2)
-[03]. Ngày, tháng, năm sinh: (Blank3)/(Blank4)/(Blank5)	  [04]. Quốc tịch: (Blank6)
-[05]. Dân tộc: (Blank7)	[06]. Số CCCD/ĐDCN/Hộ chiếu: (Blank8)	
-[07]. Điện thoại: (Blank9)	[08]. Email (nếu có): (Blank10)	
-[09]. Nơi đăng ký khai sinh: [09.1]. Xã: (Blank11)	[09.2]. Huyện: (Blank12) [09.3]. Tỉnh: (Blank13)
-[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): (Blank14)
-[11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: (Blank15)
-[12]. Số nhà, đường/phố, thôn/xóm: (Blank16)	
-[13]. Xã: (Blank17)	[14]	Huyện: (Blank18)	[15]. Tỉnh: (Blank19) 	
-[16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
-"""
+# Abstract = """
+# TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
+# I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
+# [01]. Họ và tên (viết chữ in hoa): (Blank1)	[02]. Giới tính: (Blank2)
+# [03]. Ngày, tháng, năm sinh: (Blank3)/(Blank4)/(Blank5)	  [04]. Quốc tịch: (Blank6)
+# [05]. Dân tộc: (Blank7)	[06]. Số CCCD/ĐDCN/Hộ chiếu: (Blank8)	
+# [07]. Điện thoại: (Blank9)	[08]. Email (nếu có): (Blank10)	
+# [09]. Nơi đăng ký khai sinh: [09.1]. Xã: (Blank11)	[09.2]. Huyện: (Blank12) [09.3]. Tỉnh: (Blank13)
+# [10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): (Blank14)
+# [11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: (Blank15)
+# [12]. Số nhà, đường/phố, thôn/xóm: (Blank16)	
+# [13]. Xã: (Blank17)	[14]	Huyện: (Blank18)	[15]. Tỉnh: (Blank19) 	
+# [16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
+# """
 
 # Abstract = """
 # Mẫu số 16:  Ban hành kèm theo Thông tư số 28/2015/TT-BLĐTBXH ngày 31 tháng 7 năm 2015 của Bộ trưởng Bộ Lao động-Thương binh và Xã hội
@@ -167,31 +92,32 @@ I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BH
 # """
 
 
-# Abstract = """
-# GIẤY KHAI ĐĂNG KÝ XE 
-# A. PHẦN CHỦ XE TỰ KÊ KHAI
-# Tên chủ xe :(Blank1)
-# Năm sinh:(Blank2)
-# Địa chỉ : (Blank3)
-# Số CCCD/CMND/Hộ chiếu của chủ xe:(Blank4)
-# cấp ngày (Blank5)/(Blank6)/(Blank7) tại (Blank8)
-# Số CCCD/CMND/Hộ chiếu của người làm thủ tục (Blank9)
-# cấp ngày (Blank10)/(Blank11) /(Blank12) tại(Blank13)
-# Điện thoại của chủ xe :(Blank14)
-# Điện thoại của người làm thủ tục :(Blank15)
-# Số hóa đơn điện tử mã số thuế:(Blank16)
-# Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp:(Blank17)
-# Số tờ khai hải quan điện tử cơ quan cấp:(Blank18)
-# Số sêri Phiếu KTCLXX Cơ quan cấp (Blank19)
-# Số giấy phép kinh doanh vận tải cấp ngày (Blank20)/(Blank21) / (Blank22)tại(Blank23)
-# Số máy 1 (Engine N0):(Blank24)
-# Số máy 2 (Engine N0):(Blank25)
-# Số khung (Chassis N0):(Blank26)
-# """
+Abstract = """
+GIẤY KHAI ĐĂNG KÝ XE 
+A. PHẦN CHỦ XE TỰ KÊ KHAI
+Tên chủ xe :(Blank1)
+Năm sinh:(Blank2)
+Địa chỉ : (Blank3)
+Số CCCD/CMND/Hộ chiếu của chủ xe:(Blank4)
+cấp ngày (Blank5)/(Blank6)/(Blank7) tại (Blank8)
+Số CCCD/CMND/Hộ chiếu của người làm thủ tục (Blank9)
+cấp ngày (Blank10)/(Blank11) /(Blank12) tại(Blank13)
+Điện thoại của chủ xe :(Blank14)
+Điện thoại của người làm thủ tục :(Blank15)
+Số hóa đơn điện tử mã số thuế:(Blank16)
+Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp:(Blank17)
+Số tờ khai hải quan điện tử cơ quan cấp:(Blank18)
+Số sêri Phiếu KTCLXX Cơ quan cấp (Blank19)
+Số giấy phép kinh doanh vận tải cấp ngày (Blank20)/(Blank21) / (Blank22)tại(Blank23)
+Số máy 1 (Engine N0):(Blank24)
+Số máy 2 (Engine N0):(Blank25)
+Số khung (Chassis N0):(Blank26)
+"""
 
-Question = "(Blank1)"
 tag_names = """
-#Name
+#Full_Name
+"#Surname"
+"#Last_Name"
 #Day_of_birth
 #Month_of_birth
 #Year_of_birth
@@ -224,14 +150,15 @@ tag_names = """
 #Legal_Representative
 #Administrative_violations
 #Regulation_at
-#(Individual/Organization)_suffered_damages
+#Individual_or_Organization_suffered_damages
 #Opinions_from_violator
-#Opinions_from_officials/witnesses
+#Opinions_from_officials_or_witnesses
 #Opinions_from_affected_party
-#Request_to_Mr._(Ms.)
+#Request_to_Mr_Ms
 #Reason
 #Dear
-#Relationship to registrant
+#Place_of_issue
+#Relationship_to _registrant
 #Mother_name
 #Mother_day_of_birth
 #Mother_month_of_birth
@@ -244,11 +171,11 @@ tag_names = """
 #Father_date_of_birth
 #Electronic_invoice_number_tax_code
 #Registration_tax_file_code
-#E-customs_declaration_number.
+#E_customs_declaration_number
 #Engine_N1
 #Engine_N2
 #Chassis_N0
-#Content/Specific_incident
+#Content
 #Quantity
 #Current_employment_status
 #Commune
@@ -257,7 +184,7 @@ tag_names = """
 #For_you
 #Behavior
 #Explanation_for_the_application
-#People's_Court
+#People_Court
 #Empty
 """
 
@@ -284,7 +211,7 @@ translations = {
     "#Place_of_birth_registration": "Nơi đăng ký sinh",
     "#Hometown": "Quê quán",
     "#Permanent_residence": "Nơi thường trú",
-    "#Current_address": "Địa chỉ hiện nay",
+    "#Current_address": "Chỗ ở hiện nay",
     "#Occupation": "Nghề nghiệp",
     "#Educational_level": "Trình độ học vấn",
     "#Phone_number": "Số điện thoại",
@@ -318,7 +245,7 @@ translations = {
     "#Father_date_of_birth": "Ngày tháng năm sinh của cha",
     "#Electronic_invoice_number_tax_code": "Mã số hóa đơn điện tử",
     "#Registration_tax_file_code": "Mã số hồ sơ đăng ký thuế",
-    "#E-customs_declaration_number": "Số tờ khai hải quan điện tử",
+    "#E_customs_declaration_number": "Số tờ khai hải quan điện tử",
     "#Engine_N1": "Động cơ N1",
     "#Engine_N2": "Động cơ N2",
     "#Chassis_N0": "Khung xe N0",
@@ -332,16 +259,13 @@ translations = {
     "#Behavior": "Hành vi",
     "#Explanation_for_the_application": "Giải trình cho đơn xin",
     "#People's_Court": "Tòa án nhân dân",
+    "#Relationship_to_registrant": "Mối quan hệ với người đăng kí",
+    "#Place_of_issue": 'Nơi cấp',
     "#Empty": "Trống"
 }
 
-def blank_to_tagname(form, tag_names):
-  Abstract, count = generate_uniform(form)
-  list_outputs = []
-  for i in range(1, count+1): 
-    Question = f"(Blank{i})"
-    prompt_parts = [
-    f"""
+def blank_to_tagname_prompt():
+  template = """
     Give you list of tag names. Your task is to choose a right tag name to replace the (Blankx) gived by Question in the Abstract. Your response only has format (Blankx:#tagname). If you don't have answer, reply with [Blankx:#Empty].
     List of task names: {tag_names}
     <Examples>
@@ -420,54 +344,64 @@ def blank_to_tagname(form, tag_names):
       14. Nơi ở hiện tại: (Blank16)
       15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
     Question: (Blank18)
-    Answer: (Blank18: #Empty)  
+    Answer: (Blank18: #Educational_level)  
     </Examples>
     Abstract: {Abstract}
     Question: {Question}
-    """]
-    output = model.generate_content(prompt_parts)
-    print(output.text)
-    list_outputs.append(output.text)
-  return list_outputs, Abstract, count
+    """
   
-with open('Forms\Text\TK1-TS.txt','r',encoding='utf-8') as f:
-  text = f.read()
+  prompt = PromptTemplate.from_template(template)
+  return prompt, tag_names, translations
 
-list_tag_names, form, count = blank_to_tagname(text, tag_names)
+prompt, tag_names, translations = blank_to_tagname_prompt()
+
+chain = prompt | llm
+
+# Question = []
+# for i in range(1,28):
+#   Question.append(f"(Blank{i})")
+
+
+# # print(Abstract)
+
+# response = chain.invoke({
+#             "tag_names": tag_names,
+#             "Abstract": Abstract,
+#             "Question": Question,
+#           })
+
+# response = response.replace("Answer: ","")
+
+# print(response)
+
+
+def blank_to_tagname(chain, form, count, tag_names):
+  list_outputs = []
+  for i in range(1,count+1):
+    Question = f"(Blank{i})"
+    response = chain.invoke({
+              "tag_names": tag_names,
+              "Abstract": form,
+              "Question": Question,
+            })
+    print(response)
+    list_outputs.append(response)
+  return list_outputs
+  
+
+# list_tag_names = blank_to_tagname(chain, Abstract, 28, tag_names)
 
 def get_list_keys(list_tag_names, translations):
-  list_keys = []
+  list_cols = [] # Database
+  list_keys = [] #
   pattern = r'#(\w+)'
   for tag_name in list_tag_names:
     match = re.search(pattern, tag_name)
-    # text = match.group(0).replace(")","")
-    print(translations[match.group(0)])
-    list_keys.append(translations[match.group(0)])
-  return list_keys
+    temp = match.group(0)
+    list_keys.append(translations[temp])
+    temp = temp.replace("#","")
+    list_cols.append(match.group(0))
+  return list_cols, list_keys
 
-list_keys = get_list_keys(list_tag_names, translations)
-
-def fill_form(context, form, count):
-  list_info = extract_info(context, list_keys)
-  for i in range(1, count+1):
-    form = form.replace(f"(Blank{i})", list_info[i-1])
-  return form
-
-
-context = """
-    TỜ KHAI CĂN CƯỚC CÔNG DÂN
-
-1. Họ, chữ đệm và tên(1): Hồ Quý Phi
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Kang
-3. Ngày, tháng, năm sinh:27/01/2003; 4. Giới tính (Nam/nữ): Nữ
-5. Số CMND/CCCD: 547
-6. Dân tộc:Hoa; 7. Tôn giáo:Phật 8. Quốc tịch: Anh
-9. Tình trạng hôn nhân: Kết hôn 10. Nhóm máu (nếu có): B
-11. Nơi đăng ký khai sinh: USA
-12. Quê quán:  Huyện Krông Pa, Tỉnh Bình Định
-13. Nơi thường trú: Singapore
-"""
-
-print(form)
-
-print(fill_form(context, form, count))
+# list_keys = get_list_keys(list_tag_names, translations)
+# print(list_keys)

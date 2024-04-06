@@ -1,30 +1,68 @@
 import sqlite3
 
-# Kết nối tới cơ sở dữ liệu SQLite
-conn = sqlite3.connect('thong_tin_ca_nhan.db')
-cursor = conn.cursor()
+# --------------- Tạo Database -------------------
+def create_database(tag_names):
+    # Connect to SQLite database (creates a new database if it doesn't exist)
+    conn = sqlite3.connect('data.db')
+    # Create a cursor object to execute SQL commands
+    cursor = conn.cursor()
+    # Remove leading and trailing whitespaces and split the tag_names string into a list
+    list_tag_names = [tag.strip() for tag in tag_names.split('\n') if tag.strip()]
+    list_tag_names = [tag.replace('#', '') for tag in list_tag_names]
+    # Create a table with columns based on tag_names
+    create_table_query = f"CREATE TABLE IF NOT EXISTS data ({', '.join([f'{tag} TEXT' for tag in list_tag_names])})"
+    cursor.execute(create_table_query)
+    # Commit changes
+    conn.commit()
+    # Close the connection
+    conn.close()
 
-# Tạo bảng
-cursor.execute('''CREATE TABLE thong_tin_ca_nhan (
-                    id INTEGER PRIMARY KEY,
-                    ho_ten TEXT,
-                    ngay_thang_nam_sinh DATE,
-                    gioi_tinh TEXT,
-                    so_cccd TEXT,
-                    dan_toc TEXT,
-                    ton_giao TEXT,
-                    quoc_tich TEXT,
-                    tinh_trang_hon_nhan TEXT,
-                    nhom_mau TEXT,
-                    noi_dang_ki_khai_sinh TEXT,
-                    que_quan TEXT,
-                    noi_thuong_tru TEXT,
-                    noi_o_hien_tai TEXT,
-                    nghe_nghiep TEXT,
-                    trinh_do_hoc_van TEXT,
-                    so_dien_thoai TEXT
-                )''')
+# ------------------- Đếm số dòng trong database ------------------
+def count_rows():
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    query = "SELECT COUNT(*) FROM data;"
+    cursor.execute(query)
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count
 
-# Lưu thay đổi và đóng kết nối
-conn.commit()
-conn.close()
+
+# ---------------- Thêm thông tin vào datase -----------------------------
+def insert_value_into_database(data_to_insert):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    columns = ', '.join(data_to_insert.keys())
+    placeholders = ', '.join(['?' for _ in range(len(data_to_insert))])
+    sql_query = f"INSERT INTO data ({columns}) VALUES ({placeholders})"
+    values = [data_to_insert[key] for key in data_to_insert]
+    cursor.execute(sql_query, values)
+    conn.commit()
+    conn.close()
+
+
+# ------------------- Lấy thông tin tại 1 ô từ database ----------------------------
+def get_value(id, key):
+    conn = sqlite3.connect('data.db')
+    cursor = conn.cursor()
+    sql_query = f'SELECT {key} FROM data WHERE ID = ?'
+    cursor.execute(sql_query, (id,))
+    value = cursor.fetchone()[0]
+    conn.close()
+    return value
+    
+# ----------------- Lấy thông tin từ nhiều key tại 1 dòng --------------------------
+def get_values(id, list_cols, translations):
+    list_info = []
+    list_miss_keys = []
+    list_miss_items = []
+    for tag in list_cols:
+        key = tag.replace("#","")
+        value = get_value(id, key)
+        if not value:
+            list_miss_keys.append(tag)
+            list_miss_items.append(translations[tag])
+            list_info.append("Rỗng")
+        else:
+            list_info.append(value)
+    return list_info, list_miss_keys, list_miss_items
