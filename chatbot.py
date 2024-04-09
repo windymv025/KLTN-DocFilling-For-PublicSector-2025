@@ -43,7 +43,6 @@ async def on_chat_start():
         Slider(id="Top-p",label = "Top-p",initial = 1, min = 0,max = 1,step = 0.02),
         Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 8000, step = 100),
         Switch(id="New", label="New", initial=True),
-        Switch(id="Database", label = "Database", initial=False)
         ]
     ).send()
     #
@@ -53,8 +52,6 @@ async def on_chat_start():
         "top_k": settings['Top-k'],
         "max_output_tokens": settings['mnt'],
     }
-    isGetInfoFromDatabase = settings['Database']
-    cl.user_session.set('isGetInfoFromDatabase', isGetInfoFromDatabase)
     # ................................ LLM ......................................
     llm = GoogleGenerativeAI(
         model="gemini-pro",
@@ -90,11 +87,11 @@ async def on_chat_start():
     await cl.Message(content=f"`{text_file.name}` uploaded, it contains {len(text)} characters!").send() # Thông báo cho người dùng biết đã up file thành công
     text, count_blank = generate_uniform(text)
     await cl.Message(content=text).send()
-    list_tag_names = blank_to_tagname(blank_to_tagname_chain, text, count_blank, tag_names)
+    list_tag_names = blank_to_tagname(blank_to_tagname_chain, text, tag_names)
+    cl.user_session.set('list_tag_names', list_tag_names)
     await cl.Message(content=list_tag_names).send()
-    list_cols, list_keys = get_list_keys(list_tag_names, translations)
+    list_keys = get_list_keys(list_tag_names, translations)
     cl.user_session.set('list_keys', list_keys)
-    cl.user_session.set('list_cols',list_cols)
     # --------------------------- Database --------------------------
     count_id = count_rows()
     if count_id == 0:
@@ -113,14 +110,17 @@ async def on_chat_start():
         value = res.get("value")
     print(count_id, value)
     if value != str(count_id + 1): # Điền form bằng cách lấy thông tin từ database
-        list_info, list_miss_keys, list_miss_items = get_values(value, list_cols, translations)
+        list_info, list_miss_keys, list_miss_items = get_values(value, list_tag_names, translations)
+        output_form = fill_form(text, list_info, count_blank)
+        await cl.Message(content = output_form).send()
+        with open('./Output/result.txt','w',encoding='utf-8') as file:
+            file.write(output_form)
         print("11111111111111111111111111111111111")
         print("LIST_INFO:", list_info)
         print("LIST_MISS_KEYS:", list_miss_keys)
         print("LIST_MISS_ITEMS:", list_miss_items)   
     # ---------------------- Lưu user session ---------------------
     cl.user_session.set("value", value)
-    cl.user_session.set('list_tag_names', list_tag_names)
     cl.user_session.set("text",text)
     cl.user_session.set("count_blank", count_blank)
     cl.user_session.set("count_id", count_id)
@@ -137,7 +137,6 @@ async def main(message: cl.Message):
     # ---------------------- Người dùng chọn việc load thông tin từ database hay điền người mới------------------------------
     count_id = cl.user_session.get("count_id")
     value = cl.user_session.get("value")
-    list_cols = cl.user_session.get("list_cols")
     list_keys = cl.user_session.get("list_keys")
     list_info = []
     list_miss_items = []
@@ -155,7 +154,6 @@ async def main(message: cl.Message):
             | llm
             | StrOutputParser()
         )
-        print("COLS:", list_cols)
         print("LIST_KEYS: ", list_keys)
         for i, Question in enumerate(list_keys):
             count_miss_items1 = len(list_miss_items)
@@ -174,7 +172,7 @@ async def main(message: cl.Message):
         print("LIST_MISS_KEYS:", list_miss_keys)
         print("LIST_MISS_ITEMS:", list_miss_items)
         # Thêm thông tin vào database
-        data_to_insert = create_tag_info_dict(value, list_cols, list_info)
+        data_to_insert = create_tag_info_dict(value, list_tag_names, list_info)
         print("DATA_TO_INSERT", data_to_insert)
         insert_value_into_database(data_to_insert)
 

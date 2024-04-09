@@ -266,89 +266,226 @@ translations = {
 
 def blank_to_tagname_prompt():
   template = """
-    Give you list of tag names. Your task is to choose a right tag name to replace the (Blankx) gived by Question in the Abstract. Your response only has format (Blankx:#tagname). If you don't have answer, reply with [Blankx:#Empty].
-    List of task names: {tag_names}
-    <Examples>
-      Abstract: '''ĐƠN XIN VIỆC
+  Give you list of tag names, and Abstract include some [Blankx] to fill in. Your task is to choose right tag names to replace the these [Blankx]. Your response will be a list having have format [Blankx:#tagname]. If this [Blankx] don't have info, reply with [Blankx:#Empty].
+  List of task names: {tag_names}
 
-      Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank1)
-      Tôi tên là: (Blank2)
-      Sinh ngày: (Blank3)
-      Chỗ ở hiện nay: (Blank4)
-      Số điện thoại liên hệ: (Blank5)
-      Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
+  Abstract: '''ĐƠN XIN VIỆC
+  Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank1)
+  Tôi tên là: (Blank2)
+  Sinh ngày: (Blank3)
+  Chỗ ở hiện nay: (Blank4)
+  Số điện thoại liên hệ: (Blank5)
+  Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
 
-      Tôi đã tốt nghiệp loại (Blank7) tại trường (Blank8)
-      Bên cạnh đó, tôi có tham gia các khóa học(Blank9)
-      Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng Anh giao tiếp tốt và biết sử dụng các phần mềm kế toán.
+  Tôi đã tốt nghiệp loại (Blank7) tại trường (Blank8)
+  Bên cạnh đó, tôi có tham gia các khóa học(Blank9)
+  Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng Anh giao tiếp tốt và biết sử dụng các phần mềm kế toán.
 
-      Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.'''
-    Question: (Blank2).
-    Answer: (Blank2: #Full_Name)
+  Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.'''
+  List all Blankx in the Abstract section: Blank1, Blank2, Blank3, Blank4, Blank5, Blank6, Blank7, Blank8, Blank9
+  Answer: 
+  [Blank1: #Empty]
+  [Blank2: #Full_Name]
+  [Blank3: #Date_of_birth]
+  [Blank4: #Current_address]
+  [Blank5: #Phone_number]
+  [Blank6: #Empty]
+  [Blank7: #Educational_level]
+  [Blank8: #Empty]
+  [Blank9: #Empty]
 
-      Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-      1. Họ, chữ đệm và tên(1): (Blank1)
-      2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-      3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-      5. Số CMND/CCCD: (Blank7)
-      6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-      9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-      11. Nơi đăng ký khai sinh: (Blank13)
-      12. Quê quán: (Blank14)
-      13. Nơi thường trú: (Blank15)
-      14. Nơi ở hiện tại: (Blank16)
-      15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
-    Question: (Blank13)
-    Answer: (Blank13: #Place_of_birth_registration)
+  Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN
+  1. Họ, chữ đệm và tên(1): (Blank1)
+  2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
+  3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
+  5. Số CMND/CCCD: (Blank7)
+  6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
+  9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
+  11. Nơi đăng ký khai sinh: (Blank13)
+  12. Quê quán: (Blank14)
+  13. Nơi thường trú: (Blank15)
+  14. Nơi ở hiện tại: (Blank16)
+  15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
+  List all Blankx in the Abstract section: Blank1, Blank2, Blank3, Blank4, Blank5, Blank6, Blank7, Blank8, Blank9, Blank10, Blank11, Blank12, Blank13, Blank14, Blank15, Blank16, Blank17, Blank18
+  Answer: 
+  [Blank1: #Full_Name]
+  [Blank2: #Empty]
+  [Blank3: #Day_of_birth]
+  [Blank4: #Month_of_birth]
+  [Blank5: #Year_of_birth]
+  [Blank6: #Gender]
+  [Blank7: #Citizen_identification_card]
+  [Blank8: #Ethnicity]
+  [Blank9: #Religion]
+  [Blank10: #Nationality]
+  [Blank11: #Marital_status]
+  [Blank12: #Blood_type]
+  [Blank13: #Place_of_birth_registration]
+  [Blank14: #Hometown]
+  [Blank15: #Permanent_residence]
+  [Blank16: #Current_address]
+  [Blank17: #Occupation]
+  [Blank18: #Educational_level]
 
-    Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN
+  Abstract:'''ĐƠN XIN NGHỈ HỌC
 
-                  
-      1. Họ, chữ đệm và tên(1): (Blank1)
-      2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-      3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-      5. Số CMND/CCCD: (Blank7)
-      6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-      9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-      11. Nơi đăng ký khai sinh: (Blank13)
-      12. Quê quán: (Blank14)
-      13. Nơi thường trú: (Blank15)
-      14. Nơi ở hiện tại: (Blank16)
-      15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
-    Question: (Blank6)
-    Answer: (Blank6: #Gender)
+  Tôi tên: (Blank1)	 MSSV:	(Blank2)
+  Ngành học: (Blank3)	 Lớp: 	(Blank4)
+  Ngày sinh: (Blank5) 	 Nơi sinh: (Blank6)	
+  Địa chỉ hộ khẩu thường trú:	(Blank7)
+  Điện thoại: (Blank8)
+  Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: (Blank9) năm học: 20(Blank10) – 20(Blank11)
+  Lý do: (Blank12)
+  Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn.'''
+  List all Blankx in the Abstract section: Blank1, Blank2, Blank3, Blank4, Blank5, Blank6, Blank7, Blank8, Blank9, Blank10, Blank11, Blank12
+  Answer: 
+  [Blank1: #Full_Name]
+  [Blank2: #Empty]
+  [Blank3: #Empty]
+  [Blank4: #Empty]
+  [Blank5: #Date_of_birth]
+  [Blank6: #Empty]
+  [Blank7: #Permanent_residence]
+  [Blank8: #Phone_number]
+  [Blank9: #Empty]
+  [Blank10: #Empty]
+  [Blank11: #Empty]
+  [Blank12: #Empty]
 
-    Abstract:'''ĐƠN XIN NGHỈ HỌC
+  Abstract:'''
+  Mẫu số 16:  Ban hành kèm theo Thông tư số 28/2015/TT-BLĐTBXH ngày 31 tháng 7 năm 2015 của Bộ trưởng Bộ Lao động-Thương binh và Xã hội
+        CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+            Độc lập - Tự do - Hạnh phúc
 
-      Tôi tên: (Blank1)	 MSSV:	(Blank2)
-      Ngành học: (Blank3)	 Lớp: 	(Blank4)
-      Ngày sinh: (Blank5) 	 Nơi sinh: (Blank6)	
-      Địa chỉ hộ khẩu thường trú:	(Blank7)
-      Điện thoại: (Blank8)
-      Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: (Blank9) năm học: 20(Blank10) – 20(Blank11)
-      Lý do: (Blank12)
-      Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn.'''
-    Question: (Blank7)
-    Answer: (Blank7: #Permanent_residence)
+  THÔNG BÁO VỀ VIỆC TÌM KIẾM VIỆC LÀM
+  Tháng hưởng trợ cấp thất nghiệp thứ: (Blank1)
 
-    Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN       
-      1. Họ, chữ đệm và tên(1): (Blank1)
-      2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-      3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-      5. Số CMND/CCCD: (Blank7)
-      6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-      9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-      11. Nơi đăng ký khai sinh: (Blank13)
-      12. Quê quán: (Blank14)
-      13. Nơi thường trú: (Blank15)
-      14. Nơi ở hiện tại: (Blank16)
-      15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
-    Question: (Blank18)
-    Answer: (Blank18: #Educational_level)  
-    </Examples>
-    Abstract: {Abstract}
-    Question: {Question}
-    """
+  Kính gửi:  Trung tâm Dịch vụ việc làm (Blank2)
+  Tên tôi là: (Blank3)sinh ngày (Blank4) / (Blank5) / (Blank6)
+  Số chứng minh nhân dân: (Blank7)
+  Ngày cấp: (Blank8)/(Blank9)/(Blank10) nơi cấp: (Blank11)
+  Chỗ ở hiện nay: (Blank12)
+  Số điện thoại :(Blank13)
+  Theo Quyết định số(Blank14) ngày(Blank15)/(Blank16)/(Blank17) tôi được hưởng trợ cấp thất nghiệp(Blank18)tháng, kể từ ngày(Blank19)/(Blank20)/(Blank21) đến ngày(Blank22)/(Blank23)/(Blank24) tại tỉnh/thành phố(Blank25)
+  Tôi thông báo kết quả tìm kiếm việc làm theo quy định, cụ thể như sau:
+  (1) Đơn vị thứ nhất (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
+  (Blank26)
+  (2) Đơn vị thứ hai (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
+  (Blank27)
+  ((Blank28)) Tên đơn vị thứ ((Blank29)): (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
+  (Blank30)
+  Tình trạng việc làm hiện nay: (Blank31)'''
+  List all Blankx in the Abstract section: Blank1, Blank2, Blank3, Blank4, Blank5, Blank6, Blank7, Blank8, Blank9, Blank10, Blank11, Blank12, Blank13, Blank14, Blank15, Blank16, Blank17, Blank18, Blank19, Blank20, Blank21, Blank22, Blank23, Blank24, Blank25, Blank26, Blank27, Blank28, Blank29, Blank30, Blank31 
+  Answer:
+  [Blank1: #Empty]
+  [Blank2: #Empty]
+  [Blank3: #Full_Name]
+  [Blank4: #Day_of_birth]
+  [Blank5: #Month_of_birth]
+  [Blank6: #Year_of_birth]
+  [Blank7: #Citizen_identification_card]
+  [Blank8: #Day_of_issue]
+  [Blank9: #Month_of_issue]
+  [Blank10: #Year_of_issue]
+  [Blank11: #Empty]
+  [Blank12: #Current_address]
+  [Blank13: #Phone_number]
+  [Blank14: #Empty]
+  [Blank15: #Day_of_issue]
+  [Blank16: #Month_of_issue]
+  [Blank17: #Year_of_issue]
+  [Blank18: #Empty]
+  [Blank19: #Empty]
+  [Blank20: #Empty]
+  [Blank21: #Empty]
+  [Blank22: #Empty]
+  [Blank23: #Empty]
+  [Blank24: #Empty]
+  [Blank25: #Empty]
+  [Blank26: #Empty]
+  [Blank27: #Empty]
+  [Blank28: #Empty]
+  [Blank29: #Empty]
+  [Blank30: #Empty]
+  [Blank31: #Empty]
+
+  Abstract:'''
+        CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+          Độc lập - Tự do - Hạnh phúc
+
+              --------------
+
+  ĐƠN TỐ CÁO
+
+  Kính gửi: (Blank1)
+
+  Họ và tên tôi: (Blank2) Sinh ngày: (Blank3)
+
+  Chứng minh nhân dân số: (Blank4)
+
+  Ngày cấp: (Blank5)/(Blank6)/(Blank7) Nơi cấp: (Blank8)
+  Hộ khẩu thường trú: (Blank9)
+
+  Chỗ ở hiện tại: (Blank10)
+
+  Số điện thoại liên hệ: (Blank11)
+
+  Tôi làm đơn này tố cáo và đề nghị Quý cơ quan tiến hành điều tra, xử lý đối với hành vi vi phạm pháp luật của:
+
+  Anh: (Blank12) Sinh ngày: (Blank13)
+
+  CMND/CCCD: (Blank14)
+  Ngày cấp: (Blank15) Nơi cấp: (Blank16)
+
+  Hộ khẩu thường trú: (Blank17)
+
+  Chỗ ở hiện tại: (Blank18)
+
+  Vì anh  (Blank19) đã có hành vi(Blank20)
+
+  Sự việc cụ thể như sau:
+
+  (Blank21)
+
+  (Blank22)
+
+  (Blank23)
+
+  Từ những sự việc trên, tôi cho rằng hành vi của anh (Blank24) có dấu hiệu vi phạm pháp luật.
+
+  Tôi cam kết toàn bộ nội dung đã trình bày trên là hoàn toàn đúng sự thật và chịu trách nhiệm trước pháp luật về những điều trình bày trên. Kính mong Quý cơ quan xem xét và giải quyết theo đúng quy định pháp luật.
+
+  Tôi xin chân thành cảm ơn!'''
+  List all Blankx in the Abstract section: Blank1, Blank2, Blank3, Blank4, Blank5, Blank6, Blank7, Blank8, Blank9, Blank10, Blank11, Blank12, Blank13, Blank14, Blank15, Blank16, Blank17, Blank18, Blank19, Blank20, Blank21, Blank22, Blank23, Blank24
+  Answer:
+  [Blank1: #Empty]
+  [Blank2: #Full_Name]
+  [Blank3: #Date_of_birth]
+  [Blank4: #Citizen_identification_card]
+  [Blank5: #Date_of_issue]
+  [Blank6: #Month_of_issue]
+  [Blank7: #Year_of_issue]
+  [Blank8: #Place_of_issue]
+  [Blank9: #Permanent_residence]
+  [Blank10: #Current_address]
+  [Blank11: #Phone_number]
+  [Blank12: #Full_Name]
+  [Blank13: #Date_of_birth]
+  [Blank14: #Citizen_identification_card]
+  [Blank15: #Date_of_issue]
+  [Blank16: #Place_of_issue]
+  [Blank17: #Permanent_residence]
+  [Blank18: #Current_address]
+  [Blank19: #Last_Name]
+  [Blank20: #Empty]
+  [Blank21: #Content]
+  [Blank22: #Content]
+  [Blank23: #Content]
+  [Blank24: #Last_Name]
+
+  Abstract: {Abstract}
+  """
   
   prompt = PromptTemplate.from_template(template)
   return prompt, tag_names, translations
@@ -357,42 +494,40 @@ prompt, tag_names, translations = blank_to_tagname_prompt()
 
 chain = prompt | llm
 
-# Question = []
-# for i in range(1,28):
-#   Question.append(f"(Blank{i})")
 
+def blank_to_tagname(chain, form, tag_names):
+  response = chain.invoke({
+            "tag_names": tag_names,
+            "Abstract": form, 
+          })
+  response = re.search(r'Answer:(.*)', response, re.DOTALL).group(1).strip()
+  list_tag_names = []
+  pattern = r':\s*(.*)'
+  matches = re.findall(pattern, response)
+  for match in matches:
+    temp = match.replace("]","").strip()
+    list_tag_names.append(temp)
+  return list_tag_names
 
-# # print(Abstract)
+form = '''
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
 
-# response = chain.invoke({
-#             "tag_names": tag_names,
-#             "Abstract": Abstract,
-#             "Question": Question,
-#           })
-
-# response = response.replace("Answer: ","")
-
-# print(response)
-
-
-def blank_to_tagname(chain, form, count, tag_names):
-  list_outputs = []
-  for i in range(1,count+1):
-    Question = f"(Blank{i})"
-    response = chain.invoke({
-              "tag_names": tag_names,
-              "Abstract": form,
-              "Question": Question,
-            })
-    print(response)
-    list_outputs.append(response)
-  return list_outputs
-  
-
-# list_tag_names = blank_to_tagname(chain, Abstract, 28, tag_names)
+Họ, chữ đệm và tên(1): (Blank1)
+Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
+Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
+Số CMND/CCCD: (Blank7)
+Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
+Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
+Nơi đăng ký khai sinh: (Blank13)
+Quê quán: (Blank14)
+Nơi thường trú: (Blank15)
+Nơi ở hiện tại: (Blank16)
+Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)
+'''
+# list_tag_names = blank_to_tagname(chain, form, tag_names)
+# print(list_tag_names)
 
 def get_list_keys(list_tag_names, translations):
-  list_cols = [] # Database
   list_keys = [] #
   pattern = r'#(\w+)'
   for tag_name in list_tag_names:
@@ -400,8 +535,7 @@ def get_list_keys(list_tag_names, translations):
     temp = match.group(0)
     list_keys.append(translations[temp])
     temp = temp.replace("#","")
-    list_cols.append(match.group(0))
-  return list_cols, list_keys
+  return list_keys
 
 # list_keys = get_list_keys(list_tag_names, translations)
 # print(list_keys)
