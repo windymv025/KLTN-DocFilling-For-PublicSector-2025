@@ -86,6 +86,7 @@ def extract_info_prompt():
     """
   prompt = PromptTemplate.from_template(template)
   return prompt
+
 # ------------------------------------------------------
 def find_key_by_value(dictionary, target_value):
     for key, value in dictionary.items():
