@@ -1,14 +1,16 @@
 # Enviroment
-# .gitignore
 myenv/
-
 #Lib
 .chainlit/
 __pycache__/
+Src/__pycache__
 
+#Temp file
 chainlit.md
 tempCodeRunnerFile.py
 
+#Folder store
 vectorstore
-
+Result/
+#File test
 test.py

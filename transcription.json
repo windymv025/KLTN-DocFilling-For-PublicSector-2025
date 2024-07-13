@@ -1,0 +1,7 @@
+{
+    "type": string,
+    "speaker_id": string,
+    "text": string,
+    "start_time": string,
+    "stop_time": string
+}
