@@ -48,52 +48,53 @@ async def on_chat_start():
     llm = MyClasses.LLM_Gemini(CONST.API_KEY)
     handle_text = MyClasses.Text_Processing()
 
-    
-    await cl.Message(content=f"Blanked text: \n {blanked_text}blanked_text, count_blank = handle_text.generate_uniform(text)").send()
-    blank_to_tagnames = llm.blank_to_tagnames(blanked_text, CONST.tag_names) ##**Important**
-    list_tag_names = list(blank_to_tagnames.values())
-    print('list_tag_names: ', list_tag_names)
-    list_values = llm.translate_tag_names(list_tag_names, CONST.translations)
-    print('list_values: ', list_values)
+    Blanked_text, _ = handle_text.generate_uniform(text)
+    await cl.Message(content=f"Blanked text: \n {Blanked_text}").send()
+    # await cl.Message(content=f"Blanked text: \n {blanked_text}blanked_text, count_blank = handle_text.generate_uniform(text)").send()
+    # blank_to_tagnames = llm.blank_to_tagnames(blanked_text, CONST.tag_names) ##**Important**
+    # list_tag_names = list(blank_to_tagnames.values())
+    # print('list_tag_names: ', list_tag_names)
+    # list_values = llm.translate_tag_names(list_tag_names, CONST.translations)
+    # print('list_values: ', list_values)
 
-    ## ======================DATABASE======================
-    if not os.path.isfile("data.db"):
-        keys = "ID" + CONST.tag_names
-        create_database(keys)
-    count_id = count_rows()
-    if count_id == 0:
-        await cl.Message(content = "Chưa có thông tin trong database. Vui lòng đưa context vào.").send()
-        value = "1"
-    else:
-        list_name_actions = [cl.Action(name = "New", value = str(count_id + 1), label = "0: New")]
-        for i in range(count_id):
-            name = get_value(i+1,"Full_Name")
-            info = f"{i+1}: {name}"
-            list_name_actions.append(cl.Action(name = f"Row {i+1}", value = str(i + 1), label = info ))
-        res = await cl.AskActionMessage(
-            content=f"Chọn lựa chọn phù hợp.",
-            actions= list_name_actions
-        ).send()
-        value = res.get("value")
-    print(count_id, value)
-    if value != str(count_id + 1): # Điền form bằng cách lấy thông tin từ database
-        list_info, list_miss_keys, list_miss_items = get_values(value, list_tag_names, CONST.translations)
-        filled_form = handle_text.fill_form(blanked_text, list_info)
-        print("filled_form: \n",filled_form)
-        await cl.Message(
-            content = f"Filled form: \n {filled_form}"
-        ).send()
+    # ## ======================DATABASE======================
+    # if not os.path.isfile("data.db"):
+    #     keys = "ID" + CONST.tag_names
+    #     create_database(keys)
+    # count_id = count_rows()
+    # if count_id == 0:
+    #     await cl.Message(content = "Chưa có thông tin trong database. Vui lòng đưa context vào.").send()
+    #     value = "1"
+    # else:
+    #     list_name_actions = [cl.Action(name = "New", value = str(count_id + 1), label = "0: New")]
+    #     for i in range(count_id):
+    #         name = get_value(i+1,"Full_Name")
+    #         info = f"{i+1}: {name}"
+    #         list_name_actions.append(cl.Action(name = f"Row {i+1}", value = str(i + 1), label = info ))
+    #     res = await cl.AskActionMessage(
+    #         content=f"Chọn lựa chọn phù hợp.",
+    #         actions= list_name_actions
+    #     ).send()
+    #     value = res.get("value")
+    # print(count_id, value)
+    # if value != str(count_id + 1): # Điền form bằng cách lấy thông tin từ database
+    #     list_info, list_miss_keys, list_miss_items = get_values(value, list_tag_names, CONST.translations)
+    #     filled_form = handle_text.fill_form(blanked_text, list_info)
+    #     print("filled_form: \n",filled_form)
+    #     await cl.Message(
+    #         content = f"Filled form: \n {filled_form}"
+    #     ).send()
 
-    # # ---------------------- Save user session ---------------------
-    cl.user_session.set("blank_to_tagnames",blank_to_tagnames)
-    cl.user_session.set("count_blank",count_blank)
-    cl.user_session.set("handle_text",handle_text)
-    cl.user_session.set("llm",llm)
-    cl.user_session.set("blanked_text", blanked_text)
-    cl.user_session.set("list_tag_names", list_tag_names)
-    cl.user_session.set("list_values", list_values)
-    cl.user_session.set("value", value)
-    cl.user_session.set("count_id", count_id)
+    # # # ---------------------- Save user session ---------------------
+    # cl.user_session.set("blank_to_tagnames",blank_to_tagnames)
+    # cl.user_session.set("count_blank",count_blank)
+    # cl.user_session.set("handle_text",handle_text)
+    # cl.user_session.set("llm",llm)
+    # cl.user_session.set("blanked_text", blanked_text)
+    # cl.user_session.set("list_tag_names", list_tag_names)
+    # cl.user_session.set("list_values", list_values)
+    # cl.user_session.set("value", value)
+    # cl.user_session.set("count_id", count_id)
 
 
 @cl.on_message

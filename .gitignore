@@ -1,5 +1,6 @@
 # Enviroment
 myenv/
+.gitignore
 #Lib
 .chainlit/
 __pycache__/
