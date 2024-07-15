@@ -6,6 +6,7 @@ import os
 import MyClasses
 import constant_value as CONST
 from database import *
+from verify_information import *
 
 
 @cl.on_chat_start
@@ -133,9 +134,15 @@ async def main(message: cl.Message):
             count -= 1
             continue
         query = f"Thông tin về '{miss_item}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
-        res = await cl.AskUserMessage(content = query, timeout=30).send()
-        if res:
-            await cl.Message(content=f"{list_miss_items[len(list_miss_items)-count]}: {res['output']}").send()
+        ######################### Thêm verify thông tin chỗ này ##############################
+        is_verify = False
+        while not is_verify:
+            res = await cl.AskUserMessage(content = query, timeout=30).send()
+            is_verify = verify_information(miss_item, res["output"])
+            if res and is_verify:
+                await cl.Message(content=f"{list_miss_items[len(list_miss_items)-count]}: {res['output']}").send()
+            else:
+                query = "Thông tin bạn vừa nhập chưa đúng dịnh dạng. Vui lòng nhập lại"
         list_info[list_index[len(list_miss_items)-count]] = res['output']
         temp = list_miss_keys[len(list_miss_keys)-count].replace("#","")
         data_to_update[temp] = res['output']

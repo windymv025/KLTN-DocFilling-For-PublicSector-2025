@@ -1,5 +1,5 @@
 ### 0. ------------------DEFAULT------------------###
-API_KEY = "AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50" #Gemini API key
+API_KEY = "AIzaSyAea0CgXrjzf-dwkmC-enWbVtIwrFhG3OI" #Gemini API key
 
 ### 1. ------------------Task: BLANK TO TAGNAMES------------------###
 tag_names = """

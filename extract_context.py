@@ -1,6 +1,6 @@
 import re
 # 
-from langchain_google_genai import GoogleGenerativeAI, HarmBlockThreshold, HarmCategory
+from langchain_google_genai import GoogleGenerativeAI, HarmBlockpiThreshold, HarmCategory
 from langchain_core.prompts import PromptTemplate
  
 # # Set up the model
