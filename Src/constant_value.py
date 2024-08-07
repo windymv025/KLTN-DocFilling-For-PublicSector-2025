@@ -921,12 +921,194 @@ Abstract: {Abstract}
 """
 
 
-form_stt = {
-    '0001':'TỜ KHAI CĂN CƯỚC CÔNG DÂN',
-    '0002':'TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ',
-    '0003':'GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)'
-}
+### 4. ------------------Task: FILL IN BLANKS WITH TAGNAME LLM------------------###
+"""form_tagging_prompt = 
 
+
+
+
+Bạn được cung cấp một form cần điền thông tin.
+Nhiệm vụ của bạn là gán các tên tag thích hợp cho từng trường dữ liệu liên quan đến người dùng hoặc cơ quan/tổ chức với định dạng [userX_tagname] hoặc [orgX_tagname]. 
+Đối với các trường không liên quan đến bất kỳ người dùng hay cơ quan/tổ chức nào, sử dụng tag name [#another].
+<Instruction>
+Trước tiên, hãy xác định có bao nhiêu người dùng và cơ quan/tổ chức trong form này.
+Sau đó, xác định các tag name phù hợp cho từng trường dữ liệu trong form dựa trên ngữ cảnh và dữ liệu người dùng hoặc cơ quan/tổ chức.
+Nếu không có tag name phù hợp, hãy tạo tag name mới dựa trên quy tắc chuẩn hóa đã đề ra.
+</Instruction>
+<Examples>
+Form:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): ..........
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
+3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
+5. Số CMND/CCCD: ..........
+6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
+9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
+11. Nơi đăng ký khai sinh: ..........
+12. Quê quán: ..........
+13. Nơi thường trú: ..........
+14. Nơi ở hiện tại: ..........
+15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
+.........., ngày ..........tháng..........năm..........
+Answer:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND/CCCD: [user1_id]
+6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
+9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
+11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+12. Quê quán: [user1_hometown]
+13. Nơi thường trú: [user1_permanent_address]
+14. Nơi ở hiện tại: [user1_current_address]
+15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
+[user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: ..........
+Họ, chữ đệm, tên người yêu cầu: ..........
+Nơi cư trú: ..........
+Giấy tờ tùy thân: ..........
+Quan hệ với người được khai sinh: ..........
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: ..........
+Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........
+Giới tính: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi sinh: ..........
+Quê quán: ..........
+Họ, chữ đệm, tên người mẹ: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Họ, chữ đệm, tên người cha: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: .........., ngày .......... tháng .......... năm ..........
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: [org1_name]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_address]
+Giấy tờ tùy thân: [user1_id]
+Quan hệ với người được khai sinh: [user1_relationship_user2]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi sinh: [user2_birthplace]
+Quê quán: [user2_hometown]
+Họ, chữ đệm, tên người mẹ: [user3_full_name]
+Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
+Nơi cư trú: [user3_address]
+Họ, chữ đệm, tên người cha: [user4_full_name]
+Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
+Nơi cư trú: [user4_address]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: [user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
+</Examples>
+
+Form: {Abstract}
+Answer:
+"""
+
+form_tagging_prompt = """
+Bạn được cung cấp một form cần điền thông tin.
+Nhiệm vụ của bạn là gán các tên tag thích hợp cho từng trường dữ liệu liên quan đến người dùng hoặc cơ quan/tổ chức với định dạng [userX_tagname] hoặc [orgX_tagname] tại các vị trí cần điền. 
+Đối với các trường không liên quan đến bất kỳ người dùng hay cơ quan/tổ chức nào, sử dụng tag name [#another].
+<Instruction>
+Trước tiên, hãy xác định có bao nhiêu người dùng và cơ quan/tổ chức trong form này.
+Sau đó, xác định các tag name phù hợp cho từng trường dữ liệu trong form dựa trên ngữ cảnh và dữ liệu người dùng hoặc cơ quan/tổ chức.
+Nếu không có tag name phù hợp, hãy tạo tag name mới dựa trên quy tắc chuẩn hóa đã đề ra.
+</Instruction>
+<Examples>
+Form:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): ..........
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
+3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
+5. Số CMND/CCCD: ..........
+6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
+9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
+11. Nơi đăng ký khai sinh: ..........
+12. Quê quán: ..........
+13. Nơi thường trú: ..........
+14. Nơi ở hiện tại: ..........
+15. Nghề nghiệp: .......... 16. Trình độ học vấn: .......... 
+.........., ngày .......... tháng.......... năm..........
+Answer:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND/CCCD: [user1_id]
+6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
+9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
+11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+12. Quê quán: [user1_hometown]
+13. Nơi thường trú: [user1_permanent_address]
+14. Nơi ở hiện tại: [user1_current_address]
+15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
+[user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: ..........
+Họ, chữ đệm, tên người yêu cầu: ..........
+Nơi cư trú: ..........
+Giấy tờ tùy thân: ..........
+Quan hệ với người được khai sinh: ..........
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: ..........
+Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........
+Giới tính: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi sinh: ..........
+Quê quán: ..........
+Họ, chữ đệm, tên người mẹ: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Họ, chữ đệm, tên người cha: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: .........., ngày .......... tháng .......... năm ..........
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: [org1_name]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_address]
+Giấy tờ tùy thân: [user1_id]
+Quan hệ với người được khai sinh: [user1_relationship_user2]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi sinh: [user2_birthplace]
+Quê quán: [user2_hometown]
+Họ, chữ đệm, tên người mẹ: [user3_full_name]
+Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
+Nơi cư trú: [user3_address]
+Họ, chữ đệm, tên người cha: [user4_full_name]
+Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
+Nơi cư trú: [user4_address]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: [user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
+</Examples>
+
+Form: {Abstract}
+Answer:
+"""
 
 ### -1. ------------------Task: EXAMPLE ------------------###
 cccd_form = """

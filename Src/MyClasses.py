@@ -136,14 +136,12 @@ class LLM_Gemini:
 
         return value_keys_to_context_value
     
-    def generate_folder_name(self, document):
-        """
-        Generate folder name from Abstract
-        """
-        prompt_parts = CONST.template_doc_to_foldername.format(Abstract = document)
-        response = self.model.generate_content(prompt_parts).text
-        return response
-    
+    def generate_user_tagname_from_blankX_form(self, Abstract):
+        prompt_parts = CONST.form_tagging_prompt.format(Abstract = Abstract)
+        # print(prompt_parts)
+        response = self.model.generate_content(prompt_parts)
+        # print(response.text)
+        return response.text
 
 class Text_Processing:
     def __init__(self):
@@ -198,6 +196,7 @@ class Text_Processing:
                 Question = Question[:start_index]
             # Find the indices of the next placeholders
             first_index = self.min_uniform(Question.find(type1), Question.find(type2))
+        Question = re.sub(r'\(Blank\d+\)', '..........', Question)
         return Question, count
     
     def getMissItem(self, value_keys_to_context_value, translations, list_values):
