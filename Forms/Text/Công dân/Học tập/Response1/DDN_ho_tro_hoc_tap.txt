@@ -1,0 +1,20 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
+(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
+Kính gửi: [receiver] (Cơ sở giáo dục)
+Họ và tên cha mẹ (hoặc người chăm sóc): [full_name]
+Hộ khẩu thường trú tại: [permanent_address]
+Là cha/mẹ (hoặc người chăm sóc) của em: [user1_full_name]
+Sinh ngày: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Dân tộc: [user1_ethnicity]
+Hiện đang học tại lớp: [user1_class]
+Trường: [user1_school]
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
+ 
+XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+Nơi trẻ mẫu giáo có hộ khẩu thường trú
+(Ký tên, đóng dấu)	[place],ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký, ghi rõ họ tên)

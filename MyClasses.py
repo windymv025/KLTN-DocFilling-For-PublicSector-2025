@@ -41,17 +41,15 @@ class LLM_Gemini:
                               generation_config=generation_config,
                               safety_settings=safety_settings)
         
-    def print_hello(self):
-        print("Hello")
         
-    def blank_to_tagnames(self, text_with_blank, tagnames):
+    def blank_to_tagnames(self, text_with_blank, main_tag_names, relationship_tag_names):
         """
         text_with_blank: form with (Blank_x)....
         tagnames: list of tag names
         return: list of tagnames coressponding to the blanks
         """
         #Get response
-        prompt_parts = CONST.template_blank_to_tagname.format(tag_names=tagnames, Abstract = text_with_blank)
+        prompt_parts = CONST.form_tagging_prompt.format(main_tag_names=main_tag_names, relationship_tag_names = relationship_tag_names, Form = text_with_blank)
         response = self.model.generate_content(prompt_parts)
         response = response.text
         #Handle response
@@ -175,6 +173,7 @@ class Text_Processing:
                 Question = Question[:start_index]
             # Find the indices of the next placeholders
             first_index = self.min_uniform(Question.find(type1), Question.find(type2))
+        Question = re.sub(r'\(Blank\d+\)', '..........', Question)
         return Question, count
     
     def getMissItem(self, value_keys_to_context_value, translations, list_values):

@@ -1,0 +1,12 @@
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [alias_name]
+3. Ngày, tháng, năm sinh: [dob_day]/[dob_month]/[dob_year]; 4. Giới tính (Nam/nữ): [gender]
+5. Số CMND/CCCD: [id_number]
+6. Dân tộc: [ethnicity]; 7. Tôn giáo: [religion] 8. Quốc tịch: [nationality]
+9. Tình trạng hôn nhân: [marital_status] 10. Nhóm máu (nếu có): [blood_type]
+11. Nơi đăng ký khai sinh: [birth_registration_place]
+12. Quê quán: [hometown]
+13. Nơi thường trú: [permanent_address]
+14. Nơi ở hiện tại: [current_address]
+15. Nghề nghiệp: [occupation] 16. Trình độ học vấn: [education_level]

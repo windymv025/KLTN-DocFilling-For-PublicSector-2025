@@ -1,0 +1,32 @@
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM          
+     Độc lập - Tự do - Hạnh phúc 
+
+TỜ KHAI ĐĂNG KÝ NHẬN CHA, MẸ, CON
+
+Kính gửi: [receiver]
+
+Họ, chữ đệm, tên người yêu cầu: [full_name]
+Ngày, tháng, năm sinh: [dob_day]/[dob_month]/[dob_year]
+Nơi cư trú: [permanent_address]	
+	
+Giấy tờ tùy thân: [id_number]
+	
+Quan hệ với người nhận cha/mẹ/con: [relationship]
+Đề nghị cơ quan công nhận người có tên dưới đây:
+Họ, chữ đệm, tên: [user1_full_name]
+Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Giới tính: [user1_gender] Dân tộc: [user1_ethnicity] Quốc tịch: [user1_nationality]
+Nơi cư trú: [user1_permanent_address]	
+	
+Giấy khai sinh/Giấy tờ tùy thân: [user1_id_number]
+	
+Là [relationship] của người có tên dưới đây:
+Họ, chữ đệm, tên: 	[user2_full_name]
+Ngày, tháng, năm sinh:	[user2_dob_day]/[user2_dob_month]/[user2_dob_year]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]	
+Nơi cư trú: [user2_permanent_address]	
+	
+Giấy khai sinh/Giấy tờ tùy thân: [user2_id_number]
+	
+Tôi cam đoan việc nhận [relationship] nói trên là đúng sự thật, tự nguyện, không có tranh chấp và chịu trách nhiệm trước pháp luật về cam đoan của mình.
+	 			 Làm tại [place] ngày [day] tháng [month] năm [year]

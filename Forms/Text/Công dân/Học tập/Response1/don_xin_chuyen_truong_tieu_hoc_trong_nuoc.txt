@@ -1,0 +1,21 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN XIN CHUYỂN TRƯỜNG
+(dành cho học sinh tiểu học chuyển trường trong nước)
+Kính gửi:
+- Hiệu trưởng trường1 [school1_name]
+- Hiệu trưởng trường2 [school2_name]
+Tôi tên là: [full_name]
+Hiện trú tại: [current_address]
+Số điện thoại: [phone] Địa chỉ email (nếu có): [email]
+Là phụ huynh/người giám hộ hợp pháp của:
+Học sinh: [user1_full_name] Ngày tháng năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Là học sinh lớp: [user1_grade] Trường3 [user1_school3]
+Kết quả cuối năm học: [user1_result]
+Tôi làm đơn này đề nghị cho con tôi được chuyển từ trường4 [user1_school4] về học lớp [user1_grade] năm học [user1_school_year] tại trường5 [user1_school5]
+Lý do: [user1_reason]
+Trân trọng cảm ơn.
+	[place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
