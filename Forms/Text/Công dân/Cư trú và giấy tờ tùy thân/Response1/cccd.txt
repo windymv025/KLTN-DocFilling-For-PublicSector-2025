@@ -9,4 +9,4 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 12. Quê quán: [hometown]
 13. Nơi thường trú: [permanent_address]
 14. Nơi ở hiện tại: [current_address]
-15. Nghề nghiệp: [occupation] 16. Trình độ học vấn: [education_level]
+15. Nghề nghiệp: [occupation] 16. Trình độ học vấn: [education_level] 

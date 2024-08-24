@@ -3,63 +3,72 @@ API_KEY = "AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50" #Gemini API key
 
 ### 1. ------------------Task: BLANK TO TAGNAMES------------------###
 main_tag_names = """
-full_name: Full name of the form filler.
-alias_name: Alternate name of the form filler.
-dob_day: Day of birth of the form filler.
-dob_month: Month of birth of the form filler.
-dob_year: Year of birth of the form filler.
-dob: Date of birth (day, month, year) of the form filler.
-gender: Gender of the form filler.
-id_number: ID card number of the form filler.
-ethnicity: Ethnicity of the form filler.
-religion: Religion of the form filler.
-nationality: Nationality of the form filler.
-marital_status: Marital status of the form filler.
-blood_type: Blood type of the form filler.
-birth_registration_place: Birth registration place of the form filler.
-birth_registration_place_ward: Birth registration place ward of the form filler.
-birth_registration_place_district: Birth registration place district of the form filler.
-birth_registration_place_province: Birth registration place province of the form filler.
-hometown: Hometown of the form filler.
-permanent_address: Permanent address of the form filler.
-current_address: Current address of the form filler.
-current_address_ward: Current address ward of the form filler. 
-address_district: Current address ward of the form filler.
-address_province: Current address ward of the form filler.
-occupation: Occupation of the form filler.
-education_level: Education level of the form filler.
-place: Place where the form is filled out by the form filler.
+[full_name]: Full name of the form filler.
+[alias_name]: Alternate name of the form filler.
+[dob_day]: Day of birth of the form filler.
+[dob_month]: Month of birth of the form filler.
+[dob_year]: Year of birth of the form filler.
+[dob]: Date of birth (day, month, year) of the form filler.
+[dob_text]: Date of birth (day, month, year) of the form filler is written by text
+[gender]: Gender of the form filler.
+[id_number]: ID card number of the form filler.
+[ethnicity]: Ethnicity of the form filler.
+[religion]: Religion of the form filler.
+[nationality]: Nationality of the form filler.
+[marital_status]: Marital status of the form filler.
+[blood_type]: Blood type of the form filler.
+[birth_registration_place]: Birth registration place of the form filler.
+[birth_registration_place_ward]: Birth registration place ward of the form filler.
+[birth_registration_place_district]: Birth registration place district of the form filler.
+[birth_registration_place_province]: Birth registration place province of the form filler.
+[hometown]: Hometown of the form filler.
+[permanent_address]: Permanent address of the form filler.
+[current_address]: Current address of the form filler.
+[current_address_ward]: Current address ward of the form filler. 
+[address_district]: Current address ward of the form filler.
+[address_province]: Current address ward of the form filler.
+[occupation]: Occupation of the form filler.
+[education_level]: Education level of the form filler.
+
 """
 
 relationship_tag_names = """
-relationship: Relationship to the form filler.
-mother_full_name: Full name of the mother of the form filler.
-mother_dob_day: Day of birth of the mother of the form filler.
-mother_dob_month: Month of birth of the mother of the form filler.
-mother_dob_year: Year of birth of the mother of the form filler.
-mother_dob: Date of birth (day, month, year) of the mother of the form filler.
-mother_ethnicity: Ethnicity of the mother of the form filler.
-mother_nationality: Nationality of the mother of the form filler.
-mother_address: Residence address of the mother of the form filler.
-father_full_name: Full name of the father of the form filler.
-father_dob_day: Day of birth of the father of the form filler.
-father_dob_month: Month of birth of the father of the form filler.
-father_dob_year: Year of birth of the father of the form filler.
-father_dob: Date of birth (day, month, year) of the father of the form filler.
-father_ethnicity: Ethnicity of the father of the form filler.
-father_nationality: Nationality of the father of the form filler.
-father_address: Residence address of the father of the form filler.
-children_full_name: Full name of the child/children of the form filler.
-children_dob_day: Day of birth of the child/children of the form filler.
-children_dob_month: Month of birth of the child/children of the form filler.
-children_dob_year: Year of birth of the child/children of the form filler.
-children_dob: Date of birth (day, month, year) of the child/children of the form filler.
-children_ethnicity: Ethnicity of the child/children of the form filler.
-children_nationality: Nationality of the child/children of the form filler.
-children_address: Residence address of the child/children of the form filler.
+[mother_full_name]: Full name of the mother of the form filler.
+[mother_dob_day]: Day of birth of the mother of the form filler.
+[mother_dob_month]: Month of birth of the mother of the form filler.
+[mother_dob_year]: Year of birth of the mother of the form filler.
+[mother_dob]: Date of birth (day, month, year) of the mother of the form filler.
+[mother_ethnicity]: Ethnicity of the mother of the form filler.
+[mother_nationality]: Nationality of the mother of the form filler.
+[mother_address]: Residence address of the mother of the form filler.
+[father_full_name]: Full name of the father of the form filler.
+[father_dob_day]: Day of birth of the father of the form filler.
+[father_dob_month]: Month of birth of the father of the form filler.
+[father_dob_year]: Year of birth of the father of the form filler.
+[father_dob]: Date of birth (day, month, year) of the father of the form filler.
+[father_ethnicity]: Ethnicity of the father of the form filler.
+[father_nationality]: Nationality of the father of the form filler.
+[father_address]: Residence address of the father of the form filler.
+[children_full_name]: Full name of the child/children of the form filler.
+[children_dob_day]: Day of birth of the child/children of the form filler.
+[children_dob_month]: Month of birth of the child/children of the form filler.
+[children_dob_year]: Year of birth of the child/children of the form filler.
+[children_dob]: Date of birth (day, month, year) of the child/children of the form filler.
+[children_ethnicity]: Ethnicity of the child/children of the form filler.
+[children_nationality]: Nationality of the child/children of the form filler.
+[children_address]: Residence address of the child/children of the form filler.
 """
 
-other_names = """
+remaining_tag_names = """
+[receiver]: The individual or organization that will receive or process the form filled out by the form filler.
+[request_content]: The specific content or request made by the form filler in the form. This could be details about what the form is being submitted for, such as a request for a new ID card, a change in personal information, etc.
+[day]: day when the form is filled out by the form filler.
+[month]: month when the form is filled out by the form filler.
+[year]: year the form is filled out by the form filler.
+[place]: Place where the form is filled out by the form filler.
+"""
+
+not_define_tagnames = """
 
 """
 
@@ -881,43 +890,48 @@ Abstract: {Abstract}
 ### 4. ------------------Task: FILL IN BLANKS WITH TAGNAME LLM------------------###
 form_tagging_prompt = """
 <Instruction>
-I give you list of tag names with these definition and Form include some .......... to fill in. Your task is identify the user and their relationships using the provided tag names at .......... 
-To identify the user and their relationships using the provided tag names, you can follow these steps:
-**1. Identify the Main User:**
-Start by identifying the main user, who is usually the person responsible for filling out the form.
-Tag Names to Consider: The main user's information is usually associated with the following tags:
+You will be provided with a list of tag names, their definitions, and a form that includes placeholders for filling in information. Your task is to identify the main user, their relationships, and other relevant tag names using the provided information. Follow the steps below to complete this task:
+
+Step 1. Identify the Main User:
+
+Begin by identifying the main user, typically the individual responsible for filling out the form.
+Tag Names to Consider: The main user's information is generally associated with the following tags:
 {main_tag_names}
-These tags represent personal details such as full name, date of birth, gender, etc., specific to the main user
-**2. Determine Relationships:**
-Relationships are identified using specific tags that indicate the relationship between the main user and others.
-Tag Names for Relationships:
-The relationship of the main user to others can be found using the following tags:
+These tags represent personal details such as full name, date of birth, gender, etc., specific to the main user.
+If you don't find a suitable tag name in main_tag_names, create your own tag name and define it. After creating it, write it down in step 5.
+Step 2. Determine Relationships:
+
+Identify relationships using specific tags that indicate how other individuals are related to the main user.
+
+Use the relationship tags to correctly map each person's connection to the main user (e.g., if a tag indicates a "Father" relationship, ensure that the user is linked as the father).
+
+Relationship Tag Names:
+
 {relationship_tag_names}
-These tags will help in identifying how the main user is related to the other individuals mentioned in the form (e.g., father, mother, child).
-**3. Extract and Associate Information:**
-To automate this process:
+These tags help identify how each individual is related to the main user (e.g., father, mother, child).
+If you don't find a suitable tag name in relationship_tag_names, create your own tag name and define it. After creating it, write it down in step 5.
 
-- Step 1: Extract Main User Information
+Step 3. Identify individuals who are not directly related to the primary user or who you cannot identify (due to lack of information)
 
-Extract data from the tags identified in Step 1 related to the main user.
-Ensure that all relevant fields for the main user are filled in the form.
-- Step 2: Cross-Check Relationships
+For those who fall into this category, prefix the user tag with userX_ before the tag name for personal information (e.g. full_name, dob,...), where X is a unique identifier (e.g. user1_full_name for an unrelated individual).
+If there is an individual who has a relationship (father, mother, child) with userX, prefix the user tag with userX_ before the tag name for relationship_tag_names. For example: user1_father_full_name, user1_mother_dob.
 
-Use the tags associated with relationships to determine how each person is related to the main user.
-Ensure that relationships are correctly mapped (e.g., if the tag indicates a "Father" relationship, ensure that the user is linked as the father).
-- Step 3: Populate the Form
-Fill in the form fields with the information extracted:
-If a relationship tag indicates a person other than the main user, prepend the user tag with userX_ where X represents a unique identifier for individuals other than the main user (e.g., user1_full_name for the first non-main user).
-Complete the form by filling in all placeholders with the extracted and associated information.
+Step 4. Identify Remaining Tag Names:
 
-**Step 4. Handle Missing Tag Names:**
+These tags do not pertain to personal information but cover the remaining sections of the form.
+Remaining Tag Names:
+{remaining_tag_names}
+If you don't find a suitable tag name in remaining_tag_names, create your own tag name and define it. After creating it, write it down in step 5.
+Step 5. Handle Missing Tag Names:
 
-If the form does not contain any of the necessary tag names, you must create these tag names and define them.
-Ensure each newly created tag is clearly defined and follows the format of the existing tags
+If you encounter tag names in the form that are not defined in the provided list, create and define these tags. Ensure that each new tag is clearly defined and follows the format of the existing tags.
+
+Step 6. Replace Placeholders
+Replace all placeholders (........) in the form with the appropriate tag names, including any newly defined tags.
 </Instruction>
 
 <Example>
-Form:
+Input:
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
 1. Họ, chữ đệm và tên(1): ..........
 2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
@@ -932,68 +946,50 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 15. Nghề nghiệp: .......... 16. Trình độ học vấn: .......... 
 .........., ngày .......... tháng.......... năm..........
 
-**Step 1: Identify the Main User**
-Main User Tags:
-+ full_name
-+ alias_name
-+ dob_day
-+ dob_month
-+ dob_year
-+ gender
-+ id_number
-+ ethnicity
-+ religion
-+ nationality
-+ marital_status
-+ blood_type
-+ birth_registration_place
-+ hometown
-+ permanent_address
-+ current_address
-+ occupation
-+ education_level
-**Step 2: Determine Relationships**
-Relationship Tags:
-In this specific example, no relationship tags are present, which implies that the form is exclusively for the main user's personal information.
-**Step 3: Extract and Associate Information**
-Extract Main User Information:
+Step 1: Identify the Main User
 
-Based on the identified tags, the form's fields correspond directly to the main user's details.
-Each placeholder in the form matches a tag from the user's data.
-Cross-Check Relationships:
+Main User's Details:
+[full_name]: Họ, chữ đệm và tên(1)
+[alias_name]: Họ, chữ đệm và tên gọi khác (nếu có)(1))
+[dob_day]/[dob_month]/[dob_year]: Ngày, tháng, năm sinh 
+[gender]: Giới tính (Nam/nữ) 
+[id_number]: Số CMND/CCCD 
+[ethnicity] : Dân tộc 
+[religion] : Tôn giáo 
+[nationality]: Quốc tịch 
+[marital_status]: Tình trạng hôn nhân 
+[blood_type]: Nhóm máu (nếu có)) 
+[birth_registration_place]: Nơi đăng ký khai sinh 
+[hometown]: Quê quán 
+[permanent_address]: Nơi thường trú 
+[current_address]: Nơi ở hiện tại 
+[occupation]: Nghề nghiệp 
+[education_level]: Trình độ học vấn 
 
-Since no relationship tags are involved in this form, this step is not applicable in this case.
-Populate the Form:
-Main User Fields:
+Step 2: Determine Relationships
 
-+ "Họ, chữ đệm và tên(1):" will be filled with [full_name].
-+ "Họ, chữ đệm và tên gọi khác (nếu có)(1):" will be filled with [alias_name].
-+ "Ngày, tháng, năm sinh:" will be filled with [dob_day]/[dob_month]/[dob_year].
-+ "Giới tính (Nam/nữ):" will be filled with [gender].
-+ "Số CMND/CCCD:" will be filled with [id_number].
-+ "Dân tộc:" will be filled with [ethnicity].
-+ "Tôn giáo:" will be filled with [religion].
-+ "Quốc tịch:" will be filled with [nationality].
-+ "Tình trạng hôn nhân:" will be filled with [marital_status].
-+  "Nhóm máu (nếu có):" will be filled with [blood_type].
-+  "Nơi đăng ký khai sinh:" will be filled with [birth_registration_place].
-+  "Quê quán:" will be filled with [hometown].
-+  "Nơi thường trú:" will be filled with [permanent_address].
-+  "Nơi ở hiện tại:" will be filled with [current_address].
-+  "Nghề nghiệp:" will be filled with [occupation].
-+  "Trình độ học vấn:" will be filled with [education_level].
-Location and Date Fields: The fields for location, day, month, and year will be filled with [place], [day], [month], and [year] respectively.
+Identify any relationship tags and their corresponding placeholders. In this case, there are no specific relationships defined in the provided example, so this step is skipped.
 
-**Step 4: Handle Missing Tag Names**
-Assessment:
-In this example, all necessary tag names are already provided, so no additional tags need to be created.
+Step 3: Identify individuals who are not directly related to the primary user or who you cannot identify (due to lack of information)
 
-Answer:
+In this case, there are no individuals defined in the provided example, so this step is skipped.
+
+Step 4: Identify Remaining Tag Names
+
+Remaining tags include:
+
+[place], ngày [day] tháng [month] năm [year]: .........., ngày .......... tháng.......... năm..........
+
+Step 5: Handle Missing Tag Names
+
+No additional tags are missing, so no new tags are defined.
+Step 6: Replace Placeholders
+
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
 1. Họ, chữ đệm và tên(1): [full_name]
 2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [alias_name]
 3. Ngày, tháng, năm sinh: [dob_day]/[dob_month]/[dob_year]; 4. Giới tính (Nam/nữ): [gender]
-5. Số CMND/CCCD: [id]
+5. Số CMND/CCCD: [id_number]
 6. Dân tộc: [ethnicity]; 7. Tôn giáo: [religion] 8. Quốc tịch: [nationality]
 9. Tình trạng hôn nhân: [marital_status] 10. Nhóm máu (nếu có): [blood_type]
 11. Nơi đăng ký khai sinh: [birth_registration_place]
@@ -1005,7 +1001,7 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 </Example>
 
 <Example>
-Form:
+Input:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI ĐĂNG KÝ KHAI SINH
@@ -1030,89 +1026,56 @@ Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đú
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
 Làm tại: .........., ngày .......... tháng .......... năm ..........
 
-**Step 1: Identify the Main User:**
+Step 1: Identify the Main User
 
-Tags for Main User Information:
+Main User's Details:
+[full_name]: Họ, chữ đệm, tên người yêu cầu
+[permanent_address]: Nơi cư trú
+[id_number]: Giấy tờ tùy thân
+[relationship]:  Quan hệ với người được khai sinh
+Step 2: Determine Relationships
 
-+ #full_name
-+ #permanent_address
-+ #id_number
-+ #relationship
-+ #place
+Identify any relationship tags and their corresponding placeholders. In this case, there are no specific relationships defined in the provided example, so this step is skipped.
 
-**Step 2. Determine Information for the Person Being Registered:**
+Step 3: Identify individuals who are not directly related to the primary user or who you cannot identify (due to lack of information)
 
-Tags for Person Being Registered:
+In this case, there are 3 individuals defined in the provided example.
 
-#user1_full_name: Full name of the person being registered.
-#user1_dob_day: Day of birth.
-#user1_dob_month: Month of birth.
-#user1_dob_year: Year of birth.
-#user1_dob_text: Date of birth in text format.
-#user1_gender: Gender.
-#user1_ethnicity: Ethnicity.
-#user1_nationality: Nationality.
-#user1_birthplace: Place of birth.
-#user1_hometown: Hometown.
+- The person whose birth was registered
+[user1_full_name]: Họ, chữ đệm, tên
+[user1_dob_day]/[user1_dob_month]/[user1_dob_year]: Ngày, tháng, năm sinh
+[dob_text]: ghi bằng chữ
+[user1_gender]: Giới tính   
+[user1_ethnicity]: Dân tộc
+[user1_nationality]: Quốc tịch
+[user1_birth_registration_place]: Nơi sinh
+[user1_hometown]: Quê quán
+- Mother of the person whose birth was registered
+[user1_mother_full_name]: Họ, chữ đệm, tên người mẹ
+[user1_mother_dob_year]: Năm sinh
+[user1_mother_ethnicity]: Dân tộc
+[user1_mother_nationality]: Quốc tịch
+[user1_mother_permanent_address]: Nơi cư trú
+- Father of the person whose birth was registered
+[user1_father_full_name]: Họ, chữ đệm, tên người cha
+[user1_father_dob_year]: Năm sinh 
+[user1_father_ethnicity]: Dân tộc 
+[user1_father_nationality]: Quốc tịch 
+[user1_father_permanent_address]: Nơi cư trú 
 
-**Step 3. Extract and Populate Information for Parents:**
+Step 4: Identify Remaining Tag Names
 
-Tags for Mother:
+Remaining tags include:
 
-#user1_mother_full_name: Full name of the mother.
-#user1_mother_dob_year: Year of birth.
-#user1_mother_ethnicity: Ethnicity.
-#user1_mother_nationality: Nationality.
-#user1_mother_address: Residence address.
-Tags for Father:
+[receiver]: Kính gửi
+[place]: Làm tại
+[day, month, year]: ngày ............tháng............năm............
 
-#user1_father_full_name: Full name of the father.
-#user1_father_dob_year: Year of birth.
-#user1_father_ethnicity: Ethnicity.
-#user1_father_nationality: Nationality.
-#user1_father_address: Residence address.
+Step 5: Handle Missing Tag Names
 
-4. Populate the Form Fields:
+No additional tags are missing, so no new tags are defined.
+Step 6: Replace Placeholders
 
-Main User Fields:
-
-"Họ, chữ đệm, tên người yêu cầu": [full_name]
-"Nơi cư trú": [permanent_address]
-"Giấy tờ tùy thân": [id_number]
-"Quan hệ với người được khai sinh": [relationship]
-"Làm tại": [place]
-Person Being Registered Fields:
-
-"Họ, chữ đệm, tên": [user1_full_name]
-"Ngày, tháng, năm sinh": [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
-"ghi bằng chữ": [user1_dob_text]
-"Giới tính": [user1_gender]
-"Dân tộc": [user1_ethnicity]
-"Quốc tịch": [user1_nationality]
-"Nơi sinh": [user1_birthplace]
-"Quê quán": [user1_hometown]
-Mother's Fields:
-
-"Họ, chữ đệm, tên người mẹ": [user1_mother_full_name]
-"Năm sinh": [user1_mother_dob_year]
-"Dân tộc": [user1_mother_ethnicity]
-"Quốc tịch": [user1_mother_nationality]
-"Nơi cư trú": [user1_mother_address]
-Father's Fields:
-
-"Họ, chữ đệm, tên người cha": [user1_father_full_name]
-"Năm sinh": [user1_father_dob_year]
-"Dân tộc": [user1_father_ethnicity]
-"Quốc tịch": [user1_father_nationality]
-"Nơi cư trú": [user1_father_address]
-Other Fields:
-
-"Ngày .......... tháng .......... năm .........": [day] tháng [month] năm [year]
-5. Handle Missing Tags:
-
-"Kính gửi" : [receiver]
-
-Answer:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI ĐĂNG KÝ KHAI SINH
@@ -1138,7 +1101,6 @@ Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam
 Làm tại: [place], ngày [day] tháng [month] năm [year]
 </Example>
 
-
 <Example>
 Form:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
@@ -1153,49 +1115,38 @@ Kính gửi(1):...............................................................
 9. Số định danh cá nhân của chủ hộ:	................											
 10. Nội dung đề nghị(2):................
 
-** Step 1. Identify the Main User:**
+Step 1: Identify the Main User
 
-Tags for Main User Information:
-+ full_name
-+ dob_day
-+ dob_month
-+ dob_year
-+ gender
-+ id_number
-+ phone
-+ email
-2. Extract Information for the Household Head:
+Main User's Details:
+[full_name]: Họ, chữ đệm và tên
+[dob_day]/[dob_month]/[dob_year]: Ngày, tháng, năm sinh
+[gender]: Giới tính
+[id_number]: Số định danh cá nhân 
+[phone]: Số điện thoại liên hệ
+[email]: Email
 
-Tags for Household Head:
+Step 2: Determine Relationships
 
-#user1_full_name: Full name of the household head.
-#relationship: Relationship to the household head.
-#user1_id_number: Personal identification number of the household head.
-#user1_request: Content of the request or the purpose of the change.
+Identify any relationship tags and their corresponding placeholders. In this case, there are no specific relationships defined in the provided example, so this step is skipped.
 
-3. Populate the Form Fields:
+Step 3: Identify individuals who are not directly related to the primary user or who you cannot identify (due to lack of information)
 
-Main User Fields:
+In this case, there is one individual defined in the provided example. It is the head of household.
+[user1_full_name]: Họ, chữ đệm và tên chủ hộ
+[user1_id_number]: Số định danh cá nhân của chủ hộ
 
-"Họ, chữ đệm và tên": [full_name]
-"Ngày, tháng, năm sinh": [dob_day]/[dob_month]/[dob_year]
-"Giới tính": [gender]
-"Số định danh cá nhân": [id_number]
-"Số điện thoại liên hệ": [phone]
-"Email": [email]
-Household Head Fields:
+Step 4: Identify Remaining Tag Names
 
-"Họ, chữ đệm và tên chủ hộ": [user1_full_name]
-"Mối quan hệ với chủ hộ": [relationship]
-"Số định danh cá nhân của chủ hộ": [user1_id_number]
+Check for remaining tag names that do not pertain to personal information:
+[receiver]: Kính gửi
+[request_content]: Nội dung đề nghị(2)
 
+Step 5: Handle Missing Tag Names
 
- (if available)
-4. Handle Missing Tags:
-+ Nội dung đề nghị: [request_content]
-+ "Kính gửi": [receiver]
+[relationship_with_head_household]: Mối quan hệ với chủ hộ
 
-Answer:
+Step 6: Replace Placeholders
+
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
@@ -1204,13 +1155,219 @@ Kính gửi(1): [receiver]
 2. Ngày, tháng, năm sinh: [dob_day]/[dob_month]/ [dob_year]       3. Giới tính: [gender]
 4. Số định danh cá nhân: [id_number]											
 5. Số điện thoại liên hệ: [phone] 6. Email:	[email]
-7. Họ, chữ đệm và tên chủ hộ: [user1_full_name] 8. Mối quan hệ với chủ hộ: [relationship]
+7. Họ, chữ đệm và tên chủ hộ: [user1_full_name] 8. Mối quan hệ với chủ hộ: [relationship_with_head_household]
 9. Số định danh cá nhân của chủ hộ:	[user1_id_number]											
 10. Nội dung đề nghị(2): [request_content]
 </Example>
 
-Form: {Form}
-Answer:
+<Example>
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
+(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
+Kính gửi: ................(Cơ sở giáo dục)
+Họ và tên cha mẹ (hoặc người chăm sóc): ................
+Hộ khẩu thường trú tại:................
+Là cha/mẹ (hoặc người chăm sóc) của em:................
+Sinh ngày:................
+Dân tộc:................
+Hiện đang học tại lớp:................
+Trường:................
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
+ 
+XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+Nơi trẻ mẫu giáo có hộ khẩu thường trú
+(Ký tên, đóng dấu)	................,ngày....tháng................năm................
+Người làm đơn
+(Ký, ghi rõ họ tên)
+
+Step 1. Identify the Main User:
+
+Main User's Details:
+[full_name]: Họ và tên cha mẹ (hoặc người chăm sóc)
+[permanent_address]: Hộ khẩu thường trú tại
+[relationship]: Là cha/mẹ (hoặc người chăm sóc)
+The main user is the individual who is either the parent or guardian of the child, filling out the form.
+Step 2. Determine Relationships:
+
+Child's Details:
+[children_full_name]: của em
+[children_dob]: Sinh ngày
+[children_ethnicity]: Dân tộc
+[children_school_class]: Hiện đang học tại lớp
+[children_school_name]: Trường
+The relationship is between the main user (parent/guardian) and their child.
+Step 3. Identify Individuals Not Directly Related to the Main User:
+
+There are no unrelated individuals mentioned in the provided form.
+
+Step 4. Identify Remaining Tag Names:
+
+[receiver]: Cơ sở giáo dục (Kính gửi)
+[request_content]: đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập
+[day, month, year]: ngày, tháng, năm (.....,ngày....tháng....năm....)
+[place]: XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ
+
+Step 5. Handle Missing Tag Names:
+
+[children_school_class]: Current class of children
+[children_school_name]: Current school of children
+
+Step 6. Replace .......... by Tag Names:
+
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
+(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
+Kính gửi: [receiver] (Cơ sở giáo dục)
+Họ và tên cha mẹ (hoặc người chăm sóc): [full_name]
+Hộ khẩu thường trú tại: [permanent_address]
+Là cha/mẹ (hoặc người chăm sóc) của em: [children_full_name]
+Sinh ngày: [children_dob]
+Dân tộc: [children_ethnicity]
+Hiện đang học tại lớp: [children_school_class]
+Trường: [children_school_name]
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
+ 
+XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+Nơi trẻ mẫu giáo có hộ khẩu thường trú
+(Ký tên, đóng dấu)	[place],ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký, ghi rõ họ tên)
+</Example>
+
+<Example>
+Input:
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM          
+     Độc lập - Tự do - Hạnh phúc 
+    
+TỜ KHAI ĐĂNG KÝ LẠI VIỆC NUÔI CON NUÔI
+          
+Kính gửi :................
+Họ, chữ đệm, tên người yêu cầu:	................
+Nơi cư trú:	................
+	
+Giấy tờ tùy thân :	................
+Đề nghị đăng ký lại việc nuôi con nuôi cho người có tên dưới đây:
+Họ, chữ đệm, tên:................	 Giới tính:	................
+Ngày, tháng, năm sinh:................	 Quốc tịch:	................
+Nơi sinh:................	
+Giấy khai sinh/Giấy tờ tùy thân: ................
+Nơi cư trú: ................	
+	
+Số định danh cá nhân: ................
+Là con nuôi của:
+Họ, chữ đệm, tên cha nuôi: ................
+Ngày, tháng, năm sinh:................	 Quốc tịch:	................
+Giấy tờ tùy thân:	................
+Nơi cư trú:	................
+	
+Họ, chữ đệm, tên mẹ nuôi: ................
+Ngày, tháng, năm sinh: ................	Quốc tịch:	................
+Giấy tờ tùy thân:................ 	 
+Nơi cư trú:	................
+	
+Đã đăng ký nuôi con nuôi tại :	.....
+	
+Giấy chứng nhận nuôi con nuôi trong nước/Quyết định nuôi con nuôi có yếu tố nước ngoài số................ ngày ................ tháng ................ năm................
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và đã nộp đầy đủ các giấy tờ hiện có. Tôi chịu trách nhiệm trước pháp luật về việc cam đoan của mình.
+Làm tại ................, ngày ................tháng................năm................
+Người yêu cầu                             
+Ký, ghi rõ họ, chữ đệm, tên)
+
+
+Step 1. Identify the Main User:
+
+Main User's Details:
+[full_name]: Họ, chữ đệm, tên người yêu cầu
+[permanent_address (current_address)]: Nơi cư trú
+[id_number]: Giấy tờ tùy thân
+The main user is the individual requesting the re-registration of the adoption.
+Step 2. Determine Relationships:
+
+- Adopted Child's Details:
+[user1_full_name]: Họ, chữ đệm, tên
+[user1_gender]: Giới tính
+[user1_dob]: Ngày, tháng, năm sinh
+[user1_nationality]: Quốc tịch
+[user1_birthplace]: Nơi sinh
+[user1_id_number]: Giấy khai sinh/Giấy tờ tùy thân
+[user1_address]: Nơi cư trú
+[user1_id_number]: Số định danh cá nhân
+- Adoptive Father's Details
+[user1_father_full_name]: Họ, chữ đệm, tên cha nuôi
+[user1_father_dob]: Ngày, tháng, năm sinh
+[user1_father_nationality]: Quốc tịch
+[user1_father_id_number]: Giấy tờ tùy thân
+[user1_father_address]: Nơi cư trú
+- Adoptive Mother's Details
+[user1_mother_full_name]: Họ, chữ đệm, tên mẹ nuôi
+[user1_mother_dob]: Ngày, tháng, năm sinh
+[user1_mother_nationality]: Quốc tịch
+[user1_mother_id_number]: Giấy tờ tùy thân
+[user1_mother_address]: Nơi cư trú
+These relationships involve the adopted child and the adoptive parents (father and mother).
+Step 3. Identify Individuals Not Directly Related to the Main User:
+
+There are no unrelated individuals mentioned in the provided form.
+
+Step 4. Identify Remaining Tag Names:
+
+[receiver]: Kính gửi
+[registration_place]: Đã đăng ký nuôi con nuôi tại
+[adoption_certificate]: Giấy chứng nhận nuôi con nuôi trong nước/Quyết định nuôi con nuôi có yếu tố nước ngoài số
+[adoption_certificate_day, adoption_certificate_month, adoption_certificate_year]: ngày ........ tháng ....... năm.........
+[place]: Làm tại
+[day, month, year]: ngày ............tháng............năm............
+[applicant_full_name]: Người yêu cầu (Ký, ghi rõ họ, chữ đệm, tên)
+Step 5. Handle Missing Tag Names:
+
+Let's define any missing tag names that are not present in the provided list:
+
+[applicant_full_name]: The name of the person making the request (Signature, clearly written full name including first name, middle name, and last name).
+[registration_place]: The location where the adoption was registered.
+[adoption_certificate]: The adoption certificate for domestic adoptions or the foreign adoption decision number.
+[adoption_certificate_day]: The day on which the adoption certificate or decision was issued.
+[adoption_certificate_month]: The month on which the adoption certificate or decision was issued.
+[adoption_certificate_year]: The month on which the adoption certificate or decision was issued.
+
+Step 6. Replace .......... by Tag Names:
+
+Kính gửi: [receiver]
+Họ, chữ đệm, tên người yêu cầu: [full_name] or [applicant_full_name]
+Nơi cư trú: [permanent_address] (or [current_address])
+Giấy tờ tùy thân: [id_number]
+Họ, chữ đệm, tên: [children_full_name]
+Giới tính: [children_gender]
+Ngày, tháng, năm sinh: [children_dob]
+Quốc tịch: [children_nationality]
+Nơi sinh: [children_birthplace]
+Giấy khai sinh/Giấy tờ tùy thân: [children_id_number]
+Nơi cư trú: [children_address]
+Số định danh cá nhân: [children_personal_identification_number]
+Họ, chữ đệm, tên cha nuôi: [father_full_name]
+Ngày, tháng, năm sinh: [father_dob]
+Quốc tịch: [father_nationality]
+Giấy tờ tùy thân: [father_id_number]
+Nơi cư trú: [father_address]
+Họ, chữ đệm, tên mẹ nuôi: [mother_full_name]
+Ngày, tháng, năm sinh: [mother_dob]
+Quốc tịch: [mother_nationality]
+Giấy tờ tùy thân: [mother_id_number]
+Nơi cư trú: [mother_address]
+Đã đăng ký nuôi con nuôi tại: [registration_place]
+Giấy chứng nhận nuôi con nuôi trong nước/Quyết định nuôi con nuôi có yếu tố nước ngoài số: [adoption_certificate]
+ngày [adoption_certificate_day] tháng [adoption_certificate_month] năm [adoption_certificate_year]
+Làm tại: [place]
+ngày [day] tháng [month] năm [year]
+Người yêu cầu: [applicant_full_name]
+</Example>
+
+<Example>
+Input: {Form}
 """
 
 ### -1. ------------------Task: EXAMPLE ------------------###

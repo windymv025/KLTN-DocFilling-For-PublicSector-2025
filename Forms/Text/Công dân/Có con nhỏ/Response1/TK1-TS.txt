@@ -1,55 +1,13 @@
-**Step 1: Identify the Main User**
-Main User Tags:
-+ full_name
-+ gender
-+ dob_day
-+ dob_month
-+ dob_year
-+ nationality
-+ ethnicity
-+ id_number
-+ phone
-+ email
-+ birth_registration_place
-+ birth_registration_place_ward
-+ birth_registration_place_district
-+ birth_registration_place_province
-+ parent_full_name
-+ address
-+ address_ward
-+ address_district
-+ address_province
+TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
 
-**Step 2: Determine Relationships**
-Relationship Tags:
-In this specific example, no relationship tags are present, which implies that the form is exclusively for the main user's personal information.
-
-**Step 3: Extract and Associate Information**
-Extract Main User Information:
-Based on the identified tags, the form's fields correspond directly to the main user's details.
-Each placeholder in the form matches a tag from the user's data.
-Cross-Check Relationships:
-Since no relationship tags are involved in this form, this step is not applicable in this case.
-Populate the Form:
-Main User Fields:
-+ "[01]. Họ và tên (viết chữ in hoa):" will be filled with [full_name].
-+ "[02]. Giới tính:" will be filled with [gender].
-+ "[03]. Ngày, tháng, năm sinh:" will be filled with [dob_day]/[dob_month]/[dob_year].
-+ "[04]. Quốc tịch:" will be filled with [nationality].
-+ "[05]. Dân tộc:" will be filled with [ethnicity].
-+ "[06]. Số CCCD/ĐDCN/Hộ chiếu:" will be filled with [id_number].
-+ "[07]. Điện thoại:" will be filled with [phone].
-+ "[08]. Email (nếu có):" will be filled with [email].
-+ "[09]. Nơi đăng ký khai sinh:" will be filled with [birth_registration_place].
-+ "[09.1]. Xã:" will be filled with [birth_registration_place_ward].
-+ "[09.2]. Huyện:" will be filled with [birth_registration_place_district].
-+ "[09.3]. Tỉnh:" will be filled with [birth_registration_place_province].
-+ "[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi):" will be filled with [parent_full_name].
-+ "[12]. Số nhà, đường/phố, thôn/xóm:" will be filled with [address].
-+ "[13]. Xã:" will be filled with [address_ward].
-+ "[14] Huyện:" will be filled with [address_district].
-+ "[15]. Tỉnh:" will be filled with [address_province].
-
-**Step 4: Handle Missing Tag Names**
-Assessment:
-In this example, all necessary tag names are already provided, so no additional tags need to be created.
+I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
+[01]. Họ và tên (viết chữ in hoa): [full_name]	[02]. Giới tính: [gender]
+[03]. Ngày, tháng, năm sinh: [dob_day]/[dob_month]/[dob_year]	  [04]. Quốc tịch: [nationality]
+[05]. Dân tộc: [ethnicity]	[06]. Số CCCD/ĐDCN/Hộ chiếu: [id_number]	
+[07]. Điện thoại: [phone]	[08]. Email (nếu có): [email]	
+[09]. Nơi đăng ký khai sinh: [09.1]. Xã: [birth_registration_place_ward]	[09.2]. Huyện: [birth_registration_place_district] [09.3]. Tỉnh: [birth_registration_place_province]
+[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): [user1_full_name]
+[11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: [receiver]
+[12]. Số nhà, đường/phố, thôn/xóm: [current_address]	
+[13]. Xã: [current_address_ward]	[14]	Huyện: [address_district]	[15]. Tỉnh: [address_province] 	
+[16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng. 

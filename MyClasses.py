@@ -13,33 +13,31 @@ class LLM_Gemini:
         # Set up the model
         genai.configure(api_key=api_key)
         generation_config = {
-        "temperature": 0,
-        "top_p": 1,
-        "top_k": 1,
-        "max_output_tokens": 4096,
+        # "temperature": 0,
+        # "top_p": 1,
+        # "top_k": 1,
+        "max_output_tokens": None,
         }
-        safety_settings = [
-        {
-            "category": "HARM_CATEGORY_HARASSMENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_HATE_SPEECH",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        }
-        ]
+        # safety_settings = [
+        # {
+        #     "category": "HARM_CATEGORY_HARASSMENT",
+        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        # },
+        # {
+        #     "category": "HARM_CATEGORY_HATE_SPEECH",
+        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        # },
+        # {
+        #     "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        # },
+        # {
+        #     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        # }
+        # ]
         #Model
-        self.model = genai.GenerativeModel(model_name="gemini-pro",
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
+        self.model = genai.GenerativeModel(model_name="gemini-1.5-pro",generation_config=generation_config) # safety_settings=safety_settings
         
         
     def blank_to_tagnames(self, text_with_blank, main_tag_names, relationship_tag_names):
