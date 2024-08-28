@@ -2,23 +2,29 @@ import constant_value as CONST
 import MyClasses
 import os
 import time
+from Prompt import *
 
-llm = MyClasses.LLM_Gemini(CONST.API_KEY)
+llm = MyClasses.LLM_Gemini("AIzaSyADJVhiA8lwx75WqOS-km9dLIBIMKDtBuM")
 
-with open('Forms/Text/Công dân/Học tập/bao_cao_tot_nghiep_du_hoc_sinh.txt', 'r', encoding='utf-8') as f:
+with open('Forms\Text\Công dân\Hôn nhân và gia đình\TK_DKLai_viec_nuoi_con_nuoi.txt', 'r', encoding='utf-8') as f:
     doc = f.read()
 
 handle_text = MyClasses.Text_Processing()
 blanked_text, count_blank = handle_text.generate_uniform(doc)
+dash_line = ('_').join('' for i in range(100))
 
 print(blanked_text)
-
-prompt_parts = CONST.form_tagging_prompt.format(main_tag_names= CONST.main_tag_names, relationship_tag_names = CONST.relationship_tag_names, remaining_tag_names = CONST.remaining_tag_names, Form = blanked_text)
-response = llm.model.generate_content(prompt_parts)
+print(dash_line)
+prompt_parts1 = template_PI_prompt.format(personal_information_tagnames = personal_information_tagnames, form = blanked_text)
+response = llm.model.generate_content(prompt_parts1)
 response = response.text
 
 print(response)
-
+print(dash_line)
+prompt_parts2 = template_identify_relationship_prompt.format(form = response)
+response2 = llm.model.generate_content(prompt_parts2)
+print(response2.text)
+print(dash_line)
 # folder_BlankX = "Forms\Text\Công dân"
 # # Function to read file contents
 # def read_file(file_path):

@@ -13,9 +13,9 @@ class LLM_Gemini:
         # Set up the model
         genai.configure(api_key=api_key)
         generation_config = {
-        # "temperature": 0,
-        # "top_p": 1,
-        # "top_k": 1,
+        "temperature": 0,
+        "top_p": 1,
+        "top_k": 1,
         "max_output_tokens": None,
         }
         # safety_settings = [
@@ -37,7 +37,7 @@ class LLM_Gemini:
         # }
         # ]
         #Model
-        self.model = genai.GenerativeModel(model_name="gemini-1.5-pro",generation_config=generation_config) # safety_settings=safety_settings
+        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash",generation_config=generation_config) # safety_settings=safety_settings
         
         
     def blank_to_tagnames(self, text_with_blank, main_tag_names, relationship_tag_names):

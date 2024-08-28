@@ -29,7 +29,6 @@ main_tag_names = """
 [address_province]: Current address ward of the form filler.
 [occupation]: Occupation of the form filler.
 [education_level]: Education level of the form filler.
-
 """
 
 relationship_tag_names = """
@@ -952,7 +951,7 @@ Main User's Details:
 [full_name]: Họ, chữ đệm và tên(1)
 [alias_name]: Họ, chữ đệm và tên gọi khác (nếu có)(1))
 [dob_day]/[dob_month]/[dob_year]: Ngày, tháng, năm sinh 
-[gender]: Giới tính (Nam/nữ) 
+[gender]: Giới tính (Nam/nữ)
 [id_number]: Số CMND/CCCD 
 [ethnicity] : Dân tộc 
 [religion] : Tôn giáo 
@@ -1340,24 +1339,24 @@ Kính gửi: [receiver]
 Họ, chữ đệm, tên người yêu cầu: [full_name] or [applicant_full_name]
 Nơi cư trú: [permanent_address] (or [current_address])
 Giấy tờ tùy thân: [id_number]
-Họ, chữ đệm, tên: [children_full_name]
-Giới tính: [children_gender]
-Ngày, tháng, năm sinh: [children_dob]
-Quốc tịch: [children_nationality]
-Nơi sinh: [children_birthplace]
-Giấy khai sinh/Giấy tờ tùy thân: [children_id_number]
-Nơi cư trú: [children_address]
-Số định danh cá nhân: [children_personal_identification_number]
-Họ, chữ đệm, tên cha nuôi: [father_full_name]
-Ngày, tháng, năm sinh: [father_dob]
-Quốc tịch: [father_nationality]
-Giấy tờ tùy thân: [father_id_number]
-Nơi cư trú: [father_address]
-Họ, chữ đệm, tên mẹ nuôi: [mother_full_name]
-Ngày, tháng, năm sinh: [mother_dob]
-Quốc tịch: [mother_nationality]
-Giấy tờ tùy thân: [mother_id_number]
-Nơi cư trú: [mother_address]
+Họ, chữ đệm, tên: [user1_children_full_name]
+Giới tính: [user1_children_gender]
+Ngày, tháng, năm sinh: [user1_children_dob]
+Quốc tịch: [user1_children_nationality]
+Nơi sinh: [user1_children_birthplace]
+Giấy khai sinh/Giấy tờ tùy thân: [user1_children_id_number]
+Nơi cư trú: [user1_children_address]
+Số định danh cá nhân: [user1_children_personal_identification_number]
+Họ, chữ đệm, tên cha nuôi: [user1_father_full_name]
+Ngày, tháng, năm sinh: [user1_father_dob]
+Quốc tịch: [user1_father_nationality]
+Giấy tờ tùy thân: [user1_father_id_number]
+Nơi cư trú: [user1_father_address]
+Họ, chữ đệm, tên mẹ nuôi: [user1_mother_full_name]
+Ngày, tháng, năm sinh: [user1_mother_dob]
+Quốc tịch: [user1_mother_nationality]
+Giấy tờ tùy thân: [user1_mother_id_number]
+Nơi cư trú: [user1_mother_address]
 Đã đăng ký nuôi con nuôi tại: [registration_place]
 Giấy chứng nhận nuôi con nuôi trong nước/Quyết định nuôi con nuôi có yếu tố nước ngoài số: [adoption_certificate]
 ngày [adoption_certificate_day] tháng [adoption_certificate_month] năm [adoption_certificate_year]
