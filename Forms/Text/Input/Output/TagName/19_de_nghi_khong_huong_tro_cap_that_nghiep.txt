@@ -1,0 +1,15 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ ĐỀ NGHỊ KHÔNG HƯỞNG TRỢ CẤP THẤT NGHIỆP
+Kính gửi: Trung tâm Dịch vụ việc làm [another]
+Tên tôi là: [user1_full_name] Sinh ngày [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] Nơi cấp [another]
+Số sổ BHXH [user1_social_insurance_number]
+Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú): [user1_current_address]
+Tôi đã nộp hồ sơ đề nghị hưởng trợ cấp thất nghiệp ngày [user1_unemployment_application_day]/[user1_unemployment_application_month]/[user1_unemployment_application_year] nhưng hiện nay, tôi không có nhu cầu hưởng trợ cấp thất nghiệp vì: [reason]
+Do đó, tôi đề nghị không hưởng trợ cấp thất nghiệp để bảo lưu thời gian đóng bảo hiểm thất nghiệp.
+Tôi xin trân trọng cảm ơn.
+ 
+ 	[place], ngày [day] tháng [month] năm [year]
+Người đề nghị
+(Ký và ghi rõ họ tên) 

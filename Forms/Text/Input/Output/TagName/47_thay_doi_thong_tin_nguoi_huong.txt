@@ -1,0 +1,24 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+THÔNG BÁO THAY ĐỔI THÔNG TIN NGƯỜI HƯỞNG
+Kính gửi: Bảo hiểm xã hội quận/huyện/thị xã [another]
+Tên tôi là: [user1_full_name] Ngày, tháng, năm sinh: [user1_dob]
+Số sổ BHXH/Số định danh: [user1_id]
+Số chứng minh nhân dân: [user1_id_number] ngày cấp: [another], nơi cấp: [another]
+Từ tháng [another] năm [another], đề nghị cơ quan BHXH thay đổi, bổ sung thông tin của tôi như sau:
+Giới tính: [user1_gender]
+Số điện thoại: [user1_phone]
+Số điện thoại người thân khi cần liên lạc: [another]
+Địa chỉ cư trú (ghi đầy đủ theo thứ tự số nhà, ngõ, ngách/hẻm, đường phố, tổ/thôn/xóm/ấp, xã/phường/thị trấn, huyện/quận/thị xã/thành phố, tỉnh/thành phố): 
+[user1_current_address]
+Hình thức nhận lương hưu, trợ cấp BHXH hàng tháng:
+Nhận bằng tiền mặt:
+Địa chỉ nhận (ghi đầy đủ:xã/phường, tổ dân phố/tổ chi trả, quận/huyện/thị xã, tỉnh/ thành phố): [another]
+Nhận qua Tài khoản:
+Số tài khoản cá nhân: [another]
+Ngân hàng nơi mở TK: [another]
+Tôi xin cam đoan các thông tin sửa đổi, bổ sung của tôi là đúng, nếu sai tôi xin chịu trách nhiệm trước pháp luật.
+	[place] , ngày [day] tháng [month] năm [year]
+Người đề nghị
+(Ký, ghi rõ họ tên) 

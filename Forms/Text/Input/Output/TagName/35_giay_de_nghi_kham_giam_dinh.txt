@@ -1,0 +1,28 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+---------------
+
+GIẤY ĐỀ NGHỊ KHÁM GIÁM ĐỊNH
+
+Kính gửi: [receiver]
+Tên tôi là: [user1_full_name]
+Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Chỗ ở hiện tại: [user1_current_address]
+Giấy Chứng minh nhân dân/Thẻ căn cước/Hộ chiếu số: [user1_id_number]
+Ngày cấp: [another] Nơi cấp: [another]
+Số sổ bảo hiểm xã hội/Mã số bảo hiểm xã hội (1): [user1_social_insurance_number]
+Nghề/Công việc (2): [user1_occupation]
+Điện thoại liên hệ: [user1_phone]
+Đề nghị được giám định mức độ suy giảm khả năng lao động:
+
+Đề nghị giám định (3): [another]
+Loại hình giám định (4): [another]
+Nội dung giám định (5): [another]
+Đang hưởng chế độ (6): [another]
+Xác nhận của UBND hoặc Công an cấp xã (7)
+
+Người đề nghị
+
+(Ký, ghi rõ họ tên) 

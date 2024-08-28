@@ -1,0 +1,63 @@
+Form:
+```
+.......... (1)
+
+
+Số: [decision_number] /QĐ-[decision_issuer_code]	CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+    [place], ngày [day] tháng [month] năm [year]
+QUYẾT ĐỊNH
+Về việc nghỉ việc hưởng chế độ hưu trí
+
+ ..........(2)
+Căn cứ Luật Bảo hiểm xã hội số [law_number];
+Căn cứ (3) [another];
+Xét đề nghị của [user1_full_name],
+
+QUYẾT ĐỊNH:
+
+Điều 1. Ông (bà) [user1_full_name] Sinh ngày [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Mã số BHXH: 	[user1_insurance_number]
+Số điện thoại di động:	[user1_phone]
+Chức danh nghề nghiệp, cấp bậc, chức vụ: 	[user1_occupation]
+Đơn vị công tác: 	[user1_organization]
+Được nghỉ việc để hưởng chế độ hưu trí từ ngày [user1_retirement_date_day]/[user1_retirement_date_month]/[user1_retirement_date_year]            
+Nơi cư trú khi nghỉ hưu (4): 	[user1_permanent_address]
+Hình thức nhận lương hưu (5): 	[another]
+Nơi khám chữa bệnh BHYT ban đầu (6): 	[another]
+Điều 2. Chế độ hưu trí đối với ông (bà) [user1_full_name] do Bảo hiểm xã hội huyện (quận)/tỉnh (thành phố) [another] giải quyết theo quy định của pháp luật bảo hiểm xã hội.
+Điều 3. [another] (7) và ông (bà) [user1_full_name] chịu trách nhiệm thi hành Quyết định này./.
+
+.......... (2)
+(Ký, ghi rõ họ tên, đóng dấu)
+```
+
+**Explanation:**
+
+* **User Identification:** There is only one user mentioned in the form, so we use `user1` as the identifier.
+* **Personal Information:** We replace placeholders with the corresponding tag names from the list, using the `user1` identifier. For example, `..........` in "Sinh ngày........../........../.........." is replaced with `[user1_dob_day]/[user1_dob_month]/[user1_dob_year]`.
+* **Non-Personal Information:**
+    * `.......... (1)`: This is likely the name of the issuing authority, so we replace it with `[decision_issuer]`.
+    * `.......... (2)`: This is likely the signature and stamp of the issuing authority, so we replace it with `[another]`.
+    * `.......... (3)`: This is likely a reference to another legal document, so we replace it with `[another]`.
+    * `.......... (4)`: This is the user's permanent address, so we replace it with `[user1_permanent_address]`.
+    * `.......... (5)`: This is the method of receiving pension, so we replace it with `[another]`.
+    * `.......... (6)`: This is the initial place for health insurance, so we replace it with `[another]`.
+    * `.......... (7)`: This is likely the name of the responsible party, so we replace it with `[another]`.
+* **Other Placeholders:**
+    * `Số: .......... /QĐ-..........`: We replace this with `[decision_number] /QĐ-[decision_issuer_code]`.
+    * `.........., ngày .......... tháng .......... năm ..........`: We replace this with `[place], ngày [day] tháng [month] năm [year]`.
+    * `Mã số BHXH: 	`: We replace this with `[user1_insurance_number]`.
+    * `Số điện thoại di động:	`: We replace this with `[user1_phone]`.
+    * `Chức danh nghề nghiệp, cấp bậc, chức vụ: 	`: We replace this with `[user1_occupation]`.
+    * `Đơn vị công tác: 	`: We replace this with `[user1_organization]`.
+    * `Được nghỉ việc để hưởng chế độ hưu trí từ ngày........../........../..........`: We replace this with `[user1_retirement_date_day]/[user1_retirement_date_month]/[user1_retirement_date_year]`.
+    * `Căn cứ Luật Bảo hiểm xã hội số..........`: We replace this with `[law_number]`.
+    * `Chế độ hưu trí đối với ông (bà)..........do Bảo hiểm xã hội huyện (quận)/tỉnh (thành phố) ..........giải quyết theo quy định của pháp luật bảo hiểm xã hội.`: We replace this with `[another]`.
+
+This approach ensures that all placeholders are replaced with appropriate tag names, considering the user's information and the nature of the form. 
+
+**Output:**
+
+Form has only 1 user. 

@@ -1,0 +1,28 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+-----------------
+[place], ngày [day] tháng [month] năm [year]
+ĐƠN KHỞI KIỆN
+Kính gửi: Tòa án nhân dân [another]
+Người khởi kiện: [user1_full_name]
+Địa chỉ: [user1_current_address]
+Số điện thoại (nếu có): [user1_phone], số fax (nếu có): [another]
+Địa chỉ thư điện tử (nếu có): [user1_email]
+Người bị kiện: [user2_full_name]
+Địa chỉ: [user2_current_address]
+Số điện thoại (nếu có): [user2_phone], số fax (nếu có): [another]
+Địa chỉ thư điện tử (nếu có): [user2_email]
+Người có quyền lợi, nghĩa vụ liên quan (nếu có): [another]
+Địa chỉ: [another]
+Số điện thoại (nếu có): [another], số fax (nếu có): [another]
+Địa chỉ thư điện tử (nếu có): [another]
+Quyết định [another] bị kiện số [another] ngày [another] tháng [another] năm [another] của [another] Về [another]
+Hành vi hành chính bị kiện [another]
+Tóm tắt nội dung quyết định hành chính, quyết định kỷ luật buộc thôi việc, quyết định giải quyết khiếu nại về quyết định xử lý vụ việc cạnh tranh, nội dung giải quyết khiếu nại về danh sách cử tri hoặc tóm tắt diễn biến của hành vi hành chính: [another]
+Nội dung quyết định giải quyết khiếu nại (nếu có): [another]
+Yêu cầu đề nghị Tòa án giải quyết: [request_content]
+Người khởi kiện cam đoan không đồng thời khiếu nại [another] đến người có thẩm quyền giải quyết khiếu nại
+Những tài liệu, chứng cứ chứng minh kèm theo đơn khởi kiện gồm có:
+1. [another]
+2. [another] 

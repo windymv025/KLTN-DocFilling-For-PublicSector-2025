@@ -1,0 +1,25 @@
+Form:
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+TỜ KHAI THUẾ THU NHẬP CÁ NHÂN 
+(Áp dụng đối với cá nhân cư trú và cá nhân không cư trú có thu nhập từ tiền lương, 
+tiền công khai thuế trực tiếp với cơ quan thuế)
+
+[01] Kỳ tính thuế: 	Tháng [month] năm [year] /Quý [another] năm [another] (Từ tháng [another]/[another] đến tháng [another]/[another])
+
+[04] Tên người nộp thuế: [user1_full_name]
+[05] Mã số thuế: [user1_id_number]	
+[06] Địa chỉ: [user1_current_address]
+[07] Quận/huyện: [user1_current_address_district] [08] Tỉnh/thành phố: [user1_current_address_province]
+[09] Điện thoại: [user1_phone] [10] Fax: [another] [11] Email: [user1_email]
+[12] Tên tổ chức trả thu nhập: [another]
+[13] Mã số thuế: [another]			
+[14] Địa chỉ: [another]
+[15] Quận/huyện: [another] [16] Tỉnh/thành phố: [another]
+[17] Tên đại lý thuế (nếu có): [another]
+[18] Mã số thuế: [another]				
+[19] Hợp đồng đại lý thuế: Số: [another] ngày: [another] 
+
+Answer:
+Form has only 1 user 

@@ -2,6 +2,8 @@ import google.generativeai as genai
 import constant_value as CONST
 import re
 
+
+
 def find_key_by_value(dictionary, target_value):
     for key, value in dictionary.items():
         if value == target_value:
@@ -18,36 +20,36 @@ class LLM_Gemini:
         "top_k": 1,
         "max_output_tokens": None,
         }
-        # safety_settings = [
-        # {
-        #     "category": "HARM_CATEGORY_HARASSMENT",
-        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        # },
-        # {
-        #     "category": "HARM_CATEGORY_HATE_SPEECH",
-        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        # },
-        # {
-        #     "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        # },
-        # {
-        #     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        #     "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-        # }
-        # ]
+        safety_settings = [
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        }
+        ]
         #Model
-        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash",generation_config=generation_config) # safety_settings=safety_settings
+        self.model = genai.GenerativeModel(model_name="gemini-1.5-flash",generation_config=generation_config, safety_settings=safety_settings)
         
         
-    def blank_to_tagnames(self, text_with_blank, main_tag_names, relationship_tag_names):
+    def blank_to_tagnames(self, text_with_blank, tagnames):
         """
         text_with_blank: form with (Blank_x)....
         tagnames: list of tag names
         return: list of tagnames coressponding to the blanks
         """
         #Get response
-        prompt_parts = CONST.form_tagging_prompt.format(main_tag_names=main_tag_names, relationship_tag_names = relationship_tag_names, Form = text_with_blank)
+        prompt_parts = CONST.template_blank_to_tagname.format(tag_names=tagnames, Abstract = text_with_blank)
         response = self.model.generate_content(prompt_parts)
         response = response.text
         #Handle response
@@ -87,6 +89,16 @@ class LLM_Gemini:
             temp = temp.replace("#","")
         return list_value_keys
     
+    def auto_blank_to_tagname(self, text_with_blank):
+        """
+        text_with_blank: form with (Blank_x)....
+        return: list of tagnames coressponding to the blanks (llm auto generate)
+        """
+        prompt_parts = CONST.template_llm_auto_blanks_to_tagnames.format(Abstract = text_with_blank)
+        response = self.model.generate_content(prompt_parts)
+        # print(response)
+        return response.text
+
     def extract_content(self, Abstract, list_value_keys):
         #Convert Question to right format
         Question = """"""
@@ -118,6 +130,13 @@ class LLM_Gemini:
 
         return value_keys_to_context_value
     
+    def generate_user_tagname_from_blankX_form(self, Abstract):
+        prompt_parts = CONST.form_tagging_prompt.format(Abstract = Abstract)
+        # print(prompt_parts)
+        response = self.model.generate_content(prompt_parts)
+        # print(response.text)
+        return response.text
+
 class Text_Processing:
     def __init__(self):
         pass
@@ -135,8 +154,12 @@ class Text_Processing:
             return a
         else:
             return b
-        
+
     def generate_uniform(self,Question):
+        # Chuyển tất cả các dạng ......(number).... về dạng ..........(number)
+        Question = Question.replace('…','..')
+        # print(new_form)
+        Question = re.sub(r'\.{2,}\((\d+)\)\.{2,}', r'............(\1)', Question)
         count = 0
         # Initialize a counter for numbering the placeholders
         placeholder_counter = 1
@@ -155,16 +178,39 @@ class Text_Processing:
             # Increment the counter
             placeholder_counter += 1
 
+            #Kiểm tra trên hàng đó còn . tiếp hoặc … đó hay không --> vẫn là chỗ điền này.
             while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
                 end_index  += 1
 
-            if (end_index+1 < (len(Question))) and (Question[end_index] == "\n") and (Question[end_index+1] == "…" or Question[end_index+1] == "."):
+            # if (end_index+1 < (len(Question))) and (Question[end_index] == "\n") and (Question[end_index+1] == "…" or Question[end_index+1] == "."):
+            #     end_index  += 1
+            #Kiểm tra trường hợp xuống hàng vẫn còn ....
+            while (end_index+1 < (len(Question))) and (Question[end_index] == "\n"):
+              while (Question[end_index+1] == "…" or Question[end_index+1] == "."):
                 end_index  += 1
+              if Question[end_index+1] == "\n":
+                end_index += 1
+                continue
+              if (Question[end_index+1] != "…" and Question[end_index+1] != "."):
+                break
 
-            while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
-                end_index  += 1
-            if end_index == 212:
-                a = 2+3
+            #Đã Hàng mới (Đã xuống hàng mà vẫn là chỗ điền thì cả cái hàng là của nó luôn)
+            while end_index < len(Question) and Question[end_index] == "\n":
+              # Kiểm tra hàng sau
+              next_line_start = end_index + 1
+              next_line_end = Question.find("\n", next_line_start)
+              if next_line_end == -1:  # Nếu không có dấu xuống dòng tiếp theo, chỉ đến cuối văn bản
+                next_line_end = len(Question)
+              next_line = Question[next_line_start:next_line_end]
+
+              # Kiểm tra xem hàng tiếp theo có phải toàn khoảng trắng, dấu chấm hoặc chấm lửng không
+              if next_line.strip() == "" or all(c in ".…" for c in next_line.strip()):
+                  end_index = next_line_end
+              else:
+                  break
+
+            # while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
+            #     end_index  += 1
             try:
                 Question = Question[:start_index] + Question[end_index:]
             except:
@@ -215,8 +261,3 @@ class Text_Processing:
         for i in range(1,len(list_info)+1):
             blanked_text = blanked_text.replace(f"(Blank{i})", list_info[i-1])
         return blanked_text
-
-
-
-
-#

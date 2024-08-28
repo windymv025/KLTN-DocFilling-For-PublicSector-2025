@@ -1,0 +1,29 @@
+TỜ KHAI ĐĂNG KÝ VIỆC THAY ĐỔI, CẢI CHÍNH, 
+BỔ SUNG THÔNG TIN HỘ TỊCH, XÁC ĐỊNH LẠI DÂN TỘC
+
+Kính gửi: (1) [receiver]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name] 	
+Ngày, tháng, năm sinh: [user1_dob] 	
+Nơi cư trú: (2) [user1_current_address]	
+	
+Giấy tờ tùy thân: (3) [user1_id]	
+	
+Quan hệ với người được thay đổi, cải chính, xác định lại dân tộc, bổ sung thông tin hộ tịch: [user1_relationship_user2]	
+Đề nghị cơ quan đăng ký việc (4) [request_content] 		
+cho người có tên dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]	
+Ngày, tháng, năm sinh: [user2_dob] 	
+Giới tính: (2) [user2_gender] Dân tộc: (2) [user2_ethnicity] Quốc tịch: (2) [user2_nationality]	
+Nơi cư trú: (2) [user2_current_address]	
+	
+Giấy tờ tùy thân: (3) [user2_id]	
+	
+Đã đăng ký (5)  [another]
+tại [another]
+ngày [another] tháng [another] năm [another] số: [another] Quyển số: [another] 	
+Nội dung: (6) [another]	
+Lý do:	[reason]	
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình.  
+Làm tại: [place]	, ngày [day]	 tháng [month]	 năm [year]	
+Người yêu cầu
+(Ký, ghi rõ họ, chữ đệm, tên)                                                                                                                                                     

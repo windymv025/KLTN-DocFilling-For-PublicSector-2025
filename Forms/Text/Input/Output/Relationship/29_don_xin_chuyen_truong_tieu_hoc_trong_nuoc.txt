@@ -1,0 +1,2 @@
+[user1_relationship_user2]: [parent-child] 
+[user2_relationship_user1]: [child-parent] 

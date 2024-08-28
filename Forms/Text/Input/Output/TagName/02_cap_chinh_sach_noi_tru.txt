@@ -1,0 +1,18 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
+Kính gửi: [receiver] (Tên cơ sở giáo dục nghề nghiệp công lập)
+Họ và tên:	[user1_full_name]
+Ngày, tháng, năm sinh:	[user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
+Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
+Mã số học sinh, sinh viên: [user1_student_id]
+Thuộc đối tượng: [user1_policy_category] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
+
+Xác nhận của Khoa
+(Quản lý học sinh, sinh viên)	      [place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên) 

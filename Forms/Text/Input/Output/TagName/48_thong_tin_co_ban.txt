@@ -1,0 +1,22 @@
+```
+Thông tin cơ bản:
+1. Họ và tên: [user1_full_name]
+2. Số điện thoại: [user1_phone]
+3. Email: [user1_email]
+4. Bằng hiện tại: [user1_degree]
+5. Cấp độ học: [user1_education_level]
+6. Nhà ở: [user1_home_type]
+7. Nghề nghiệp: [user1_occupation]
+8. Trình độ học vấn: [user1_education_level]
+9. Quốc tịch: [user1_nationality]
+10. Số CMND: [user1_id_number]
+11. Ươc mơ: [user1_dream]
+```
+
+**Explanation:**
+
+* We assume there is only one user (user1) based on the form structure.
+* We use the provided tag names to replace the placeholders.
+* For "Bằng hiện tại", we assume it refers to the user's current degree, so we use the tag `[user1_degree]`.
+* For "Nhà ở", we assume it refers to the type of housing the user lives in, so we use the tag `[user1_home_type]`.
+* For "Ươc mơ", we assume it refers to the user's aspirations or goals, so we use the tag `[user1_dream]`. 

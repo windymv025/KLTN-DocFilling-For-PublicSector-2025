@@ -1,0 +1,40 @@
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+________________________
+[place] , ngày   [day]       tháng [month]          năm    [year]      
+ 
+ 
+ĐƠN ĐỀ NGHỊ
+Về việc hưởng chế độ bệnh nghề nghiệp
+___________
+Kính gửi: Bảo hiểm xã hội tỉnh/thành phố [another]                   (1)
+ 
+I. THÔNG TIN VỀ NGƯỜI LAO ĐỘNG
+1. Họ và tên:   [user1_full_name]
+2. Ngày tháng năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year] Giới tính [user1_gender]
+3. Địa chỉ nơi cư trú: [user1_current_address]
+4. Điện thoại: [user1_phone]
+5. Số chứng minh thư hoặc thẻ căn cước công dân: [user1_id_number]
+Ngày cấp: [another] Nơi cấp: [another]
+6. Số sổ bảo hiểm xã hội/Mã số bảo hiểm xã hội: [user1_social_insurance_number]
+7. Bệnh nghề nghiệp được phát hiện: [another]
+8. Nghề nghiệp gây ra bệnh nghề nghiệp được phát hiện: [user1_occupation]
+9. Tên doanh nghiệp, cơ sở (nơi làm việc gây ra bệnh nghề nghiệp): [another]
+II. NỘI DUNG ĐỀ NGHỊ
+1. Nội dung: Đề nghị giải quyết chế độ bệnh nghề nghiệp sau khi có kết quả giám định theo quy định tại Nghị định số [another]/2020/NĐ-CP ngày [another] tháng [another] năm 2020 của Chính phủ.
+2. Hình thức nhận tiền chế độ: (2)
+- Hình thức thanh toán chuyển khoản:
++ Số tài khoản: [user1_bank_account_number]
++ Ngân hàng [another]
+Tôi xin cam đoan những thông tin trên hoàn toàn đúng sự thật.
+Đề nghị Bảo hiểm xã hội tỉnh [another] xem xét, giải quyết chế độ bệnh nghề nghiệp theo quy định./.
+ 
+Tài liệu có gửi kèm theo:
+- [another]
+- [another]	
+NGƯỜI LÀM ĐƠN
+(Ký, ghi rõ họ tên) 
+
+Answer:
+Form has only 1 user 

@@ -1,0 +1,26 @@
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1): [receiver]
+1. Họ, chữ đệm và tên Việt Nam: [user1_full_name]
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	[user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]     4. Giới tính:	[user1_gender]
+5. Dân tộc: [user1_ethnicity]     6. Tôn giáo:	[user1_religion]
+7. Số định danh cá nhân/CMND: [user1_id_number]									
+8. Số điện thoại (nếu có): [user1_phone]	 9. E-mail (nếu có): [user1_email]
+10. Quốc tịch nước ngoài (nếu có): [user1_nationality]
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	[user1_driving_license_number] Ngày cấp: [another]/[another]/[another]
+Cơ quan cấp: [another]	 Có giá trị đến ngày: [another]/[another]/[another]
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam: [user1_occupation]
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con:
+[another]
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam:	
+[user1_permanent_address]
+15. Nơi ở hiện tại ở Việt Nam:	
+[user1_current_address]
+16. Nội dung đề nghị (2):	
+[request_content]
+17. Họ và tên chủ hộ: [user2_full_name] 18. Quan hệ với chủ hộ: [another]
+19. Số định danh cá nhân/ CMND của chủ hộ: [user2_id_number]										

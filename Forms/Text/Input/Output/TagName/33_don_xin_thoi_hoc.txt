@@ -1,0 +1,9 @@
+ĐƠN XIN THÔI HỌC
+Tôi tên: [user1_full_name]	 MSSV:	[user1_id_number]
+Ngành học: [user1_course]	 Lớp: 	[user1_class]
+Ngày sinh: [user1_dob] 	 Nơi sinh: [user1_birth_registration_place]	
+Địa chỉ hộ khẩu thường trú:	[user1_permanent_address]
+Điện thoại: [user1_phone]
+Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: [another] năm học: 20[another] – 20[another]
+Lý do: [reason]
+Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn. 

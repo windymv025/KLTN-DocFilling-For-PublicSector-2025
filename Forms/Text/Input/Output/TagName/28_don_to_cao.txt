@@ -1,0 +1,31 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+--------------
+
+ĐƠN TỐ CÁO
+
+Kính gửi: [receiver]
+Họ và tên tôi: [user1_full_name] Sinh ngày: [user1_dob]
+Chứng minh nhân dân số: [user1_id_number]
+Ngày cấp: [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year] Nơi cấp: [user1_id_issue_place]
+Hộ khẩu thường trú: [user1_permanent_address]
+Chỗ ở hiện tại: [user1_current_address]
+Số điện thoại liên hệ: [user1_phone]
+Tôi làm đơn này tố cáo và đề nghị Quý cơ quan tiến hành điều tra, xử lý đối với hành vi vi phạm pháp luật của:
+
+Anh: [user2_full_name] Sinh ngày: [user2_dob]
+CMND/CCCD: [user2_id_number]
+Ngày cấp: [user2_id_issue_day]/[user2_id_issue_month]/[user2_id_issue_year] Nơi cấp: [user2_id_issue_place]
+Hộ khẩu thường trú: [user2_permanent_address]
+Chỗ ở hiện tại: [user2_current_address]
+Vì anh  [user2_full_name] đã có hành vi [reason]
+Sự việc cụ thể như sau:
+
+[request_content]
+Từ những sự việc trên, tôi cho rằng hành vi của anh [user2_full_name] có dấu hiệu vi phạm pháp luật.
+
+Tôi cam kết toàn bộ nội dung đã trình bày trên là hoàn toàn đúng sự thật và chịu trách nhiệm trước pháp luật về những điều trình bày trên. Kính mong Quý cơ quan xem xét và giải quyết theo đúng quy định pháp luật.
+
+Tôi xin chân thành cảm ơn!

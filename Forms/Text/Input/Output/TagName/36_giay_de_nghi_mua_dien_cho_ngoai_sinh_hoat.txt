@@ -1,0 +1,21 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+                                                                            
+GIẤY ĐỀ NGHỊ MUA ĐIỆN 
+SỬ DỤNG MỤC ĐÍCH NGOÀI SINH HOẠT
+Kính gửi: [receiver]
+1.Tên cơ quan hoặc cá nhân đăng ký mua điện: [user1_full_name] (1).
+2.Đại diện là ông (bà): [user1_full_name] (2).
+3.Số CMND/Hộ chiếu/CMCAND/CMQĐND: [user1_id] Cơ quan cấp [another] ngày [another] tháng [another] năm [another]
+4.Theo giấy uỷ quyền [another] ngày làm việc [another] tháng [another] năm [another] của [another]      (3)
+5.Số điện thoại liên hệ và nhận nhắn tin (SMS): [user1_phone];
+6. Fax [user1_fax] ; 7.Email [user1_email] (4)
+8.Tài khoản số: [user1_account_number] Tại ngân hàng: [another] (5)
+9.Hình thức thanh toán: [another]
+10.Địa chỉ giao dịch: [user1_current_address]; 
+11.Mã số thuế: [user1_tax_code]
+12,Mục đích sử dụng điện: [another]
+13.Địa điểm đăng ký sử dụng điện: [another]
+14.Công suất đăng ký sử dụng: [another] kW
+15.Tình trạng sử dụng điện hiện tại: (Chưa có điện / Đang dùng công tơ chung): [another]
+16.Tên chủ hộ dùng chung/số HĐMBĐ/mã số KH/địa chỉ [another] (6). 

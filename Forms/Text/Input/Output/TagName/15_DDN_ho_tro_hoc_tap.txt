@@ -1,0 +1,120 @@
+Let's break down how to fill in the placeholders in the forms you provided. 
+
+**Form 1: TỜ KHAI CĂN CƯỚC CÔNG DÂN**
+
+This form appears to be for a citizen ID card application.
+
+* **User:** There is only one user in this form. We'll call them `user1`.
+
+* **Placeholders:**
+
+    * **1. Họ, chữ đệm và tên(1): ..........**  ->  [user1_full_name]
+    * **2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........** -> [user1_alias_name]
+    * **3. Ngày, tháng, năm sinh: ........../........../..........;** -> [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+    * **4. Giới tính (Nam/nữ): ..........** -> [user1_gender]
+    * **5. Số CMND/CCCD: ..........** -> [user1_id_number]
+    * **6. Dân tộc: ..........** -> [user1_ethnicity]
+    * **7. Tôn giáo: ..........** -> [user1_religion]
+    * **8. Quốc tịch: ..........** -> [user1_nationality]
+    * **9. Tình trạng hôn nhân: ..........** -> [user1_marital_status]
+    * **10. Nhóm máu (nếu có): ..........** -> [user1_blood_type]
+    * **11. Nơi đăng ký khai sinh: ..........** -> [user1_birth_registration_place]
+    * **12. Quê quán: ..........** -> [user1_hometown]
+    * **13. Nơi thường trú: ..........** -> [user1_permanent_address]
+    * **14. Nơi ở hiện tại: ..........** -> [user1_current_address]
+    * **15. Nghề nghiệp: ..........** -> [user1_occupation]
+    * **16. Trình độ học vấn: ..........** -> [user1_education_level]
+    * **.........., ngày ..........tháng..........năm..........** -> [place], ngày [day] tháng [month] năm [year]
+
+**Form 2: TỜ KHAI ĐĂNG KÝ KHAI SINH**
+
+This form is for registering a birth.
+
+* **Users:** There are four users in this form:
+    * `user1`: The person requesting the birth registration.
+    * `user2`: The newborn baby.
+    * `user3`: The mother of the baby.
+    * `user4`: The father of the baby.
+
+* **Placeholders:**
+
+    * **Kính gửi: ..........** -> [receiver]
+    * **Họ, chữ đệm, tên người yêu cầu: ..........** -> [user1_full_name]
+    * **Nơi cư trú: ..........** -> [user1_current_address]
+    * **Giấy tờ tùy thân: ..........** -> [user1_id_number]
+    * **Quan hệ với người được khai sinh: ..........** -> [user1_relationship_user2] (You'll need to determine the relationship, e.g., "Mẹ", "Cha", etc.)
+    * **Họ, chữ đệm, tên: ..........** -> [user2_full_name]
+    * **Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........** -> [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+    * **Giới tính: ..........** -> [user2_gender]
+    * **Dân tộc: ..........** -> [user2_ethnicity]
+    * **Quốc tịch: ..........** -> [user2_nationality]
+    * **Nơi sinh: ..........** -> [user2_birth_registration_place]
+    * **Quê quán: ..........** -> [user2_hometown]
+    * **Họ, chữ đệm, tên người mẹ: ..........** -> [user3_full_name]
+    * **Năm sinh: ..........** -> [user3_dob_year]
+    * **Dân tộc: ..........** -> [user3_ethnicity]
+    * **Quốc tịch: ..........** -> [user3_nationality]
+    * **Nơi cư trú: ..........** -> [user3_current_address]
+    * **Họ, chữ đệm, tên người cha: ..........** -> [user4_full_name]
+    * **Năm sinh: ..........** -> [user4_dob_year]
+    * **Dân tộc: ..........** -> [user4_ethnicity]
+    * **Quốc tịch: ..........** -> [user4_nationality]
+    * **Nơi cư trú: ..........** -> [user4_current_address]
+    * **Làm tại: .........., ngày .......... tháng .......... năm ..........** -> [place], ngày [day] tháng [month] năm [year]
+
+**Form 3: ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI**
+
+This form is for requesting an extension of study time abroad.
+
+* **User:** There is one user in this form: `user1`.
+
+* **Placeholders:**
+
+    * **Kính gửi: ..........** -> [receiver]
+    * **Tôi tên là: ..........** -> [user1_full_name]
+    * **Cơ quan quản lý trực tiếp (nếu có): ..........** -> [user1_organization]
+    * **Quyết định cử đi học số .......... ngày .......... tháng .......... năm .......... của        ..........** -> Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của  [user1_decision_issuer]
+    * **Tên trường đến học, nước:       ..........** -> [user1_school]
+    * **Trình độ đào tạo:       ..........** -> [user1_education_level]
+    * **Ngành/nghề đào tạo:     ..........** -> [user1_course]
+    * **Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     ..........** -> [another] (This is likely a specific number, not a personal tag)
+    * **Ngày nhập học:  ..........** -> [another] (This is likely a specific date, not a personal tag)
+    * **Lý do đề nghị gia hạn:..........** -> [reason]
+    * **Thời gian đề nghị gia hạn: từ tháng ........../năm 20.......... đến tháng ........../năm 20..........** -> Thời gian đề nghị gia hạn: từ tháng [another]/năm 20[another] đến tháng [another]/năm 20[another]
+    * **Kinh phí trong thời gian gia hạn :      ..........** -> [another] (This is likely a specific amount, not a personal tag)
+    * **Địa chỉ liên lạc của tôi:       ..........** -> [user1_current_address]
+    * **E-mail: ..........** -> [user1_email]
+    * **Điện thoại cố định:..........    Điện thoại di động:..........** -> Điện thoại cố định: [user1_phone_home]   Điện thoại di động: [user1_phone]
+    * **                .........., ngày.......... tháng.......... năm..........** -> [place], ngày [day] tháng [month] năm [year]
+
+**Form 4: ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP**
+
+This form is for requesting financial support for a child's education.
+
+* **Users:** There are two users in this form:
+    * `user1`: The parent or guardian of the child.
+    * `user2`: The child.
+
+* **Placeholders:**
+
+    * **Kính gửi: ................(Cơ sở giáo dục)** -> Kính gửi: [receiver] (Cơ sở giáo dục)
+    * **Họ và tên cha mẹ (hoặc người chăm sóc): ................** -> Họ và tên cha mẹ (hoặc người chăm sóc): [user1_full_name]
+    * **Hộ khẩu thường trú tại:................** -> Hộ khẩu thường trú tại: [user1_permanent_address]
+    * **Là cha/mẹ (hoặc người chăm sóc) của em:................** -> Là cha/mẹ (hoặc người chăm sóc) của em: [user2_full_name]
+    * **Sinh ngày:................** -> Sinh ngày: [user2_dob]
+    * **Dân tộc:................** -> Dân tộc: [user2_ethnicity]
+    * **Hiện đang học tại lớp:................** -> Hiện đang học tại lớp: [user2_class]
+    * **Trường:................** -> Trường: [user2_school]
+    * **XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1** -> XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+    * **Nơi trẻ mẫu giáo có hộ khẩu thường trú** -> Nơi trẻ mẫu giáo có hộ khẩu thường trú
+    * **(Ký tên, đóng dấu)	................,ngày....tháng................năm................** -> (Ký tên, đóng dấu)	[place], ngày [day] tháng [month] năm [year]
+    * **Người làm đơn** -> Người làm đơn
+    * **(Ký, ghi rõ họ tên)** -> (Ký, ghi rõ họ tên)
+
+**Important Notes:**
+
+* **Context:**  The specific tags you use might need to be adjusted based on the exact context of the form. For example, "relationship_user2" might need to be more specific (e.g., "user1_mother_user2").
+* **Data Privacy:** Be mindful of data privacy when handling personal information. 
+* **Validation:**  Always double-check your replacements to ensure accuracy.
+
+Let me know if you have any other forms you need help with! 
