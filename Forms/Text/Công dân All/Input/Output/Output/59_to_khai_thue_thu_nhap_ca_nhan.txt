@@ -1,0 +1,21 @@
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+TỜ KHAI THUẾ THU NHẬP CÁ NHÂN 
+(Áp dụng đối với cá nhân cư trú và cá nhân không cư trú có thu nhập từ tiền lương, 
+tiền công khai thuế trực tiếp với cơ quan thuế)
+
+[01] Kỳ tính thuế: 	Tháng [user1_dob_month] năm [user1_dob_year] /Quý [user1_dob_quarter] năm [user1_dob_year] (Từ tháng [user1_dob_month_start]/[user1_dob_year_start] đến tháng [user1_dob_month_end]/[user1_dob_year_end])
+
+[04] Tên người nộp thuế:[user1_full_name]
+[05] Mã số thuế:[user1_id]	
+[06] Địa chỉ: [user1_current_address]
+[07] Quận/huyện: [user1_current_address_district] [08] Tỉnh/thành phố: [user1_current_address_province]
+[09] Điện thoại:[user1_phone] [10] Fax:[user1_phone_home] [11] Email: [user1_email]
+[12] Tên tổ chức trả thu nhập:[user2_full_name]
+[13] Mã số thuế:[user2_id]			
+[14] Địa chỉ: [user2_current_address]
+[15] Quận/huyện: [user2_current_address_district] [16] Tỉnh/thành phố: [user2_current_address_province]
+[17] Tên đại lý thuế (nếu có):[user3_full_name]
+[18] Mã số thuế:[user3_id]				
+[19] Hợp đồng đại lý thuế: Số: [user3_contract_number]ngày:[user3_contract_date]

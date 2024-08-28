@@ -1,0 +1,32 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI  
+ 
+Kính gửi: [org1_name] 
+
+Tôi tên là: [user1_full_name]
+Cơ quan quản lý trực tiếp (nếu có): [org2_name]	
+	
+Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của 	[org3_name]
+Tên trường đến học, nước: 	[org4_name], [org4_country]
+Trình độ đào tạo: 	[user1_education_level]
+Ngành/nghề đào tạo: 	[user1_major]
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo: 	[user1_total_training_time]
+Ngày nhập học: 	[user1_enrollment_date]
+Lý do đề nghị gia hạn: [user1_extension_reason]
+
+ 	
+Thời gian đề nghị gia hạn: từ tháng [user1_extension_start_month]/năm 20[user1_extension_start_year] đến tháng [user1_extension_end_month]/năm 20[user1_extension_end_year]	
+Kinh phí trong thời gian gia hạn : 	[user1_extension_cost]
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập. 
+
+Địa chỉ liên lạc của tôi:	[user1_address]
+E-mail:	[user1_email]
+Điện thoại cố định: [user1_landline]	 Điện thoại di động: [user1_mobile]	
+
+
+
+		[user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year] 
+Người làm đơn
+(Ký và ghi rõ họ tên)

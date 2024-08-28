@@ -1,0 +1,20 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc 
+
+ĐƠN ĐỀ NGHỊ CHI TRẢ TIỀN MIỄN, GIẢM HỌC PHÍ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp và giáo dục đại học tư thục)
+Kính gửi: Tên cơ sở giáo dục nghề nghiệp và giáo dục đại học tư thục.
+Họ và tên:[user1_full_name] 
+Ngày, tháng, năm sinh:[user1_dob_day]/[user1_dob_month]/[user1_dob_year] 
+Nơi sinh:[user1_birthplace] 
+Lớp:[user1_class] Khóa     [user1_course]     Khoa:[user1_faculty] 
+Họ tên cha/mẹ học sinh, sinh viên:[user1_parent_name] 
+Hộ khẩu thường trú (ghi đầy đủ):[user1_permanent_address] 
+Xã (Phường):[user1_permanent_address_ward] Huyện (Quận):[user1_permanent_address_district] 
+Tỉnh (Thành phố):[user1_permanent_address_province] 
+Thuộc đối tượng: [user1_eligibility](ghi rõ đối tượng được quy định tại Nghị định số 81/2021/NĐ-CP)
+Căn cứ vào Nghị định số 81/2021/NĐ-CP của Chính phủ, tôi làm đơn này đề nghị được xem xét, giải quyết để được cấp bù tiền hỗ trợ miễn, giảm học phí theo quy định và chế độ hiện hành.
+ 
+ 	[place], ngày [day] tháng [month] năm [year]
+Người làm đơn (3)
+(Ký tên và ghi rõ họ tên)

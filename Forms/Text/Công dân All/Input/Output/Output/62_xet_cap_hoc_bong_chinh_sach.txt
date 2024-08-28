@@ -1,0 +1,27 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+BẢN CAM KẾT
+Tôi là [user1_full_name] 
+Sinh viên lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty] 
+Trường: [user1_school]
+Địa chỉ thường trú [user1_current_address] 
+Số chứng minh nhân dân (Thẻ căn cước công dân): [user1_id] ngày cấp: [user1_id_issue_date] nơi cấp: [user1_id_issue_place]
+Tôi đã nghiên cứu kỹ và xin cam kết thực hiện các nội dung về học bổng chính sách đối với sinh viên theo chế độ cử tuyển được quy định tại Nghị định số [another]/2020/NĐ-CP ngày [another] tháng [another] năm 2020 của Chính phủ quy định chi tiết một số điều của Luật Giáo dục.
+Nếu trong trường hợp phải bồi hoàn, tôi xin cam kết hoàn trả số tiền học bổng được nhận theo đúng với các quy định của pháp luật.
+ 
+ 	[place], ngày [day] tháng [month] năm [year]
+NGƯỜI VIẾT CAM KẾT
+(Ký và ghi rõ họ tên)
+
+GIẤY XÁC NHẬN CỦA NHÀ TRƯỜNG
+Trường [user1_school]
+Địa chỉ: [user1_school_address] 
+Số điện thoại: [user1_school_phone] 
+Xác nhận anh/chị (Chữ in hoa, có dấu) [user1_full_name] là sinh viên năm thứ: [user1_school_year] Khoá: [user1_school_course] Khoa: [user1_school_faculty]
+Giấy xác nhận này để làm căn cứ xét, cấp học bổng chính sách theo quy định hiện hành.
+Trong trường hợp sinh viên bị kỷ luật, đình chỉ học tập hoặc buộc thôi học, nhà trường sẽ gửi thông báo kịp thời về địa phương.
+ 
+ 	[place], ngày [day] tháng [month] năm [year]
+TM. NHÀ TRƯỜNG
+(Ký tên, đóng dấu)

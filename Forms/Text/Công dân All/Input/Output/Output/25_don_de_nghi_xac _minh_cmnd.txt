@@ -1,0 +1,17 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+GIẤY ĐỀ NGHỊ XÁC NHẬN SỐ CHỨNG MINH NHÂN DÂN
+
+Kính gửi(1): [receiver]
+1. Họ, chữ đệm và tên(2): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(2): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month] /[user1_dob_year] ; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Dân tộc:[user1_ethnicity] 6. Quốc tịch:[user1_nationality]
+7. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+8. Quê quán: [user1_hometown]
+9. Nơi thường trú: [user1_permanent_address]
+10. Số CCCD đã được cấp (3):[user1_id]
+11. Số CMND đã được đã được cấp (4):[user1_id]
+Đề nghị (1): [receiver] xác nhận số Chứng minh nhân dân và số thẻ Căn cước cước công dân cho tôi. Tôi xin cam đoan những thông tin kê khai trên là đúng sự thật./.
+    [place], ngày [day] tháng [month] năm [year]

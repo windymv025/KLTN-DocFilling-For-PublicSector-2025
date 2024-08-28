@@ -1,0 +1,28 @@
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1):[org1_name]
+1. Họ, chữ đệm và tên Việt Nam: [user1_full_name_vn]
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	[user1_full_name_passport]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/ [user1_dob_year]     4. Giới tính:	[user1_gender]
+5. Dân tộc: [user1_ethnicity]     6. Tôn giáo:	[user1_religion]
+7. Số định danh cá nhân/CMND: [user1_id]									
+8. Số điện thoại (nếu có): [user1_phone]	 9. E-mail (nếu có): [user1_email]
+10. Quốc tịch nước ngoài (nếu có): [user1_foreign_nationality]
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	[user1_passport_number] Ngày cấp: [user1_passport_issue_date_day]/[user1_passport_issue_date_month]/[user1_passport_issue_date_year]
+Cơ quan cấp: [user1_passport_issuing_authority]	 Có giá trị đến ngày: [user1_passport_expiry_date_day]/[user1_passport_expiry_date_month]/[user1_passport_expiry_date_year]
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam: [user1_occupation_abroad]
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con:
+[user2_full_name], [user2_dob_year], [user2_nationality], [user2_occupation], [user2_workplace], [user2_current_address]
+[user3_full_name], [user3_dob_year], [user3_nationality], [user3_occupation], [user3_workplace], [user3_current_address]
+[user4_full_name], [user4_dob_year], [user4_nationality], [user4_occupation], [user4_workplace], [user4_current_address]
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam:	
+[user1_previous_address_abroad]
+15. Nơi ở hiện tại ở Việt Nam:	
+[user1_current_address_vn]
+16. Nội dung đề nghị (2):	
+[user1_request]
+17. Họ và tên chủ hộ: [user5_full_name] 18. Quan hệ với chủ hộ: [user1_relationship_user5]
+19. Số định danh cá nhân/ CMND của chủ hộ: [user5_id]

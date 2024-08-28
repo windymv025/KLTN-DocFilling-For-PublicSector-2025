@@ -1,0 +1,37 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập- Tự do- Hạnh phúc
+
+ĐƠN XIN RÚT HỒ SƠ
+
+Kính gửi:	- Giám đốc trung tâm GDTX [user1_school]/Hiệu trưởng trường THPT [user1_school]
+- Ban Giám hiệu trường THPT [user1_school]
+Em là: [user1_full_name] Sinh ngày: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Mã số học sinh: [user1_id]
+Hộ khẩu thường trú: [user1_current_address]
+Hiện em đang là học sinh lớp [user1_class] trường/Trung tâm GDTX [user1_school] do giáo viên [user1_teacher] chủ nhiệm.
+
+Nay tôi làm đơn này gửi đến Ban giám hiệu cho phép em được thôi học và rút hồ sơ học sinh kể từ Học kỳ [user1_semester] năm học [user1_school_year]
+Lý do thôi học và rút hồ sơ: [user1_reason]
+Xin nhà trường tạo điều kiện giúp em được hoàn thành thủ tục nhanh chóng.
+
+Em xin chân thành cảm ơn.
+
+Ý kiến của Ban Giám Hiệu	 [user1_school], ngày [day] tháng[month] năm [year]
+(Ký và ghi rõ họ tên, đóng dấu)	
+Người làm đơn
+
+(Ký và ghi rõ họ tên)
+
+XÁC NHẬN
+
+Đã nhận đủ lại bộ hồ sơ học sinh bao gồm:
+
+1. Học bạ
+
+2. Giấy khai sinh
+
+3. Giấy chứng nhận tốt nghiệp THCS (tạm thời/bản chính)
+
+4. [another]
+5. [another]
+6. [another]

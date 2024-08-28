@@ -1,0 +1,40 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+
+Độc lập - Tự do - Hạnh phúc
+
+
+THƯ XÁC NHẬN THU NHẬP
+
+Năm [year]
+Thay mặt tổ chức, cá nhân trả thu nhập: (Tên tổ chức/cá nhân) [user1_organization]
+Tôi xin xác nhận về việc ông/bà:
+
+1. Họ và tên: [user1_full_name]
+2. Chức vụ (nếu có): [user1_occupation]
+Được bổ nhiệm tới công tác tại Việt Nam với các chi tiết sau:
+
+3. Ngày đến Việt Nam:   ngày [user1_dob_day] tháng [user1_dob_month] năm [user1_dob_year]
+4. Thu nhập trong giai đoạn từ ngày 01 tháng 01 năm [user1_dob_year] đến ngày 31 tháng 12 năm [user1_dob_year]
+Số tiền là [user1_income] đồng
+
+Trong đó:
+
+a. Tại Việt nam: [user1_income_vn] đồng
+
+b. Tại nước ngoài: [user1_income_foreign] đồng
+
+5. Các khoản bị khấu trừ ngoài Việt Nam (nếu có): [user1_deduction]
+- Thuế thu nhập cá nhân: [user1_deduction_tax]
+- Bảo hiểm xã hội hoặc các loại bảo hiểm bắt buộc tương tự: [user1_deduction_insurance]
+- Các khoản bị khấu trừ khác: [user1_deduction_other]
+6. Tiền thuê nhà cho ông/bà [user1_full_name] tại Việt Nam là do [user1_rent_payer] (ghi rõ tên tổ chức/cá nhân) trả, số tiền là: [user1_rent] đồng.
+
+Tôi cam đoan số liệu khai trên là đúng và chịu trách nhiệm trước pháp luật về những số liệu đã khai./.
+
+Gửi kèm:
+
+Hợp đồng lao động số [user1_contract_number] ngày [user1_contract_day] tháng [user1_contract_month] năm [user1_contract_year]
+Ngày [day] tháng [month] năm [year]
+ĐẠI DIỆN HỢP PHÁP
+CỦA TỔ CHỨC, CÁ NHÂN TRẢ THU NHẬP
+Ký, ghi rõ họ tên; chức vụ và đóng dấu (nếu có)

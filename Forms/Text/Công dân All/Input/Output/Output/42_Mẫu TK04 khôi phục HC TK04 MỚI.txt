@@ -1,0 +1,23 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+
+TỜ KHAI 
+Đề nghị khôi phục giá trị sử dụng hộ chiếu phổ thông
+
+
+1. Họ[user1_full_name]Chữ đệm và tên[user1_full_name](1) 2. Giới tính(Nam/Nữ):[user1_gender]
+3. Sinh ngày[user1_dob_day] tháng[user1_dob_month] năm[user1_dob_year]Nơi sinh (tỉnh, thành phố) (2)[user1_birthplace]
+4. Số định danh cá nhân hoặc CCCD:[user1_id]                                                   Ngày cấp:[user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year]
+5. Nơi cư trú hiện tại [user1_current_address]
+6. Số điện thoại: [user1_phone]
+7. Thông tin về hộ chiếu đề nghị khôi phục:
+    Số hộ chiếu:[user1_passport_number] ngày cấp[user1_passport_issue_day]/[user1_passport_issue_month]/[user1_passport_issue_year]
+    Thời hạn:[user1_passport_expiry_day]/[user1_passport_expiry_month]/[user1_passport_expiry_year]Cơ quan cấp:[user1_passport_issuer]
+    8. Thông tin thị thực do nước ngoài cấp: 
+	Số thị thực:[user1_visa_number]Quốc gia cấp[user1_visa_country]Thời hạn[user1_visa_expiry]
+    9. Lý do đề nghị khôi phục hộ chiếu(3) [user1_reason]
+Tôi xin cam đoan những thông tin trên là đúng sự thật./.
+                                                  
+
+           Làm tại[user1_place], ngày[user1_day]tháng[user1_month]năm[user1_year]

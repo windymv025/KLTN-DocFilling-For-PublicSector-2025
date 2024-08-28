@@ -3,438 +3,27 @@ API_KEY = "AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50" #Gemini API key
 
 ### 1. ------------------Task: BLANK TO TAGNAMES------------------###
 tag_names = """
-#Full_Name
-#Surname
-#Last_Name
-#Day_of_birth
-#Month_of_birth
-#Year_of_birth
-#Date_of_birth
-#Day_of_issue
-#Month_of_issue
-#Year_of_issue
-#Date_of_issue
-#Gender
-#Citizen_identification_card
-#Ethnicity
-#Religion
-#Nationality
-#Marital_status
-#Blood_type
-#Place_of_birth
-#Place_of_birth_registration
-#Hometown
-#Permanent_residence
-#Current_address
-#Occupation
-#Educational_level
-#Phone_number
-#Email
-#Position
-#Organization
-#Hour
-#Minute
-#Second
-#Enterprise_Identification_Number
-#Legal_Representative
-#Administrative_violations
-#Regulation_at
-#Individual_or_Organization_suffered_damages
-#Opinions_from_violator
-#Opinions_from_officials_or_witnesses
-#Opinions_from_affected_party
-#Request_to_Mr_Ms
-#Reason
-#Dear
-#Place_of_issue
-#Relationship_to_registrant
-#Mother_name
-#Mother_day_of_birth
-#Mother_month_of_birth
-#Mother_year_of_birth
-#Mother_date_of_birth
-#Mother_Citizen_identification_card
-#Mother_Ethnicity
-#Mother_Religion
-#Mother_Nationality
-#Mother_Marital_status
-#Mother_Blood_type
-#Mother_Place_of_birth
-#Mother_Place_of_birth_registration
-#Mother_Hometown
-#Mother_Permanent_residence
-#Mother_Current_address
-#Mother_Occupation
-#Mother_Educational_level
-#Mother_Phone_number
-#Mother_Email
-#Father_name
-#Father_day_of_birth
-#Father_month_of_birth
-#Father_year_of_birth
-#Father_date_of_birth
-#Father_Citizen_identification_card
-#Father_Ethnicity
-#Father_Religion
-#Father_Nationality
-#Father_Marital_status
-#Father_Blood_type
-#Father_Place_of_birth
-#Father_Place_of_birth_registration
-#Father_Hometown
-#Father_Permanent_residence
-#Father_Current_address
-#Father_Occupation
-#Father_Educational_level
-#Father_Phone_number
-#Father_Email
-#Electronic_invoice_number_tax_code
-#Registration_tax_file_code
-#E_customs_declaration_number
-#Engine_N1
-#Engine_N2
-#Chassis_N0
-#Content
-#Quantity
-#Current_employment_status
-#Commune
-#District
-#Province
-#For_you
-#Behavior
-#Explanation_for_the_application
-#People_Court
-#Relationship
-#Empty
-"""
-
-translations = {
-"#Full_Name": "Họ tên",
-"#Surname": "Họ",
-"#Last_Name": "Tên",
-"#Day_of_birth": "Ngày sinh",
-"#Month_of_birth": "Tháng sinh",
-"#Year_of_birth": "Năm sinh",
-"#Date_of_birth": "Ngày tháng năm sinh",
-"#Day_of_issue": "Ngày cấp",
-"#Month_of_issue": "Tháng cấp",
-"#Year_of_issue": "Năm cấp",
-"#Date_of_issue": "Ngày tháng năm cấp",
-"#Gender": "Giới tính",
-"#Citizen_identification_card": "Chứng minh nhân dân",
-"#Ethnicity": "Dân tộc",
-"#Religion": "Tôn giáo",
-"#Nationality": "Quốc tịch",
-"#Marital_status": "Tình trạng hôn nhân",
-"#Blood_type": "Nhóm máu",
-"#Place_of_birth": "Nơi sinh",
-"#Place_of_birth_registration": "Nơi đăng ký sinh",
-"#Hometown": "Quê quán",
-"#Permanent_residence": "Nơi thường trú",
-"#Current_address": "Chỗ ở hiện nay",
-"#Occupation": "Nghề nghiệp",
-"#Educational_level": "Trình độ học vấn",
-"#Phone_number": "Số điện thoại",
-"#Email": "Email",
-"#Position": "Chức vụ",
-"#Organization": "Tổ chức",
-"#Hour": "Giờ",
-"#Minute": "Phút",
-"#Second": "Giây",
-"#Enterprise_Identification_Number": "Mã số thuế doanh nghiệp",
-"#Legal_Representative": "Người đại diện pháp luật",
-"#Administrative_violations": "Vi phạm hành chính",
-"#Regulation_at": "Quy định tại",
-"#(Individual/Organization)_suffered_damages": "(Cá nhân/Tổ chức) bị thiệt hại",
-"#Opinions_from_violator": "Ý kiến từ người vi phạm",
-"#Opinions_from_officials/witnesses": "Ý kiến từ cơ quan/quan chức/nhân chứng",
-"#Opinions_from_affected_party": "Ý kiến từ bên bị ảnh hưởng",
-"#Request_to_Mr._(Ms.)": "Yêu cầu gửi đến Ông/Bà",
-"#Reason": "Lý do",
-"#Dear": "Kính thưa",
-"#Relationship to registrant": "Mối quan hệ với người đăng ký",
-"#Mother_name": "Tên mẹ",
-"#Mother_day_of_birth": "Ngày sinh của mẹ",
-"#Mother_month_of_birth": "Tháng sinh của mẹ",
-"#Mother_year_of_birth": "Năm sinh của mẹ",
-"#Mother_date_of_birth": "Ngày tháng năm sinh của mẹ",
-"#Mother_Citizen_identification_card": "Chứng minh nhân dân của mẹ",
-"#Mother_Ethnicity": "Dân tộc của mẹ", 
-"#Mother_Religion": "Tôn giáo của mẹ",
-"#Mother_Nationality": "Quốc tịch của mẹ",
-"#Mother_Marital_status": "Tình trạng hôn nhân của mẹ",
-"#Mother_Blood_type": "Nhóm máu của mẹ",
-"#Mother_Place_of_birth": "Nơi sinh của mẹ",
-"#Mother_Place_of_birth_registration": "Nơi đăng ký sinh của mẹ",
-"#Mother_Hometown": "Quê quán của mẹ",
-"#Mother_Permanent_residence": "Nơi thường trú của mẹ",
-"#Mother_Current_address": "Chỗ ở hiện nay của mẹ",
-"#Mother_Occupation": "Nghề nghiệp của mẹ",
-"#Mother_Educational_level": "Trình độ học vấn của mẹ",
-"#Mother_Phone_number": "Số điện thoại của mẹ",
-"#Mother_Email": "Email của mẹ",
-"#Father_name": "Tên cha",
-"#Father_day_of_birth": "Ngày sinh của cha",
-"#Father_month_of_birth": "Tháng sinh của cha",
-"#Father_year_of_birth": "Năm sinh của cha",
-"#Father_date_of_birth": "Ngày tháng năm sinh của cha",
-"#Father_Citizen_identification_card": "Chứng minh nhân dân của cha",
-"#Father_Ethnicity": "Dân tộc của cha",
-"#Father_Nationality": "Quốc tịch của cha",
-"#Father_Marital_status": "Tình trạng hôn nhân của cha",
-"#Father_Blood_type": "Nhóm máu của cha",
-"#Father_Place_of_birth_registration": "Nơi đăng ký sinh của cha",
-"#Father_Place_of_birth": "Nơi sinh của cha",
-"#Father_Hometown": "Quê quán của cha",
-"#Father_Permanent_residence": "Nơi thường trú của cha",
-"#Father_Current_address": "Chỗ ở hiện nay của cha",
-"#Father_Occupation": "Nghề nghiệp của cha",
-"#Father_Educational_level": "Trình độ học vấn của cha",
-"#Father_Phone_number": "Số điện thoại của cha",
-"#Father_Email": "Email của cha",
-"#Electronic_invoice_number_tax_code": "Mã số hóa đơn điện tử",
-"#Registration_tax_file_code": "Mã số hồ sơ đăng ký thuế",
-"#E_customs_declaration_number": "Số tờ khai hải quan điện tử",
-"#Engine_N1": "Động cơ N1",
-"#Engine_N2": "Động cơ N2",
-"#Chassis_N0": "Khung xe N0",
-"#Content": "Nội dung",
-"#Quantity": "Số lượng",
-"#Current_employment_status": "Tình trạng công việc hiện tại",
-"#Commune": "Xã/Phường",
-"#District": "Quận/Huyện",
-"#Province": "Tỉnh/Thành phố",
-"#For_you": "Dành cho bạn",
-"#Behavior": "Hành vi",
-"#Explanation_for_the_application": "Giải trình cho đơn xin",
-"#People's_Court": "Tòa án nhân dân",
-"#Relationship_to_registrant": "Mối quan hệ với người đăng kí",
-"#Place_of_issue": 'Nơi cấp',
-"#Relationship": "Mối quan hệ",
-"#Empty": "Trống"
-}
-
-#{tag_names} and {Abstract} will be replaced
-template_blank_to_tagname = """
-Give you list of tag names, and Abstract include some [Blankx] to fill in. Your task is to choose right tag names to replace the these [Blankx]. Your response will be a list having have format [Blankx:#tagname]. If this [Blankx] don't have info, reply with [Blankx:#Empty].
-List of task names: {tag_names}
-
-Abstract: '''ĐƠN XIN VIỆC
-Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank1)
-Tôi tên là: (Blank2)
-Sinh ngày: (Blank3)
-Chỗ ở hiện nay: (Blank4)
-Số điện thoại liên hệ: (Blank5)
-Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
-
-Tôi đã tốt nghiệp loại (Blank7) tại trường (Blank8)
-Bên cạnh đó, tôi có tham gia các khóa học(Blank9)
-Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng Anh giao tiếp tốt và biết sử dụng các phần mềm kế toán.
-
-Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.'''
-
-Answer: 
-[Blank1: #Empty]
-[Blank2: #Full_Name]
-[Blank3: #Date_of_birth]
-[Blank4: #Current_address]
-[Blank5: #Phone_number]
-[Blank6: #Empty]
-[Blank7: #Educational_level]
-[Blank8: #Empty]
-[Blank9: #Empty]
-
-Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): (Blank1)
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-5. Số CMND/CCCD: (Blank7)
-6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-11. Nơi đăng ký khai sinh: (Blank13)
-12. Quê quán: (Blank14)
-13. Nơi thường trú: (Blank15)
-14. Nơi ở hiện tại: (Blank16)
-15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
-
-Answer: 
-[Blank1: #Full_Name]
-[Blank2: #Empty]
-[Blank3: #Day_of_birth]
-[Blank4: #Month_of_birth]
-[Blank5: #Year_of_birth]
-[Blank6: #Gender]
-[Blank7: #Citizen_identification_card]
-[Blank8: #Ethnicity]
-[Blank9: #Religion]
-[Blank10: #Nationality]
-[Blank11: #Marital_status]
-[Blank12: #Blood_type]
-[Blank13: #Place_of_birth_registration]
-[Blank14: #Hometown]
-[Blank15: #Permanent_residence]
-[Blank16: #Current_address]
-[Blank17: #Occupation]
-[Blank18: #Educational_level]
-
-Abstract:'''ĐƠN XIN NGHỈ HỌC
-
-Tôi tên: (Blank1)	 MSSV:	(Blank2)
-Ngành học: (Blank3)	 Lớp: 	(Blank4)
-Ngày sinh: (Blank5) 	 Nơi sinh: (Blank6)	
-Địa chỉ hộ khẩu thường trú:	(Blank7)
-Điện thoại: (Blank8)
-Nay tôi làm đơn này kính xin Ban Giám Hiệu trường cho tôi được thôi học từ học kỳ: (Blank9) năm học: 20(Blank10) – 20(Blank11)
-Lý do: (Blank12)
-Trong khi chờ đợi sự chấp thuận của nhà trường, tôi xin chân thành cảm ơn.'''
-
-Answer: 
-[Blank1: #Full_Name]
-[Blank2: #Empty]
-[Blank3: #Empty]
-[Blank4: #Empty]
-[Blank5: #Date_of_birth]
-[Blank6: #Empty]
-[Blank7: #Permanent_residence]
-[Blank8: #Phone_number]
-[Blank9: #Empty]
-[Blank10: #Empty]
-[Blank11: #Empty]
-[Blank12: #Empty]
-
-Abstract:'''
-Mẫu số 16:  Ban hành kèm theo Thông tư số 28/2015/TT-BLĐTBXH ngày 31 tháng 7 năm 2015 của Bộ trưởng Bộ Lao động-Thương binh và Xã hội
-    CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-        Độc lập - Tự do - Hạnh phúc
-
-THÔNG BÁO VỀ VIỆC TÌM KIẾM VIỆC LÀM
-Tháng hưởng trợ cấp thất nghiệp thứ: (Blank1)
-
-Kính gửi:  Trung tâm Dịch vụ việc làm (Blank2)
-Tên tôi là: (Blank3)sinh ngày (Blank4) / (Blank5) / (Blank6)
-Số chứng minh nhân dân: (Blank7)
-Ngày cấp: (Blank8)/(Blank9)/(Blank10) nơi cấp: (Blank11)
-Chỗ ở hiện nay: (Blank12)
-Số điện thoại :(Blank13)
-Theo Quyết định số(Blank14) ngày(Blank15)/(Blank16)/(Blank17) tôi được hưởng trợ cấp thất nghiệp(Blank18)tháng, kể từ ngày(Blank19)/(Blank20)/(Blank21) đến ngày(Blank22)/(Blank23)/(Blank24) tại tỉnh/thành phố(Blank25)
-Tôi thông báo kết quả tìm kiếm việc làm theo quy định, cụ thể như sau:
-(1) Đơn vị thứ nhất (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank26)
-(2) Đơn vị thứ hai (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank27)
-((Blank28)) Tên đơn vị thứ ((Blank29)): (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank30)
-Tình trạng việc làm hiện nay: (Blank31)'''
-
-Answer:
-[Blank1: #Empty]
-[Blank2: #Empty]
-[Blank3: #Full_Name]
-[Blank4: #Day_of_birth]
-[Blank5: #Month_of_birth]
-[Blank6: #Year_of_birth]
-[Blank7: #Citizen_identification_card]
-[Blank8: #Day_of_issue]
-[Blank9: #Month_of_issue]
-[Blank10: #Year_of_issue]
-[Blank11: #Empty]
-[Blank12: #Current_address]
-[Blank13: #Phone_number]
-[Blank14: #Empty]
-[Blank15: #Day_of_issue]
-[Blank16: #Month_of_issue]
-[Blank17: #Year_of_issue]
-[Blank18: #Empty]
-[Blank19: #Empty]
-[Blank20: #Empty]
-[Blank21: #Empty]
-[Blank22: #Empty]
-[Blank23: #Empty]
-[Blank24: #Empty]
-[Blank25: #Empty]
-[Blank26: #Empty]
-[Blank27: #Empty]
-[Blank28: #Empty]
-[Blank29: #Empty]
-[Blank30: #Empty]
-[Blank31: #Empty]
-
-Abstract:'''
-    CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-
-        Độc lập - Tự do - Hạnh phúc
-
-            --------------
-
-ĐƠN TỐ CÁO
-
-Kính gửi: (Blank1)
-
-Họ và tên tôi: (Blank2) Sinh ngày: (Blank3)
-
-Chứng minh nhân dân số: (Blank4)
-
-Ngày cấp: (Blank5)/(Blank6)/(Blank7) Nơi cấp: (Blank8)
-Hộ khẩu thường trú: (Blank9)
-
-Chỗ ở hiện tại: (Blank10)
-
-Số điện thoại liên hệ: (Blank11)
-
-Tôi làm đơn này tố cáo và đề nghị Quý cơ quan tiến hành điều tra, xử lý đối với hành vi vi phạm pháp luật của:
-
-Anh: (Blank12) Sinh ngày: (Blank13)
-
-CMND/CCCD: (Blank14)
-Ngày cấp: (Blank15) Nơi cấp: (Blank16)
-
-Hộ khẩu thường trú: (Blank17)
-
-Chỗ ở hiện tại: (Blank18)
-
-Vì anh  (Blank19) đã có hành vi(Blank20)
-
-Sự việc cụ thể như sau:
-
-(Blank21)
-
-(Blank22)
-
-(Blank23)
-
-Từ những sự việc trên, tôi cho rằng hành vi của anh (Blank24) có dấu hiệu vi phạm pháp luật.
-
-Tôi cam kết toàn bộ nội dung đã trình bày trên là hoàn toàn đúng sự thật và chịu trách nhiệm trước pháp luật về những điều trình bày trên. Kính mong Quý cơ quan xem xét và giải quyết theo đúng quy định pháp luật.
-
-Tôi xin chân thành cảm ơn!'''
-
-Answer:
-[Blank1: #Empty]
-[Blank2: #Full_Name]
-[Blank3: #Date_of_birth]
-[Blank4: #Citizen_identification_card]
-[Blank5: #Date_of_issue]
-[Blank6: #Month_of_issue]
-[Blank7: #Year_of_issue]
-[Blank8: #Place_of_issue]
-[Blank9: #Permanent_residence]
-[Blank10: #Current_address]
-[Blank11: #Phone_number]
-[Blank12: #Full_Name]
-[Blank13: #Date_of_birth]
-[Blank14: #Citizen_identification_card]
-[Blank15: #Date_of_issue]
-[Blank16: #Place_of_issue]
-[Blank17: #Permanent_residence]
-[Blank18: #Current_address]
-[Blank19: #Last_Name]
-[Blank20: #Empty]
-[Blank21: #Content]
-[Blank22: #Content]
-[Blank23: #Content]
-[Blank24: #Last_Name]
-
-Abstract: {Abstract}
+#full_name: Họ, chữ đệm và tên
+#alias_name: Họ, chữ đệm và tên gọi khác 
+#dob_day, #dob_month, #dob_year: Ngày sinh
+#gender: Giới tính
+#id_number: Số CMND/CCCD
+#CCCD_number: Số CCCD
+#CMND_Number: Số CMND
+#religion: Tôn giáo
+#nationality: Quốc tịch
+#marital_status: Tình trạng hôn nhân
+#blood_type: Nhóm máu 
+#birth_registration_place: Nơi đăng ký khai sinh
+#hometown: Quê quán
+#permanent_address: Nơi thường trú
+#current_address: Nơi ở hiện tại
+#occupation: Nghề nghiệp
+#education_level: Trình độ học vấn
+#place: Địa điểm khai tờ khai
+#day, #month, #year: Ngày, tháng, năm khai tờ khai
+#receiver: Kính gửi
+#relationship: Quan hệ với người được khai sinh
 """
 
 ### 2. ------------------Task: EXTRACT CONTENT------------------###
@@ -734,199 +323,7 @@ Question: {Question}
 """
 
 ### 3. ------------------Task: FILL IN BLANKS WITH TAGNAME LLM------------------###
-#{tag_names} and {Abstract} will be replaced
-template_llm_auto_blanks_to_tagnames = """
-You will be given an abstract containing placeholders in the form of [Blankx].
-Your task is to identify the appropriate tag names that should replace these placeholders. 
-Provide your response as a list with the format [Blankx: #tagname]. 
-If you cannot determine a suitable tag name, reply with [Blankx: #Empty].
-Your response only contain Answer, not include Chain of Thought.
-
-For each abstract, follow these steps:
-1. Determine how much blanks need to be filled. Ensure that you fill in all blanks.
-2. Break down the abstract and analyze the context around each [Blankx].
-3. Determine the appropriate tag name based on the context.
-4. Document your reasoning for each determination.
-5. Provide the final list of tags.
-
-<Examples>
-Abstract: '''ĐƠN XIN VIỆC
-Kính gửi: Ban lãnh đạo cùng phòng nhân sự Công ty (Blank1)
-Tôi tên là: (Blank2)
-Sinh ngày: (Blank3)
-Chỗ ở hiện nay: (Blank4)
-Số điện thoại liên hệ: (Blank5)
-Thông qua trang website của công ty, tôi biết được Quý công ty có nhu cầu tuyển dụng vị trí (Blank6). Tôi cảm thấy trình độ và kỹ năng của mình phù hợp với vị trí này. Tôi mong muốn được làm việc và cống hiến cho công ty.
-
-Tôi đã tốt nghiệp loại (Blank7) tại trường (Blank8)
-Bên cạnh đó, tôi có tham gia các khóa học(Blank9)
-Ngoài ra, tôi còn sử dụng thành thạo tin học văn phòng, tiếng Anh giao tiếp tốt và biết sử dụng các phần mềm kế toán.
-
-Tôi thực sự mong muốn được làm việc trong môi trường chuyên nghiệp của Quý công ty. Tôi rất mong nhận được lịch hẹn phỏng vấn trong một ngày gần nhất.'''
-
-Chain of Thought:
-We have 9 blanks that need to be filled.
-Blank1: This is the recipient of the letter, which is the company's HR department. Thus, the tag should be #company_name.
-Blank2: This is the name of the applicant, so the tag should be #applicant_name.
-Blank3: This is the birth date of the applicant, so the tag should be #date_of_birth.
-Blank4: This is the current address of the applicant, so the tag should be #current_address.
-Blank5: This is the contact number of the applicant, so the tag should be #contact_number.
-Blank6: This is the position the applicant is applying for, so the tag should be #position.
-Blank7: This refers to the type of degree the applicant has graduated with, so the tag should be #degree.
-Blank8: This is the university the applicant graduated from, so the tag should be #university.
-Blank9: This refers to additional courses the applicant has taken, so the tag should be #courses
-
-Answer:
-[Blank1: #company_name]
-[Blank2: #applicant_name]
-[Blank3: #date_of_birth]
-[Blank4: #current_address]
-[Blank5: #contact_number]
-[Blank6: #position]
-[Blank7: #degree]
-[Blank8: #university]
-[Blank9: #courses]
-
-Abstract:'''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): (Blank1)
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-3. Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-5. Số CMND/CCCD: (Blank7)
-6. Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-9. Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-11. Nơi đăng ký khai sinh: (Blank13)
-12. Quê quán: (Blank14)
-13. Nơi thường trú: (Blank15)
-14. Nơi ở hiện tại: (Blank16)
-15. Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)'''
-
-Chain of Thought:
-We have 18 blanks that need to be filled.
-Blank1: This is the full name of the individual, so the tag should be #full_name.
-Blank2: This is another name the individual goes by, so the tag should be #other_name.
-Blank3, Blank4, Blank5: These are the day, month, and year of birth, so the tags should be #day_of_birth, #month_of_birth, and #year_of_birth respectively.
-Blank6: This indicates the gender of the individual, so the tag should be #gender.
-Blank7: This is the ID number of the individual, so the tag should be #ID_number.
-Blank8: This refers to the individual's ethnicity, so the tag should be #ethnicity.
-Blank9: This refers to the individual's religion, so the tag should be #religion.
-Blank10: This is the individual's nationality, so the tag should be #nationality.
-Blank11: This refers to the marital status of the individual, so the tag should be #marital_status.
-Blank12: This indicates the blood type of the individual, so the tag should be #blood_type.
-Blank13: This is the place where the individual’s birth was registered, so the tag should be #place_of_birth_registration.
-Blank14: This is the hometown of the individual, so the tag should be #hometown.
-Blank15: This is the permanent residence of the individual, so the tag should be #permanent_residence.
-Blank16: This is the current address of the individual, so the tag should be #current_address.
-Blank17: This is the occupation of the individual, so the tag should be #occupation.
-Blank18: This is the educational level of the individual, so the tag should be #educational_level.
-
-Answer: 
-[Blank1: #full_name]
-[Blank2: #other_name]
-[Blank3: #day_of_birth]
-[Blank4: #month_of_birth]
-[Blank5: #year_of_birth]
-[Blank6: #gender]
-[Blank7: #ID_number]
-[Blank8: #ethnicity]
-[Blank9: #religion]
-[Blank10: #nationality]
-[Blank11: #marital_status]
-[Blank12: #blood_type]
-[Blank13: #place_of_birth_registration]
-[Blank14: #hometown]
-[Blank15: #permanent_residence]
-[Blank16: #current_address]
-[Blank17: #occupation]
-[Blank18: #educational_level]
-
-Abstract:'''
-Mẫu số 16:  Ban hành kèm theo Thông tư số 28/2015/TT-BLĐTBXH ngày 31 tháng 7 năm 2015 của Bộ trưởng Bộ Lao động-Thương binh và Xã hội
-    CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-        Độc lập - Tự do - Hạnh phúc
-
-THÔNG BÁO VỀ VIỆC TÌM KIẾM VIỆC LÀM
-Tháng hưởng trợ cấp thất nghiệp thứ: (Blank1)
-
-Kính gửi:  Trung tâm Dịch vụ việc làm (Blank2)
-Tên tôi là: (Blank3)sinh ngày (Blank4) / (Blank5) / (Blank6)
-Số chứng minh nhân dân: (Blank7)
-Ngày cấp: (Blank8)/(Blank9)/(Blank10) nơi cấp: (Blank11)
-Chỗ ở hiện nay: (Blank12)
-Số điện thoại :(Blank13)
-Theo Quyết định số(Blank14) ngày(Blank15)/(Blank16)/(Blank17) tôi được hưởng trợ cấp thất nghiệp(Blank18)tháng, kể từ ngày(Blank19)/(Blank20)/(Blank21) đến ngày(Blank22)/(Blank23)/(Blank24) tại tỉnh/thành phố(Blank25)
-Tôi thông báo kết quả tìm kiếm việc làm theo quy định, cụ thể như sau:
-(1) Đơn vị thứ nhất (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank26)
-(2) Đơn vị thứ hai (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank27)
-((Blank28)) Tên đơn vị thứ ((Blank29)): (Tên đơn vị, địa chỉ, người trực tiếp liên hệ, vị trí công việc dự tuyển, kết quả).
-(Blank30)
-Tình trạng việc làm hiện nay: (Blank31)'''
-
-Chain of Thought:
-We have 31 blanks that need to be filled.
-Blank1: This refers to the month of receiving unemployment benefits. The tag should be #unemployment_benefit_month.
-Blank2: This is addressed to the job service center. The tag should be #job_service_center.
-Blank3: This is the name of the individual. The tag should be #full_name.
-Blank4, Blank5, Blank6: These are the day, month, and year of birth respectively. The tags should be #day_of_birth, #month_of_birth, and #year_of_birth.
-Blank7: This is the individual's CCCD number. The tag should be #CCCD_number.
-Blank8, Blank9, Blank10: These refer to the day, month, and year of ID issuance respectively. The tags should be #issue_day, #issue_month, and #issue_year.
-Blank11: This is the place where the ID was issued. The tag should be #issue_place.
-Blank12: This is the current residence of the individual. The tag should be #current_residence.
-Blank13: This is the phone number of the individual. The tag should be #phone_number.
-Blank14: This is the decision number related to unemployment benefits. The tag should be #decision_number.
-Blank15, Blank16, Blank17: These refer to the day, month, and year the unemployment benefits start. The tags should be #start_day, #start_month, and #start_year.
-Blank18: This indicates the duration of unemployment benefits in months. The tag should be #unemployment_benefit_duration.
-Blank19, Blank20, Blank21: These refer to the day, month, and year the unemployment benefits end. The tags should be #end_day, #end_month, and #end_year.
-Blank22, Blank23, Blank24: These are additional references to the end day, month, and year of the benefits. They can also be tagged as #end_day, #end_month, and #end_year to maintain consistency, assuming this section refers to the same dates.
-Blank25: This refers to the province or city. The tag should be #province_city.
-Blank26, Blank27, Blank28, Blank29, Blank30: These blanks seem to refer to details of job search results and can be complex to determine without additional context. The safe approach is to tag them as #Empty unless more context is provided.
-Blank31: This refers to the current employment status of the individual. The tag should be #current_employment_status.
-
-Answer:
-[Blank1: #unemployment_benefit_month]
-[Blank2: #job_service_center]
-[Blank3: #full_name]
-[Blank4: #day_of_birth]
-[Blank5: #month_of_birth]
-[Blank6: #year_of_birth]
-[Blank7: #CCCD_number]
-[Blank8: #issue_day]
-[Blank9: #issue_month]
-[Blank10: #issue_year]
-[Blank11: #issue_place]
-[Blank12: #current_residence]
-[Blank13: #phone_number]
-[Blank14: #decision_number]
-[Blank15: #start_day]
-[Blank16: #start_month]
-[Blank17: #start_year]
-[Blank18: #unemployment_benefit_duration]
-[Blank19: #end_day]
-[Blank20: #end_month]
-[Blank21: #end_year]
-[Blank22: #end_day]
-[Blank23: #end_month]
-[Blank24: #end_year]
-[Blank25: #province_city]
-[Blank26: #Empty]
-[Blank27: #Empty]
-[Blank28: #Empty]
-[Blank29: #Empty]
-[Blank30: #Empty]
-[Blank31: #current_employment_status]
-</Examples>
-
-Abstract: {Abstract}
-"""
-
-
-### 4. ------------------Task: FILL IN BLANKS WITH TAGNAME LLM------------------###
-"""form_tagging_prompt = 
-
-
-
-
+form_tagging_prompt = """
 Bạn được cung cấp một form cần điền thông tin.
 Nhiệm vụ của bạn là gán các tên tag thích hợp cho từng trường dữ liệu liên quan đến người dùng hoặc cơ quan/tổ chức với định dạng [userX_tagname] hoặc [orgX_tagname]. 
 Đối với các trường không liên quan đến bất kỳ người dùng hay cơ quan/tổ chức nào, sử dụng tag name [#another].
@@ -950,98 +347,6 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 14. Nơi ở hiện tại: ..........
 15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
 .........., ngày ..........tháng..........năm..........
-Answer:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): [user1_full_name]
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
-3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
-5. Số CMND/CCCD: [user1_id]
-6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
-9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
-11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
-12. Quê quán: [user1_hometown]
-13. Nơi thường trú: [user1_permanent_address]
-14. Nơi ở hiện tại: [user1_current_address]
-15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
-[user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
-Form:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: ..........
-Họ, chữ đệm, tên người yêu cầu: ..........
-Nơi cư trú: ..........
-Giấy tờ tùy thân: ..........
-Quan hệ với người được khai sinh: ..........
-Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: ..........
-Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........
-Giới tính: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi sinh: ..........
-Quê quán: ..........
-Họ, chữ đệm, tên người mẹ: ..........
-Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi cư trú: ..........
-Họ, chữ đệm, tên người cha: ..........
-Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi cư trú: ..........
-Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
-Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: .........., ngày .......... tháng .......... năm ..........
-Answer:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: [org1_name]
-Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
-Nơi cư trú: [user1_address]
-Giấy tờ tùy thân: [user1_id]
-Quan hệ với người được khai sinh: [user1_relationship_user2]
-Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: [user2_full_name]
-Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
-Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
-Nơi sinh: [user2_birthplace]
-Quê quán: [user2_hometown]
-Họ, chữ đệm, tên người mẹ: [user3_full_name]
-Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
-Nơi cư trú: [user3_address]
-Họ, chữ đệm, tên người cha: [user4_full_name]
-Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
-Nơi cư trú: [user4_address]
-Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
-Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: [user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
-</Examples>
-
-Form: {Abstract}
-Answer:
-"""
-
-form_tagging_prompt = """
-Bạn được cung cấp một form cần điền thông tin.
-Nhiệm vụ của bạn là gán các tên tag thích hợp cho từng trường dữ liệu liên quan đến người dùng hoặc cơ quan/tổ chức với định dạng [userX_tagname] hoặc [orgX_tagname] tại các vị trí cần điền. 
-Đối với các trường không liên quan đến bất kỳ người dùng hay cơ quan/tổ chức nào, sử dụng tag name [#another].
-<Instruction>
-Trước tiên, hãy xác định có bao nhiêu người dùng và cơ quan/tổ chức trong form này.
-Sau đó, xác định các tag name phù hợp cho từng trường dữ liệu trong form dựa trên ngữ cảnh và dữ liệu người dùng hoặc cơ quan/tổ chức.
-Nếu không có tag name phù hợp, hãy tạo tag name mới dựa trên quy tắc chuẩn hóa đã đề ra.
-</Instruction>
-<Examples>
-Form:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): ..........
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
-3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
-5. Số CMND/CCCD: ..........
-6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
-9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
-11. Nơi đăng ký khai sinh: ..........
-12. Quê quán: ..........
-13. Nơi thường trú: ..........
-14. Nơi ở hiện tại: ..........
-15. Nghề nghiệp: .......... 16. Trình độ học vấn: .......... 
-.........., ngày .......... tháng.......... năm..........
 Answer:
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
 1. Họ, chữ đệm và tên(1): [user1_full_name]
@@ -1239,3 +544,425 @@ Số khung (Chassis N0): C0_123
 LHH_content = """Tôi tên là Lê Hữu Hưng, giới tính nam, sinh viên năm 3, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai (lãnh thổ Việt Nam), số CMND là 12345. Học tại trường HCMUS, và có số điện thoại là 037."""
 
 
+#Hung
+personal_information_tagnames = """
+# [full_name]: Full name of the user.
+# [alias_name]: Alternate name of the user.
+# [dob_day]: Day of birth of the user.
+# [dob_month]: Month of birth of the user.
+# [dob_year]: Year of birth of the user.
+# [dob]: Date of birth (day, month, year) of the user.
+# [dob_text]: Date of birth (day, month, year) of the user is written by text
+# [gender]: Gender of the user.
+# [id_number]: ID card number of the user.
+# [ethnicity]: Ethnicity of the user.
+# [religion]: Religion of the user.
+# [nationality]: Nationality of the user.
+# [marital_status]: Marital status of the user.
+# [blood_type]: Blood type of the user.
+# [birth_registration_place]: Birth registration place of the user.
+# [birth_registration_place_ward]: Birth registration place ward of the user.
+# [birth_registration_place_district]: Birth registration place district of the user.
+# [birth_registration_place_province]: Birth registration place province of the user.
+# [hometown]: Hometown of the user.
+# [permanent_address]: Permanent address of the user.
+# [current_address]: Current address of the user.
+# [current_address_ward]: Current address ward of the user. 
+# [current_address_district]: Current address ward of the user.
+# [current_address_province]: Current address ward of the user.
+# [occupation]: Occupation of the user.
+# [education_level]: Education level of the user.
+# [class]: Class name of the user.
+# [school]:School name of the user.
+# [course]: Course of the the user.
+# [faculty]: Faculty of the the user.
+# [phone]: Phone mobile of the user
+# [phone_home]: Phone home of the user
+# [email]: Email of the user
+# [driving_license_number]: driving license number of the user
+# """
+
+remaining_tag_names = """
+# [receiver]: The individual or organization that will receive or process the form filled out by the user.
+# [request_content]: The specific content or request made by the user in the form. This could be details about what the form is being submitted for, such as a request for a new ID card, a change in personal information, etc.
+# [day]: day when the form is filled out by the user.
+# [month]: month when the form is filled out by the user.
+# [year]: year the form is filled out by the user.
+# [place]: Place where the form is filled out by the user.
+# [reason]: Reason when the user is filled out form.
+# """
+
+'''
+template_PI_prompt = """
+You have been provided with a form that contains placeholders (........) to be filled in with personal information.
+Below is a list of tag names that represent different types of personal information:
+
+{personal_information_tagnames}
+
+Instructions:
+
+Your task is to accurately identify and replace the placeholders in the form with the appropriate tag names. Follow these steps:
+
+Identify Users: Determine the number of unique users mentioned in the form. Assign each user a unique identifier (e.g., user1, user2, etc.).
+
+Match Personal Information: For each placeholder (........), check if it corresponds to a personal information tag name from the provided list. If it does, replace the placeholder with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user. If the placeholder does not match any tag from the personal_information_tagnames, replace it with [another].
+
+Handle Non-Personal Information: If a placeholder does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
+If the placeholder does not match any tag from the remaining_tag_names, replace it with [another].
+
+Ensure that each placeholder is correctly replaced according to the user's unique identifier and the nature of the information.
+
+Form:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): ..........
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
+3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
+5. Số CMND/CCCD: ..........
+6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
+9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
+11. Nơi đăng ký khai sinh: ..........
+12. Quê quán: ..........
+13. Nơi thường trú: ..........
+14. Nơi ở hiện tại: ..........
+15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
+.........., ngày ..........tháng..........năm..........
+Answer:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND/CCCD: [user1_id]
+6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
+9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
+11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+12. Quê quán: [user1_hometown]
+13. Nơi thường trú: [user1_permanent_address]
+14. Nơi ở hiện tại: [user1_current_address]
+15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
+[place], ngày [day] tháng [month] năm [year]
+
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: ..........
+Họ, chữ đệm, tên người yêu cầu: ..........
+Nơi cư trú: ..........
+Giấy tờ tùy thân: ..........
+Quan hệ với người được khai sinh: ..........
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: ..........
+Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........
+Giới tính: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi sinh: ..........
+Quê quán: ..........
+Họ, chữ đệm, tên người mẹ: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Họ, chữ đệm, tên người cha: ..........
+Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
+Nơi cư trú: ..........
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: .........., ngày .......... tháng .......... năm ..........
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: [receiver]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_current_address]
+Giấy tờ tùy thân: [user1_id]
+Quan hệ với người được khai sinh: [user1_relationship_user2]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi sinh: [user2_birthplace]
+Quê quán: [user2_hometown]
+Họ, chữ đệm, tên người mẹ: [user3_full_name]
+Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
+Nơi cư trú: [user3_current_address]
+Họ, chữ đệm, tên người cha: [user4_full_name]
+Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
+Nơi cư trú: [user4_current_address]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: [place], ngày [day] tháng [month] năm [year]
+
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
+
+Kính gửi: ..........
+
+Tôi tên là: ..........
+Cơ quan quản lý trực tiếp (nếu có): ..........
+
+Quyết định cử đi học số .......... ngày .......... tháng .......... năm .......... của        ..........
+Tên trường đến học, nước:       ..........
+Trình độ đào tạo:       ..........
+Ngành/nghề đào tạo:     ..........
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     ..........
+Ngày nhập học:  ..........
+Lý do đề nghị gia hạn:..........
+
+Thời gian đề nghị gia hạn: từ tháng ........../năm 20.......... đến tháng ........../năm 20..........
+Kinh phí trong thời gian gia hạn :      ..........
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
+
+Địa chỉ liên lạc của tôi:       ..........
+E-mail: ..........
+Điện thoại cố định:..........    Điện thoại di động:..........
+
+                .........., ngày.......... tháng.......... năm..........
+Người làm đơn
+(Ký và ghi rõ họ tên)
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
+
+Kính gửi: [receiver]
+
+Tôi tên là: [user1_full_name]
+Cơ quan quản lý trực tiếp (nếu có): [user1_organization]
+
+Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của  [user1_decis sion_issuer]
+Tên trường đến học, nước:       [user1_school]
+Trình độ đào tạo:       [user1_education_level]
+Ngành/nghề đào tạo:     [user1_course]
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     [another]
+Ngày nhập học:  [another]
+Lý do đề nghị gia hạn:[reason]
+
+Thời gian đề nghị gia hạn: từ tháng [another]/năm 20[another] đến tháng [another]/năm 20[another]
+Kinh phí trong thời gian gia hạn :      [another]
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
+
+Địa chỉ liên lạc của tôi:       [user1_current_address]
+E-mail: [user1_email]
+Điện thoại cố định: [user1_phone_home]   Điện thoại di động: [user1_phone]
+
+
+
+                [place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
+(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
+Kính gửi: ................(Cơ sở giáo dục)
+Họ và tên cha mẹ (hoặc người chăm sóc): ................
+Hộ khẩu thường trú tại:................
+Là cha/mẹ (hoặc người chăm sóc) của em:................
+Sinh ngày:................
+Dân tộc:................
+Hiện đang học tại lớp:................
+Trường:................
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
+ 
+XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+Nơi trẻ mẫu giáo có hộ khẩu thường trú
+(Ký tên, đóng dấu)	................,ngày....tháng................năm................
+Người làm đơn
+(Ký, ghi rõ họ tên)
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
+(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
+Kính gửi: [receiver] (Cơ sở giáo dục)
+Họ và tên cha mẹ (hoặc người chăm sóc): [user1_full_name]
+Hộ khẩu thường trú tại: [user1_permanent_address]
+Là cha/mẹ (hoặc người chăm sóc) của em: [user2_full_name]
+Sinh ngày: [user2_dob]
+Dân tộc: [user2_ethnicity]
+Hiện đang học tại lớp: [user2_class]
+Trường: [user2_school]
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
+ 
+XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
+Nơi trẻ mẫu giáo có hộ khẩu thường trú
+(Ký tên, đóng dấu)	[place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký, ghi rõ họ tên)
+
+Form:
+{form}
+Answer:
+"""
+'''
+
+template_PI_prompt = """
+You have been provided with a form where all placeholders have been initially replaced with [#another]. 
+Your task is to identify and replace [#another] with the most appropriate tag names from the provided list or suggest a new tag name if necessary.
+
+Below is a list of tag names that represent different types of personal information:
+
+{personal_information_tagnames}
+
+Instructions:
+
+1. **Identify Users**: Determine the number of unique users mentioned in the form. Assign each user a unique identifier (e.g., user1, user2, etc.).
+
+2. **Replace [#another] with Tag Names**: For each occurrence of [#another], check if it corresponds to a personal information tag name from the provided list. If it does, replace [#another] with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user.
+
+3. **Handle Non-Personal Information**: If [#another] does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
+
+4. **Suggest New Tags**: If no existing tag name matches, suggest a new tag name that could be added to the list. If no suitable tag name is suggested, leave it as [#another].
+
+Ensure that each placeholder is correctly replaced according to the user's unique identifier and the nature of the information.
+
+Form:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [#another]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [#another]
+3. Ngày, tháng, năm sinh: [#another]/[#another]/[#another]; 4. Giới tính (Nam/nữ): [#another]
+5. Số CMND/CCCD: [#another]
+6. Dân tộc: [#another]; 7. Tôn giáo: [#another] 8. Quốc tịch: [#another]
+9. Tình trạng hôn nhân: [#another] 10. Nhóm máu (nếu có): [#another]
+11. Nơi đăng ký khai sinh: [#another]
+12. Quê quán: [#another]
+13. Nơi thường trú: [#another]
+14. Nơi ở hiện tại: [#another]
+15. Nghề nghiệp: [#another] 16. Trình độ học vấn: [#another]
+[#another], ngày [#another]tháng[#another]năm[#another]
+Answer:
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND/CCCD: [user1_id]
+6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
+9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
+11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+12. Quê quán: [user1_hometown]
+13. Nơi thường trú: [user1_permanent_address]
+14. Nơi ở hiện tại: [user1_current_address]
+15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
+[place], ngày [day] tháng [month] năm [year]
+
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: [#another]
+Họ, chữ đệm, tên người yêu cầu: [#another]
+Nơi cư trú: [#another]
+Giấy tờ tùy thân: [#another]
+Quan hệ với người được khai sinh: [#another]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [#another]
+Ngày, tháng, năm sinh: [#another]/[#another]/[#another] ghi bằng chữ: [#another]
+Giới tính: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi sinh: [#another]
+Quê quán: [#another]
+Họ, chữ đệm, tên người mẹ: [#another]
+Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi cư trú: [#another]
+Họ, chữ đệm, tên người cha: [#another]
+Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi cư trú: [#another]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: [#another], ngày [#another] tháng [#another] năm [#another]
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH
+Kính gửi: [receiver]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_current_address]
+Giấy tờ tùy thân: [user1_id]
+Quan hệ với người được khai sinh: [user1_relationship_user2]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi sinh: [user2_birthplace]
+Quê quán: [user2_hometown]
+Họ, chữ đệm, tên người mẹ: [user3_full_name]
+Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
+Nơi cư trú: [user3_current_address]
+Họ, chữ đệm, tên người cha: [user4_full_name]
+Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
+Nơi cư trú: [user4_current_address]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+Làm tại: [place], ngày [day] tháng [month] năm [year]
+
+Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
+
+Kính gửi: [#another]
+
+Tôi tên là: [#another]
+Cơ quan quản lý trực tiếp (nếu có): [#another]
+
+Quyết định cử đi học số [#another] ngày [#another] tháng [#another] năm [#another] của        [#another]
+Tên trường đến học, nước:       [#another]
+Trình độ đào tạo:       [#another]
+Ngành/nghề đào tạo:     [#another]
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     [#another]
+Ngày nhập học:  [#another]
+Lý do đề nghị gia hạn:[#another]
+
+Thời gian đề nghị gia hạn: từ tháng [#another]/năm 20[#another] đến tháng [#another]/năm 20[#another]
+Kinh phí trong thời gian gia hạn :      [#another]
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
+
+Địa chỉ liên lạc của tôi:       [#another]
+E-mail: [#another]
+Điện thoại cố định:[#another]    Điện thoại di động:[#another]
+
+                [#another], ngày[#another] tháng[#another] năm[#another]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+Answer:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
+
+Kính gửi: [receiver]
+
+Tôi tên là: [user1_full_name]
+Cơ quan quản lý trực tiếp (nếu có): [user1_organization]
+
+Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của  [user1_decis sion_issuer]
+Tên trường đến học, nước:       [user1_school]
+Trình độ đào tạo:       [user1_education_level]
+Ngành/nghề đào tạo:     [user1_course]
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     [another]
+Ngày nhập học:  [another]
+Lý do đề nghị gia hạn:[reason]
+
+Thời gian đề nghị gia hạn: từ tháng [another]/năm 20[another] đến tháng [another]/năm 20[another]
+Kinh phí trong thời gian gia hạn :      [another]
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
+
+Địa chỉ liên lạc của tôi:       [user1_current_address]
+E-mail: [user1_email]
+Điện thoại cố định: [user1_phone_home]   Điện thoại di động: [user1_phone]
+
+
+
+                [place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+Form:
+{form}
+Answer:
+"""

@@ -1,0 +1,30 @@
+TÊN CƠ QUAN/TỔ CHỨC
+
+Số:........../..........	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+
+V/v đề nghị cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ.	.........., ngày..........tháng..........năm..........                                          
+
+                        Kính gửi: Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) 		         
+1. Tên cơ quan/tổ chức: [org1_name]
+2. Loại hình cơ quan/tổ chức: [org1_type]
+3. Địa chỉ: [org1_address]
+4. Điện thoại: [org1_phone] 5. Email: [org1_email]
+6. Quyết định thành lập (hoạt động) số: [org1_establishment_number]
+Cơ quan cấp: [org1_establishment_authority] Ngày cấp: [org1_establishment_date] 
+Lĩnh vực hoạt động: [org1_field]
+Đề nghị Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ, cụ thể như sau:
+7. Họ và tên (chữ in hoa): [user1_full_name]
+8. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year] 9. Giới tính (Nam/Nữ) [user1_gender]
+10. Quốc tịch: [user1_nationality]
+11. Hộ chiếu/giấy tờ có giá trị đi lại quốc tế số: [user1_passport]
+Cơ quan cấp: [user1_passport_authority] Có giá trị đến ngày: [user1_passport_expiry]
+12. Trình độ chuyên môn: [user1_qualification]
+13. Làm việc tại cơ quan/tổ chức: [org1_name]
+Địa chỉ: [org1_address]
+14.Vị trí công việc: [user1_position]
+15. Thời hạn làm việc từ ngày [user1_start_date] tháng [user1_start_month] năm [user1_start_year] đến ngày [user1_end_date] tháng [user1_end_month] năm [user1_end_year]
+
+16. Nơi đăng ký nhận giấy phép lao động: [user1_receive_address]
+17. Lý do đề nghị (chỉ áp dụng đối với trường hợp cấp lại giấy phép lao động): [user1_reason]

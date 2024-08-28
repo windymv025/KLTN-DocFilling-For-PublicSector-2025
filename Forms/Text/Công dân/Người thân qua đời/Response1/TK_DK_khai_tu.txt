@@ -1,0 +1,32 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+
+TỜ KHAI ĐĂNG KÝ KHAI TỬ
+
+Kính gửi: [org1_name]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]	
+Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]	
+Nơi cư trú: [user1_address]
+	
+Giấy tờ tùy thân: [user1_id]	
+	
+Quan hệ với người đã chết: [user1_relationship_user2]	
+Đề nghị cơ quan đăng ký khai tử cho người có tên dưới đây: 
+Họ, chữ đệm, tên: [user2_full_name]	
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year]	
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]	
+Nơi cư trú cuối cùng: [user2_last_address]	
+	
+Giấy tờ tùy thân: [user2_id]	
+	
+Đã chết vào lúc: [user2_death_time] giờ [user2_death_minute], ngày [user2_death_day] tháng [user2_death_month] năm [user2_death_year]	
+Nơi chết: [user2_death_place]	
+	
+Nguyên nhân chết: [user2_death_cause]	
+Số Giấy báo tử/Giấy tờ thay thế Giấy báo tử: [user2_death_certificate_number] do [user2_death_certificate_issuer] cấp ngày [user2_death_certificate_day] tháng [user2_death_certificate_month] năm [user2_death_certificate_year]	
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình.
+Làm tại: [user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
+
+	Người yêu cầu
+(Ký, ghi rõ họ, chữ đệm, tên)

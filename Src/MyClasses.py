@@ -142,6 +142,15 @@ class LLM_Gemini:
         response = self.model.generate_content(prompt_parts)
         # print(response.text)
         return response.text
+    
+    def generate_user_tagname_Hung(self, form, personal_information_tagnames=CONST.personal_information_tagnames,remaining_tag_names=CONST.remaining_tag_names):
+        prompt_parts = CONST.template_PI_prompt.format(personal_information_tagnames=personal_information_tagnames,
+                                                        remaining_tag_names=remaining_tag_names,
+                                                        form = form)
+        # print(prompt_parts)
+        response = self.model.generate_content(prompt_parts)
+        # print(response.text)
+        return response.text
 
 class Text_Processing:
     def __init__(self):
@@ -160,8 +169,12 @@ class Text_Processing:
             return a
         else:
             return b
-        
+
     def generate_uniform(self,Question):
+        # Chuyển tất cả các dạng ......(number).... về dạng ..........(number)
+        Question = Question.replace('…','..')
+        # print(new_form)
+        Question = re.sub(r'\.{2,}\((\d+)\)\.{2,}', r'............(\1)', Question)
         count = 0
         # Initialize a counter for numbering the placeholders
         placeholder_counter = 1
@@ -180,23 +193,46 @@ class Text_Processing:
             # Increment the counter
             placeholder_counter += 1
 
+            #Kiểm tra trên hàng đó còn . tiếp hoặc … đó hay không --> vẫn là chỗ điền này.
             while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
                 end_index  += 1
 
-            if (end_index+1 < (len(Question))) and (Question[end_index] == "\n") and (Question[end_index+1] == "…" or Question[end_index+1] == "."):
+            # if (end_index+1 < (len(Question))) and (Question[end_index] == "\n") and (Question[end_index+1] == "…" or Question[end_index+1] == "."):
+            #     end_index  += 1
+            #Kiểm tra trường hợp xuống hàng vẫn còn ....
+            while (end_index+1 < (len(Question))) and (Question[end_index] == "\n"):
+              while (Question[end_index+1] == "…" or Question[end_index+1] == "."):
                 end_index  += 1
+              if Question[end_index+1] == "\n":
+                end_index += 1
+                continue
+              if (Question[end_index+1] != "…" and Question[end_index+1] != "."):
+                break
 
-            while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
-                end_index  += 1
-            if end_index == 212:
-                a = 2+3
+            #Đã Hàng mới (Đã xuống hàng mà vẫn là chỗ điền thì cả cái hàng là của nó luôn)
+            while end_index < len(Question) and Question[end_index] == "\n":
+              # Kiểm tra hàng sau
+              next_line_start = end_index + 1
+              next_line_end = Question.find("\n", next_line_start)
+              if next_line_end == -1:  # Nếu không có dấu xuống dòng tiếp theo, chỉ đến cuối văn bản
+                next_line_end = len(Question)
+              next_line = Question[next_line_start:next_line_end]
+
+              # Kiểm tra xem hàng tiếp theo có phải toàn khoảng trắng, dấu chấm hoặc chấm lửng không
+              if next_line.strip() == "" or all(c in ".…" for c in next_line.strip()):
+                  end_index = next_line_end
+              else:
+                  break
+
+            # while (end_index < (len(Question))) and (Question[end_index] == "…" or Question[end_index] == "."):
+            #     end_index  += 1
             try:
                 Question = Question[:start_index] + Question[end_index:]
             except:
                 Question = Question[:start_index]
             # Find the indices of the next placeholders
             first_index = self.min_uniform(Question.find(type1), Question.find(type2))
-        Question = re.sub(r'\(Blank\d+\)', '..........', Question)
+        Question = re.sub(r'\(Blank\d+\)', '[#another]', Question)
         return Question, count
     
     def getMissItem(self, value_keys_to_context_value, translations, list_values):

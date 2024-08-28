@@ -20,8 +20,8 @@ B. Thông tin về người chưa đủ 14 tuổi đề nghị cấp hộ chiế
 5. Quốc tịch [user2_nationality] 6. Dân tộc [user2_ethnicity] 7. Tôn giáo [user2_religion]
 8. Địa chỉ đăng ký thường trú [user2_permanent_address]
 9. Địa chỉ đăng ký tạm trú [user2_temporary_address]
-10. Cha: họ và tên [user3_full_name] sinh ngày [user3_dob_day]/[user3_dob_month]/[user3_dob_year]
-    Mẹ: họ và tên [user4_full_name] sinh ngày [user4_dob_day]/[user4_dob_month]/[user4_dob_year]
+10. Cha: họ và tên [user3_last_name] sinh ngày [user3_dob_day]/[user3_dob_month]/[user3_dob_year]
+    Mẹ: họ và tên [user4_last_name] sinh ngày [user4_dob_day]/[user4_dob_month]/[user4_dob_year]
 11. Hộ chiếu phổ thông lần gần nhất (nếu có) số [user2_passport_number] cấp ngày [user2_passport_issued_day]/[user2_passport_issued_month]/[user2_passport_issued_year]
 12. Nội dung đề nghị(4) [user1_request]
 	Tôi xin cam đoan những thông tin trên là đúng sự thật.

@@ -1,0 +1,20 @@
+SOCIALIST REPUBLIC OF VIETNAM
+Independent - Freedom - Happiness
+---------------
+ĐƠN ĐỀ NGHỊ CẤP GIẤY PHÉP LÁI XE QUỐC TẾ
+APPLICATION FORM FOR ISSUANCE OF INTERNATIONAL DRIVING PERMIT
+Kính gửi (To): [org1_name]
+Tôi là (Full name): [user1_full_name]
+Ngày tháng năm sinh (date of birth) [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số hộ chiếu (Passport No.) [user1_passport_number] cấp ngày (Issuing date): ngày (date): [user1_passport_issuing_date_day] tháng (month) [user1_passport_issuing_date_month] năm (year) [user1_passport_issuing_date_year] nơi cấp (Place of issue): [user1_passport_issuing_place] hoặc Số định danh cá nhân (personal indentification No.): [user1_id]
+Hiện có giấy phép lái xe cơ giới đường bộ số (Current driving licence No.): [user1_driving_license_number]
+Cơ quan cấp (Issuing Office): [user1_driving_license_issuing_office]
+Tại (Place of issue): [user1_driving_license_issuing_place]
+Cấp ngày (Issuing date): ngày (date): [user1_driving_license_issuing_date_day] tháng (month) [user1_driving_license_issuing_date_month] năm (year) [user1_driving_license_issuing_date_year]
+Lý do xin cấp giấy phép lái xe (Reason of application for International driving permit:
+[user1_reason]
+ 
+ 	[user1_place], date [user1_day] month [user1_month] year [user1_year]
+NGƯỜI LÀM ĐƠN (APPLICANT)
+(Ký và ghi rõ họ tên)
+(Signature and Full name)

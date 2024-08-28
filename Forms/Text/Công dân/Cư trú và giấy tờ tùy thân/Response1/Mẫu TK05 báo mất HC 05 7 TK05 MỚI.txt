@@ -1,0 +1,25 @@
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN TRÌNH BÁO MẤT HỘ CHIẾU PHỔ THÔNG
+
+
+Kính gửi(1): [org1_name]
+
+1. Họ [user1_last_name] Chữ đệm và tên [user1_first_name] (2) 2. Giới tính(Nam/Nữ): [user1_gender]  
+3. Sinh ngày [user1_dob_day] tháng [user1_dob_month] năm [user1_dob_year] Nơi sinh (tỉnh, thành phố)(3) [user1_birthplace]
+4. Số ĐDCN/CMND (nếu có): [user1_id] Ngày cấp: [user1_id_issued_date]
+5. Nơi cư trú hiện nay [user1_current_address]
+6. Số điện thoại: [user1_phone_number]
+7. Thông tin về hộ chiếu bị mất(4):
+    Số hộ chiếu: [user1_passport_number] ngày cấp [user1_passport_issued_date]
+    Cơ quan cấp: [user1_passport_issued_by]
+8. Hộ chiếu trên đã bị mất vào hồi: [user1_passport_lost_time] giờ [user1_passport_lost_hour] phút, ngày [user1_passport_lost_day]/[user1_passport_lost_month]/[user1_passport_lost_year]
+    9. Hoàn cảnh và lý do cụ thể bị mất hộ chiếu: 
+[user1_passport_lost_reason]
+Tôi xin cam đoan những thông tin trên là đúng sự thật.
+
+
+    	  Làm tại [user1_place] ngày [user1_day] tháng [user1_month] năm [user1_year]
+Người trình báo(5)
+(Ký và ghi rõ họ và tên)

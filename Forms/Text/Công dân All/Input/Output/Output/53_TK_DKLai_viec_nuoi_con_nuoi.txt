@@ -1,0 +1,32 @@
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM          
+     Độc lập - Tự do - Hạnh phúc 
+    
+TỜ KHAI ĐĂNG KÝ LẠI VIỆC NUÔI CON NUÔI
+          
+Kính gửi :[receiver]
+Họ, chữ đệm, tên người yêu cầu:	[user1_full_name]
+Nơi cư trú:	[user1_current_address]
+Giấy tờ tùy thân :	[user1_id]
+Đề nghị đăng ký lại việc nuôi con nuôi cho người có tên dưới đây:
+Họ, chữ đệm, tên:[user2_full_name]	 Giới tính:	[user2_gender]
+Ngày, tháng, năm sinh:[user2_dob_day]/[user2_dob_month]/[user2_dob_year]	 Quốc tịch:	[user2_nationality]
+Nơi sinh:[user2_birthplace] 	
+Giấy khai sinh/Giấy tờ tùy thân2:	[user2_id]
+Nơi cư trú:[user2_current_address]	
+	
+Số định danh cá nhân:	[user2_id_number]
+Là con nuôi của:
+Họ, chữ đệm, tên cha nuôi:	[user3_full_name]
+Ngày, tháng, năm sinh:[user3_dob_day]/[user3_dob_month]/[user3_dob_year]	 Quốc tịch:	[user3_nationality]
+Giấy tờ tùy thân 2:	[user3_id]
+Nơi cư trú:	[user3_current_address]
+Họ, chữ đệm, tên mẹ nuôi:[user4_full_name]
+Ngày, tháng, năm sinh: [user4_dob_day]/[user4_dob_month]/[user4_dob_year]	Quốc tịch:	[user4_nationality]
+Giấy tờ tùy thân2:[user4_id] 	 
+Nơi cư trú:	[user4_current_address]
+Đã đăng ký nuôi con nuôi tại :	[user1_current_address]
+Giấy chứng nhận nuôi con nuôi trong nước/Quyết định nuôi con nuôi có yếu tố nước ngoài số[user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm[user1_decision_year]
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và đã nộp đầy đủ các giấy tờ hiện có. Tôi chịu trách nhiệm trước pháp luật về việc cam đoan của mình.
+Làm tại [place], ngày [day]tháng[month]năm[year] 
+Người yêu cầu                             
+Ký, ghi rõ họ, chữ đệm, tên)

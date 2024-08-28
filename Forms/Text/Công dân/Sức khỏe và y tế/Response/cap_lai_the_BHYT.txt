@@ -1,0 +1,30 @@
+BẢO HIỂM XÃ HỘI TỈNH
+PHÒNG........../BHXH HUYỆN..........
+-------	CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc 
+---------------
+Số: ........../TNHS	.........., ngày .......... tháng .......... năm ..........
+ 
+GIẤY TIẾP NHẬN HỒ SƠ VÀ HẸN TRẢ KẾT QUẢ CẤP, CẤP LẠI 
+VÀ ĐỔI THẺ BẢO HIỂM Y TẾ
+Người nộp hồ sơ: [user1_full_name] 
+Tên đơn vị (nếu là đại diện cho đơn vị nộp hồ sơ): [org1_name] Mã đơn vị: [org1_code]
+Họ và tên người tham gia bảo hiểm y tế: [user2_full_name]
+Mã thẻ bảo hiểm y tế: [user2_bhyt_code]
+Nơi đăng ký khám bệnh, chữa bệnh bảo hiểm y tế ban đầu: [user2_bhyt_hospital]
+Địa chỉ: [user2_bhyt_address]
+Số điện thoại liên hệ: [user2_phone]
+Email (nếu có) [user2_email]
+Nội dung yêu cầu giải quyết: [user2_request]
+
+2. Thời hạn giải quyết hồ sơ theo quy định: [user2_processing_time] ngày
+3. Thời gian nhận hồ sơ: ngày [user1_day] tháng [user1_month] năm [user1_year]
+4. Thời gian trả kết quả giải quyết hồ sơ: ngày [user1_day] tháng [user1_month] năm [user1_year]
+
+Đối với kết quả là tiền giải quyết chế độ, đề nghị nhận tại:
+Số tài khoản: [user2_bank_account]  Ngân hàng [user2_bank_name]
+Tên chủ tài khoản: [user2_bank_account_name]
+ 
+Đã nhận kết quả giải quyết vào ngày [user1_day] tháng [user1_month] năm [user1_year]
+NGƯỜI NHẬN
+(Ký và ghi rõ họ tên)
