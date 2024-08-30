@@ -1,5 +1,0 @@
-[user1_relationship_user2]: [parent-child]
-[user1_relationship_user3]: [not_relationship]
-[user1_relationship_user4]: [not_relationship]
-[user2_relationship_user3]: [child-father]
-[user2_relationship_user4]: [child-mother] 

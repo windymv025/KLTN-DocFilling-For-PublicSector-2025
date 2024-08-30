@@ -8,6 +8,17 @@ personal_information_tagnames = """
 [dob_text]: Date of birth (day, month, year) of the user is written by text
 [gender]: Gender of the user.
 [id_number]: ID card number of the user.
+[id_issue_day]: Day of ID card issuance of the user.
+[id_issue_month]: Month of ID card issuance of the user.
+[id_issue_year]: Year of ID card issuance of the user.
+[id_issue_date]: Full date of ID card issuance (day, month, year) of the user.
+[id_issue_place]: Place of ID card issuance of the user.
+[passport_number]: Passport number of the user.
+[passport_issue_day]: Day of passport issuance of the user.
+[passport_issue_month]: Month of passport issuance of the user.
+[passport_issue_year]: Year of passport issuance of the user.
+[passport_issue_date]: Full date of passport issuance (day, month, year) of the user.
+[passport_issue_place]: Place of passport issuance of the user.
 [ethnicity]: Ethnicity of the user.
 [religion]: Religion of the user.
 [nationality]: Nationality of the user.
@@ -25,44 +36,81 @@ personal_information_tagnames = """
 [current_address_province]: Current address ward of the user.
 [occupation]: Occupation of the user.
 [education_level]: Education level of the user.
-[class]: Class name of the user.
-[school]:School name of the user.
-[course]: Course of the the user.
-[faculty]: Faculty of the the user.
 [phone]: Phone mobile of the user
 [phone_home]: Phone home of the user
 [email]: Email of the user
 [driving_license_number]: driving license number of the user
 """
 
+school_personal_information_tagnames = """
+[full_name]: Full name of the user.
+[alias_name]: Alternate name of the user.
+[dob_day]: Day of birth of the user.
+[dob_month]: Month of birth of the user.
+[dob_year]: Year of birth of the user.
+[dob]: Date of birth (day, month, year) of the user.
+[dob_text]: Date of birth (day, month, year) of the user is written by text
+[gender]: Gender of the user.
+[id_number]: ID card number of the user.
+[id_number_issue_day]: Day of ID card number issuance of the user.
+[id_number_issue_month]: Month of ID card number issuance of the user.
+[id_number_issue_year]: Year of ID card number issuance of the user.
+[id_number_issue_date]: Full date of ID card number issuance (day, month, year) of the user.
+[id_number_issue_place]: Place of ID card number issuance of the user.
+[phone]: Phone mobile of the user
+[phone_home]: Phone home of the user
+[email]: Email of the user
+[class]: Class name of the user.
+[school]:School name of the user.
+[course]: Course of the the user.
+[duration_of_course]
+[faculty]: Faculty of the the user.
+[student_id_number]:
+[education_level]: 
+[duration_of_course]: Duration of the course of the user.
+[graduation_date]: Graduation date of the user.
+[degree]: Degree obtained by the user.
+[grade]: Grade obtained by the user.
+[year_of_study]: Year of study of the user.
+[semester]: Semester of the user.
+[school_year]: School year of the user.
+[supervisor_name]: Supervisor's name of the user.
+[school_address]: School address of the user.
+[school_phone]: School phone number of the user.
+"""
+
 remaining_tag_names = """
 [receiver]: The individual or organization that will receive or process the form filled out by the user.
 [request_content]: The specific content or request made by the user in the form. This could be details about what the form is being submitted for, such as a request for a new ID card, a change in personal information, etc.
+[reason]: Reason provided by the user for filling out the form.
 [day]: day when the form is filled out by the user.
 [month]: month when the form is filled out by the user.
 [year]: year the form is filled out by the user.
 [place]: Place where the form is filled out by the user.
-[reason]: Reason when the user is filled out form.
+[decision_number]: Decision number relevant to the user's request.
+[decision_day]: Day when the decision was made, relevant to the user.
+[decision_month]: Month when the decision was made, relevant to the user.
+[decision_year]: Year when the decision was made, relevant to the user.
+[decision_issuer]: The individual or organization that issued the decision relevant to the user. 
 """
 
 template_PI_prompt = """
-You have been provided with a form that contains placeholders (........) to be filled in with personal information. Below is a list of tag names that represent different types of personal information:
-
-{personal_information_tagnames}
-
 Instructions:
 
-Your task is to accurately identify and replace the placeholders in the form with the appropriate tag names. Follow these steps:
+The provided list I provided(the tagname part is before the : , the definition part is after).
 
 Identify Users: Determine the number of unique users mentioned in the form. Assign each user a unique identifier (e.g., user1, user2, etc.).
 
-Match Personal Information: For each placeholder (........), check if it corresponds to a personal information tag name from the provided list. If it does, replace the placeholder with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user. If the placeholder does not match any tag from the personal_information_tagnames, replace it with [another].
+Match Personal Information: For each placeholder (........), check if it corresponds to a personal information tag name from the provided list {personal_information_tagnames}. If it does, replace the placeholder with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user.
 
-Handle Non-Personal Information: If a placeholder does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
-If the placeholder does not match any tag from the remaining_tag_names, replace it with [another].
+Handle Non-Personal Information: If the placeholder does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
+
+Replacement with [another]: If the placeholder does not match any tag from {personal_information_tagnames} or {remaining_tag_names}, always replace it with [another].
 
 Ensure that each placeholder is correctly replaced according to the user's unique identifier and the nature of the information.
 
+
+<Example>
 Form:
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
 1. Họ, chữ đệm và tên(1): ..........
@@ -91,7 +139,9 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 14. Nơi ở hiện tại: [user1_current_address]
 15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
 [place], ngày [day] tháng [month] năm [year]
+</Example>
 
+<Example>
 Form:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
@@ -140,7 +190,9 @@ Nơi cư trú: [user4_current_address]
 Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
 Làm tại: [place], ngày [day] tháng [month] năm [year]
+</Example>
 
+<Example>
 Form:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
@@ -199,11 +251,12 @@ E-mail: [user1_email]
 Điện thoại cố định: [user1_phone_home]   Điện thoại di động: [user1_phone]
 
 
-
                 [place], ngày [day] tháng [month] năm [year]
 Người làm đơn
 (Ký và ghi rõ họ tên)
+</Example>
 
+<Example>
 Form:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
@@ -246,7 +299,9 @@ Nơi trẻ mẫu giáo có hộ khẩu thường trú
 (Ký tên, đóng dấu)	[place], ngày [day] tháng [month] năm [year]
 Người làm đơn
 (Ký, ghi rõ họ tên)
+<Example>
 
+<Example>
 Form:
 {form}
 Answer:

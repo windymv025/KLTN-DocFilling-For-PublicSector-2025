@@ -1,8 +1,0 @@
-```
-[user1_relationship_user2]: [not_relationship]
-[user1_relationship_user3]: [not_relationship]
-[user1_relationship_user4]: [not_relationship]
-[user2_relationship_user3]: [child-mother]
-[user2_relationship_user4]: [child-father]
-[user3_relationship_user4]: [wife-husband]
-``` 
