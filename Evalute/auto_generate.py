@@ -7,6 +7,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import FAISS
 import constant_value as CONST
 from Prompt import *
 from dotenv import load_dotenv
@@ -16,6 +17,63 @@ load_dotenv()
 gemini_key = os.getenv("GEMINI_KEY")
 
 llm = GoogleGenerativeAI(model = 'gemini-1.5-flash', max_retries= 2, timeout= None, max_tokens = None, google_api_key = gemini_key)
+
+# Tạo retriever
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = gemini_key)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 200)
+splits = text_splitter.create_documents([residence_identification_tagnames, school_tagnames, health_and_medicial, vehicle_driver_tagnames, job_tagnames])
+vectostore = FAISS.from_documents(splits, embeddings)
+retriever = vectostore.as_retriever()
+
+template = """
+You are an expert at classifying documents into their appropriate categories. There are five types of documents you need to distinguish:
+
+Residence and ID
+Education
+Health and Medical
+Vehicle and Driving
+Employment
+I will provide you with a description of common information typically found in each type of document.
+
+Context: {context}
+
+Your task is to analyze the provided form and accurately determine which of the five document types it belongs to.
+
+Form: {form}
+"""
+
+prompt = PromptTemplate.from_template(template)
+
+
+chain = (
+    (
+        {
+            "context" : retriever,
+            "form": RunnablePassthrough()
+        }
+    )
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+form = """
+                        TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
+
+I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
+[01]. Họ và tên (viết chữ in hoa): ............................................	[02]. Giới tính: ............................................
+[03]. Ngày, tháng, năm sinh: ...../...../......	  [04]. Quốc tịch: ............................................
+[05]. Dân tộc: ........................	[06]. Số CCCD/ĐDCN/Hộ chiếu: .........................................	
+[07]. Điện thoại: ............................	[08]. Email (nếu có): ............................................	
+[09]. Nơi đăng ký khai sinh: [09.1]. Xã: .........................	[09.2]. Huyện: ................................ [09.3]. Tỉnh: ........................
+[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): ..................................................
+[11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: ............................
+[12]. Số nhà, đường/phố, thôn/xóm: ............................................	
+[13]. Xã: ..........................	[14]	Huyện: .............................	[15]. Tỉnh: ....................................... 	
+[16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
+"""
+
+print(chain.invoke(form))
 
 # Function to read file contents
 def read_file(file_path):
@@ -53,7 +111,7 @@ def auto_generate_tag_names(llm = llm, folder_dir = "Forms/Text/Input/Output", s
                 print("111111111111111111111111111")
             print("End with: ", filename)
 
-auto_generate_tag_names(start = 0, end = 1)
+# auto_generate_tag_names(start = 40, end = 41)
 
 def auto_identify_relationship(llm = llm, folder_dir = "Forms/Text/Input/Output/TagName", save_dir = "Forms/Text/Input/Output/", start = 0, end = 10):
     for index,filename in enumerate(os.listdir(folder_dir)[start:end]):

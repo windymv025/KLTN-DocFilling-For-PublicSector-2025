@@ -6,7 +6,7 @@ Guide the LLM to create and define new tag names for specific types of informati
 Steps:
 Identify the Specific Information:
 
-Review the form and determine the exact type of data that needs a tag name. Focus on data that is clearly defined by the form’s context.
+Review the form and determine the exact type of data that needs a tag name. Focus on data that is clearly defined by the form's context.
 Generate a Descriptive Tag Name:
 
 Create a new tag name that accurately reflects the required information. Use square brackets to enclose the tag name.
