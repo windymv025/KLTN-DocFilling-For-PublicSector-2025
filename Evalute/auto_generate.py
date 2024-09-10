@@ -18,44 +18,46 @@ gemini_key = os.getenv("GEMINI_KEY")
 
 llm = GoogleGenerativeAI(model = 'gemini-1.5-flash', max_retries= 2, timeout= None, max_tokens = None, google_api_key = gemini_key)
 
-# Tạo retriever
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = gemini_key)
-text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 200)
-splits = text_splitter.create_documents([residence_identification_tagnames, school_tagnames, health_and_medicial, vehicle_driver_tagnames, job_tagnames])
-vectostore = FAISS.from_documents(splits, embeddings)
-retriever = vectostore.as_retriever()
+def identify_type_form(llm):
+    # Tạo retriever
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key = gemini_key)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap = 200)
+    splits = text_splitter.create_documents([residence_identification_tagnames, study_tagnames, health_and_medical_tagnames, vehicle_driver_tagnames, job_tagnames])
+    vectostore = FAISS.from_documents(splits, embeddings)
+    retriever = vectostore.as_retriever()
+    template = """
+    You are an expert at classifying documents into their appropriate categories. There are five types of documents you need to distinguish:
 
-template = """
-You are an expert at classifying documents into their appropriate categories. There are five types of documents you need to distinguish:
+    1. Residence and ID Number
+    2. Education
+    3. Health and Medical
+    4. Vehicle and Driving
+    5. Employment
+    I will provide you with a description of common information typically found in each type of document.
 
-Residence and ID
-Education
-Health and Medical
-Vehicle and Driving
-Employment
-I will provide you with a description of common information typically found in each type of document.
+    Context: {context}
 
-Context: {context}
+    Your task is to analyze the provided form and accurately determine which of the five document types it belongs to.
 
-Your task is to analyze the provided form and accurately determine which of the five document types it belongs to.
+    Form: {form}
+    """
 
-Form: {form}
-"""
-
-prompt = PromptTemplate.from_template(template)
+    prompt = PromptTemplate.from_template(template)
 
 
-chain = (
-    (
-        {
-            "context" : retriever,
-            "form": RunnablePassthrough()
-        }
+    chain = (
+        (
+            {
+                "context" : retriever,
+                "form": RunnablePassthrough()
+            }
+        )
+        | prompt
+        | llm
+        | StrOutputParser()
     )
-    | prompt
-    | llm
-    | StrOutputParser()
-)
+    return chain
+
 
 form = """
                         TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
@@ -73,8 +75,7 @@ I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BH
 [16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
 """
 
-print(chain.invoke(form))
-
+# chain = identify_type_form(llm)
 # Function to read file contents
 def read_file(file_path):
     try:
@@ -102,16 +103,16 @@ def auto_generate_tag_names(llm = llm, folder_dir = "Forms/Text/Input/Output", s
             file_dir = folder_dir + '/' + filename
             response_dir = folder_dir + '/TagName/' + filename
             text = read_file(file_dir)
-            prompt = PromptTemplate.from_template(template_PI_prompt)
+            prompt = PromptTemplate.from_template(health_medical_template_prompt)
             chain = prompt | llm | StrOutputParser()
             try:
-                response = chain.invoke({"personal_information_tagnames": personal_information_tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
+                response = chain.invoke({"health_and_medical_tagnames": health_and_medical_tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
                 write_file(response_dir, response)
             except Exception as e:
                 print("111111111111111111111111111")
             print("End with: ", filename)
 
-# auto_generate_tag_names(start = 40, end = 41)
+auto_generate_tag_names(start = 35, end = 36)
 
 def auto_identify_relationship(llm = llm, folder_dir = "Forms/Text/Input/Output/TagName", save_dir = "Forms/Text/Input/Output/", start = 0, end = 10):
     for index,filename in enumerate(os.listdir(folder_dir)[start:end]):

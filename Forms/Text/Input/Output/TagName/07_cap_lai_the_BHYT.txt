@@ -1,0 +1,50 @@
+## Output with Tag Names
+
+**BẢO HIỂM XÃ HỘI TỈNH**
+**PHÒNG........../BHXH HUYỆN..........**
+-------	CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc 
+---------------
+Số: ........../TNHS	.........., ngày .......... tháng .......... năm ..........
+GIẤY TIẾP NHẬN HỒ SƠ VÀ HẸN TRẢ KẾT QUẢ CẤP, CẤP LẠI 
+VÀ ĐỔI THẺ BẢO HIỂM Y TẾ
+Người nộp hồ sơ: [receiver_full_name] 
+Tên đơn vị (nếu là đại diện cho đơn vị nộp hồ sơ): [receiver_unit_name] Mã đơn vị: [receiver_unit_code]
+Họ và tên người tham gia bảo hiểm y tế: [user1_full_name]
+Mã thẻ bảo hiểm y tế: [user1_health_insurance_card_number]
+Nơi đăng ký khám bệnh, chữa bệnh bảo hiểm y tế ban đầu: [user1_health_insurance_registration_place]
+Địa chỉ: [user1_current_address]
+Số điện thoại liên hệ: [user1_phone]
+Email (nếu có) [user1_email]
+Nội dung yêu cầu giải quyết: [request_content]
+2. Thời hạn giải quyết hồ sơ theo quy định: [decision_duration] ngày
+3. Thời gian nhận hồ sơ: ngày [day] tháng [month] năm [year]
+4. Thời gian trả kết quả giải quyết hồ sơ: ngày [decision_day] tháng [decision_month] năm [decision_year]
+Đối với kết quả là tiền giải quyết chế độ, đề nghị nhận tại:
+Số tài khoản: [user1_bank_account]  Ngân hàng [user1_bank_name]
+Tên chủ tài khoản: [user1_full_name]
+Đã nhận kết quả giải quyết vào ngày [decision_day] tháng [decision_month] năm [decision_year]
+NGƯỜI NHẬN
+(Ký và ghi rõ họ tên) 
+
+
+**Explanation of Tag Names:**
+
+* **[receiver_full_name]**: Full name of the person or organization submitting the form.
+* **[receiver_unit_name]**: Name of the unit (if applicable) representing the person submitting the form.
+* **[receiver_unit_code]**: Code of the unit (if applicable) representing the person submitting the form.
+* **[user1_full_name]**: Full name of the user applying for health insurance.
+* **[user1_health_insurance_card_number]**: Health insurance card number of the user.
+* **[user1_health_insurance_registration_place]**: Place where the user registered for health insurance.
+* **[user1_current_address]**: Current address of the user.
+* **[user1_phone]**: Phone number of the user.
+* **[user1_email]**: Email address of the user.
+* **[request_content]**: Content or specific request of the user in the form.
+* **[decision_duration]**: Duration for processing the request.
+* **[decision_day]**: Day of the decision related to the user's request.
+* **[decision_month]**: Month of the decision related to the user's request.
+* **[decision_year]**: Year of the decision related to the user's request.
+* **[user1_bank_account]**: Bank account number of the user.
+* **[user1_bank_name]**: Bank name of the user. 
+
+This approach ensures consistency and accuracy by using a structured naming convention for all placeholders, making it easier to manage and analyze the information collected. 
