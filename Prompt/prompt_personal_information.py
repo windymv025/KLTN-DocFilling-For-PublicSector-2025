@@ -832,6 +832,140 @@ Action 3: If no match is found, generate a new tag name in the format [new_tagna
 Task: Ensure that each placeholder is accurately replaced according to the user's unique identifier and the nature of the information provided.
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
+
+Example:
+Input:
+GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
+A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
+Tên chủ xe :..........
+Năm sinh:..........
+Địa chỉ : ..........
+Số CCCD/CMND/Hộ chiếu của chủ xe:..........
+cấp ngày ........../........../.......... tại ..........
+Số CCCD/CMND/Hộ chiếu của người làm thủ tục ..........
+cấp ngày ........../.......... /.......... tại..........
+Điện thoại của chủ xe :..........
+Điện thoại của người làm thủ tục :..........
+Số hóa đơn điện tử mã số thuế:..........
+Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp:..........
+Số tờ khai hải quan điện tử cơ quan cấp:..........
+Số sêri Phiếu KTCLXX Cơ quan cấp ..........
+Số giấy phép kinh doanh vận tải cấp ngày ........../.......... / ..........tại..........
+Số máy 1 (Engine N0):..........
+Số máy 2 (Engine N0):..........
+Số khung (Chassis N0):..........
+Output:
+GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
+A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
+Tên chủ xe : [user1_full_name]
+Năm sinh:[user1_dob_year]
+Địa chỉ : [user1_current_address]
+Số CCCD/CMND/Hộ chiếu của chủ xe:[user1_id_number]
+cấp ngày [user1_id_number_issue_day]/[user1_id_number_issue_month]/[user1_id_number_issue_year] tại [user1_id_number_issue_place]
+Số CCCD/CMND/Hộ chiếu của người làm thủ tục [user2_id_number]
+cấp ngày [user2_id_number_issue_day]/[user2_id_number_issue_month]/[user2_id_number_issue_year] tại [user2_id_number_issue_place]
+Điện thoại của chủ xe :[user1_phone]
+Điện thoại của người làm thủ tục :[user2_phone]
+Số hóa đơn điện tử mã số thuế: [user1_tax_invoice_number]
+Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp: [user1_tax_declaration_code_issuing_agency]
+Số tờ khai hải quan điện tử cơ quan cấp: [user1_electronic_customs_declaration_number_issuing_agency]
+Số sêri Phiếu KTCLXX Cơ quan cấp [user1_ktclxx_serial_number]
+Số giấy phép kinh doanh vận tải cấp ngày [user1_transport_license_issue_day]/[user1_transport_license_issue_month]/[user1_transport_license_issue_year] tại [user1_transport_license_issue_place]
+Số máy 1 (Engine N0):[user1_vehicle_engine_number1]
+Số máy 2 (Engine N0):[user1_vehicle_engine_number2]
+Số khung (Chassis N0):[user1_vehicle_chassis_number] 
+
+Example:
+Input:
+MẪU ĐƠN ĐỀ NGHỊ ĐỔI, CẤP LẠI GIẤY PHÉP LÁI XE (1)
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+ĐƠN ĐỀ NGHỊ ĐỔI (CẤP LẠI) GIẤY PHÉP LÁI XE (1)
+Kính gửi: Sở Giao thông vận tải..........
+Tôi là:..........
+Ngày tháng năm sinh: ..........
+Số Căn cước công dân hoặc Số Chứng minh nhân dân: ..........
+hoặc Hộ chiếu số.......... ngày cấp.......... nơi cấp: ..........
+Đã học lái xe tại:..........năm..........
+Hiện đã có giấy phép lái xe hạng:..........số:..........
+do:.......... cấp ngày........../........../..........
+Đề nghị cho tôi được đổi, cấp lại giấy phép lái xe cơ giới đường bộ hạng:..........
+Lý do:..........
+Vi phạm hành chính trong lĩnh vực giao thông đường bộ với hình thức tước quyền sử dụng giấy phép lái xe(có/không):..........
+    .........., ngày .......... tháng .......... năm 20 ..........
+NGƯỜI LÀM ĐƠN
+(Ký và ghi rõ họ, tên)
+
+Output:
+MẪU ĐƠN ĐỀ NGHỊ ĐỔI, CẤP LẠI GIẤY PHÉP LÁI XE (1)
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+ĐƠN ĐỀ NGHỊ ĐỔI (CẤP LẠI) GIẤY PHÉP LÁI XE (1)
+Kính gửi: Sở Giao thông vận tải [receiver]
+Tôi là: [user1_full_name]
+Ngày tháng năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số Căn cước công dân hoặc Số Chứng minh nhân dân: [user1_id_number]
+hoặc Hộ chiếu số [user1_passport_number] ngày cấp [user1_passport_issue_day]/[user1_passport_issue_month]/[user1_passport_issue_year] nơi cấp: [user1_passport_issue_place]
+Đã học lái xe tại: [user1_driving_school] năm [user1_driving_school_year]
+Hiện đã có giấy phép lái xe hạng: [user1_driving_license_category] số: [user1_driving_license_number]
+do: [user1_driving_license_issuer] cấp ngày [user1_driving_license_issue_day]/[user1_driving_license_issue_month]/[user1_driving_license_issue_year]
+Đề nghị cho tôi được đổi, cấp lại giấy phép lái xe cơ giới đường bộ hạng: [user1_new_driving_license_category]
+Lý do: [user1_reason]
+Vi phạm hành chính trong lĩnh vực giao thông đường bộ với hình thức tước quyền sử dụng giấy phép lái xe(có/không): [user1_driving_license_revoked]
+    [user1_driving_license_revoked_details], ngày [user1_driving_license_revoked_day] tháng [user1_driving_license_revoked_month] năm 20 [user1_driving_license_revoked_year]
+NGƯỜI LÀM ĐƠN
+(Ký và ghi rõ họ, tên)
+
+Example:
+Input:
+SOCIALIST REPUBLIC OF VIETNAM
+Independent - Freedom - Happiness
+---------------
+ĐƠN ĐỀ NGHỊ CẤP GIẤY PHÉP LÁI XE QUỐC TẾ
+APPLICATION FORM FOR ISSUANCE OF INTERNATIONAL DRIVING PERMIT
+Kính gửi (To):..........
+Tôi là (Full name): ..........
+Ngày tháng năm sinh (date of birth) ..........
+Số hộ chiếu (Passport No.) ..........cấp ngày (Issuing date): ngày (date): .......... tháng (month).......... năm (year).......... nơi cấp (Place of issue):.......... hoặc Số định danh cá nhân (personal indentification No.):..........
+Hiện có giấy phép lái xe cơ giới đường bộ số (Current driving licence No.): ..........
+Cơ quan cấp (Issuing Office): ..........
+Tại (Place of issue): ..........
+Cấp ngày (Issuing date): ngày (date): .......... tháng (month).......... năm (year)..........
+Lý do xin cấp giấy phép lái xe (Reason of application for International driving permit:
+..........
+ 	.........., date.......... month.......... year..........
+NGƯỜI LÀM ĐƠN (APPLICANT)
+(Ký và ghi rõ họ tên)
+(Signature and Full name)
+
+Output:
+
+SOCIALIST REPUBLIC OF VIETNAM
+Independent - Freedom - Happiness
+---------------
+ĐƠN ĐỀ NGHỊ CẤP GIẤY PHÉP LÁI XE QUỐC TẾ
+APPLICATION FORM FOR ISSUANCE OF INTERNATIONAL DRIVING PERMIT
+Kính gửi (To): [receiver]
+Tôi là (Full name): [user1_full_name]
+Ngày tháng năm sinh (date of birth) [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số hộ chiếu (Passport No.) [user1_passport_number] cấp ngày (Issuing date): ngày (date): [user1_passport_issue_day] tháng (month) [user1_passport_issue_month] năm (year) [user1_passport_issue_year] nơi cấp (Place of issue): [user1_passport_issue_place] hoặc Số định danh cá nhân (personal indentification No.): [user1_id_number]
+Hiện có giấy phép lái xe cơ giới đường bộ số (Current driving licence No.): [user1_driving_license_number]
+Cơ quan cấp (Issuing Office): [user1_driving_license_issuer]
+Tại (Place of issue): [user1_driving_license_place]
+Cấp ngày (Issuing date): ngày (date): [user1_driving_license_issue_day] tháng (month) [user1_driving_license_issue_month] năm (year) [user1_driving_license_issue_year]
+Lý do xin cấp giấy phép lái xe (Reason of application for International driving permit:
+[user1_reason]
+ 	[place], date [day] month [month] year [year]
+NGƯỜI LÀM ĐƠN (APPLICANT)
+(Ký và ghi rõ họ tên)
+(Signature and Full name)
+
+Example:
+Input:
+{form}
+Output:
 """
 
 job_template_prompt = """
@@ -872,4 +1006,207 @@ Action 3: If no match is found, generate a new tag name in the format [new_tagna
 Task: Ensure that each placeholder is accurately replaced according to the user's unique identifier and the nature of the information provided.
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
+
+Example:
+Input:
+TÊN CƠ QUAN/TỔ CHỨC
+
+Số:........../..........	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+
+V/v đề nghị cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ.	.........., ngày..........tháng..........năm..........                                          
+
+                        Kính gửi: Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) 		         
+1. Tên cơ quan/tổ chức: ..........
+2. Loại hình cơ quan/tổ chức:..........
+3. Địa chỉ: ..........
+4. Điện thoại: ..........5. Email:..........
+6. Quyết định thành lập (hoạt động) số: ..........
+Cơ quan cấp: ..........Ngày cấp: 
+Lĩnh vực hoạt động: ..........
+Đề nghị Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ, cụ thể như sau:
+7. Họ và tên (chữ in hoa): ..........
+8. Ngày, tháng, năm sinh: .......... 9. Giới tính (Nam/Nữ)..........
+10. Quốc tịch: ..........
+11. Hộ chiếu/giấy tờ có giá trị đi lại quốc tế số:..........
+Cơ quan cấp: ..........Có giá trị đến ngày:..........
+12. Trình độ chuyên môn: ..........
+13. Làm việc tại cơ quan/tổ chức: ..........
+Địa chỉ: ..........
+14.Vị trí công việc: ..........
+15. Thời hạn làm việc từ ngày..........tháng..........năm..........đến ngày..........tháng..........năm..........
+16. Nơi đăng ký nhận giấy phép lao động:..........
+17. Lý do đề nghị (chỉ áp dụng đối với trường hợp cấp lại giấy phép lao động):..........
+Output:
+TÊN CƠ QUAN/TỔ CHỨC
+
+Số: [document_number]/[document_year]	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+
+V/v đề nghị cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ.	[place], ngày [day] tháng [month] năm [year]                                          
+
+                        Kính gửi: Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) 		         
+1. Tên cơ quan/tổ chức: [organisation_name]
+2. Loại hình cơ quan/tổ chức: [organisation_type]
+3. Địa chỉ: [organisation_address]
+4. Điện thoại: [organisation_phone] 5. Email: [organisation_email]
+6. Quyết định thành lập (hoạt động) số: [organisation_decision_number]
+Cơ quan cấp: [organisation_decision_issuer] Ngày cấp: [organisation_decision_date]
+Lĩnh vực hoạt động: [organisation_field]
+Đề nghị Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ, cụ thể như sau:
+7. Họ và tên (chữ in hoa): [expert_full_name]
+8. Ngày, tháng, năm sinh: [expert_dob_day]/[expert_dob_month]/[expert_dob_year] 9. Giới tính (Nam/Nữ) [expert_gender]
+10. Quốc tịch: [expert_nationality]
+11. Hộ chiếu/giấy tờ có giá trị đi lại quốc tế số: [expert_passport_number]
+Cơ quan cấp: [expert_passport_issuer] Có giá trị đến ngày: [expert_passport_expiry_date]
+12. Trình độ chuyên môn: [expert_education_level]
+13. Làm việc tại cơ quan/tổ chức: [organisation_name]
+Địa chỉ: [organisation_address]
+14.Vị trí công việc: [expert_position]
+15. Thời hạn làm việc từ ngày [expert_work_start_day] tháng [expert_work_start_month] năm [expert_work_start_year] đến ngày [expert_work_end_day] tháng [expert_work_end_month] năm [expert_work_end_year]
+16. Nơi đăng ký nhận giấy phép lao động: [organisation_address]
+17. Lý do đề nghị (chỉ áp dụng đối với trường hợp cấp lại giấy phép lao động): [reason]
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐỀ NGHỊ HƯỞNG TRỢ CẤP THẤT NGHIỆP
+Kính gửi: Trung tâm Dịch vụ việc làm ..........
+Tên tôi là:..........sinh ngày .......... /........../..........
+Số định danh cá nhân/Chứng minh nhân dân: ..........cấp ngày.......... tháng.......... năm.......... Nơi cấp:..........
+Số sổ BHXH: ..........
+Số điện thoại:..........Địa chỉ email (nếu có)..........
+Số tài khoản (ATM nếu có).......... tại ngân hàng:..........
+Trình độ đào tạo:..........
+Ngành nghề đào tạo:..........
+Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú) (1):..........
+Ngày ........../........../.........., tôi đã chấm dứt hợp đồng lao động/hợp đồng làm việc với (tên đơn vị)..........
+tại địa chỉ:..........
+Lý do chấm dứt hợp đồng lao động/hợp đồng làm việc:..........
+Loại hợp đồng lao động/hợp đồng làm việc:..........
+Số tháng đóng bảo hiểm thất nghiệp..........tháng.
+Nơi đề nghị nhận trợ cấp thất nghiệp (BHXH quận/huyện hoặc qua thẻ ATM):..........
+Kèm theo Đề nghị này là (2).......... và Sổ bảo hiểm xã hội của tôi. Đề nghị quý Trung tâm xem xét, giải quyết hưởng trợ cấp thất nghiệp cho tôi theo đúng quy định.
+Tôi cam đoan nội dung ghi trên là hoàn toàn đúng sự thật, nếu sai tôi sẽ chịu trách nhiệm trước pháp luật.
+	 .........., ngày .......... tháng .......... năm ..........
+ Người đề nghị
+  (Ký, ghi rõ họ tên)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐỀ NGHỊ HƯỞNG TRỢ CẤP THẤT NGHIỆP
+Kính gửi: Trung tâm Dịch vụ việc làm [receiver]
+Tên tôi là: [user1_full_name] sinh ngày [user1_dob_day] / [user1_dob_month] / [user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_number_issue_day] tháng [user1_id_number_issue_month] năm [user1_id_number_issue_year] Nơi cấp: [user1_id_number_issue_place]
+Số sổ BHXH: [user1_social_insurance_number]
+Số điện thoại: [user1_phone_number] Địa chỉ email (nếu có) [user1_email]
+Số tài khoản (ATM nếu có) [user1_bank_account_number] tại ngân hàng: [user1_bank_name]
+Trình độ đào tạo: [user1_education_level]
+Ngành nghề đào tạo: [user1_major]
+Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú) (1): [user1_current_address]
+Ngày [user1_unemployment_application_day] / [user1_unemployment_application_month] / [user1_unemployment_application_year], tôi đã chấm dứt hợp đồng lao động/hợp đồng làm việc với [previous_employer_name]
+tại địa chỉ: [previous_employer_address]
+Lý do chấm dứt hợp đồng lao động/hợp đồng làm việc: [user1_unemployment_reason]
+Loại hợp đồng lao động/hợp đồng làm việc: [user1_contract_type]
+Số tháng đóng bảo hiểm thất nghiệp [user1_unemployment_insurance_months] tháng.
+Nơi đề nghị nhận trợ cấp thất nghiệp (BHXH quận/huyện hoặc qua thẻ ATM): [user1_unemployment_benefit_receiver]
+Kèm theo Đề nghị này là (2) [request_content] và Sổ bảo hiểm xã hội của tôi. Đề nghị quý Trung tâm xem xét, giải quyết hưởng trợ cấp thất nghiệp cho tôi theo đúng quy định.
+Tôi cam đoan nội dung ghi trên là hoàn toàn đúng sự thật, nếu sai tôi sẽ chịu trách nhiệm trước pháp luật.
+	 [place], ngày [day] tháng [month] năm [year]
+ Người đề nghị
+  (Ký, ghi rõ họ tên)
+
+Example:
+Input:
+MẪU TỜ TRÌNH CẤP CHỨNG CHỈ THẨM TRA VIÊN ATGT ĐƯỜNG BỘ
+..........(2)
+..........(1)
+-------------	
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+Số:            /TTr-..........	.........., ngày..........tháng..........năm..........
+TỜ TRÌNH
+Cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ
+Kính gửi: Cục Đường bộ Việt Nam
+Căn cứ Nghị định số 11/2010/NĐ-CP ngày 24/02/2010 của Chính phủ quy định về quản lý và bảo vệ kết cấu hạ tầng giao thông đường bộ (đã được Chính phủ sửa đổi, bổ sung bởi Nghị định số 100/2013/NĐ-CP ngày 03/9/2013, Nghị định số 64/2016/NĐ-CP ngày 01/7/2016, Nghị định số 125/2018/NĐ-CP ngày 19/9/2018, Nghị định số 117/2021/NĐ-CP ngày 22/12/2021 và Nghị định số........../2022/NĐ-CP ngày........../........../2022);
+Thực hiện Kế hoạch đào tạo số........../.......... ngày.......... tháng.......... năm .......... của .......... (1)
+
+Căn cứ Quyết định số........../QĐ-.......... ngày.......... tháng.......... năm.......... của ..........(1) về việc công nhận kết quả thi thẩm tra viên an toàn giao thông đường bộ của lớp.........., khóa..........;(1).........., đề nghị Cục Đường bộ Việt Nam xem xét, cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ với các nội dung dưới đây:
+1. Tên cơ sở đào tạo:..........(1) ;
+Địa chỉ:.......... ;
+Số điện thoại:.......... ; Số Fax:.......... ; Email.......... ;
+2. Tóm tắt quá trình đào tạo (chương trình, kế hoạch, số lượng học viên tham gia khóa học, kết quả thi).
+3. Số lượng chứng chỉ đề nghị cấp: ..........chứng chỉ.
+Danh sách học viên đề nghị cấp chứng chỉ theo Quyết định công nhận kết quả thi số........../QĐ-.......... ngày .......... tháng .......... năm 20.......... (học viên có kết quả thi đạt yêu cầu)./.
+Output: 
+MẪU TỜ TRÌNH CẤP CHỨNG CHỈ THẨM TRA VIÊN ATGT ĐƯỜNG BỘ
+[organisation_name] (2)
+[organisation_address] (1)
+-------------	
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+---------------
+Số: [document_number]/TTr-[document_year]	[place], ngày [day] tháng [month] năm [year]
+TỜ TRÌNH
+Cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ
+Kính gửi: Cục Đường bộ Việt Nam
+Căn cứ Nghị định số 11/2010/NĐ-CP ngày 24/02/2010 của Chính phủ quy định về quản lý và bảo vệ kết cấu hạ tầng giao thông đường bộ (đã được Chính phủ sửa đổi, bổ sung bởi Nghị định số 100/2013/NĐ-CP ngày 03/9/2013, Nghị định số 64/2016/NĐ-CP ngày 01/7/2016, Nghị định số 125/2018/NĐ-CP ngày 19/9/2018, Nghị định số 117/2021/NĐ-CP ngày 22/12/2021 và Nghị định số [new_legal_document_number]/2022/NĐ-CP ngày [new_legal_document_day]/[new_legal_document_month]/2022);
+Thực hiện Kế hoạch đào tạo số [organisation_training_plan_number]/[organisation_training_plan_year] ngày [organisation_training_plan_day] tháng [organisation_training_plan_month] năm [organisation_training_plan_year] của [organisation_name] (1)
+
+Căn cứ Quyết định số [organisation_decision_number]/QĐ-[organisation_decision_year] ngày [organisation_decision_day] tháng [organisation_decision_month] năm [organisation_decision_year] của [organisation_name] (1) về việc công nhận kết quả thi thẩm tra viên an toàn giao thông đường bộ của lớp [training_class], khóa [training_course]; (1) [reason], đề nghị Cục Đường bộ Việt Nam xem xét, cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ với các nội dung dưới đây:
+1. Tên cơ sở đào tạo: [organisation_name] (1) ;
+Địa chỉ: [organisation_address] ;
+Số điện thoại: [organisation_phone] ; Số Fax: [organisation_fax] ; Email [organisation_email] ;
+2. Tóm tắt quá trình đào tạo (chương trình, kế hoạch, số lượng học viên tham gia khóa học, kết quả thi).
+3. Số lượng chứng chỉ đề nghị cấp: [number_of_certificates] chứng chỉ.
+Danh sách học viên đề nghị cấp chứng chỉ theo Quyết định công nhận kết quả thi số [organisation_decision_number]/QĐ-[organisation_decision_year] ngày [organisation_decision_day] tháng [organisation_decision_month] năm [organisation_decision_year] (học viên có kết quả thi đạt yêu cầu)./.
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+THÔNG BÁO 
+Về việc .......... (1)
+Kính gửi:  Trung tâm Dịch vụ việc làm ..........
+Tên tôi là:.......... sinh ngày:..........
+Số định danh cá nhân/Chứng minh nhân dân: ..........cấp ngày..........tháng..........năm..........  Nơi cấp..........                 
+Số sổ BHXH :..........
+Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú):..........
+Hiện nay, tôi đang hưởng trợ cấp thất nghiệp theo Quyết định số.......... ngày ........../........../.......... của Giám đốc Sở Lao động - Thương binh và Xã hội tỉnh/thành phố..........
+Tổng số tháng tôi đã hưởng trợ cấp thất nghiệp: .......... tháng
+Nhưng vì lý do (1)...........nên tôi gửi thông báo này (kèm theo bản sao giấy tờ có liên quan).
+Trường hợp người lao động chưa có bản sao hợp đồng lao động hoặc hợp đồng làm việc (2).
+ Đề nghị quý Trung tâm xem xét, thực hiện các thủ tục về chấm dứt hưởng trợ cấp thất nghiệp để bảo lưu thời gian đóng bảo hiểm thất nghiệp tương ứng với số tháng hưởng trợ cấp thất nghiệp mà tôi chưa nhận tiền tại cơ quan bảo hiểm xã hội./.
+                                                                          .........., ngày .......... tháng .......... năm ..........
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+THÔNG BÁO 
+Về việc [request_content] (1)
+Kính gửi:  Trung tâm Dịch vụ việc làm [receiver]
+Tên tôi là: [user1_full_name] sinh ngày: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_number_issue_day] tháng [user1_id_number_issue_month] năm [user1_id_number_issue_year]  Nơi cấp [user1_id_number_issue_place]                 
+Số sổ BHXH : [user1_social_insurance_number]
+Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú): [user1_current_address]
+Hiện nay, tôi đang hưởng trợ cấp thất nghiệp theo Quyết định số [user1_unemployment_decision_number] ngày [user1_unemployment_decision_day]/[user1_unemployment_decision_month]/[user1_unemployment_decision_year] của Giám đốc Sở Lao động - Thương binh và Xã hội tỉnh/thành phố [user1_unemployment_decision_issuer]
+Tổng số tháng tôi đã hưởng trợ cấp thất nghiệp: [user1_unemployment_duration] tháng
+Nhưng vì lý do (1) [reason] nên tôi gửi thông báo này (kèm theo bản sao giấy tờ có liên quan).
+Trường hợp người lao động chưa có bản sao hợp đồng lao động hoặc hợp đồng làm việc (2).
+ Đề nghị quý Trung tâm xem xét, thực hiện các thủ tục về chấm dứt hưởng trợ cấp thất nghiệp để bảo lưu thời gian đóng bảo hiểm thất nghiệp tương ứng với số tháng hưởng trợ cấp thất nghiệp mà tôi chưa nhận tiền tại cơ quan bảo hiểm xã hội./.
+                                                                          [place], ngày [day] tháng [month] năm [year]
+
+
+Example:
+Input: 
+{form}
+Output:
 """

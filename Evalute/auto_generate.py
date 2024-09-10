@@ -103,16 +103,16 @@ def auto_generate_tag_names(llm = llm, folder_dir = "Forms/Text/Input/Output", s
             file_dir = folder_dir + '/' + filename
             response_dir = folder_dir + '/TagName/' + filename
             text = read_file(file_dir)
-            prompt = PromptTemplate.from_template(health_medical_template_prompt)
+            prompt = PromptTemplate.from_template(job_template_prompt)
             chain = prompt | llm | StrOutputParser()
             try:
-                response = chain.invoke({"health_and_medical_tagnames": health_and_medical_tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
+                response = chain.invoke({"job_tagnames": job_tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
                 write_file(response_dir, response)
             except Exception as e:
                 print("111111111111111111111111111")
             print("End with: ", filename)
 
-auto_generate_tag_names(start = 35, end = 36)
+auto_generate_tag_names(start = 9, end = 10)
 
 def auto_identify_relationship(llm = llm, folder_dir = "Forms/Text/Input/Output/TagName", save_dir = "Forms/Text/Input/Output/", start = 0, end = 10):
     for index,filename in enumerate(os.listdir(folder_dir)[start:end]):
