@@ -7,7 +7,7 @@ residence_identification_tagnames = """
 [dob]: Ngày, tháng, năm sinh của người dùng.
 [dob_text]: Ngày, tháng, năm sinh của người dùng được viết bằng chữ.
 [gender]: Giới tính của người dùng.
-[id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_number]: Số chứng minh nhân dân(CMND) hoặc căn cước công dân(CCCD) của người dùng.
 [id_issue_day]: Ngày cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [id_issue_month]: Tháng cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [id_issue_year]: Năm cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
@@ -19,6 +19,10 @@ residence_identification_tagnames = """
 [passport_issue_year]: Năm cấp hộ chiếu của người dùng.
 [passport_issue_date]: Ngày, tháng, năm cấp hộ chiếu của người dùng.
 [passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
+[passport_expiry_day]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_expiry_month]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_expiry_year]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_issuer]: Cấp quan cấp hộ chiếu cho người dùng
 [ethnicity]: Dân tộc của người dùng.
 [religion]: Tôn giáo của người dùng.
 [nationality]: Quốc tịch của người dùng.
@@ -39,6 +43,13 @@ residence_identification_tagnames = """
 [phone]: Số điện thoại của người dùng
 [phone_home]: Số điện thoại bàn của người dùng
 [email]: Email của người dùng.
+[user1_visa_number]: Số thị thực(visa) của người dùng
+[user1_visa_country]: Quốc gia cấp thị thực(visa) cho người dùng
+[user1_visa_expiry_day]: Ngày hết hạn thị thực(visa) của người dùng
+[user1_visa_expiry_month]: Tháng hết hạn thị thực(visa) của người dùng
+[user1_visa_expiry_year]: Năm hết hạn thị thực(visa) của người dùng
+[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
+[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
 """
 
 study_tagnames = """
@@ -75,6 +86,15 @@ study_tagnames = """
 [supervisor_name]: Tên người hướng dẫn của người dùng.
 [school_address]: Địa chỉ trường học của người dùng.
 [school_phone]: Số điện thoại của trường học của người dùng.
+[organisation]: Cơ quan quản lý trực tiếp của người dùng
+[decision_number]: Số quyết định liên quan đến yêu cầu của người dùng.
+[decision_day]: Ngày khi quyết định được đưa ra, liên quan đến người dùng.
+[decision_month]: Tháng khi quyết định được đưa ra, liên quan đến người dùng.
+[decision_year]: Năm khi quyết định được đưa ra, liên quan đến người dùng.
+[decision_issuer]: Cá nhân hoặc tổ chức đã ban hành quyết định liên quan đến người dùng
+[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
+[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
+[suggestion]: Kiến nghị, đề xuất đối với cơ quan quản lý trực tiếp, cơ quan	
 """
 
 health_and_medical_tagnames = """
@@ -105,6 +125,8 @@ health_and_medical_tagnames = """
 [bank_account]: Số tài khoản ngân hàng của người dùng.
 [bank_name]: Tên ngân hàng của người dùng.
 [parent_name]: Tên phụ huynh của người dùng.
+[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
+[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
 """
 
 vehicle_driver_tagnames = """
@@ -136,6 +158,11 @@ vehicle_driver_tagnames = """
 [electronic_customs_declaration_number_issuing_agency]: Số tờ khai hải quan điện tử cơ quan cấp
 [transport_license_issue_date]: Ngày, tháng, năm cấp giấy phép kinh doanh vận tải.
 [transport_license_issue_place]: Nơi cấp giấy phép kinh doanh vận tải
+[vehicle_engine_number1]: Số máy 1 (Engine N0)
+[vehicle_engine_number2]: Số máy 2 (Engine N0)
+[vehicle_chassis_number] : Số khung (Chassis N0)
+[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
+[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
 """
 
 resolve_complaints_tagnames = """
@@ -174,24 +201,21 @@ job_tagnames = """
 [unemployment_application_day]: Ngày nộp đơn hưởng trợ cấp thất nghiệp.
 [unemployment_application_month]: Tháng nộp đơn hưởng trợ cấp thất nghiệp.
 [unemployment_application_year]: Năm nộp đơn hưởng trợ cấp thất nghiệp.
+[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
+[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
 """
 
 remaining_tag_names = """
 [receiver]: Cá nhân hoặc tổ chức nhận hoặc xử lý biểu mẫu được người dùng điền.
-[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
-[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
+[document_number]: Số của tài liệu hoặc hồ sơ, thường để tham chiếu hoặc lưu trữ.
+[submission_day]: Ngày mà tài liệu hoặc hồ sơ được nộp hoặc xử lý.
+[submission_month]: Tháng mà tài liệu hoặc hồ sơ được nộp hoặc xử lý.
+[submission_year]: Năm mà tài liệu hoặc hồ sơ được nộp hoặc xử lý.
 [day]: Ngày khi biểu mẫu được người dùng điền.
 [month]: Tháng khi biểu mẫu được người dùng điền.
 [year]: Năm khi biểu mẫu được người dùng điền.
 [place]: Nơi mà biểu mẫu được người dùng điền.
-[decision_number]: Số quyết định liên quan đến yêu cầu của người dùng.
-[decision_day]: Ngày khi quyết định được đưa ra, liên quan đến người dùng.
-[decision_month]: Tháng khi quyết định được đưa ra, liên quan đến người dùng.
-[decision_year]: Năm khi quyết định được đưa ra, liên quan đến người dùng.
-[decision_issuer]: Cá nhân hoặc tổ chức đã ban hành quyết định liên quan đến người dùng
-[vehicle_engine_number1]: Số máy 1 (Engine N0)
-[vehicle_engine_number2]: Số máy 2 (Engine N0)
-[vehicle_chassis_number] : Số khung (Chassis N0)
+[local_authority_confirmation]: Xác nhận của UBND hoặc Công an cấp xã:
 """
 
 residence_identification_template_prompt = """
@@ -252,7 +276,7 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 1. Họ, chữ đệm và tên(1): [user1_full_name]
 2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
 3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
-5. Số CMND/CCCD: [user1_id]
+5. Số CMND/CCCD: [user1_id_number]
 6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
 9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
 11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
@@ -295,7 +319,7 @@ TỜ KHAI ĐĂNG KÝ KHAI SINH
 Kính gửi: [receiver]
 Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
 Nơi cư trú: [user1_current_address]
-Giấy tờ tùy thân: [user1_id]
+Giấy tờ tùy thân: [user1_id_number]
 Quan hệ với người được khai sinh: [user1_relationship_user2]
 Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
 Họ, chữ đệm, tên: [user2_full_name]
@@ -312,6 +336,54 @@ Nơi cư trú: [user4_current_address]
 Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
 Làm tại: [place], ngày [day] tháng [month] năm [year]
+
+Example:
+Input:
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1):..........
+1. Họ, chữ đệm và tên Việt Nam:..........
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	..........
+3. Ngày, tháng, năm sinh:........../........../ ..........     4. Giới tính:..........
+5. Dân tộc:..........     6. Tôn giáo:..........
+7. Số định danh cá nhân/CMND: ..........									
+8. Số điện thoại (nếu có):..........	 9. E-mail (nếu có):..........
+10. Quốc tịch nước ngoài (nếu có):..........
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	.......... Ngày cấp: ........../........../..........
+Cơ quan cấp:..........	 Có giá trị đến ngày:........../........../..........
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam:..........
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con:..........
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam:..........
+15. Nơi ở hiện tại ở Việt Nam:..........
+16. Nội dung đề nghị (2):..........
+17. Họ và tên chủ hộ:..........18. Quan hệ với chủ hộ:..........
+19. Số định danh cá nhân/ CMND của chủ hộ:..........										
+Output:
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1): [receiver]
+1. Họ, chữ đệm và tên Việt Nam: [user1_full_name]
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	[user1_foreign_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]     4. Giới tính: [user1_gender]
+5. Dân tộc: [user1_ethnicity]     6. Tôn giáo: [user1_religion]
+7. Số định danh cá nhân/CMND: [user1_id_number]									
+8. Số điện thoại (nếu có): [user1_phone]	 9. E-mail (nếu có): [user1_email]
+10. Quốc tịch nước ngoài (nếu có): [user1_foreign_nationality]
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	[user1_passport_number] Ngày cấp: [user1_passport_issue_day]/[user1_passport_issue_month]/[user1_passport_issue_year]
+Cơ quan cấp: [user1_passport_issuer]	 Có giá trị đến ngày: [user1_passport_expiry_day]/[user1_passport_expiry_month]/[user1_passport_expiry_year]
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam: [user1_foreign_occupation]
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con: [user1_family_info]
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam: [user1_foreign_address]
+15. Nơi ở hiện tại ở Việt Nam: [user1_current_address]
+16. Nội dung đề nghị (2): [user1_request_content]
+17. Họ và tên chủ hộ: [user2_full_name] 18. Quan hệ với chủ hộ: [user1_relationship_user2]
+19. Số định danh cá nhân/ CMND của chủ hộ: [user2_id_number]	
 
 Example:
 Input:
@@ -349,7 +421,7 @@ TỜ KHAI
 
 1. Họ [user1_last_name] Chữ đệm và tên [user1_first_name] (1) 2. Giới tính(Nam/Nữ): [user1_gender]
 3. Sinh ngày [user1_dob_day] tháng [user1_dob_month] năm [user1_dob_year] Nơi sinh (tỉnh, thành phố) (2) [user1_birthplace]
-4. Số định danh cá nhân hoặc CCCD: [user1_id]                                                   Ngày cấp: [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year]
+4. Số định danh cá nhân hoặc CCCD: [user1_id_number]                                         Ngày cấp: [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year]
 5. Nơi cư trú hiện tại [user1_current_address]
 6. Số điện thoại: [user1_phone_number]
 7. Thông tin về hộ chiếu đề nghị khôi phục:
@@ -357,7 +429,7 @@ TỜ KHAI
     Thời hạn: [user1_passport_expiry_day]/[user1_passport_expiry_month]/[user1_passport_expiry_year] Cơ quan cấp: [user1_passport_issuer]
     8. Thông tin thị thực do nước ngoài cấp: 
 	Số thị thực: [user1_visa_number] Quốc gia cấp [user1_visa_country] Thời hạn [user1_visa_expiry_day]/[user1_visa_expiry_month]/[user1_visa_expiry_year]
-    9. Lý do đề nghị khôi phục hộ chiếu(3) [user1_request_content]
+    9. Lý do đề nghị khôi phục hộ chiếu(3) [user1_reason]
 Tôi xin cam đoan những thông tin trên là đúng sự thật./.
                                                   
 
@@ -422,7 +494,7 @@ Kính gửi: ..........
 5. Thời gian học tập ở nước ngoài:	..........
 6. Thời gian gia hạn học tập ở nước ngoài: từ tháng........../20.......... đến tháng........../20..........
 7. Ngày tốt nghiệp:	.......... Ngày về nước:	..........
-8. Kết quả học tập ¬2: : 
+8. Kết quả học tập: 
 - Văn bằng, chứng chỉ được cấp:	..........
 - Kết quả xếp loại học tập:	..........
 9. Tên cơ sở giáo dục nước ngoài (ghi bằng tiếng Việt và tiếng Anh):	
@@ -463,7 +535,7 @@ Kính gửi: [receiver]
 5. Thời gian học tập ở nước ngoài:	[user1_study_period]
 6. Thời gian gia hạn học tập ở nước ngoài: từ tháng [user1_extension_start_month]/20[user1_extension_start_year] đến tháng [user1_extension_end_month]/20[user1_extension_end_year]
 7. Ngày tốt nghiệp:	[user1_graduation_day] Ngày về nước:	[user1_return_day]
-8. Kết quả học tập ¬2: : 
+8. Kết quả học tập: 
 - Văn bằng, chứng chỉ được cấp:	[user1_degree]
 - Kết quả xếp loại học tập:	[user1_grade]
 9. Tên cơ sở giáo dục nước ngoài (ghi bằng tiếng Việt và tiếng Anh):	
@@ -712,23 +784,23 @@ Số: [document_number] /TNHS [document_number], ngày [submission_day] tháng [
 
 GIẤY TIẾP NHẬN HỒ SƠ VÀ HẸN TRẢ KẾT QUẢ CẤP, CẤP LẠI VÀ ĐỔI THẺ BẢO HIỂM Y TẾ
 
-Người nộp hồ sơ: [receiver_full_name]
-Tên đơn vị (nếu là đại diện cho đơn vị nộp hồ sơ): [receiver_unit_name] Mã đơn vị: [receiver_unit_code]
-Họ và tên người tham gia bảo hiểm y tế: [user1_full_name]
-Mã thẻ bảo hiểm y tế: [user1_health_insurance_card_number]
-Nơi đăng ký khám bệnh, chữa bệnh bảo hiểm y tế ban đầu: [user1_health_insurance_registration_place]
-Địa chỉ: [user1_current_address]
-Số điện thoại liên hệ: [user1_phone]
-Email (nếu có): [user1_email]
+Người nộp hồ sơ: [user1_full_name]
+Tên đơn vị (nếu là đại diện cho đơn vị nộp hồ sơ): [user1_organisation] Mã đơn vị: [user1_organisation_id]
+Họ và tên người tham gia bảo hiểm y tế: [user2_full_name]
+Mã thẻ bảo hiểm y tế: [user2_health_insurance_card_number]
+Nơi đăng ký khám bệnh, chữa bệnh bảo hiểm y tế ban đầu: [user2_health_insurance_registration_place]
+Địa chỉ: [user2_current_address]
+Số điện thoại liên hệ: [user2_phone]
+Email (nếu có): [user2_email]
 Nội dung yêu cầu giải quyết: [request_content]
 
 Thời hạn giải quyết hồ sơ theo quy định: [decision_duration] ngày
 Thời gian nhận hồ sơ: ngày [receipt_day] tháng [receipt_month] năm [receipt_year]
 Thời gian trả kết quả giải quyết hồ sơ: ngày [result_decision_day] tháng [result_decision_month] năm [result_decision_year]
 Đối với kết quả là tiền giải quyết chế độ, đề nghị nhận tại:
-Số tài khoản: [user1_bank_account] Ngân hàng: [user1_bank_name]
-Tên chủ tài khoản: [user1_full_name]
-Đã nhận kết quả giải quyết vào ngày [result_received_day] tháng [result_received_month] năm [result_received_year]
+Số tài khoản: [user2_bank_account] Ngân hàng: [user2_bank_name]
+Tên chủ tài khoản: [user2_full_name]
+Đã nhận kết quả giải quyết vào ngày [user2_result_received_day] tháng [user2_result_received_month] năm [user2_result_received_year]
 
 NGƯỜI NHẬN
 (Ký và ghi rõ họ tên)
@@ -975,7 +1047,7 @@ Goal:
 The goal of this form is to gather comprehensive information related to employment, social insurance, and unemployment benefits. Accurate completion of this form is crucial for verifying employment history, managing social insurance records, and processing unemployment benefits. Your task is to ensure that all placeholders in the form are correctly replaced with the appropriate tag names for job-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
 Your Task:
 
-You are responsible for determining the correct tag name for each placeholder in a vehicle driver-related form. Your task is to ensure that every placeholder in the form is accurately replaced with the corresponding tag name, based on the user's vehicle-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
+You are responsible for determining the correct tag name for each placeholder in a job-related form. Your task is to ensure that every placeholder in the form is accurately replaced with the corresponding tag name, based on the user's vehicle-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
 
 1. Identify Unique Users
 
