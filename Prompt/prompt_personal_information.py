@@ -70,9 +70,10 @@ study_tagnames = """
 [phone]: Số điện thoại di động của người dùng.
 [phone_home]: Số điện thoại nhà của người dùng.
 [email]: Địa chỉ email của người dùng.
-[class]: Tên lớp của người dùng.
+[class]: Tên lớp hiện tại của người dùng.
 [school]: Tên trường của người dùng.
-[course]: Khóa học của người dùng.
+[school_principal]: Hiệu trưởng của trường
+[course]: Khóa học của người dùng. 
 [faculty]: Khoa của người dùng.
 [student_id_number]: Mã số sinh viên của người dùng tại trường đại học.
 [education_level]: Trình độ học vấn của người dùng.
@@ -186,7 +187,7 @@ job_tagnames = """
 [passport_issue_date]: Ngày, tháng, năm cấp hộ chiếu của người dùng.
 [passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
 [passport_expiry_date]: Ngày hết hạn của hộ chiếu
-[social_insurance_number]: Số sổ bảo hiểm xã hội của người dùng.
+[social_insurance_number]: Số sổ bảo hiểm xã hội(BHXH) của người dùng.
 [current_address]: Địa chỉ hiện tại của người dùng.
 [permanent_address]: Nơi thường trú của người dùng
 [unemployment_duration]: Thời gian hưởng trợ cấp thất nghiệp của người dùng.
@@ -205,6 +206,7 @@ job_tagnames = """
 [reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
 """
 
+# Những thông tin không lưu được
 remaining_tag_names = """
 [receiver]: Cá nhân hoặc tổ chức nhận hoặc xử lý biểu mẫu được người dùng điền.
 [document_number]: Số của tài liệu hoặc hồ sơ, thường để tham chiếu hoặc lưu trữ.
@@ -215,7 +217,9 @@ remaining_tag_names = """
 [month]: Tháng khi biểu mẫu được người dùng điền.
 [year]: Năm khi biểu mẫu được người dùng điền.
 [place]: Nơi mà biểu mẫu được người dùng điền.
-[local_authority_confirmation]: Xác nhận của UBND hoặc Công an cấp xã:
+[ward_authority_confirmation]: Xác nhận của UBND hoặc Công an cấp xã
+[district_authority_confirmation]: Xác nhận của UBND hoặc Công an cấp huyện
+[province_authority_confirmation]: Xác nhận của UBND hoặc Công an cấp tỉnh
 """
 
 residence_identification_template_prompt = """
@@ -671,6 +675,399 @@ Người làm đơn
 
 Example:
 Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ 
+(Dùng cho cha, mẹ học sinh tiểu học học bán trú tại các trường phổ thông 
+ở xã, thôn đặc biệt khó khăn)
+
+Kính gửi Trường : ..........
+Họ và tên:..........
+Là Cha/mẹ (hoặc người giám hộ, nhận nuôi) của em: ..........
+Sinh ngày..........tháng..........năm..........
+Dân tộc:.......... thuộc hộ nghèo(có/không):.......... 
+Thường trú tại thôn/bản..........xã ..........
+thuộc vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn.
+Huyện..........Tỉnh..........
+Năm học..........Là học sinh lớp: .......... Trường ..........
+Vì lý do (chọn 1 trong 2 lý do sau):
+ - Nhà ở xa trường (ghi rõ cách nơi học tập bao nhiêu km): ..........
+ - Địa hình giao thông khó khăn(có/không): ..........
+ Nên em .......... không thể đi đến trường và trở về nhà trong ngày.  
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, để em  .......... được hưởng chính sách hỗ trợ tiền và gạo theo quy định tại Nghị định số........../2016/NĐ-CP ngày..........tháng..........năm 2016 của Chính phủ, gồm: 
+
+1. Tiền ăn (có/không):..........
+2. Tiền nhà ở (đối với trường hợp học sinh phải tự lo chỗ ở)(có/không):..........
+3. Gạo(có/không):..........
+   .........., ngày ..........tháng..........năm 20..........
+Người làm đơn
+(Ký, ghi rõ họ, tên hoặc điểm chỉ )
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ HỖ TRỢ 
+(Dùng cho cha, mẹ học sinh tiểu học học bán trú tại các trường phổ thông 
+ở xã, thôn đặc biệt khó khăn)
+
+Kính gửi Trường : [receiver]
+Họ và tên: [user1_full_name]
+Là Cha/mẹ (hoặc người giám hộ, nhận nuôi) của em: [user2_full_name]
+Sinh ngày [user2_dob_day] tháng [user2_dob_month] năm [user2_dob_year]
+Dân tộc: [user2_ethnicity] thuộc hộ nghèo(có/không): [user2_is_poor] 
+Thường trú tại thôn/bản [user2_hometown_village] xã [user2_hometown_ward]
+thuộc vùng có điều kiện kinh tế - xã hội đặc biệt khó khăn.
+Huyện [user2_hometown_district] Tỉnh [user2_hometown_province]
+Năm học [user2_school_year] Là học sinh lớp: [user2_grade] Trường [user2_school_name]
+Vì lý do (chọn 1 trong 2 lý do sau):
+ - Nhà ở xa trường (ghi rõ cách nơi học tập bao nhiêu km): [user2_distance_to_school]
+ - Địa hình giao thông khó khăn(có/không): [user2_difficult_traffic]
+ Nên em [user2_full_name] không thể đi đến trường và trở về nhà trong ngày.  
+Tôi làm đơn này đề nghị các cấp quản lý xem xét, để em  [user2_full_name] được hưởng chính sách hỗ trợ tiền và gạo theo quy định tại Nghị định số [user2_policy_decree_number]/2016/NĐ-CP ngày [user2_policy_decree_date_day] tháng [user2_policy_decree_date_month] năm 2016 của Chính phủ, gồm: 
+
+1. Tiền ăn (có/không): [user2_is_support_food]
+2. Tiền nhà ở (đối với trường hợp học sinh phải tự lo chỗ ở)(có/không): [user2_is_support_housing]
+3. Gạo(có/không): [user2_is_support_rice]
+   [place], ngày [day] tháng [month] năm 20[year]
+Người làm đơn
+(Ký, ghi rõ họ, tên hoặc điểm chỉ )
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+BẢN CAM KẾT
+THỰC HIỆN TRÁCH NHIỆM CỦA DU HỌC SINH
+(dành cho người chưa có cơ quan công tác)
+
+Kính gửi: Bộ Giáo dục và Đào tạo
+
+Tên tôi là: .......... Sinh ngày .......... 
+Giấy CMND/Căn cước công dân số: .......... Ngày cấp:..........
+Nơi cấp:.......... 
+Hộ chiếu số: .......... Ngày cấp: .......... 
+Nơi cấp:..........
+Hiện nay là: .......... 
+Khi được Nhà nước cử đi học tại nước ngoài, tôi cam kết thực hiện đúng trách nhiệm của người được cử đi học như sau:
+1. Chấp hành nghiêm túc quy định việc công dân Việt Nam ra nước ngoài học tập (Nghị định số 86/2021/NĐ-CP ngày 25/9/2021 của Chính phủ), quyết định cử đi học cử Bộ Giáo dục và Đào tạo và các quy định tài chính hiện hành của Nhà nước. 
+2. Cam kết tích cực học tập, nghiên cứu để hoàn thành tốt chương trình đào tạo đúng thời hạn được phép. Nếu phải gia hạn thời gian học tập sẽ tự túc kinh phí trong thời gian gia hạn.
+.........., ngày .......... tháng .......... năm ..........
+Người cam kết
+(ký và ghi rõ họ tên)
+
+CAM KẾT CỦA GIA ĐÌNH
+Họ và tên bố (mẹ) hoặc người đại diện hợp pháp: ..........
+Công tác tại: ..........
+Địa chỉ: ..........
+đại diện cho gia đình du học sinh có tên trên, chúng tôi cam kết:
+- Nhắc nhở, động viên du học sinh thực hiện đầy đủ trách nhiệm đã được quy định đối với du học sinh.
+- Chịu trách nhiệm cùng du học sinh bồi hoàn kinh phí đã được Nhà nước cấp nếu du học sinh không thực hiện đúng cam kết.
+ 
+ 	.........., ngày .......... tháng.......... năm ..........
+Bố (mẹ) hoặc người đại diện hợp pháp
+(ký và ghi rõ họ tên)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+BẢN CAM KẾT
+THỰC HIỆN TRÁCH NHIỆM CỦA DU HỌC SINH
+(dành cho người chưa có cơ quan công tác)
+
+Kính gửi: Bộ Giáo dục và Đào tạo
+
+Tên tôi là: [user1_full_name] Sinh ngày [user1_dob_day]
+Giấy CMND/Căn cước công dân số: [user1_id_number] Ngày cấp: [user1_id_issue_day]
+Nơi cấp: [user1_id_issue_place] 
+Hộ chiếu số: [user1_passport_number] Ngày cấp: [user1_passport_issue_day] 
+Nơi cấp: [user1_passport_issue_place]
+Hiện nay là: [user1_occupation] 
+Khi được Nhà nước cử đi học tại nước ngoài, tôi cam kết thực hiện đúng trách nhiệm của người được cử đi học như sau:
+1. Chấp hành nghiêm túc quy định việc công dân Việt Nam ra nước ngoài học tập (Nghị định số 86/2021/NĐ-CP ngày 25/9/2021 của Chính phủ), quyết định cử đi học cử Bộ Giáo dục và Đào tạo và các quy định tài chính hiện hành của Nhà nước. 
+2. Cam kết tích cực học tập, nghiên cứu để hoàn thành tốt chương trình đào tạo đúng thời hạn được phép. Nếu phải gia hạn thời gian học tập sẽ tự túc kinh phí trong thời gian gia hạn.
+[place], ngày [day] tháng [month] năm [year]
+Người cam kết
+(ký và ghi rõ họ tên)
+
+CAM KẾT CỦA GIA ĐÌNH
+Họ và tên bố (mẹ) hoặc người đại diện hợp pháp: [user2_full_name]
+Công tác tại: [user2_occupation]
+Địa chỉ: [user2_current_address]
+đại diện cho gia đình du học sinh có tên trên, chúng tôi cam kết:
+- Nhắc nhở, động viên du học sinh thực hiện đầy đủ trách nhiệm đã được quy định đối với du học sinh.
+- Chịu trách nhiệm cùng du học sinh bồi hoàn kinh phí đã được Nhà nước cấp nếu du học sinh không thực hiện đúng cam kết.
+ 
+ 	[place], ngày [day] tháng [month] năm [year]
+Bố (mẹ) hoặc người đại diện hợp pháp
+(ký và ghi rõ họ tên)
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
+Kính gửi: ..........(Tên cơ sở giáo dục nghề nghiệp công lập)
+Họ và tên:	..........
+Ngày, tháng, năm sinh:	........../........../..........
+Số định danh cá nhân/Chứng minh nhân dân:..........cấp ngày..........tháng..........năm..........nơi cấp..........
+Lớp: ..........Khóa: ..........Khoa: ..........
+Mã số học sinh, sinh viên: ..........
+Thuộc đối tượng: ..........(ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
+
+Xác nhận của Khoa
+(Quản lý học sinh, sinh viên)	      .........., ngày .......... tháng .......... năm ..........
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
+Kính gửi: [receiver] (Tên cơ sở giáo dục nghề nghiệp công lập)
+Họ và tên:	[user1_full_name]
+Ngày, tháng, năm sinh:	[user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
+Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
+Mã số học sinh, sinh viên: [user1_student_id]
+Thuộc đối tượng: [user1_policy_category] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
+
+Xác nhận của Khoa
+(Quản lý học sinh, sinh viên)	      [place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Example:
+Input:
+
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài)
+Kính gửi:	
+- ..........(Tên Phòng Lao động - Thương binh và Xã hội);
+- ..........(Tên cơ sở giáo dục nghề nghiệp).
+Họ và tên: ..........
+Ngày, tháng, năm sinh:..........
+Số định danh cá nhân/Chứng minh nhân dân:..........cấp ngày..........tháng..........năm..........nơi cấp..........
+Lớp: .......... Khóa: .......... Khoa: ..........
+Họ tên cha/mẹ học sinh, sinh viên: ..........
+Mã số học sinh, sinh viên: ..........
+Thuộc đối tượng: (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xác nhận, Phòng Lao động - Thương binh và Xã hội xem xét cấp chính sách nội trú theo quy định.
+	.........., ngày ..........tháng ..........năm ..........
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+
+
+Xác nhận của cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài
+Cơ sở giáo dục nghề nghiệp: ..........
+Xác nhận anh/chị: ..........
+Hiện là học sinh, sinh viên năm thứ..........Học kỳ:..........Năm học..........lớp..........
+khoa..........khóa học..........thời gian khóa học..........(năm) hệ đào tạo..........
+của nhà trường.
+Kỷ luật: .......... (ghi rõ mức độ kỷ luật nếu có).
+Số mô-đun hoặc tín chỉ của toàn khóa học (đối với chương trình đào tạo theo 
+mô-đun hoặc tín chỉ): ..........trong đó số mô-đun hoặc tín chỉ theo từng năm học là:
+
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ I:..........
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ I:..........
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ II:..........
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ II: ..........
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ III: ..........
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ III: ..........
+Đề nghị phòng Lao động - Thương binh và Xã hội xem xét cấp chính sách nội trú cho anh/chị .......... theo quy định.
+	.........., ngày .......... tháng .......... năm ..........
+Thủ trưởng đơn vị
+(Ký, đóng dấu)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài)
+Kính gửi:	
+- [receiver_labor_department] (Tên Phòng Lao động - Thương binh và Xã hội);
+- [receiver_school] (Tên cơ sở giáo dục nghề nghiệp).
+Họ và tên: [user1_full_name]
+Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
+Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
+Họ tên cha/mẹ học sinh, sinh viên: [user1_parent_name]
+Mã số học sinh, sinh viên: [user1_student_id]
+Thuộc đối tượng: (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xác nhận, Phòng Lao động - Thương binh và Xã hội xem xét cấp chính sách nội trú theo quy định.
+	[place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+
+
+Xác nhận của cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài
+Cơ sở giáo dục nghề nghiệp: [receiver_school]
+Xác nhận anh/chị: [user1_full_name]
+Hiện là học sinh, sinh viên năm thứ [user1_school_year] Học kỳ: [user1_semester] Năm học [user1_school_year] lớp [user1_class]
+khoa [user1_faculty] khóa học [user1_course] thời gian khóa học [user1_course_duration] (năm) hệ đào tạo [user1_education_system]
+của nhà trường.
+Kỷ luật: [user1_discipline] (ghi rõ mức độ kỷ luật nếu có).
+Số mô-đun hoặc tín chỉ của toàn khóa học (đối với chương trình đào tạo theo 
+mô-đun hoặc tín chỉ): [user1_total_modules] trong đó số mô-đun hoặc tín chỉ theo từng năm học là:
+
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ I: [user1_module_semester1_1]
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ I: [user1_module_semester1_2]
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ II: [user1_module_semester2_1]
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ II: [user1_module_semester2_2]
+- Số mô-đun hoặc tín chỉ 6 tháng đầu của năm học thứ III: [user1_module_semester3_1]
+- Số mô-đun hoặc tín chỉ 6 tháng sau của năm học thứ III: [user1_module_semester3_2]
+Đề nghị phòng Lao động - Thương binh và Xã hội xem xét cấp chính sách nội trú cho anh/chị [user1_full_name] theo quy định.
+	[place], ngày [day] tháng [month] năm [year]
+Thủ trưởng đơn vị
+(Ký, đóng dấu)
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI  
+ 
+Kính gửi: .......... 
+
+Tôi tên là: ..........
+Cơ quan quản lý trực tiếp (nếu có): ..........	
+	
+Quyết định cử đi học số .......... ngày .......... tháng .......... năm .......... của 	..........
+Tên trường đến học, nước: 	..........
+Trình độ đào tạo: 	..........
+Ngành/nghề đào tạo: 	..........
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo: 	..........
+Ngày nhập học: 	..........
+Lý do đề nghị gia hạn:..........
+Thời gian đề nghị gia hạn: từ tháng ........../năm 20.......... đến tháng ........../năm 20..........	
+Kinh phí trong thời gian gia hạn : 	..........
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập. 
+
+Địa chỉ liên lạc của tôi:	..........
+E-mail:	..........
+Điện thoại cố định:..........	 Điện thoại di động:..........	
+
+
+
+		.........., ngày.......... tháng.......... năm.......... 
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI  
+ 
+Kính gửi: [receiver] 
+
+Tôi tên là: [user1_full_name]
+Cơ quan quản lý trực tiếp (nếu có): [user1_organization]	
+	
+Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của 	[user1_decision_issuer]
+Tên trường đến học, nước: 	[user1_school_name]
+Trình độ đào tạo: 	[user1_education_level]
+Ngành/nghề đào tạo: 	[user1_major]
+Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo: 	[user1_total_training_time]
+Ngày nhập học: 	[user1_enrollment_date]
+Lý do đề nghị gia hạn: [user1_extension_reason]
+Thời gian đề nghị gia hạn: từ tháng [user1_extension_start_month]/năm 20[user1_extension_start_year] đến tháng [user1_extension_end_month]/năm 20[user1_extension_end_year]	
+Kinh phí trong thời gian gia hạn : 	[user1_extension_funding]
+Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập. 
+
+Địa chỉ liên lạc của tôi:	[user1_current_address]
+E-mail:	[user1_email]
+Điện thoại cố định: [user1_phone_home]	 Điện thoại di động: [user1_phone]	
+
+
+
+		[place], ngày [day] tháng [month] năm [year] 
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN XIN CHUYỂN TRƯỜNG
+(dành cho học sinh tiểu học chuyển trường trong nước)
+Kính gửi:
+- Hiệu trưởng trường..........
+- Hiệu trưởng trường..........
+Tôi tên là:..........
+Hiện trú tại:..........
+Số điện thoại:.......... Địa chỉ email (nếu có):..........
+Là phụ huynh/người giám hộ hợp pháp của:
+Học sinh: .......... Ngày tháng năm sinh:..........
+Là học sinh lớp:.......... Trường3..........
+Kết quả cuối năm học: ..........
+Tôi làm đơn này đề nghị cho con tôi được chuyển từ trường4 ...........về học lớp .......... năm học ..........tại trường5..........
+Lý do:..........
+Trân trọng cảm ơn.
+ 	.........., ngày ..........tháng..........năm ..........
+Người làm đơn
+(Ký và ghi rõ họ tên)
+ 
+Hướng dẫn ghi mẫu đơn:
+1 Tên trường nơi chuyển đi.
+2 Tên trường nơi chuyển đến.
+3 Trường nơi chuyển đi, ghi rõ thuộc huyện, tỉnh nào.
+4 Trường nơi chuyển đi ghi rõ thuộc huyện, tỉnh nào.
+5 Trường nơi chuyển đến, ghi rõ thuộc huyện, tỉnh nào.
+6 Hiệu trưởng trường chuyển đến cho ý kiến và ký, đóng dấu.
+7 Hiệu trưởng trường chuyển đi cho ý kiến và ký, đóng dấu.
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+ĐƠN XIN CHUYỂN TRƯỜNG
+(dành cho học sinh tiểu học chuyển trường trong nước)
+Kính gửi:
+- Hiệu trưởng trường [school1_principal]
+- Hiệu trưởng trường [school2_pricipal]
+Tôi tên là: [user1_full_name]
+Hiện trú tại: [user1_current_address]
+Số điện thoại: [user1_phone] Địa chỉ email (nếu có): [user1_email]
+Là phụ huynh/người giám hộ hợp pháp của:
+Học sinh: [user2_full_name] Ngày tháng năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year]
+Là học sinh lớp: [user2_class] Trường [school1_name]
+Kết quả cuối năm học: [user2_school1_result]
+Tôi làm đơn này đề nghị cho con tôi được chuyển từ trường [school1_name] về học lớp [user2_class] năm học [school_year] tại trường [school2_name]
+Lý do: [user1_reason]
+Trân trọng cảm ơn.
+ 	[place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+ 
+Hướng dẫn ghi mẫu đơn:
+1 Tên trường nơi chuyển đi.
+2 Tên trường nơi chuyển đến.
+3 Trường nơi chuyển đi, ghi rõ thuộc huyện, tỉnh nào.
+4 Trường nơi chuyển đi ghi rõ thuộc huyện, tỉnh nào.
+5 Trường nơi chuyển đến, ghi rõ thuộc huyện, tỉnh nào.
+6 Hiệu trưởng trường chuyển đến cho ý kiến và ký, đóng dấu.
+7 Hiệu trưởng trường chuyển đi cho ý kiến và ký, đóng dấu. 
+
+Example:
+Input:
 {form}
 Output:
 """
@@ -850,11 +1247,11 @@ Nghề/Công việc (2): [user1_occupation]
 
 Đề nghị được giám định mức độ suy giảm khả năng lao động:
 
-Đề nghị giám định (3): [request_content]
-Loại hình giám định (4): [assessment_type]
-Nội dung giám định (5): [assessment_content]
-Đang hưởng chế độ (6): [current_benefits]
-Xác nhận của UBND hoặc Công an cấp xã (7): [local_authority_confirmation]
+Đề nghị giám định (3): [user1_request_content]
+Loại hình giám định (4): [user1_assessment_type]
+Nội dung giám định (5): [user1_assessment_content]
+Đang hưởng chế độ (6): [user1_current_benefits]
+Xác nhận của UBND hoặc Công an cấp xã (7): [ward_authority_confirmation]
 Người đề nghị
 
 (Ký, ghi rõ họ tên)
@@ -928,7 +1325,7 @@ Số máy 2 (Engine N0):..........
 Số khung (Chassis N0):..........
 Output:
 GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
-A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
+A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner's)
 Tên chủ xe : [user1_full_name]
 Năm sinh:[user1_dob_year]
 Địa chỉ : [user1_current_address]
