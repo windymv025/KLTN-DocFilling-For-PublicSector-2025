@@ -5,7 +5,7 @@ TỜ KHAI THUẾ THU NHẬP CÁ NHÂN
 (Áp dụng đối với cá nhân cư trú và cá nhân không cư trú có thu nhập từ tiền lương, 
 tiền công khai thuế trực tiếp với cơ quan thuế)
 
-[01] Kỳ tính thuế: 	Tháng .......... năm .......... /Quý .......... năm .......... (Từ tháng ........../.......... đến tháng ........../..........)
+[01] Kỳ tính thuế: ..........   Tháng .......... năm .......... /Quý .......... năm .......... (Từ tháng ........../.......... đến tháng ........../..........)
 
 [04] Tên người nộp thuế:..........
 [05] Mã số thuế:..........	

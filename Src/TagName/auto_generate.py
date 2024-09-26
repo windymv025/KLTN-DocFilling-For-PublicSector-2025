@@ -8,7 +8,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
-import constant_value as CONST
 from Prompt import *
 from dotenv import load_dotenv
 
@@ -163,23 +162,28 @@ def auto_generate_tag_names(llm = llm, folder_dir = "Forms/Text/Input/Output", s
             text = read_file(file_dir)
             type = chain.invoke(text)
             print(type.strip())
-            if "1" in type:
+            if "Residence" in type:
+                print("111111111111111111111111111")
                 template_prompt = residence_identification_template_prompt
                 tagnames = residence_identification_tagnames
                 name = "residence_identification_tagnames"
-            elif "2" in type:
+            elif "Education" in type:
+                print("222222222222222222")
                 template_prompt = study_template_prompt
                 tagnames = study_tagnames
                 name = "study_tagnames"
-            elif "3" in type:
+            elif "Health" in type:
+                print("333333333333333333333")
                 template_prompt = health_medical_template_prompt
                 tagnames = health_and_medical_tagnames
                 name = "health_and_medical_tagnames"
-            elif "4" in type:
+            elif "Vehicle" in type:
+                print("44444444444444444444")
                 template_prompt = vehicle_driver_template_prompt
                 tagnames = vehicle_driver_tagnames
                 name = "vehicle_driver_tagnames"
-            elif "5" in type:
+            elif "Employment" in type:
+                print("55555555555555555555")
                 template_prompt = job_template_prompt
                 tagnames = job_tagnames
                 name = "job_tagnames"
@@ -193,11 +197,10 @@ def auto_generate_tag_names(llm = llm, folder_dir = "Forms/Text/Input/Output", s
                 response = chain.invoke({name: tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
                 write_file(response_dir, response)
             except Exception as e:
-                print("111111111111111111111111111")
                 print(e)
             print("End with: ", filename)
 
-auto_generate_tag_names(start = 4, end = 5)
+# auto_generate_tag_names(start = 50, end = -1)
 
 def auto_identify_relationship(llm = llm, folder_dir = "Forms/Text/Input/Output/TagName", save_dir = "Forms/Text/Input/Output/", start = 0, end = 10):
     for index,filename in enumerate(os.listdir(folder_dir)[start:end]):

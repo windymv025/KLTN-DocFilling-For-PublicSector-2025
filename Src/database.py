@@ -1,21 +1,14 @@
 import sqlite3
 
 # --------------- Tạo Database -------------------
-def create_database(tag_names):
-    # Connect to SQLite database (creates a new database if it doesn't exist)
-    conn = sqlite3.connect('data.db')
-    # Create a cursor object to execute SQL commands
-    cursor = conn.cursor()
-    # Remove leading and trailing whitespaces and split the tag_names string into a list
-    list_tag_names = [tag.strip() for tag in tag_names.split('\n') if tag.strip()]
-    list_tag_names = [tag.replace('#', '') for tag in list_tag_names]
-    # Create a table with columns based on tag_names
+def create_database(list_tag_names):
+    conn = sqlite3.connect('data.db') # Tạo data.db nếu nó chưa tồn tại
+    cursor = conn.cursor() # Tạo cursor để thực thi các lệnh SQL
+    # Tạo bảng với các cột dựa trên tag name
     create_table_query = f"CREATE TABLE IF NOT EXISTS data ({', '.join([f'{tag} TEXT' for tag in list_tag_names])})"
     cursor.execute(create_table_query)
-    # Commit changes
-    conn.commit()
-    # Close the connection
-    conn.close()
+    conn.commit() # Xác nhận thay đổi
+    conn.close() # Đóng kết nối
 
 # ------------------- Đếm số dòng trong database ------------------
 def count_rows():
@@ -63,18 +56,3 @@ def get_value(id, key):
     conn.close()
     return value
     
-# ----------------- Lấy thông tin từ nhiều key tại 1 row --------------------------
-def get_values(id, list_cols, translations):
-    list_info = []
-    list_miss_keys = []
-    list_miss_items = []
-    for tag in list_cols:
-        key = tag.replace("#","")
-        value = get_value(id, key)
-        if not value:
-            list_miss_keys.append(tag)
-            list_miss_items.append(translations[tag])
-            list_info.append("Rỗng")
-        else:
-            list_info.append(value)
-    return list_info, list_miss_keys, list_miss_items
