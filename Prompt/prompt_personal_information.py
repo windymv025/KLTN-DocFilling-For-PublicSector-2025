@@ -62,11 +62,11 @@ study_tagnames = """
 [dob_text]: Ngày sinh (ngày, tháng, năm) của người dùng được viết bằng chữ.
 [gender]: Giới tính của người dùng.
 [id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [phone]: Số điện thoại di động của người dùng.
 [year_of_study]: Là học sinh, sinh viên năm thứ
 [phone_home]: Số điện thoại nhà của người dùng.
@@ -109,11 +109,11 @@ health_and_medical_tagnames = """
 [dob_month]: Tháng sinh của người dùng.
 [dob_year]: Năm sinh của người dùng.
 [id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [birth_registration_place]: Nơi đăng ký khai sinh của người dùng.
 [birth_registration_place_ward]: Phường/xã nơi đăng ký khai sinh của người dùng.
 [birth_registration_place_district]: Quận/huyện nơi đăng ký khai sinh của người dùng.
@@ -141,11 +141,11 @@ vehicle_driver_tagnames = """
 [dob_month]: Tháng sinh của người dùng.
 [dob_year]: Năm sinh của người dùng.
 [id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [passport_number]: Số hộ chiếu của người dùng.
 [passport_issue_day]: Ngày cấp hộ chiếu của người dùng.
 [passport_issue_month]: Tháng cấp hộ chiếu của người dùng.
@@ -180,11 +180,11 @@ job_tagnames = """
 [dob_month]: Tháng sinh của người dùng.
 [dob_year]: Năm sinh của người dùng.
 [id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_number_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [passport_number]: Số hộ chiếu của người dùng.
 [passport_issue_day]: Ngày cấp hộ chiếu của người dùng.
 [passport_issue_month]: Tháng cấp hộ chiếu của người dùng.
@@ -906,8 +906,8 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
 (Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài)
 Kính gửi:	
-- [receiver_labor_department] (Tên Phòng Lao động - Thương binh và Xã hội);
-- [receiver_school] (Tên cơ sở giáo dục nghề nghiệp).
+- [receiver] (Tên Phòng Lao động - Thương binh và Xã hội);
+- [receiver] (Tên cơ sở giáo dục nghề nghiệp).
 Họ và tên: [user1_full_name]
 Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
 Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
@@ -1247,7 +1247,7 @@ Tên tôi là: [user1_full_name]
 Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
 Chỗ ở hiện tại: [user1_current_address]
 Giấy Chứng minh nhân dân/Thẻ căn cước/Hộ chiếu số: [user1_id_number]
-Ngày cấp: [user1_id_number_issue_day]/[user1_id_number_issue_month]/[user1_id_number_issue_year] Nơi cấp: [user1_id_number_issue_place]
+Ngày cấp: [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year] Nơi cấp: [user1_id_issue_place]
 Số sổ bảo hiểm xã hội/Mã số bảo hiểm xã hội (1): [user1_social_insurance_number]
 Nghề/Công việc (2): [user1_occupation]
 Điện thoại liên hệ: [user1_phone]
@@ -1339,9 +1339,9 @@ Tên chủ xe : [user1_full_name]
 Năm sinh:[user1_dob_year]
 Địa chỉ : [user1_current_address]
 Số CCCD/CMND/Hộ chiếu của chủ xe:[user1_id_number]
-cấp ngày [user1_id_number_issue_day]/[user1_id_number_issue_month]/[user1_id_number_issue_year] tại [user1_id_number_issue_place]
+cấp ngày [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year] tại [user1_id_issue_place]
 Số CCCD/CMND/Hộ chiếu của người làm thủ tục [user2_id_number]
-cấp ngày [user2_id_number_issue_day]/[user2_id_number_issue_month]/[user2_id_number_issue_year] tại [user2_id_number_issue_place]
+cấp ngày [user2_id_issue_day]/[user2_id_issue_month]/[user2_id_issue_year] tại [user2_id_issue_place]
 Điện thoại của chủ xe :[user1_phone]
 Điện thoại của người làm thủ tục :[user2_phone]
 Số hóa đơn điện tử mã số thuế: [user1_tax_invoice_number]
@@ -1580,7 +1580,7 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 ĐỀ NGHỊ HƯỞNG TRỢ CẤP THẤT NGHIỆP
 Kính gửi: Trung tâm Dịch vụ việc làm [receiver]
 Tên tôi là: [user1_full_name] sinh ngày [user1_dob_day] / [user1_dob_month] / [user1_dob_year]
-Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_number_issue_day] tháng [user1_id_number_issue_month] năm [user1_id_number_issue_year] Nơi cấp: [user1_id_number_issue_place]
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] Nơi cấp: [user1_id_issue_place]
 Số sổ BHXH: [user1_social_insurance_number]
 Số điện thoại: [user1_phone_number] Địa chỉ email (nếu có) [user1_email]
 Số tài khoản (ATM nếu có) [user1_bank_account_number] tại ngân hàng: [user1_bank_name]
@@ -1671,7 +1671,7 @@ THÔNG BÁO
 Về việc [request_content] (1)
 Kính gửi:  Trung tâm Dịch vụ việc làm [receiver]
 Tên tôi là: [user1_full_name] sinh ngày: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
-Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_number_issue_day] tháng [user1_id_number_issue_month] năm [user1_id_number_issue_year]  Nơi cấp [user1_id_number_issue_place]                 
+Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year]  Nơi cấp [user1_id_issue_place]                 
 Số sổ BHXH : [user1_social_insurance_number]
 Chỗ ở hiện nay (trường hợp khác nơi đăng ký thường trú): [user1_current_address]
 Hiện nay, tôi đang hưởng trợ cấp thất nghiệp theo Quyết định số [user1_unemployment_decision_number] ngày [user1_unemployment_decision_day]/[user1_unemployment_decision_month]/[user1_unemployment_decision_year] của Giám đốc Sở Lao động - Thương binh và Xã hội tỉnh/thành phố [user1_unemployment_decision_issuer]
