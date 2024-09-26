@@ -1,50 +1,37 @@
-from langchain_community.llms import HuggingFaceEndpoint
-from langchain.schema import StrOutputParser
-from langchain.schema.runnable import Runnable, RunnablePassthrough, RunnableConfig, RunnableLambda
-from langchain.prompts import ChatPromptTemplate
-from langchain.memory import ConversationBufferMemory
-# Database
-from langchain_community.utilities import SQLDatabase
-# Chainlit
 import chainlit as cl
-from chainlit.input_widget import Select, Switch, Slider
-from chainlit.playground.config import add_llm_provider
-from chainlit.playground.providers.langchain import LangchainGenericProvider
-from chainlit.types import ThreadDict
+from chainlit.input_widget import Switch, Slider
+import os
+from dotenv import load_dotenv
 
-# Import file khác
-from operator import itemgetter
-from uniform_text import *
-from txt_filling import *
+#Import from another files
+import Src.MyClasses as MyClasses
+from Src.database import *
 
 
-# Prompt
-template1, prompt1 = txt_prompt() # Fill form
-prompt_miss_info =  Identify_missing_info() # Missing Info
+load_dotenv()
+gemini_api_key = os.getenv('GEMINI_KEY')
 
-
-# ----------------------- On start -----------------------------
 @cl.on_chat_start
 async def on_chat_start():
     # Chat setting
     settings = await cl.ChatSettings(
         [
-        Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
-        Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
-        Slider(id="Top-k",label = "Top-k", initial = 20, min = 1, max = 100, step = 1),
-        Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
-        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
+        Slider(id="Temperature",label="Temperature",initial=0,min=0,max=1,step=0.02,),
+        Slider(id="Top-k",label = "Top-k", initial = 1, min = 1, max = 100, step = 1),
+        Slider(id="Top-p",label = "Top-p",initial = 1, min = 0,max = 1,step = 0.02),
+        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 8000, step = 100),
         Switch(id="New", label="New", initial=True),
         ]
     ).send()
-    cl.user_session.set('settings', settings)
-    # -............................ Ảnh bìa ............................
+
+    # ======================Ảnh bìa======================
     image = cl.Image(path="./fill_form.jpg", name="image1", display="inline")
     await cl.Message(
         content="Tôi là chatbot có nhiệm vụ chính là điền thông tin vào document.",
         elements=[image],
     ).send()  
-    # ................................ Đưa form vào chatbot bất cứ khi nào cũng được................................
+
+    # ======================Insert file need to fullfill======================
     files = None
     while files == None:
         files = await cl.AskFileMessage(
@@ -53,150 +40,63 @@ async def on_chat_start():
     text_file = files[0]
     with open(text_file.path, "r", encoding="utf-8") as f:
         text = f.read()  
-    await cl.Message(content=f"`{text_file.name}` uploaded, it contains {len(text)} characters!").send() # Thông báo cho người dùng biết đã up file thành công
-    cl.user_session.set("text",generate_uniform(text))
 
-# ---------------------------------------- On message --------------------------------------
+    await cl.Message(f'**Content:**\n{text}').send()
+
+    ## ======================EXTRACT LIST TAG NAME FROM FORM======================
+    llm = MyClasses.LLM_Gemini(gemini_api_key)
+    # handle_text = MyClasses.Text_Processing()
+    # edited_text, count_blank = handle_text.generate_uniform(text)
+    # await cl.Message(content=f"Text: \n {edited_text}").send()
+    form_with_tag_name, list_tag_names, type = llm.blank_to_tagnames(text)
+    # await cl.Message("List tag name: ", list_tag_names).send()
+
+    ## ======================DATABASE======================
+
+    ## ======================FILL FORM=====================
+
+    ## =================== Save user session =======================
+    cl.user_session.set("llm",llm)
+    cl.user_session.set("form_with_tag_name", form_with_tag_name)
+    cl.user_session.set("list_tag_names", list_tag_names)
+
+
 @cl.on_message
 async def main(message: cl.Message):
-    settings = cl.user_session.get('settings')
-    # ................................ LLM ......................................
-    llm = HuggingFaceEndpoint(
-        repo_id = settings['repo_id'], 
-        top_k = settings['Top-k'],
-        top_p = settings['Top-p'],
-        temperature = settings['Temperature'],
-        max_new_tokens = settings['mnt'],
-        huggingfacehub_api_token = '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',
-    )
-    cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
-    # Code tiếp tục đoạn chat trước đó
-    memory = cl.user_session.get("memory")  # type: ConversationBufferMemory
-    runnable = (
-        RunnablePassthrough.assign(
-            history=RunnableLambda(memory.load_memory_variables) | itemgetter("history")
-        )
-        | prompt1
-        | llm
-        | StrOutputParser()
-    )
-    # Missing Information
-    miss_info = (
-        prompt_miss_info
-        | llm
-        | StrOutputParser()
-    )
-    # --------------------------- Database --------------------------
-    user = cl.user_session.get("user")
-    # ------------------ Output ----------------------------
-    text = cl.user_session.get("text")
-    msg = cl.Message(content="")
-    async for chunk in runnable.astream(
-        {
-            "context": message.content,
-            "question": text,
-        },
-        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
-    ):
-        await msg.stream_token(chunk)
+    # cl.user_session.set("memory", ConversationBufferMemory(return_messages=True))
+    # # ---------------------- Take again user session ---------------------
+    llm = cl.user_session.get("llm")
+    form_with_tag_name = cl.user_session.get("form_with_tag_name")
+    list_tag_names = cl.user_session.get("list_tag_names")
+    # Get response
+    context = message.content
+    
+    
 
-    await msg.send()
-    print(msg.content)
-    data = get_output_form(msg.content)
-    print('1:',data)
-    output_form = fill_form(data, text)
-    print('2:',output_form)
-    with open('./Output/result.txt','w',encoding='utf-8') as file:
-        file.write(output_form)
-    # Miss information
-    msg_miss_info = cl.Message(content="")
-    async for chunk in miss_info.astream(
-        {
-            "output": output_form,
-        },
-        config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler()]),
-    ):
-        await msg_miss_info.stream_token(chunk)
-
-    list_items = get_output_miss_info(msg_miss_info.content)
-    # Query user 
-    count =  len(list_items)
-    while(count):
-        query = f"Thông tin về '{list_items[len(list_items)-count]}' hiện đang thiếu, bạn hãy cung cấp thêm thông tin này."
-        res = await cl.AskUserMessage(content = query, timeout=30).send()
-        if res:
-            await cl.Message(content=f"{list_items[len(list_items)-count]}: {res['output']}").send()
-        count -= 1
-    # Memory
-    memory = cl.user_session.get("memory")
-    memory.chat_memory.add_user_message(message.content)
-    memory.chat_memory.add_ai_message(msg.content)
-
-# ------------------------------ Câu lệnh in ra khi user dừng -------------------------------
+# ------------------------------ Stop section ------------------------------
 @cl.on_stop
 async def on_stop():
     print("Người dùng muốn dừng công việc này!")
 
-# ------------------ Câu lệnh in ra khi người dùng ngắt kết nối ------------------------------
+# ------------------------------ End section ------------------------------
 @cl.on_chat_end
 async def on_chat_end():
     print("Người dùng đã ngắt kết nối!")
 
-
-# --------------------------- Xác thực -------------------------------
-@cl.password_auth_callback
-def auth_callback(username: str, password: str):
-    # Fetch the user matching username from your database
-    # and compare the hashed password with the value stored in the database
-    if (username, password) == ("LHH", "1323"):
-        return cl.User(
-            identifier="LHH", metadata={"role": "admin", "provider": "credentials"}
-        )
-    else:
-        return None
+# --------------------------- Authentication -------------------------------
+# @cl.password_auth_callback
+# def auth_callback(username: str, password: str):
+#     # Fetch the user matching username from your database
+#     # and compare the hashed password with the value stored in the database
+#     if (username, password) == ("LHH", "1323"):
+#         return cl.User(
+#             identifier="LHH", metadata={"role": "admin", "provider": "credentials"}
+#         )
+#     else:
+#         return None
     
-# ---------------------------- Chat profile ---------------------------------
-@cl.set_chat_profiles
-async def chat_profile(current_user: cl.User):
-    if current_user.metadata["role"] != "admin":
-        return None
-
-    return [
-        cl.ChatProfile(
-            name="Gemma-7b-it",
-            markdown_description="Gemma is a family of lightweight, state-of-the-art open models from Google, built from the same research and technology used to create the Gemini models.",
-        ),
-    ]    
-
 # ----------------------------- Chat settings update --------------------------
-@cl.on_settings_update
-async def setup_agent(settings):
-    print("on_settings_update", settings)
-
-
-# --------------------------- Resume ------------------------------------------
-@cl.on_chat_resume
-async def on_chat_resume(thread: ThreadDict):
-    memory = ConversationBufferMemory(return_messages=True)
-    root_messages = [m for m in thread["steps"] if m["parentId"] == None]
-    for message in root_messages:
-        if message["type"] == "USER_MESSAGE":
-            memory.chat_memory.add_user_message(message["output"])
-        else:
-            memory.chat_memory.add_ai_message(message["output"])
-
-    cl.user_session.set("memory", memory)
-
-    # Setting
-    settings = await cl.ChatSettings(
-        [
-        Select(id="repo_id",label="HuggingFace Repo Id",values=["google/gemma-7b-it", "google/gemma-7b"],initial_index=0,),
-        Slider(id="Temperature",label="Temperature",initial=0.01,min=0,max=1,step=0.02,),
-        Slider(id="Top-k",label = "Top-k", initial = 20, min = 1, max = 100, step = 1),
-        Slider(id="Top-p",label = "Top-p",initial = 0.95, min = 0,max = 1,step = 0.02),
-        Slider(id="mnt", label = "Max new tokens", initial = 4000, min = 0, max = 5000, step = 100),
-        Switch(id="New", label="New", initial=True),
-        ]
-    ).send()
-    cl.user_session.set('settings', settings)
-    await cl.Message(content=f"Tiếp tục cuộc hội thoại.").send()
+# @cl.on_settings_update
+# async def setup_agent(settings):
+#     print("on_settings_update", settings)
+ 

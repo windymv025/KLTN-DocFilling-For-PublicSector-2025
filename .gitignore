@@ -9,4 +9,14 @@ __pycache__/
 chainlit.md
 tempCodeRunnerFile.py
 
-vectorstore
+data.db
+
+Forms\Text\Input\Output
+
+tagname_dict.pkl
+
+test_evalute.py
+
+test.py
+
+Forms
