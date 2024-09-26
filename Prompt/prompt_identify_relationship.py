@@ -153,8 +153,6 @@ Answer:
 [user1_relationship_user3]: [not_relationship]
 [user2_relationship_user3]: [not_relationship]
 
-
-
 Form:
 I.      Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
 [01]. Họ và tên (viết chữ in hoa): [user1_full_name]    [02]. Giới tính: [user1_gender]
