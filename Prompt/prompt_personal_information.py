@@ -843,7 +843,7 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 (Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
 Kính gửi: [receiver] (Tên cơ sở giáo dục nghề nghiệp công lập)
 Họ và tên:	[user1_full_name]
-Ngày, tháng, năm sinh:	[user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Ngày, tháng, năm sinh:	[user1_dob]
 Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
 Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
 Mã số học sinh, sinh viên: [user1_student_id]
@@ -909,7 +909,7 @@ Kính gửi:
 - [receiver] (Tên Phòng Lao động - Thương binh và Xã hội);
 - [receiver] (Tên cơ sở giáo dục nghề nghiệp).
 Họ và tên: [user1_full_name]
-Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Ngày, tháng, năm sinh: [user1_dob]
 Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
 Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
 Họ tên cha/mẹ học sinh, sinh viên: [user1_parent_name]
@@ -1427,7 +1427,7 @@ Independent - Freedom - Happiness
 APPLICATION FORM FOR ISSUANCE OF INTERNATIONAL DRIVING PERMIT
 Kính gửi (To): [receiver]
 Tôi là (Full name): [user1_full_name]
-Ngày tháng năm sinh (date of birth) [user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Ngày tháng năm sinh (date of birth) [user1_dob]
 Số hộ chiếu (Passport No.) [user1_passport_number] cấp ngày (Issuing date): ngày (date): [user1_passport_issue_day] tháng (month) [user1_passport_issue_month] năm (year) [user1_passport_issue_year] nơi cấp (Place of issue): [user1_passport_issue_place] hoặc Số định danh cá nhân (personal indentification No.): [user1_id_number]
 Hiện có giấy phép lái xe cơ giới đường bộ số (Current driving licence No.): [user1_driving_license_number]
 Cơ quan cấp (Issuing Office): [user1_driving_license_issuer]
@@ -1553,7 +1553,7 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 
 ĐỀ NGHỊ HƯỞNG TRỢ CẤP THẤT NGHIỆP
 Kính gửi: Trung tâm Dịch vụ việc làm ..........
-Tên tôi là:..........sinh ngày .......... /........../..........
+Tên tôi là:..........sinh ngày ..........
 Số định danh cá nhân/Chứng minh nhân dân: ..........cấp ngày.......... tháng.......... năm.......... Nơi cấp:..........
 Số sổ BHXH: ..........
 Số điện thoại:..........Địa chỉ email (nếu có)..........
@@ -1579,7 +1579,7 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 
 ĐỀ NGHỊ HƯỞNG TRỢ CẤP THẤT NGHIỆP
 Kính gửi: Trung tâm Dịch vụ việc làm [receiver]
-Tên tôi là: [user1_full_name] sinh ngày [user1_dob_day] / [user1_dob_month] / [user1_dob_year]
+Tên tôi là: [user1_full_name] sinh ngày [user1_dob]
 Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] Nơi cấp: [user1_id_issue_place]
 Số sổ BHXH: [user1_social_insurance_number]
 Số điện thoại: [user1_phone_number] Địa chỉ email (nếu có) [user1_email]
