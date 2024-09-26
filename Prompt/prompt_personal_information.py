@@ -68,6 +68,7 @@ study_tagnames = """
 [id_number_issue_date]: Ngày cấp đầy đủ (ngày, tháng, năm) của số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [id_number_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân của người dùng.
 [phone]: Số điện thoại di động của người dùng.
+[year_of_study]: Là học sinh, sinh viên năm thứ
 [phone_home]: Số điện thoại nhà của người dùng.
 [email]: Địa chỉ email của người dùng.
 [class]: Tên lớp hiện tại của người dùng.
@@ -81,17 +82,21 @@ study_tagnames = """
 [graduation_date]: Ngày tốt nghiệp của người dùng.
 [degree]: Bằng cấp đạt được của người dùng.
 [grade]: Điểm đạt được của người dùng.
-[year_of_study]: Năm học của người dùng.
+[study_result_rating]: Kết quả xếp loại của người dùng
 [semester]: Học kỳ của người dùng.
 [school_year]: Năm học của người dùng.
 [supervisor_name]: Tên người hướng dẫn của người dùng.
 [school_address]: Địa chỉ trường học của người dùng.
 [school_phone]: Số điện thoại của trường học của người dùng.
-[organisation]: Cơ quan quản lý trực tiếp của người dùng
+[organization]: Cơ quan quản lý trực tiếp của người dùng
 [decision_number]: Số quyết định liên quan đến yêu cầu của người dùng.
 [decision_day]: Ngày khi quyết định được đưa ra, liên quan đến người dùng.
 [decision_month]: Tháng khi quyết định được đưa ra, liên quan đến người dùng.
 [decision_year]: Năm khi quyết định được đưa ra, liên quan đến người dùng.
+[study_decision_number]: Số quyết định cử đi học của người dùng.
+[study_decision_day]: Ngày khi quyết định cử đi học, liên quan đến người dùng.
+[study_decision_month]: Tháng quyết định cử đi học, liên quan đến người dùng.
+[decision_year]: Năm quyết định cử đi học, liên quan đến người dùng.
 [decision_issuer]: Cá nhân hoặc tổ chức đã ban hành quyết định liên quan đến người dùng
 [request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
 [reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
@@ -259,6 +264,8 @@ Action 3: If no match is found, generate a new tag name in the format [new_tagna
 Task: Ensure that each placeholder is accurately replaced according to the user's unique identifier and the nature of the information provided.
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
+
+Output only.
 
 Example:
 Input:
@@ -482,6 +489,8 @@ Task: Ensure that each placeholder is accurately replaced according to the user'
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
 
+Output only.
+
 Example:
 Input:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
@@ -534,14 +543,14 @@ Kính gửi: [receiver]
 
 1. Họ và tên:	[user1_full_name]
 2. Số định danh cá nhân:	[user1_id_number]
-3. Cơ quan quản lý trực tiếp (nếu có): 	[user1_organisation]
-4. Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của [user1_decision_issuer]	
+3. Cơ quan quản lý trực tiếp (nếu có): 	[user1_management_organization]
+4. Quyết định cử đi học số [user1_study_decision_number] ngày [user1_study_decision_day] tháng [user1_study_decision_month] năm [user1_study_decision_year] của [user1_study_decision_issuer]	
 5. Thời gian học tập ở nước ngoài:	[user1_study_period]
 6. Thời gian gia hạn học tập ở nước ngoài: từ tháng [user1_extension_start_month]/20[user1_extension_start_year] đến tháng [user1_extension_end_month]/20[user1_extension_end_year]
-7. Ngày tốt nghiệp:	[user1_graduation_day] Ngày về nước:	[user1_return_day]
+7. Ngày tốt nghiệp:	[user1_graduation_date] Ngày về nước:	[user1_return_date]
 8. Kết quả học tập: 
 - Văn bằng, chứng chỉ được cấp:	[user1_degree]
-- Kết quả xếp loại học tập:	[user1_grade]
+- Kết quả xếp loại học tập:	[user1_study_result_rating]
 9. Tên cơ sở giáo dục nước ngoài (ghi bằng tiếng Việt và tiếng Anh):	
 [user1_university_vietnamese]	
 [user1_university_english]	
@@ -550,7 +559,7 @@ Kính gửi: [receiver]
 11. Tên và học hàm, học vị của người hướng dẫn:	[user1_supervisor_name]
 12. Đánh giá của cơ sở giáo dục hoặc giáo sư hướng dẫn (nếu có, viết tóm tắt): 
 [user1_supervisor_evaluation]
-13. Nguyện vọng, đề nghị 3 :	[request]	
+13. Nguyện vọng, đề nghị 3 :	[user1_request]	
 14. Cơ quan công tác sau khi tốt nghiệp về Việt Nam:	[user1_post_graduation_organisation]
 Địa chỉ:	[user1_post_graduation_address]	
 15. Địa chỉ liên hệ :	[user1_contact_address]	
@@ -652,7 +661,7 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Kính gửi: [receiver] 
 
 Tôi tên là: [user1_full_name]
-Cơ quan quản lý trực tiếp (nếu có): [user1_organisation]	
+Cơ quan quản lý trực tiếp (nếu có): [user1_organization]	
 	
 Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của 	[user1_decision_issuer]
 Tên trường đến học, nước: 	[user1_university_name]
@@ -838,7 +847,7 @@ Ngày, tháng, năm sinh:	[user1_dob_day]/[user1_dob_month]/[user1_dob_year]
 Số định danh cá nhân/Chứng minh nhân dân: [user1_id_number] cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year] nơi cấp [user1_id_issue_place]
 Lớp: [user1_class] Khóa: [user1_course] Khoa: [user1_faculty]
 Mã số học sinh, sinh viên: [user1_student_id]
-Thuộc đối tượng: [user1_policy_category] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Thuộc đối tượng: [user1_student_type] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
 Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
 
 Xác nhận của Khoa
@@ -868,8 +877,6 @@ Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 củ
 	.........., ngày ..........tháng ..........năm ..........
 Người làm đơn
 (Ký và ghi rõ họ tên)
-
-
 
 Xác nhận của cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài
 Cơ sở giáo dục nghề nghiệp: ..........
@@ -913,12 +920,10 @@ Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 củ
 Người làm đơn
 (Ký và ghi rõ họ tên)
 
-
-
 Xác nhận của cơ sở giáo dục nghề nghiệp tư thục hoặc cơ sở giáo dục nghề nghiệp có vốn đầu tư nước ngoài
 Cơ sở giáo dục nghề nghiệp: [receiver_school]
 Xác nhận anh/chị: [user1_full_name]
-Hiện là học sinh, sinh viên năm thứ [user1_school_year] Học kỳ: [user1_semester] Năm học [user1_school_year] lớp [user1_class]
+Hiện là học sinh, sinh viên năm thứ [user1_academic_level] Học kỳ: [user1_semester] Năm học [user1_school_year] lớp [user1_class]
 khoa [user1_faculty] khóa học [user1_course] thời gian khóa học [user1_course_duration] (năm) hệ đào tạo [user1_education_system]
 của nhà trường.
 Kỷ luật: [user1_discipline] (ghi rõ mức độ kỷ luật nếu có).
@@ -1112,6 +1117,8 @@ Task: Ensure that each placeholder is accurately replaced according to the user'
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
 
+Output only.
+
 Example:
 Input:
                         TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
@@ -1302,6 +1309,8 @@ Task: Ensure that each placeholder is accurately replaced according to the user'
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
 
+Output only.
+
 Example:
 Input:
 GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
@@ -1440,14 +1449,13 @@ Output:
 job_template_prompt = """
 Instruction: Job-Related Form
 
-Goal:
-The goal of this form is to gather comprehensive information related to employment, social insurance, and unemployment benefits. Accurate completion of this form is crucial for verifying employment history, managing social insurance records, and processing unemployment benefits. Your task is to ensure that all placeholders in the form are correctly replaced with the appropriate tag names for job-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
+Goal: The goal of this form is to gather comprehensive information related to employment, social insurance, and unemployment benefits. Accurate completion of this form is crucial for verifying employment history, managing social insurance records, and processing unemployment benefits. Your task is to ensure that all placeholders in the form are correctly replaced with the appropriate tag names for job-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
+
 Your Task:
 
 You are responsible for determining the correct tag name for each placeholder in a job-related form. Your task is to ensure that every placeholder in the form is accurately replaced with the corresponding tag name, based on the user's vehicle-related and personal information. If a placeholder does not match any defined tag, generate a new tag name accordingly.
 
-1. Identify Unique Users
-
+Identify Unique Users
 Task: Determine the number of unique users mentioned in the form.
 
 Action: Assign a unique identifier to each user (e.g., user1, user2, etc.).
@@ -1460,8 +1468,7 @@ Action 1: If a match is found, replace the placeholder with the corresponding ta
 
 Action 2: If no match is found, generate a new tag name in the format [userX_new_tagname] and replace the placeholder with this generated tag name.
 
-2. Handle Non-Personal Information Placeholders
-
+Handle Non-Personal Information Placeholders
 Task: If the placeholder does not correspond to any known study-related tag name:
 
 Action 1: Check against the {remaining_tag_names}.
@@ -1470,11 +1477,12 @@ Action 2: If a match is found, replace the placeholder with the corresponding ta
 
 Action 3: If no match is found, generate a new tag name in the format [new_tagname] and replace the placeholder with this generated tag name.
 
-3. Ensure Consistency and Accuracy
-
+Ensure Consistency and Accuracy
 Task: Ensure that each placeholder is accurately replaced according to the user's unique identifier and the nature of the information provided.
 
 Action: Review the form to confirm that all placeholders are correctly replaced, maintaining the integrity of the user information and the form structure.
+
+Output only.
 
 Example:
 Input:
@@ -1517,13 +1525,13 @@ Số: [document_number]/[document_year]	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆ
 V/v đề nghị cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ.	[place], ngày [day] tháng [month] năm [year]                                          
 
                         Kính gửi: Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) 		         
-1. Tên cơ quan/tổ chức: [organisation_name]
-2. Loại hình cơ quan/tổ chức: [organisation_type]
-3. Địa chỉ: [organisation_address]
-4. Điện thoại: [organisation_phone] 5. Email: [organisation_email]
-6. Quyết định thành lập (hoạt động) số: [organisation_decision_number]
-Cơ quan cấp: [organisation_decision_issuer] Ngày cấp: [organisation_decision_date]
-Lĩnh vực hoạt động: [organisation_field]
+1. Tên cơ quan/tổ chức: [organization_name]
+2. Loại hình cơ quan/tổ chức: [organization_type]
+3. Địa chỉ: [organization_address]
+4. Điện thoại: [organization_phone] 5. Email: [organization_email]
+6. Quyết định thành lập (hoạt động) số: [organization_decision_number]
+Cơ quan cấp: [organization_decision_issuer] Ngày cấp: [organization_decision_date]
+Lĩnh vực hoạt động: [organization_field]
 Đề nghị Cục Việc làm (Bộ Lao động - Thương binh và Xã hội) cấp/cấp lại giấy phép lao động cho chuyên gia khoa học công nghệ, cụ thể như sau:
 7. Họ và tên (chữ in hoa): [expert_full_name]
 8. Ngày, tháng, năm sinh: [expert_dob_day]/[expert_dob_month]/[expert_dob_year] 9. Giới tính (Nam/Nữ) [expert_gender]
@@ -1531,11 +1539,11 @@ Lĩnh vực hoạt động: [organisation_field]
 11. Hộ chiếu/giấy tờ có giá trị đi lại quốc tế số: [expert_passport_number]
 Cơ quan cấp: [expert_passport_issuer] Có giá trị đến ngày: [expert_passport_expiry_date]
 12. Trình độ chuyên môn: [expert_education_level]
-13. Làm việc tại cơ quan/tổ chức: [organisation_name]
-Địa chỉ: [organisation_address]
+13. Làm việc tại cơ quan/tổ chức: [organization_name]
+Địa chỉ: [organization_address]
 14.Vị trí công việc: [expert_position]
 15. Thời hạn làm việc từ ngày [expert_work_start_day] tháng [expert_work_start_month] năm [expert_work_start_year] đến ngày [expert_work_end_day] tháng [expert_work_end_month] năm [expert_work_end_year]
-16. Nơi đăng ký nhận giấy phép lao động: [organisation_address]
+16. Nơi đăng ký nhận giấy phép lao động: [organization_address]
 17. Lý do đề nghị (chỉ áp dụng đối với trường hợp cấp lại giấy phép lao động): [reason]
 
 Example:
@@ -1616,26 +1624,26 @@ Số điện thoại:.......... ; Số Fax:.......... ; Email.......... ;
 Danh sách học viên đề nghị cấp chứng chỉ theo Quyết định công nhận kết quả thi số........../QĐ-.......... ngày .......... tháng .......... năm 20.......... (học viên có kết quả thi đạt yêu cầu)./.
 Output: 
 MẪU TỜ TRÌNH CẤP CHỨNG CHỈ THẨM TRA VIÊN ATGT ĐƯỜNG BỘ
-[organisation_name] (2)
-[organisation_address] (1)
+[receiver] (2)
+[sender] (1)
 -------------	
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 ---------------
-Số: [document_number]/TTr-[document_year]	[place], ngày [day] tháng [month] năm [year]
+Số:            /TTr- [document_number]	[place], ngày [day] tháng [month] năm [year]
 TỜ TRÌNH
 Cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ
 Kính gửi: Cục Đường bộ Việt Nam
-Căn cứ Nghị định số 11/2010/NĐ-CP ngày 24/02/2010 của Chính phủ quy định về quản lý và bảo vệ kết cấu hạ tầng giao thông đường bộ (đã được Chính phủ sửa đổi, bổ sung bởi Nghị định số 100/2013/NĐ-CP ngày 03/9/2013, Nghị định số 64/2016/NĐ-CP ngày 01/7/2016, Nghị định số 125/2018/NĐ-CP ngày 19/9/2018, Nghị định số 117/2021/NĐ-CP ngày 22/12/2021 và Nghị định số [new_legal_document_number]/2022/NĐ-CP ngày [new_legal_document_day]/[new_legal_document_month]/2022);
-Thực hiện Kế hoạch đào tạo số [organisation_training_plan_number]/[organisation_training_plan_year] ngày [organisation_training_plan_day] tháng [organisation_training_plan_month] năm [organisation_training_plan_year] của [organisation_name] (1)
+Căn cứ Nghị định số 11/2010/NĐ-CP ngày 24/02/2010 của Chính phủ quy định về quản lý và bảo vệ kết cấu hạ tầng giao thông đường bộ (đã được Chính phủ sửa đổi, bổ sung bởi Nghị định số 100/2013/NĐ-CP ngày 03/9/2013, Nghị định số 64/2016/NĐ-CP ngày 01/7/2016, Nghị định số 125/2018/NĐ-CP ngày 19/9/2018, Nghị định số 117/2021/NĐ-CP ngày 22/12/2021 và Nghị định số [new_decree_number]/2022/NĐ-CP ngày [new_decree_day]/[new_decree_month]/2022);
+Thực hiện Kế hoạch đào tạo số [training_plan_number]/[training_plan_year] ngày [training_plan_day] tháng [training_plan_month] năm [training_plan_year] của [sender] (1)
 
-Căn cứ Quyết định số [organisation_decision_number]/QĐ-[organisation_decision_year] ngày [organisation_decision_day] tháng [organisation_decision_month] năm [organisation_decision_year] của [organisation_name] (1) về việc công nhận kết quả thi thẩm tra viên an toàn giao thông đường bộ của lớp [training_class], khóa [training_course]; (1) [reason], đề nghị Cục Đường bộ Việt Nam xem xét, cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ với các nội dung dưới đây:
-1. Tên cơ sở đào tạo: [organisation_name] (1) ;
-Địa chỉ: [organisation_address] ;
-Số điện thoại: [organisation_phone] ; Số Fax: [organisation_fax] ; Email [organisation_email] ;
+Căn cứ Quyết định số [decision_number]/QĐ- [decision_year] ngày [decision_day] tháng [decision_month] năm [decision_year] của [sender] (1) về việc công nhận kết quả thi thẩm tra viên an toàn giao thông đường bộ của lớp [class_name], khóa [course_number];(1) [sender], đề nghị Cục Đường bộ Việt Nam xem xét, cấp chứng chỉ thẩm tra viên an toàn giao thông đường bộ với các nội dung dưới đây:
+1. Tên cơ sở đào tạo: [sender] (1) ;
+Địa chỉ: [sender_address] ;
+Số điện thoại: [sender_phone] ; Số Fax: [sender_fax] ; Email [sender_email] ;
 2. Tóm tắt quá trình đào tạo (chương trình, kế hoạch, số lượng học viên tham gia khóa học, kết quả thi).
 3. Số lượng chứng chỉ đề nghị cấp: [number_of_certificates] chứng chỉ.
-Danh sách học viên đề nghị cấp chứng chỉ theo Quyết định công nhận kết quả thi số [organisation_decision_number]/QĐ-[organisation_decision_year] ngày [organisation_decision_day] tháng [organisation_decision_month] năm [organisation_decision_year] (học viên có kết quả thi đạt yêu cầu)./.
+Danh sách học viên đề nghị cấp chứng chỉ theo Quyết định công nhận kết quả thi số [decision_number]/QĐ- [decision_year] ngày [decision_day] tháng [decision_month] năm 20[decision_year] (học viên có kết quả thi đạt yêu cầu)./.
 
 Example:
 Input:
@@ -1673,6 +1681,7 @@ Trường hợp người lao động chưa có bản sao hợp đồng lao độ
  Đề nghị quý Trung tâm xem xét, thực hiện các thủ tục về chấm dứt hưởng trợ cấp thất nghiệp để bảo lưu thời gian đóng bảo hiểm thất nghiệp tương ứng với số tháng hưởng trợ cấp thất nghiệp mà tôi chưa nhận tiền tại cơ quan bảo hiểm xã hội./.
                                                                           [place], ngày [day] tháng [month] năm [year]
 
+                                                                          
 
 Example:
 Input: 
