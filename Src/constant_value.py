@@ -1,367 +1,16 @@
 ### 0. ------------------DEFAULT------------------###
 API_KEY = "AIzaSyBRWVbQgcq1F5-1jXqIGC30MQ1ASMSaM50" #Gemini API key
 
-### 1. ------------------Task: BLANK TO TAGNAMES------------------###
-tag_names = """
-#full_name: Họ, chữ đệm và tên
-#alias_name: Họ, chữ đệm và tên gọi khác 
-#dob_day, #dob_month, #dob_year: Ngày sinh
-#gender: Giới tính
-#id_number: Số CMND/CCCD
-#CCCD_number: Số CCCD
-#CMND_Number: Số CMND
-#religion: Tôn giáo
-#nationality: Quốc tịch
-#marital_status: Tình trạng hôn nhân
-#blood_type: Nhóm máu 
-#birth_registration_place: Nơi đăng ký khai sinh
-#hometown: Quê quán
-#permanent_address: Nơi thường trú
-#current_address: Nơi ở hiện tại
-#occupation: Nghề nghiệp
-#education_level: Trình độ học vấn
-#place: Địa điểm khai tờ khai
-#day, #month, #year: Ngày, tháng, năm khai tờ khai
-#receiver: Kính gửi
-#relationship: Quan hệ với người được khai sinh
-"""
-
-### 2. ------------------Task: EXTRACT CONTENT------------------###
-#{Abstract} and {Question} will be replaced
-template_extract_content ="""
-Give you list of keys. Your task is to extract information from abstract corresponding with this list keys.
-Your response will be a list having have format [key:value]. If this [key] doesn't have info, reply with [key:#Empty]. If key not in tag names, reply with [key:#Empty], example, if key is Trống, reply [Trống: #Empty]
-<Examples>
-Abstract: '''Tôi tên là Lê Hữu Hưng, giới tính nam, sinh viên năm 3, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai (lãnh thổ Việt Nam), số CMND là 12345.'''
-list_keys = '''
-Họ tên
-Trống
-Ngày sinh
-Tháng sinh
-Năm sinh
-Ngày tháng năm sinh
-Giới tính
-Số CMND
-Dân tộc
-Tôn giáo
-Quốc tịch
-Tình trạng hôn nhân
-Nhóm máu
-Nơi đăng ký khai sinh
-Trống
-Quê quán
-Trống
-Trống
-Trống
-Nơi thường trú
-Số điện thoại'''
-Answer: 
-[Họ tên:Lê Hữu Hưng]
-[Trống: #Empty]
-[Ngày sinh:01]
-[Tháng sinh:03]
-[Năm sinh:2003]
-[Ngày tháng năm sinh:01/03/2003]
-[Giới tính:Nam]
-[Số CMND:12345]
-[Dân tộc:#Empty]
-[Tôn giáo:#Empty]
-[Quốc tịch:#Empty]
-[Tình trạng hôn nhân:#Empty]
-[Nhóm máu:#Empty]
-[Nơi đăng ký khai sinh:#Empty]
-[Trống: #Empty]
-[Quê quán:#Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Nơi thường trú:#Empty]
-[Số điện thoại:#Empty]
-
-Abstract:'''Tên của tôi là Nguyễn Đức Nam, là sinh viên năm 3, sinh ngày 26/02/2003, dân tộc Kinh, quê ở Bình Định, quốc tịch Việt Nam, số CMND là 12345.'''
-list_keys = '''
-Họ tên
-Ngày sinh
-Tháng sinh
-Năm sinh
-Ngày tháng năm sinh
-Số CMND
-Số điện thoại
-Trình độ học vấn
-'''
-Answer:
-[Họ tên:Nguyễn Đức Nam]
-[Ngày sinh:26]
-[Tháng sinh:02]
-[Năm sinh:2003]
-[Ngày tháng năm sinh:26/02/2003]
-[Số CMND:12345]
-[Số điện thoại:#Empty]
-[Trình độ học vấn:#Empty]
-
-
-Abstract: '''TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
-3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
-5. Số CMND/CCCD: 052203654
-6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
-9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A'''
-list_keys = '''
-Họ tên
-Ngày sinh
-Tháng sinh
-Năm sinh
-Trống
-Ngày tháng năm sinh
-Giới tính
-Số CMND
-Dân tộc
-Tôn giáo
-Quốc tịch
-Tình trạng hôn nhân
-Nhóm máu
-Trống
-Trống
-Nơi đăng ký khai sinh
-Quê quán
-Nơi thường trú
-Số điện thoại'''
-Answer:
-[Họ tên:Nguyễn Văn Khoa]
-[Ngày sinh:1]
-[Tháng sinh:1]
-[Năm sinh:2011]
-[Trống: #Empty]
-[Ngày tháng năm sinh:1/1/2011]
-[Giới tính:Nữ]
-[Số CMND:052203654]
-[Dân tộc:Kinh]
-[Tôn giáo:Không]
-[Quốc tịch:Việt Nam]
-[Tình trạng hôn nhân:Đã kết hôn]
-[Nhóm máu:A]
-[Trống: #Empty]
-[Trống: #Empty]
-[Nơi đăng ký khai sinh:#Empty]
-[Quê quán:#Empty]
-[Nơi thường trú:#Empty]
-[Số điện thoại:#Empty]
-
-Abstract: '''
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: (1) Công an Xã Cát Thành
-Họ, chữ đệm, tên người yêu cầu: Nguyễn Đức Phép
-Nơi cư trú: (2)Hóa Lạc - Cát Thành
-Giấy tờ tùy thân: (3)Giấy khai sinh
-Quan hệ với người được khai sinh: Cha
-Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: Nguyễn Đức Nam
-Ngày, tháng, năm sinh: 26/02/2003 ghi bằng chữ: Ngày 26 tháng 02 năm 2003
-Giới tính: Nam Dân tộc:  Kinh Quốc tịch: Việt Nam
-Nơi sinh: (4)Hóa Lạc - Cát Thành
-Quê quán: Hóa Lạc - Cát Thành
-Họ, chữ đệm, tên người mẹ: Dương Thị Thu Vân
-Năm sinh: (5)1978 Dân tộc: Kinh Quốc tịch: Việt Nam
-Nơi cư trú: (2) Hóa Lạc - Cát Thành
-Họ, chữ đệm, tên người cha: Nguyễn Đức Phép
-Năm sinh: (5)1976 Dân tộc: Kinh Quốc tịch: Việt Nam
-Nơi cư trú: (2) Hóa Lạc - Cát Thành
-Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
-Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: Cát Thành, ngày 08 tháng 04 năm 2024
-'''
-list_keys = '''
-Họ tên
-Họ
-Tên
-Ngày sinh
-Tháng sinh
-Năm sinh
-Ngày tháng năm sinh
-Ngày cấp
-Tháng cấp
-Năm cấp
-Trống
-Ngày tháng năm cấp
-Trống
-Giới tính
-Chứng minh nhân dân
-Dân tộc
-Tôn giáo
-Quốc tịch
-Tình trạng hôn nhân
-Trống
-Nhóm máu
-Nơi đăng ký sinh
-Quê quán
-Nơi thường trú
-Chỗ ở hiện nay
-Nghề nghiệp
-Trống
-Trống
-Trống
-Trình độ học vấn
-Số điện thoại
-Email
-Tên mẹ
-Ngày sinh của mẹ
-Tháng sinh của mẹ
-Năm sinh của mẹ
-Ngày tháng năm sinh của mẹ
-Trống
-Trống
-Tên cha
-Ngày sinh của cha
-Tháng sinh của cha
-Năm sinh của cha
-Ngày tháng năm sinh của cha'''
-Answer:
-[Họ tên: Nguyễn Đức Nam]
-[Họ: Nguyễn]
-[Tên: Đức Nam]
-[Ngày sinh: 26]
-[Tháng sinh: 02]
-[Năm sinh: 2003]
-[Ngày tháng năm sinh: 26/02/2003]
-[Ngày cấp: 08]
-[Tháng cấp: 04]
-[Năm cấp: 2024]
-[Trống: #Empty]
-[Ngày tháng năm cấp: 08/04/2024]
-[Trống: #Empty]
-[Giới tính: Nam]
-[Chứng minh nhân dân: #Empty]
-[Dân tộc: Kinh]
-[Tôn giáo: #Empty]
-[Quốc tịch: Việt Nam]
-[Tình trạng hôn nhân: #Empty]
-[Trống: #Empty]
-[Nhóm máu: #Empty]
-[Nơi đăng ký sinh: #Empty]
-[Quê quán: Hóa Lạc - Cát Thành]
-[Nơi thường trú: Hóa Lạc - Cát Thành] 
-[Chỗ ở hiện nay: #Empty]
-[Nghề nghiệp: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Trình độ học vấn: #Empty]
-[Số điện thoại: #Empty]
-[Email: #Empty]
-[Tên mẹ: Dương Thị Thu Vân]
-[Ngày sinh của mẹ: #Empty]
-[Tháng sinh của mẹ: #Empty]
-[Năm sinh của mẹ: 1978]
-[Ngày tháng năm sinh của mẹ: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Tên cha: Nguyễn Đức Phép]
-[Ngày sinh của cha: #Empty]
-[Tháng sinh của cha: #Empty]
-[Năm sinh của cha: 1976]
-[Ngày tháng năm sinh của cha: #Empty]
-
-Abstract: '''
-GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
-A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
-Tên chủ xe : Nguyễn Đức Nam
-Năm sinh: 2003
-Địa chỉ : KTX B
-Số CCCD/CMND/Hộ chiếu của chủ xe: 05220
-cấp ngày 05/05/2018 tại Bình Định
-Số CCCD/CMND/Hộ chiếu của người làm thủ tục 05220
-cấp ngày 05/05/2018 tại Bình Định
-Điện thoại của chủ xe : 035
-Điện thoại của người làm thủ tục : 035
-Số hóa đơn điện tử mã số thuế: 054
-Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp: 047
-Số tờ khai hải quan điện tử cơ quan cấp: 064
-Số sêri Phiếu KTCLXX Cơ quan cấp 065
-Số giấy phép kinh doanh vận tải cấp ngày 7/8/2019 tại TPHCM
-Số máy 1 (Engine N0): 77E1
-Số máy 2 (Engine N0): 77H1
-Số khung (Chassis N0): 77O'''
-list_keys = '''
-Trống
-Trống
-Họ tên
-Họ
-Tên
-Ngày sinh
-Tháng sinh
-Năm sinh
-Ngày tháng năm sinh
-Trống
-Trống
-Trống
-Động cơ N1
-Động cơ N2
-Khung xe N0
-'''
-Answer:
-[Trống: #Empty]
-[Trống: #Empty]
-[Họ tên: Nguyễn Đức Nam]
-[Họ: Nguyễn]
-[Tên: Đức Nam]
-[Ngày sinh: #Empty]
-[Tháng sinh: #Empty]
-[Năm sinh: 2003]
-[Ngày tháng năm sinh: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Trống: #Empty]
-[Động cơ N1: #Empty]
-[Động cơ N2: #Empty]
-[Khung xe N0: 77O]
-</Examples>
-Abstract: {Abstract}
-Question: {Question}
-"""
-
-### 3. ------------------Task: FILL IN BLANKS WITH TAGNAME LLM------------------###
-form_tagging_prompt = """
-Bạn được cung cấp một form cần điền thông tin.
-Nhiệm vụ của bạn là gán các tên tag thích hợp cho từng trường dữ liệu liên quan đến người dùng hoặc cơ quan/tổ chức với định dạng [userX_tagname] hoặc [orgX_tagname]. 
-Đối với các trường không liên quan đến bất kỳ người dùng hay cơ quan/tổ chức nào, sử dụng tag name [#another].
-<Instruction>
-Trước tiên, hãy xác định có bao nhiêu người dùng và cơ quan/tổ chức trong form này.
-Sau đó, xác định các tag name phù hợp cho từng trường dữ liệu trong form dựa trên ngữ cảnh và dữ liệu người dùng hoặc cơ quan/tổ chức.
-Nếu không có tag name phù hợp, hãy tạo tag name mới dựa trên quy tắc chuẩn hóa đã đề ra.
-</Instruction>
-<Examples>
-Form:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): ..........
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
-3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
-5. Số CMND/CCCD: ..........
-6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
-9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
-11. Nơi đăng ký khai sinh: ..........
-12. Quê quán: ..........
-13. Nơi thường trú: ..........
-14. Nơi ở hiện tại: ..........
-15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
-.........., ngày ..........tháng..........năm..........
-Answer:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): [user1_full_name]
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
-3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
-5. Số CMND/CCCD: [user1_id]
-6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
-9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
-11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
-12. Quê quán: [user1_hometown]
-13. Nơi thường trú: [user1_permanent_address]
-14. Nơi ở hiện tại: [user1_current_address]
-15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
-[user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
-Form:
+#abc
+template_generate_tagname_without_predefined_tagname = """
+You are tasked with filling out various forms using predefined tagnames, replacing all placeholders (..........) with the correct tagname. The tagnames will follow a specific pattern.
+But if you encounter new fields that don't have predefined tagnames, design a new tagname based on the field’s context.  
+There are two important rules:
+1. User-specific tagnames: If a tagname follows the format userX_tagname (e.g., user1_full_name, user2_dob_day,...), use the corresponding user-specific information.
+2. General tagnames: If the tagname does not belong to a user (such as day, month, year, or receiver,...), fill in that tagname directly without associating it with any user.
+3. Replace all placeholders: Every occurrence of ".........." must be replaced with an appropriate tagname, whether it is user-specific or a general tagname.
+<Example>
+Form: 
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI ĐĂNG KÝ KHAI SINH
@@ -385,286 +34,7 @@ Nơi cư trú: ..........
 Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
 Làm tại: .........., ngày .......... tháng .......... năm ..........
-Answer:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: [org1_name]
-Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
-Nơi cư trú: [user1_address]
-Giấy tờ tùy thân: [user1_id]
-Quan hệ với người được khai sinh: [user1_relationship_user2]
-Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: [user2_full_name]
-Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
-Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
-Nơi sinh: [user2_birthplace]
-Quê quán: [user2_hometown]
-Họ, chữ đệm, tên người mẹ: [user3_full_name]
-Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
-Nơi cư trú: [user3_address]
-Họ, chữ đệm, tên người cha: [user4_full_name]
-Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
-Nơi cư trú: [user4_address]
-Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
-Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: [user1_place], ngày [user1_day] tháng [user1_month] năm [user1_year]
-</Examples>
 
-Form: {Abstract}
-Answer:
-"""
-
-### -1. ------------------Task: EXAMPLE ------------------###
-cccd_form = """
-			TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): ..............................................
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..............................................
-3. Ngày, tháng, năm sinh:......./......../............; 4. Giới tính (Nam/nữ): .............
-5. Số CMND/CCCD: ..................................................................
-6. Dân tộc: .............; 7. Tôn giáo: ............ 8. Quốc tịch: ................
-9. Tình trạng hôn nhân: ................... 10. Nhóm máu (nếu có): ...........
-11. Nơi đăng ký khai sinh: ..............................................
-12. Quê quán: ..............................................
-13. Nơi thường trú: ..............................................
-.................................................................
-14. Nơi ở hiện tại: ..............................................
-.................................................................
-15. Nghề nghiệp: ............ 16. Trình độ học vấn: ................
-"""
-
-cccd_form_blankx = """
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-Họ, chữ đệm và tên(1): (Blank1)
-Họ, chữ đệm và tên gọi khác (nếu có)(1): (Blank2)
-Ngày, tháng, năm sinh:(Blank3)/(Blank4)/(Blank5); 4. Giới tính (Nam/nữ): (Blank6)
-Số CMND/CCCD: (Blank7)
-Dân tộc: (Blank8); 7. Tôn giáo: (Blank9) 8. Quốc tịch: (Blank10)
-Tình trạng hôn nhân: (Blank11) 10. Nhóm máu (nếu có): (Blank12)
-Nơi đăng ký khai sinh: (Blank13)
-Quê quán: (Blank14)
-Nơi thường trú: (Blank15)
-Nơi ở hiện tại: (Blank16)
-Nghề nghiệp: (Blank17) 16. Trình độ học vấn: (Blank18)
-"""
-
-TK1_TS_form_blankx = """
-TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
-
-I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
-[01]. Họ và tên (viết chữ in hoa): (Blank1)	[02]. Giới tính: (Blank2)
-[03]. Ngày, tháng, năm sinh: (Blank3)/(Blank4)/(Blank5)	  [04]. Quốc tịch: (Blank6)
-[05]. Dân tộc: (Blank7)	[06]. Số CCCD/ĐDCN/Hộ chiếu: (Blank8)
-[07]. Điện thoại: (Blank9)	[08]. Email (nếu có): (Blank10)
-[09]. Nơi đăng ký khai sinh: [09.1]. Xã: (Blank11)	[09.2]. Huyện: (Blank12) [09.3]. Tỉnh: (Blank13)
-[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): (Blank14)
-[11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: (Blank15)
-[12]. Số nhà, đường/phố, thôn/xóm: (Blank16)
-[13]. Xã: (Blank17)	[14]	Huyện: (Blank18)	[15]. Tỉnh: (Blank19)
-[16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
-"""
-
-DK_xe_form_blankx = """
-GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
-A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
-Tên chủ xe :(Blank1)
-Năm sinh:(Blank2)
-Địa chỉ : (Blank3)
-Số CCCD/CMND/Hộ chiếu của chủ xe:(Blank4)
-cấp ngày (Blank5)/(Blank6)/(Blank7) tại (Blank8)
-Số CCCD/CMND/Hộ chiếu của người làm thủ tục (Blank9)
-cấp ngày (Blank10)/(Blank11) /(Blank12) tại(Blank13)
-Điện thoại của chủ xe :(Blank14)
-Điện thoại của người làm thủ tục :(Blank15)
-Số hóa đơn điện tử mã số thuế:(Blank16)
-Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp:(Blank17)
-Số tờ khai hải quan điện tử cơ quan cấp:(Blank18)
-Số sêri Phiếu KTCLXX Cơ quan cấp (Blank19)
-Số giấy phép kinh doanh vận tải cấp ngày (Blank20)/(Blank21) / (Blank22)tại(Blank23)
-Số máy 1 (Engine N0):(Blank24)
-Số máy 2 (Engine N0):(Blank25)
-Số khung (Chassis N0):(Blank26)
-"""
-
-cccd_keys = ['#Full_Name', '#Empty', '#Day_of_birth', '#Month_of_birth', '#Year_of_birth', '#Gender', '#Citizen_identification_card', '#Ethnicity', '#Religion', '#Nationality', '#Marital_status', '#Blood_type', '#Place_of_birth_registration', '#Hometown', '#Permanent_residence', '#Current_address', '#Occupation', '#Educational_level']
-cccd_values =  ['Họ tên', 'Trống', 'Ngày sinh', 'Tháng sinh', 'Năm sinh', 'Giới tính', 'Chứng minh nhân dân', 'Dân tộc', 'Tôn giáo', 'Quốc tịch', 'Tình trạng hôn nhân', 'Nhóm máu', 'Nơi đăng ký sinh', 'Quê quán', 'Nơi thường trú', 'Chỗ ở hiện nay', 'Nghề nghiệp', 'Trình độ học vấn']
-
-cccd_filled_form = """
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): Nguyễn Văn Khoa
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): Không
-3. Ngày, tháng, năm sinh:1/1/2011; 4. Giới tính (Nam/nữ): nữ
-5. Số CMND/CCCD: 052203654
-6. Dân tộc:Kinh; 7. Tôn giáo:Không 8. Quốc tịch: Việt Nam
-9. Tình trạng hôn nhân: Đã kết hôn 10. Nhóm máu (nếu có): A
-11. Nơi đăng ký khai sinh: Bình Định
-12. Quê quán: Phù Cát
-13. Nơi thường trú: Cát Thánh
-14. Nơi ở hiện tại: Khu B
-15. Nghề nghiệp: ITE 16. Trình độ học vấn: Master
-"""
-
-TK1_TS_filled_form = """
-TỜ KHAI THAM GIA, ĐIỀU CHỈNH THÔNG TIN BẢO HIỂM XÃ HỘI, BẢO HIỂM Y TẾ
-I.	Áp dụng đối với người tham gia tra cứu không thấy mã số BHXH do cơ quan BHXH cấp
-[01]. Họ và tên (viết chữ in hoa): NGUYỄN ĐỨC NAM	[02]. Giới tính: Nam
-[03]. Ngày, tháng, năm sinh: 26/02/2003	  [04]. Quốc tịch: Việt Nam
-[05]. Dân tộc: Kinh	[06]. Số CCCD/ĐDCN/Hộ chiếu: 05203
-[07]. Điện thoại: 035	[08]. Email (nếu có): nam@gmail.com
-[09]. Nơi đăng ký khai sinh: [09.1]. Xã: CT	[09.2]. Huyện: PC [09.3]. Tỉnh: BD
-[10]. Họ tên cha/mẹ/giám hộ (đối với trẻ em dưới 6 tuổi): Không
-[11]. Đăng ký nhận kết quả giải quyết thủ tục hành chính: ABC
-[12]. Số nhà, đường/phố, thôn/xóm: (Blank16)
-[13]. Xã: KHU B	[14]	Huyện: DIAN	[15]. Tỉnh: BD
-[16]. Kê khai Phụ lục Thành viên hộ gia đình (phụ lục kèm theo) đối với người tham gia tra cứu không thấy mã số BHXH và người tham gia BHYT theo hộ gia đình để giảm trừ mức đóng.
-"""
-
-DK_xe_filled_form = """
-GIẤY KHAI ĐĂNG KÝ XE (Vehicle registation declaration)
-A. PHẦN CHỦ XE TỰ KÊ KHAI (self declaration vehicle owner’s)
-Tên chủ xe : NGUYỄN ĐỨC NAM
-Năm sinh: 2002
-Địa chỉ : KB
-Số CCCD/CMND/Hộ chiếu của chủ xe: 0520
-cấp ngày 2/3/4 tại BD
-Số CCCD/CMND/Hộ chiếu của người làm thủ tục 0420
-cấp ngày 5/6/7 tại BD
-Điện thoại của chủ xe : 035
-Điện thoại của người làm thủ tục : 035
-Số hóa đơn điện tử mã số thuế: 12345
-Mã hồ sơ khai lệ phí trước bạ Cơ quan cấp: 67854
-Số tờ khai hải quan điện tử cơ quan cấp: #123
-Số sêri Phiếu KTCLXX Cơ quan cấp #652
-Số giấy phép kinh doanh vận tải cấp ngày 1/1/1111 tại HCM
-Số máy 1 (Engine N0): N1_541
-Số máy 2 (Engine N0): N2_874
-Số khung (Chassis N0): C0_123
-"""
-
-LHH_content = """Tôi tên là Lê Hữu Hưng, giới tính nam, sinh viên năm 3, ngày sinh 01 tháng 03 năm 2003, quê ở Gia Lai (lãnh thổ Việt Nam), số CMND là 12345. Học tại trường HCMUS, và có số điện thoại là 037."""
-
-
-#Hung
-personal_information_tagnames = """
-# [full_name]: Full name of the user.
-# [alias_name]: Alternate name of the user.
-# [dob_day]: Day of birth of the user.
-# [dob_month]: Month of birth of the user.
-# [dob_year]: Year of birth of the user.
-# [dob]: Date of birth (day, month, year) of the user.
-# [dob_text]: Date of birth (day, month, year) of the user is written by text
-# [gender]: Gender of the user.
-# [id_number]: ID card number of the user.
-# [ethnicity]: Ethnicity of the user.
-# [religion]: Religion of the user.
-# [nationality]: Nationality of the user.
-# [marital_status]: Marital status of the user.
-# [blood_type]: Blood type of the user.
-# [birth_registration_place]: Birth registration place of the user.
-# [birth_registration_place_ward]: Birth registration place ward of the user.
-# [birth_registration_place_district]: Birth registration place district of the user.
-# [birth_registration_place_province]: Birth registration place province of the user.
-# [hometown]: Hometown of the user.
-# [permanent_address]: Permanent address of the user.
-# [current_address]: Current address of the user.
-# [current_address_ward]: Current address ward of the user. 
-# [current_address_district]: Current address ward of the user.
-# [current_address_province]: Current address ward of the user.
-# [occupation]: Occupation of the user.
-# [education_level]: Education level of the user.
-# [class]: Class name of the user.
-# [school]:School name of the user.
-# [course]: Course of the the user.
-# [faculty]: Faculty of the the user.
-# [phone]: Phone mobile of the user
-# [phone_home]: Phone home of the user
-# [email]: Email of the user
-# [driving_license_number]: driving license number of the user
-# """
-
-remaining_tag_names = """
-# [receiver]: The individual or organization that will receive or process the form filled out by the user.
-# [request_content]: The specific content or request made by the user in the form. This could be details about what the form is being submitted for, such as a request for a new ID card, a change in personal information, etc.
-# [day]: day when the form is filled out by the user.
-# [month]: month when the form is filled out by the user.
-# [year]: year the form is filled out by the user.
-# [place]: Place where the form is filled out by the user.
-# [reason]: Reason when the user is filled out form.
-# """
-
-'''
-template_PI_prompt = """
-You have been provided with a form that contains placeholders (........) to be filled in with personal information.
-Below is a list of tag names that represent different types of personal information:
-
-{personal_information_tagnames}
-
-Instructions:
-
-Your task is to accurately identify and replace the placeholders in the form with the appropriate tag names. Follow these steps:
-
-Identify Users: Determine the number of unique users mentioned in the form. Assign each user a unique identifier (e.g., user1, user2, etc.).
-
-Match Personal Information: For each placeholder (........), check if it corresponds to a personal information tag name from the provided list. If it does, replace the placeholder with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user. If the placeholder does not match any tag from the personal_information_tagnames, replace it with [another].
-
-Handle Non-Personal Information: If a placeholder does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
-If the placeholder does not match any tag from the remaining_tag_names, replace it with [another].
-
-Ensure that each placeholder is correctly replaced according to the user's unique identifier and the nature of the information.
-
-Form:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): ..........
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
-3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
-5. Số CMND/CCCD: ..........
-6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
-9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
-11. Nơi đăng ký khai sinh: ..........
-12. Quê quán: ..........
-13. Nơi thường trú: ..........
-14. Nơi ở hiện tại: ..........
-15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
-.........., ngày ..........tháng..........năm..........
-Answer:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): [user1_full_name]
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
-3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
-5. Số CMND/CCCD: [user1_id]
-6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
-9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
-11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
-12. Quê quán: [user1_hometown]
-13. Nơi thường trú: [user1_permanent_address]
-14. Nơi ở hiện tại: [user1_current_address]
-15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
-[place], ngày [day] tháng [month] năm [year]
-
-Form:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: ..........
-Họ, chữ đệm, tên người yêu cầu: ..........
-Nơi cư trú: ..........
-Giấy tờ tùy thân: ..........
-Quan hệ với người được khai sinh: ..........
-Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: ..........
-Ngày, tháng, năm sinh: ........../........../.......... ghi bằng chữ: ..........
-Giới tính: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi sinh: ..........
-Quê quán: ..........
-Họ, chữ đệm, tên người mẹ: ..........
-Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi cư trú: ..........
-Họ, chữ đệm, tên người cha: ..........
-Năm sinh: .......... Dân tộc: .......... Quốc tịch: ..........
-Nơi cư trú: ..........
-Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
-Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: .........., ngày .......... tháng .......... năm ..........
 Answer:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
@@ -717,9 +87,10 @@ Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn t
 E-mail: ..........
 Điện thoại cố định:..........    Điện thoại di động:..........
 
-                .........., ngày.......... tháng.......... năm..........
+     .........., ngày.......... tháng.......... năm..........
 Người làm đơn
 (Ký và ghi rõ họ tên)
+
 Answer:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
@@ -749,99 +120,381 @@ E-mail: [user1_email]
 
 
 
-                [place], ngày [day] tháng [month] năm [year]
+     [place], ngày [day] tháng [month] năm [year]
 Người làm đơn
 (Ký và ghi rõ họ tên)
-
-Form:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-
-ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
-(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
-Kính gửi: ................(Cơ sở giáo dục)
-Họ và tên cha mẹ (hoặc người chăm sóc): ................
-Hộ khẩu thường trú tại:................
-Là cha/mẹ (hoặc người chăm sóc) của em:................
-Sinh ngày:................
-Dân tộc:................
-Hiện đang học tại lớp:................
-Trường:................
-Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
- 
-XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
-Nơi trẻ mẫu giáo có hộ khẩu thường trú
-(Ký tên, đóng dấu)	................,ngày....tháng................năm................
-Người làm đơn
-(Ký, ghi rõ họ tên)
-Answer:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-
-ĐƠN ĐỀ NGHỊ HỖ TRỢ HỌC TẬP 
-(Dùng cho cha mẹ trẻ mẫu giáo hoặc người chăm sóc trẻ mẫu giáo học tại các cơ sở giáo dục công lập)
-Kính gửi: [receiver] (Cơ sở giáo dục)
-Họ và tên cha mẹ (hoặc người chăm sóc): [user1_full_name]
-Hộ khẩu thường trú tại: [user1_permanent_address]
-Là cha/mẹ (hoặc người chăm sóc) của em: [user2_full_name]
-Sinh ngày: [user2_dob]
-Dân tộc: [user2_ethnicity]
-Hiện đang học tại lớp: [user2_class]
-Trường: [user2_school]
-Tôi làm đơn này đề nghị các cấp quản lý xem xét, giải quyết cấp tiền hỗ trợ học tập theo quy định và chế độ hiện hành./.
- 
-XÁC NHẬN CỦA ỦY BAN NHÂN DÂN CẤP XÃ1
-Nơi trẻ mẫu giáo có hộ khẩu thường trú
-(Ký tên, đóng dấu)	[place], ngày [day] tháng [month] năm [year]
-Người làm đơn
-(Ký, ghi rõ họ tên)
-
+</Example>
 Form:
 {form}
 Answer:
+
 """
-'''
 
-template_PI_prompt = """
-You have been provided with a form where all placeholders have been initially replaced with [#another]. 
-Your task is to identify and replace [#another] with the most appropriate tag names from the provided list or suggest a new tag name if necessary.
+specific_tagnames = """
+[full_name]: Họ và tên của người dùng.
+Sử dụng khi cần điền họ và tên đầy đủ vào biểu mẫu.
+[alias_name]: Tên khác (bí danh) của người dùng.
+Sử dụng khi biểu mẫu yêu cầu cung cấp tên gọi khác hoặc bí danh.
+[dob]: Ngày tháng năm sinh của người dùng.
+Sử dụng khi cần điền ngày tháng năm sinh đầy đủ dạng số (ngày, tháng, năm).
+[dob_text]: Ngày tháng năm sinh của người dùng (dạng chữ).
+Sử dụng khi biểu mẫu yêu cầu viết ngày tháng năm sinh bằng chữ.
+[dob_day]: Ngày sinh của người dùng.
+Sử dụng khi cần điền riêng ngày sinh.
+[dob_month]: Tháng sinh của người dùng.
+Sử dụng khi cần điền riêng tháng sinh.
+[dob_year]: Năm sinh của người dùng.
+Sử dụng khi cần điền riêng năm sinh.
+[gender]: Giới tính của người dùng.
+Sử dụng khi biểu mẫu yêu cầu giới tính (nam/nữ).
+[id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng. 
+.Sử dụng khi cần điền số CMND/CCCD.
+[id_issue_date]: Ngày tháng năm cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần ghi đầy đủ ngày, tháng, năm cấp CMND/CCCD.
+[id_issue_day]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần điền riêng ngày cấp CMND/CCCD.
+[id_issue_month]: Tháng cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần điền riêng tháng cấp CMND/CCCD.
+[id_issue_year]: Năm cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần điền riêng năm cấp CMND/CCCD.
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần ghi nơi cấp CMND/CCCD (ví dụ: tỉnh/thành phố, cơ quan công an).
+[ethnicity]: Dân tộc của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu dân tộc.
+[religion]: Tôn giáo của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu tôn giáo.
+[nationality]: Quốc tịch của người dùng. 
+.Sử dụng khi cần điền quốc tịch.
+[marital_status]: Tình trạng hôn nhân của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu điền tình trạng hôn nhân (độc thân, đã kết hôn, ly hôn...).
+[blood_type]: Nhóm máu của người dùng. 
+.Sử dụng khi cần cung cấp nhóm máu (A, B, AB, O).
+[birth_registration_place]: Nơi đăng ký khai sinh của người dùng. 
+.Sử dụng khi cần điền nơi đăng ký khai sinh.
+[birth_registration_place_ward]: Phường/xã nơi đăng ký khai sinh của người dùng. 
+.Sử dụng khi cần điền phường/xã đăng ký khai sinh.
+[birth_registration_place_district]: Quận/huyện nơi đăng ký khai sinh của người dùng. 
+.Sử dụng khi cần điền quận/huyện đăng ký khai sinh.
+[birth_registration_place_province]: Tỉnh/thành phố nơi đăng ký khai sinh của người dùng. 
+.Sử dụng khi cần điền tỉnh/thành phố đăng ký khai sinh.
+[hometown]: Quê quán của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu quê quán.
+[permanent_address]: Địa chỉ thường trú của người dùng. 
+.Sử dụng khi cần cung cấp địa chỉ thường trú.
+[current_address]: Địa chỉ tạm trú của người dùng. 
+.Sử dụng khi cần cung cấp địa chỉ tạm trú hiện tại.
+[current_address_ward]: Phường/xã nơi tạm trú của người dùng. 
+.Sử dụng khi cần điền phường/xã tạm trú.
+[current_address_district]: Quận/huyện nơi tạm trú của người dùng. 
+.Sử dụng khi cần điền quận/huyện tạm trú.
+[current_address_province]: Tỉnh/thành phố nơi tạm trú của người dùng. 
+.Sử dụng khi cần điền tỉnh/thành phố tạm trú.
+[occupation]: Nghề nghiệp của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu điền nghề nghiệp hiện tại.
+[passport_number]: Số hộ chiếu của người dùng.
+Ghi rõ số hộ chiếu để xác định danh tính và quốc tịch của người dùng.
+[passport_issue_day]: Ngày cấp hộ chiếu của người dùng.
+Ghi ngày cụ thể khi hộ chiếu được cấp.
+[passport_issue_month]: Tháng cấp hộ chiếu của người dùng.
+Ghi tháng khi hộ chiếu được cấp.
+[passport_issue_year]: Năm cấp hộ chiếu của người dùng.
+Ghi năm khi hộ chiếu được cấp.
+[passport_issue_date]: Ngày, tháng, năm cấp hộ chiếu của người dùng.
+Ghi đầy đủ ngày cấp hộ chiếu để dễ dàng tham khảo.
+[passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
+Ghi tên cơ quan hoặc địa điểm nơi cấp hộ chiếu.
+[passport_expiry_date]: Ngày hết hạn của hộ chiếu.
+Ghi rõ ngày mà hộ chiếu sẽ hết hạn để người dùng có thể quản lý và gia hạn khi cần thiết.
+[social_insurance_number]: Số sổ bảo hiểm xã hội của người dùng.
+Dùng để xác định quyền lợi và nghĩa vụ của người dùng trong hệ thống bảo hiểm xã hội.
+[health_insurance_card_number]: Số thẻ bảo hiểm y tế của người dùng.
+Ghi rõ số thẻ bảo hiểm y tế để quản lý các dịch vụ chăm sóc sức khỏe của người dùng.
+[health_insurance_registration_place]: Nơi đăng ký bảo hiểm y tế của người dùng.
+Ghi tên cơ quan hoặc địa điểm nơi người dùng đã đăng ký bảo hiểm y tế.
+[phone_number]: Số điện thoại của người dùng.
+Sử dụng khi cần ghi số điện thoại di động hoặc chính của người dùng.
+[phone_home_number]: Số điện thoại nhà của người dùng.
+Sử dụng khi cần ghi số điện thoại cố định tại nhà.
+[email]: Địa chỉ email của người dùng.
+Sử dụng khi cần ghi địa chỉ email liên hệ của người dùng.
+[fax_number]: Số fax của người dùng.
+Sử dụng khi cần ghi số fax của người dùng.
+[relationship_user2]: Mối quan hệ với người dùng.
+.Sử dụng khi cần điền mối quan hệ với người dùng khác (ở đây là user2)
+[academic_level]: Trình độ học tập hiện tại của người dùng (ví dụ: sinh viên năm nhất, năm hai, năm ba, năm tư).
+Sử dụng khi cần ghi rõ cấp độ học tập theo hệ thống năm học.
+[school_year]: Năm học của người dùng (ví dụ: 2024-2025).
+Sử dụng khi cần ghi rõ năm học cụ thể mà sinh viên hoặc học sinh đang theo học.
+[enrollment_year]: Năm nhập học của sinh viên.
+Sử dụng khi bạn cần ghi rõ năm mà sinh viên bắt đầu học tại cơ sở giáo dục, giúp phân biệt các khóa khác nhau (ví dụ: khóa 2021, khóa 2022, v.v.). Thường để trả lời sinh viên khóa nào?
+[class]: Lớp học của người dùng.
+Sử dụng khi cần ghi tên hoặc mã lớp mà sinh viên hoặc học sinh đang học.
+[school]: Trường học của người dùng.
+Sử dụng khi cần ghi tên trường mà sinh viên hoặc học sinh đang theo học.
+[course]: Khóa học mà người dùng đang tham gia.
+Sử dụng khi cần ghi tên hoặc mã khóa học cụ thể mà sinh viên hoặc học sinh đăng ký.
+[faculty]: Khoa hoặc bộ môn của người dùng.
+Sử dụng khi cần ghi khoa hoặc bộ môn mà sinh viên đang theo học.
+[student_id_number]: Mã số sinh viên của người dùng.
+Sử dụng khi cần ghi mã số sinh viên do trường cấp.
+[education_level]: Trình độ giáo dục của người dùng.
+Sử dụng khi cần ghi trình độ học vấn (ví dụ: đại học, thạc sĩ, tiến sĩ).
+[duration_of_course]: Thời gian học của khóa học.
+Sử dụng khi cần ghi tổng thời gian học tập của một khóa học (ví dụ: 4 năm).
+[graduation_date]: Ngày tốt nghiệp của người dùng.
+Sử dụng khi cần ghi rõ ngày tốt nghiệp của sinh viên hoặc học sinh.
+[degree]: Bằng cấp mà người dùng đang theo đuổi hoặc đã đạt được.
+Sử dụng khi cần ghi rõ loại bằng cấp (ví dụ: Cử nhân, Thạc sĩ).
+[grade]: Điểm số hoặc thành tích mà người dùng đạt được.
+Sử dụng khi cần ghi điểm hoặc xếp hạng học tập.
 
-Below is a list of tag names that represent different types of personal information:
+[semester]: Học kỳ mà người dùng đang tham gia hoặc đang nói đến.
+Sử dụng khi cần ghi rõ học kỳ cụ thể (ví dụ: Học kỳ 1, Học kỳ 2).
 
-{personal_information_tagnames}
+[supervisor_name]: Tên giảng viên hướng dẫn của người dùng.
+Sử dụng khi cần ghi rõ tên giảng viên hướng dẫn hoặc cố vấn học tập.
 
-Instructions:
+[school_address]: Địa chỉ của trường mà người dùng đang theo học.
+Sử dụng khi cần ghi rõ địa chỉ của trường học.
 
-1. **Identify Users**: Determine the number of unique users mentioned in the form. Assign each user a unique identifier (e.g., user1, user2, etc.).
+[school_phone]: Số điện thoại của trường mà người dùng đang theo học.
+Sử dụng khi cần ghi số điện thoại liên hệ của trường học.
 
-2. **Replace [#another] with Tag Names**: For each occurrence of [#another], check if it corresponds to a personal information tag name from the provided list. If it does, replace [#another] with the appropriate tag name in the format [userX_tagname], where X is the identifier of the user.
+[policy_object]: Đối tượng chính sách của người dùng.
+Sử dụng khi cần ghi rõ đối tượng thuộc chính sách nào (ví dụ: học bổng, chính sách xã hội).
 
-3. **Handle Non-Personal Information**: If [#another] does not correspond to any known personal information tag name, check the {remaining_tag_names}. Replace it with the appropriate tag name from the list if a match is found.
+[direct_management_agency]: Cơ quan quản lý trực tiếp của người dùng (nếu có).
+Ghi cơ quan quản lý trực tiếp người dùng.
 
-4. **Suggest New Tags**: If no existing tag name matches, suggest a new tag name that could be added to the list. If no suitable tag name is suggested, leave it as [#another].
+[study_decision_number]: Số quyết định cử đi học.
+Ghi số quyết định liên quan đến việc cử đi học.
 
-Ensure that each placeholder is correctly replaced according to the user's unique identifier and the nature of the information.
+[study_decision_day], [study_decision_month], [study_decision_year]: Ngày, tháng, năm của quyết định cử đi học.
+Ghi ngày tháng năm quyết định được ban hành.
 
-Form:
+[study_decision_issuer]: Cá nhân hoặc tổ chức ký quyết định cử đi học.
+Ghi tên người/tổ chức có thẩm quyền ký quyết định.
+
+[study_abroad_duration]: Thời gian học tập ở nước ngoài.
+Ghi tổng thời gian học tại nước ngoài.
+
+[extension_start_month], [extension_start_year], [extension_end_month], [extension_end_year]: Thời gian gia hạn học tập ở nước ngoài.
+Ghi rõ thời gian bắt đầu và kết thúc gia hạn.
+
+[graduation_date]: Ngày tốt nghiệp.
+Ghi ngày tháng năm tốt nghiệp của người dùng.
+
+[return_date]: Ngày về nước.
+Ghi ngày tháng năm về nước.
+
+[foreign_institution_name]: Tên cơ sở giáo dục nước ngoài.
+Ghi tên trường hoặc tổ chức giáo dục nước ngoài mà người dùng đã học.
+
+[thesis_title]: Tên đề tài luận văn thạc sĩ hoặc luận án tiến sĩ.
+Ghi tên đề tài nghiên cứu của người dùng.
+
+[supervisor_info]: Tên và học hàm, học vị của người hướng dẫn.
+Ghi thông tin về giảng viên hướng dẫn của người dùng.
+
+[supervisor_evaluation]: Đánh giá của cơ sở giáo dục hoặc giáo sư hướng dẫn.
+Ghi ý kiến đánh giá của giảng viên hoặc trường học.
+
+[user1_discipline] : Ghi rõ mức độ kỷ luật nếu có của người dùng.
+Dùng để ghi rõ kỷ luật của người người dùng, cũng như xác định xem họ có bị kỷ luật nào hay không.
+
+[total_modules_or_credits]: Tổng số môn học hoặc tín chỉ của người dùng.
+Ghi tổng số môn học hoặc tín chỉ mà người dùng cần hoàn thành trong chương trình học.
+
+[modules_or_credits_first_semester_year1]: Số môn học hoặc tín chỉ trong học kỳ đầu năm thứ nhất của người dùng.
+Ghi số môn học hoặc tín chỉ mà người dùng trong học kỳ đầu tiên của năm học đầu tiên.
+
+[modules_or_credits_second_semester_year1]: Số môn học hoặc tín chỉ trong học kỳ thứ hai năm thứ nhất của người dùng.
+Ghi số môn học hoặc tín chỉ mà người dùng trong học kỳ thứ hai của năm học đầu tiên.
+
+[request]: Nguyện vọng hoặc đề nghị của người dùng.
+Ghi rõ nguyện vọng hoặc yêu cầu của người dùng trong báo cáo.
+
+[workplace]: Cơ quan công tác.
+Ghi tên cơ quan làm việc của người dùng.
+
+[workplace_address]: Địa chỉ của cơ quan công tác.
+Ghi rõ địa chỉ nơi làm việc.
+
+[recommendation]: Kiến nghị, đề xuất.
+Ghi rõ các kiến nghị hoặc đề xuất của người dùng.
+
+[reason]: Lý do đề nghị.
+Ghi rõ lý do mà người dùng đề nghị.
+
+[bank_account]: Số tài khoản ngân hàng của người dùng.
+Ghi số tài khoản để thực hiện các giao dịch tài chính và thanh toán.
+
+[bank_name]: Tên ngân hàng của người dùng.
+Ghi tên ngân hàng nơi người dùng có tài khoản.
+
+[parent_name]: Tên phụ huynh của người dùng.
+Dùng để ghi rõ thông tin về phụ huynh, có thể cần cho các thủ tục hành chính hoặc liên hệ.
+
+[driving_license_number]: Số giấy phép lái xe của người dùng.
+Ghi rõ số giấy phép lái xe mà người dùng đã được cấp.
+
+[driving_license_issuer]: Cơ quan cấp giấy phép lái xe.
+Tên tổ chức hoặc cơ quan đã cấp giấy phép lái xe cho người dùng.
+
+[driving_license_place]: Nơi cấp giấy phép lái xe.
+Địa điểm cụ thể nơi người dùng đã nhận giấy phép lái xe.
+
+[driving_license_issue_day], [driving_license_issue_month], [driving_license_issue_year]: Ngày, tháng, năm cấp giấy phép lái xe.
+Thông tin ngày cấp giấy phép lái xe, cần ghi rõ từng phần để tránh nhầm lẫn.
+
+[driving_license_category]: Loại giấy phép lái xe (A, B, C,...).
+Chỉ rõ loại giấy phép mà người dùng đã được cấp, giúp phân loại theo quy định giao thông.
+"""
+
+cccd_passport_tagnames = """
+[full_name]: Họ và tên của người dùng.
+Sử dụng khi cần điền họ và tên đầy đủ vào biểu mẫu. 
+[alias_name]: Tên khác (bí danh) của người dùng.
+Sử dụng khi biểu mẫu yêu cầu cung cấp tên gọi khác hoặc bí danh.
+[dob]: Ngày tháng năm sinh của người dùng.
+Sử dụng khi cần điền ngày tháng năm sinh đầy đủ dạng số (ngày, tháng, năm). Ví dụ các chỗ như ngày tháng năm sinh: .....
+[dob_text]: Ngày tháng năm sinh của người dùng (dạng chữ). 
+Sử dụng khi biểu mẫu yêu cầu viết ngày tháng năm sinh bằng chữ. Ví dụ các chỗ như ngày tháng năm sinh (bằng chữ): .....
+[dob_day],[dob_month],[dob_year]: Ngày sinh, tháng sinh, năm sinh riêng của người dùng.
+Sử dụng khi cần điền riêng ngày sinh, riêng tháng sinh hoặc riêng năm sinh. Ví dụ như ngày sinh: ..... tháng sinh: ..... năm sinh: .....
+[gender]: Giới tính của người dùng.
+Sử dụng khi biểu mẫu yêu cầu giới tính (nam/nữ). Ví dụ như giới tính (nam/nữ):.....
+[id_number]: Số chứng minh nhân dân hoặc căn cước công dân của người dùng. Hay giấy tờ tùy thân
+.Sử dụng khi cần điền số CMND/CCCD. Ví dụ: số CMND/CCCD: ....., hay số CCCD: ....., số định danh cá nhân: ...., giấy tờ tùy thân: .....
+[id_issue_date]: Ngày tháng năm cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần ghi đầy đủ ngày, tháng, năm cấp CMND/CCCD. Ví dụ như ngày cấp (cccd): ..... đứng một mình (sau đó không có tháng, năm), thì hiểu là cần điền date (đầy đủ). 
+[id_issue_day],[id_issue_month],[id_issue_year]: Ngày cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần điền riêng ngày cấp, riêng tháng cấp, năm cấp CMND/CCCD. Ví dụ như ngày cấp (cccd): ..... tháng cấp (cccd): ..... năm cấp(cccd): .....
+[id_issue_place]: Nơi cấp số chứng minh nhân dân hoặc căn cước công dân.
+Sử dụng khi cần ghi nơi cấp CMND/CCCD (ví dụ: tỉnh/thành phố, cơ quan công an). ví dụ như nơi cấp (cccd): .....
+[ethnicity]: Dân tộc của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu dân tộc. Ví dụ như dân tộc: .....
+[religion]: Tôn giáo của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu tôn giáo. Ví dụ như tôn giáo: .....
+[nationality]: Quốc tịch của người dùng. 
+.Sử dụng khi cần điền quốc tịch. Ví dụ như quốc tịch: .....
+[marital_status]: Tình trạng hôn nhân của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu điền tình trạng hôn nhân (độc thân, đã kết hôn, ly hôn...). Ví dụ như tình trạng hôn nhân: .....
+[blood_type]: Nhóm máu của người dùng. 
+.Sử dụng khi cần cung cấp nhóm máu (A, B, AB, O). Ví dụ như nhóm máu: .....
+[birthplace]: Nơi sinh của người dùng.
+.Sử dụng khi biểu mẫu yêu cầu nơi sinh. Ví dụ như nơi sinh: .....
+[birth_place_ward], [birth_place_district], [birth_place_province]: Phường/xã, huyện, tỉnh nơi sinh của người dùng. 
+.Sử dụng khi cần điền phường/xã, huyện, tỉnh nơi sinh của người dùng. Ví dụ như phường/xã: ...., huyện: ...., tỉnh: ....
+[birth_registration_place]: Nơi đăng ký khai sinh (đầy đủ) của người dùng. 
+.Sử dụng khi cần điền nơi đăng ký khai sinh (đầy đủ). Ví dụ như nơi đăng ký khai sinh: .....
+[birth_registration_place_ward], [birth_registration_place_district], [birth_registration_place_province]: Phường/xã, huyện, tỉnh nơi đăng ký khai sinh của người dùng. 
+.Sử dụng khi cần điền phường/xã, huyện, tỉnh đăng ký khai sinh của người dùng. Ví dụ như phường/xã: ...., huyện: ...., tỉnh: ....
+[hometown]: Quê quán của người dùng. 
+.Sử dụng khi biểu mẫu yêu cầu quê quán. Ví dụ như quê quán: .....
+[permanent_address]: Địa chỉ thường trú của người dùng. 
+.Sử dụng khi cần cung cấp địa chỉ thường trú. Ví dụ như địa chỉ thường trú: .....
+[current_address]: Địa chỉ tạm trú của người dùng. 
+.Sử dụng khi cần cung cấp địa chỉ tạm trú hiện tại. Ví dụ như địa chỉ tạm trú: .....
+[current_address_ward],[current_address_district],[current_address_province]: Phường/xã, huyện, tỉnh nơi tạm trú của người dùng. 
+.Sử dụng khi cần điền phường/xã, huyện, tỉnh tạm trú. Ví dụ như phường/xã: ...., huyện: ...., tỉnh: ....
+[occupation]: Nghề nghiệp của người dùng. Hay có thể là hiện trạng hiện nay.
+.Sử dụng khi biểu mẫu yêu cầu điền nghề nghiệp hiện tại. Ví dụ như nghề nghiệp: ....., Hiện nay là: .....
+[passport_number]: Số hộ chiếu của người dùng.
+Ghi rõ số hộ chiếu để xác định danh tính và quốc tịch của người dùng. Ví dụ như số hộ chiếu: .....
+[passport_issue_date]: Ngày, tháng, năm đầy đủ hộ chiếu của người dùng.
+Ghi đầy đủ ngày cấp hộ chiếu để dễ dàng tham khảo. Ví dụ như ngày cấp: .... đứng một mình (sau đó không có tháng, năm), thì hiểu là cần điền date (đầy đủ).
+[passport_issue_day],[passport_issue_month],[passport_issue_year]: Ngày cấp, tháng cấp, năm cấp hộ chiếu của người dùng.
+Ghi ngày cụ thể, tháng cụ thể, năm cụ thể khi hộ chiếu được cấp. Ví dụ như ngày cấp: ...., tháng cấp: ...., năm cấp: ....
+[passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
+Ghi tên cơ quan hoặc địa điểm nơi cấp hộ chiếu. Ví dụ như nơi cấp: .....
+[passport_expiry_date]: Ngày hết hạn của hộ chiếu.
+Ghi rõ ngày mà hộ chiếu sẽ hết hạn để người dùng có thể quản lý và gia hạn khi cần thiết. Ví dụ như ngày hết hạn: ....
+"""
+
+list_cccd_passport_tagnames = [
+"[full_name]",
+"[alias_name]",
+"[dob]",
+"[dob_text]",
+"[dob_day]",
+"[dob_month]",
+"[dob_year]",
+"[gender]",
+"[id_number]",
+"[id_issue_date]",
+"[id_issue_day]",
+"[id_issue_month]",
+"[id_issue_year]",
+"[id_issue_place]",
+"[ethnicity]",
+"[religion]",
+"[nationality]",
+"[marital_status]",
+"[blood_type]",
+"[birth_registration_place]",
+"[birthplace]",
+"[birth_registration_place_ward]",
+"[birth_registration_place_district]",
+"[birth_registration_place_province]",
+"[hometown]",
+"[permanent_address]",
+"[current_address]",
+"[current_address_ward]",
+"[current_address_district]",
+"[current_address_province]",
+"[occupation]",
+"[passport_number]",
+"[passport_issue_date]",
+"[passport_issue_day]",
+"[passport_issue_month]",
+"[passport_issue_year]",
+"[passport_issue_place]",
+"[passport_expiry_date]"
+]
+
+list_general_tagnames = ["[receiver]","[place]","[day]","[month]","[year]"]
+
+general_tagnames = """
+[receiver]: Người nhận biểu mẫu. 
+.Sử dụng khi biểu mẫu yêu cầu ghi tên người hoặc cơ quan tiếp nhận. Ví dụ như người nhận: ..... hay kính gửi: .....
+[place],[day],[month],[year]: Địa điểm, ngày tháng năm điền được điền bởi người dùng.
+.Sử dụng khi cần điền nơi điền biểu mẫu, hay ngày tháng năm làm, thường ở đầu trang hay cuối trang,
+nơi mà có ....., ngày ..... tháng ..... năm .....
+"""
+
+template_generate_tagname_with_predefined_tagname = """
+Bạn chịu trách nhiệm xác định tên thẻ (tagname) chính xác cho mỗi chỗ trống trong biểu mẫu. Nhiệm vụ của bạn là đảm bảo rằng mọi chỗ trống trong biểu mẫu đều được thay thế chính xác bằng tên thẻ tương ứng, dựa trên các tagnames của userX và các tagnames chung được cung cấp. Nếu một chỗ trống không khớp với bất kỳ tên thẻ nào đã được định nghĩa, hãy tạo một tên thẻ mới phù hợp.
+
+Hãy tuân theo các quy tắc sau:
+1. Tagnames cho từng người dùng: Nếu tagname theo định dạng userX_tagname (ví dụ: user1_full_name, user2_dob_day,...), hãy sử dụng thông tin cụ thể tương ứng với người dùng đó. 
+Một số ví dụ về tagnames cho từng người dùng và giải thích của nó: 
+{specific_tagnames}
+2. Tagnames chung: Nếu tagname không thuộc về một người dùng cụ thể (như day, month, year, hoặc receiver,...), hãy điền trực tiếp tên thẻ đó mà không cần liên kết với bất kỳ người dùng nào. 
+Một số ví dụ về tagnames chung và giải thích của nó: 
+{general_tagnames}
+3. Đề xuất tagnames mới: Nếu không có tagname phù hợp từ danh sách cho một phần nào đó, hãy đề xuất một tagname mới theo cùng mẫu và ngữ cảnh. Đề xuất của bạn phải rõ ràng và dựa trên mục đích của trường dữ liệu.
+4. Thay thế tất cả chỗ trống: Mọi sự xuất hiện của "#another" phải được thay thế bằng một tagname phù hợp, dù đó là tên thẻ cho người dùng cụ thể hay tên thẻ chung.
+Example:
+Input:
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
-1. Họ, chữ đệm và tên(1): [#another]
-2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [#another]
-3. Ngày, tháng, năm sinh: [#another]/[#another]/[#another]; 4. Giới tính (Nam/nữ): [#another]
-5. Số CMND/CCCD: [#another]
-6. Dân tộc: [#another]; 7. Tôn giáo: [#another] 8. Quốc tịch: [#another]
-9. Tình trạng hôn nhân: [#another] 10. Nhóm máu (nếu có): [#another]
-11. Nơi đăng ký khai sinh: [#another]
-12. Quê quán: [#another]
-13. Nơi thường trú: [#another]
-14. Nơi ở hiện tại: [#another]
-15. Nghề nghiệp: [#another] 16. Trình độ học vấn: [#another]
-[#another], ngày [#another]tháng[#another]năm[#another]
-Answer:
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): #another
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): #another
+3. Ngày, tháng, năm sinh: #another/#another/#another; 4. Giới tính (Nam/nữ): #another
+5. Số CMND/CCCD: #another
+6. Dân tộc: #another; 7. Tôn giáo: #another 8. Quốc tịch: #another
+9. Tình trạng hôn nhân: #another 10. Nhóm máu (nếu có): #another
+11. Nơi đăng ký khai sinh: #another
+12. Quê quán: #another
+13. Nơi thường trú: #another
+14. Nơi ở hiện tại: #another
+15. Nghề nghiệp: #another 16. Trình độ học vấn: #another
+#another, ngày #another tháng#another năm#another
+Output:
 1. Họ, chữ đệm và tên(1): [user1_full_name]
 2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
-3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
-5. Số CMND/CCCD: [user1_id]
+3. Ngày sinh: [user1_dob]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND/CCCD: [user1_id_number]
 6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
 9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
 11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
@@ -851,31 +504,32 @@ TỜ KHAI CĂN CƯỚC CÔNG DÂN
 15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: [user1_education_level]
 [place], ngày [day] tháng [month] năm [year]
 
-Form:
+Input:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI ĐĂNG KÝ KHAI SINH
-Kính gửi: [#another]
-Họ, chữ đệm, tên người yêu cầu: [#another]
-Nơi cư trú: [#another]
-Giấy tờ tùy thân: [#another]
-Quan hệ với người được khai sinh: [#another]
+Kính gửi: #another
+Họ, chữ đệm, tên người yêu cầu: #another
+Nơi cư trú: #another
+Giấy tờ tùy thân: #another
+Quan hệ với người được khai sinh: #another
 Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
-Họ, chữ đệm, tên: [#another]
-Ngày, tháng, năm sinh: [#another]/[#another]/[#another] ghi bằng chữ: [#another]
-Giới tính: [#another] Dân tộc: [#another] Quốc tịch: [#another]
-Nơi sinh: [#another]
-Quê quán: [#another]
-Họ, chữ đệm, tên người mẹ: [#another]
-Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
-Nơi cư trú: [#another]
-Họ, chữ đệm, tên người cha: [#another]
-Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
-Nơi cư trú: [#another]
+Họ, chữ đệm, tên: #another
+Ngày, tháng, năm sinh: #another/#another/#another ghi bằng chữ: #another
+Giới tính: #another Dân tộc: #another Quốc tịch: #another
+Nơi sinh: #another
+Quê quán: #another
+Họ, chữ đệm, tên người mẹ: #another
+Năm sinh: #another Dân tộc: #another Quốc tịch: #another
+Nơi cư trú: #another
+Họ, chữ đệm, tên người cha: #another
+Năm sinh: #another Dân tộc: #another Quốc tịch: #another
+Nơi cư trú: #another
 Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: [#another], ngày [#another] tháng [#another] năm [#another]
-Answer:
+     #another, ngày #another tháng #another năm #another
+
+Output:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI ĐĂNG KÝ KHAI SINH
@@ -898,71 +552,167 @@ Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_
 Nơi cư trú: [user4_current_address]
 Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
 Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
-Làm tại: [place], ngày [day] tháng [month] năm [year]
-
-Form:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-
-ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
-
-Kính gửi: [#another]
-
-Tôi tên là: [#another]
-Cơ quan quản lý trực tiếp (nếu có): [#another]
-
-Quyết định cử đi học số [#another] ngày [#another] tháng [#another] năm [#another] của        [#another]
-Tên trường đến học, nước:       [#another]
-Trình độ đào tạo:       [#another]
-Ngành/nghề đào tạo:     [#another]
-Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     [#another]
-Ngày nhập học:  [#another]
-Lý do đề nghị gia hạn:[#another]
-
-Thời gian đề nghị gia hạn: từ tháng [#another]/năm 20[#another] đến tháng [#another]/năm 20[#another]
-Kinh phí trong thời gian gia hạn :      [#another]
-Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
-
-Địa chỉ liên lạc của tôi:       [#another]
-E-mail: [#another]
-Điện thoại cố định:[#another]    Điện thoại di động:[#another]
-
-                [#another], ngày[#another] tháng[#another] năm[#another]
-Người làm đơn
-(Ký và ghi rõ họ tên)
-Answer:
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-
-ĐƠN ĐỀ NGHỊ GIA HẠN THỜI GIAN HỌC TẬP Ở NƯỚC NGOÀI
-
-Kính gửi: [receiver]
-
-Tôi tên là: [user1_full_name]
-Cơ quan quản lý trực tiếp (nếu có): [user1_organization]
-
-Quyết định cử đi học số [user1_decision_number] ngày [user1_decision_day] tháng [user1_decision_month] năm [user1_decision_year] của  [user1_decis sion_issuer]
-Tên trường đến học, nước:       [user1_school]
-Trình độ đào tạo:       [user1_education_level]
-Ngành/nghề đào tạo:     [user1_course]
-Tổng thời gian đào tạo theo Quyết định cử đi học/Văn bản tiếp nhận đào tạo:     [another]
-Ngày nhập học:  [another]
-Lý do đề nghị gia hạn:[reason]
-
-Thời gian đề nghị gia hạn: từ tháng [another]/năm 20[another] đến tháng [another]/năm 20[another]
-Kinh phí trong thời gian gia hạn :      [another]
-Trân trọng đề nghị Quý cơ quan xem xét, cho tôi được gia hạn thời gian học tập.
-
-Địa chỉ liên lạc của tôi:       [user1_current_address]
-E-mail: [user1_email]
-Điện thoại cố định: [user1_phone_home]   Điện thoại di động: [user1_phone]
-
-
-
-                [place], ngày [day] tháng [month] năm [year]
-Người làm đơn
-(Ký và ghi rõ họ tên)
-Form:
+     [place], ngày [day] tháng [month] năm [year]
+Input:
 {form}
-Answer:
+Output:
 """
+
+template_generate_id_passport = """
+You are tasked with filling in a form using specific tagnames. 
+For any sections where no corresponding tagname exists, leave that section as-is and do not modify it.
+
+Here are the predefined tagnames for filling into forms, along with their explanations:
+{cccd_passport_tagnames}
+General tagnames (applicable for all users):
+{general_tagnames}
+
+Example:
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH   [#another], ngày [#another] tháng [#another] năm [#another]
+Kính gửi: [#another]
+Họ, chữ đệm, tên người yêu cầu: [#another]
+Nơi cư trú: [#another]
+Giấy tờ tùy thân: [#another]
+Quan hệ với người được khai sinh: [#another]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [#another]
+Ngày, tháng, năm sinh: [#another]/[#another]/[#another] ghi bằng chữ: [#another]
+Giới tính: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi sinh: [#another]
+Quê quán: [#another]
+Họ, chữ đệm, tên người mẹ: [#another]
+Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi cư trú: [#another]
+Họ, chữ đệm, tên người cha: [#another]
+Năm sinh: [#another] Dân tộc: [#another] Quốc tịch: [#another]
+Nơi cư trú: [#another]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+     [#another], ngày [#another] tháng [#another] năm [#another]
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ KHAI SINH   [place], ngày [day] tháng [month] năm [year]
+Kính gửi: [receiver]
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_current_address]
+Giấy tờ tùy thân: [user1_id]
+Quan hệ với người được khai sinh: [user1_relationship_user2]
+Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob_day]/[user2_dob_month]/[user2_dob_year] ghi bằng chữ: [user2_dob_text]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi sinh: [user2_birthplace]
+Quê quán: [user2_hometown]
+Họ, chữ đệm, tên người mẹ: [user3_full_name]
+Năm sinh: [user3_dob_year] Dân tộc: [user3_ethnicity] Quốc tịch: [user3_nationality]
+Nơi cư trú: [user3_current_address]
+Họ, chữ đệm, tên người cha: [user4_full_name]
+Năm sinh: [user4_dob_year] Dân tộc: [user4_ethnicity] Quốc tịch: [user4_nationality]
+Nơi cư trú: [user4_current_address]
+Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+     [place], ngày [day] tháng [month] năm [year]
+
+Input:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
+Kính gửi: [#another] (Tên cơ sở giáo dục nghề nghiệp công lập)
+Họ và tên:	[#another] 
+Ngày, tháng, năm sinh:	[#another] /[#another] /[#another] 
+Số định danh cá nhân/Chứng minh nhân dân:[#another] cấp ngày[#another] tháng[#another] năm[#another] nơi cấp[#another] 
+Lớp: [#another] Khóa: [#another] Khoa: [#another] 
+Mã số học sinh, sinh viên: [#another] 
+Thuộc đối tượng: [#another] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
+
+Xác nhận của Khoa
+(Quản lý học sinh, sinh viên)	      [#another] , ngày [#another]  tháng [#another]  năm [#another] 
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Output:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+ 
+ĐƠN ĐỀ NGHỊ CẤP CHÍNH SÁCH NỘI TRÚ
+(Dùng cho học sinh, sinh viên đang học tại các cơ sở giáo dục nghề nghiệp công lập)
+Kính gửi: [receiver]
+Họ và tên:	[user1_full_name]
+Ngày, tháng, năm sinh:	[user1_dob_day]/[user1_dob_month]/[user1_dob_year]
+Số định danh cá nhân/Chứng minh nhân dân:[user1_id_number]cấp ngày[user1_id_issue_day]tháng[user1_id_issue_month]năm[user1_id_issue_year]nơi cấp[user1_id_issue_place]
+Lớp:  [#another] Khóa:  [#another] Khoa: [#another]
+Mã số học sinh, sinh viên:  [#another] 
+Thuộc đối tượng:  [#another] (ghi rõ đối tượng được quy định tại Điều 2 Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ về chính sách nội trú đối với học sinh, sinh viên học cao đẳng, trung cấp).
+Căn cứ Quyết định số 53/2015/QĐ-TTg ngày 20 tháng 10 năm 2015 của Thủ tướng Chính phủ, tôi làm đơn này đề nghị được Nhà trường xem xét để cấp chính sách nội trú theo quy định.
+
+Xác nhận của Khoa
+(Quản lý học sinh, sinh viên)	      [place], ngày [day] tháng [month] năm [year]
+Người làm đơn
+(Ký và ghi rõ họ tên)
+
+Input:
+{form}
+Output:
+"""
+
+template_generate_each_placeholder = """
+You will be provided with a form containing multiple blanks labeled (BlankX), and a list of two types of tagnames: User Tagnames and General Tagnames. 
+After that, you will be asked to process a specific (BlankX) following the steps below:
+Steps for Filling a Blank:
+1. Check if the blank corresponds to user information:
+- If it matches a userX_tagname from the list, return the correct user tagname.
+2. If the blank does not correspond to user information, check if it matches a general tagname:
+- If it matches, return the general tagname.
+3. If the blank does not match any user or general tagname, return [another].
+
+** Form:
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+BÁO CÁO TỐT NGHIỆP  
+Kính gửi: (Blank1) 
+1. Họ và tên:   (Blank2)
+2. Số định danh cá nhân:        (Blank3)
+3. Cơ quan quản lý trực tiếp (nếu có):  (Blank4)
+4. Quyết định cử đi học số(Blank5) ngày(Blank6) tháng(Blank7) năm(Blank8) của(Blank9)
+5. Thời gian học tập ở nước ngoài:      (Blank10)
+....
+
+List of Available Tagnames:
+** User Tagnames (for specific users):
+{cccd_passport_tagnames}
+** General Tagnames (for general use):
+{general_tagnames}
+
+Example:
+Input: Please process (Blank2) using the steps outlined above:
+Output: 
+For (Blank2):
+Step 1: Does this correspond to user information? → Yes, it corresponds to [user1_full_name].
+Result: (Blank2) => [user1_full_name]
+
+Input: Please process (Blank4) using the steps outlined above:
+Output:
+For (Blank4):
+Step 1: Check if it's user information (userX_tagname). → No
+Step 2: Check if it's a general tagname. → No
+Step 3: Return [another]
+Result: (Blank4) => [another]
+
+Form: 
+{form}
+Input:
+{input}
+Output:
+
+"""
+
+a = "hello world"
+
