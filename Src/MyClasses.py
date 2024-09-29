@@ -1,5 +1,4 @@
 import google.generativeai as genai
-import constant_value as CONST
 import re
 
 
@@ -44,98 +43,9 @@ class LLM_Gemini:
         
     def blank_to_tagnames(self, text_with_blank, tagnames):
         """
-        text_with_blank: form with (Blank_x)....
-        tagnames: list of tag names
-        return: list of tagnames coressponding to the blanks
         """
-        #Get response
-        prompt_parts = CONST.template_blank_to_tagname.format(tag_names=tagnames, Abstract = text_with_blank)
-        response = self.model.generate_content(prompt_parts)
-        response = response.text
-        #Handle response
-        try:
-            response = re.search(r'Answer:(.*)', response, re.DOTALL).group(1).strip()
-        except:
-            pass
-        list_tag_names = []
-        pattern1 = r'Blank\d+:'
-        pattern2 = r':\s*(.*)'
-
-        blank_to_tagnames = {}
-
-        matches1 = re.findall(pattern1, response)
-        matches2 = re.findall(pattern2, response)
-        for match1,match2 in zip(matches1, matches2):
-            temp1 = match1.replace(":","").strip()
-            temp2 = match2.replace("]","").strip()
-            
-            blank_to_tagnames[temp1] = temp2
-            
-        return blank_to_tagnames  
-
-    def translate_tag_names(self, list_tag_names, translations):
-        """
-        Convert from list_tag_names into values
-        Example: #Full_name --> Họ và tên
-        list_tag_names: list of tag names
-        translations: dictionary of translations
-        """
-        list_value_keys = [] #
-        pattern = r'#(\w+)'
-        for tag_name in list_tag_names:
-            match = re.search(pattern, tag_name)
-            temp = match.group(0)
-            list_value_keys.append(translations[temp])
-            temp = temp.replace("#","")
-        return list_value_keys
-    
-    def auto_blank_to_tagname(self, text_with_blank):
-        """
-        text_with_blank: form with (Blank_x)....
-        return: list of tagnames coressponding to the blanks (llm auto generate)
-        """
-        prompt_parts = CONST.template_llm_auto_blanks_to_tagnames.format(Abstract = text_with_blank)
-        response = self.model.generate_content(prompt_parts)
-        # print(response)
-        return response.text
-
-    def extract_content(self, Abstract, list_value_keys):
-        #Convert Question to right format
-        Question = """"""
-        for item in list_value_keys:
-            Question += item + "\n"
-        #Get response
-        prompt_parts = CONST.template_extract_content.format(Abstract = Abstract, Question = Question)
-        response = self.model.generate_content(prompt_parts)
-        response = response.text
-
-        #Handle this response
-        pattern1 = r'\[(.*?)\s*:'
-        pattern2 = r':\s*(.*)'
-
-        value_keys_to_context_value = {}
-        try:
-            response = re.search(r'Answer:(.*)', response, re.DOTALL).group(1).strip()
-        except:
-            pass
-
-        matches1 = re.findall(pattern1, response)
-        matches2 = re.findall(pattern2, response)
-        for match1,match2 in zip(matches1, matches2):
-            temp1 = match1.replace(":","").strip()
-            temp2 = match2.replace("]","").strip()
-            if temp1 not in value_keys_to_context_value:
-                value_keys_to_context_value[temp1] = []  # Initialize list for the key if it doesn't exist
-            value_keys_to_context_value[temp1].append(temp2)
-
-        return value_keys_to_context_value
-    
-    def generate_user_tagname_from_blankX_form(self, Abstract):
-        prompt_parts = CONST.form_tagging_prompt.format(Abstract = Abstract)
-        # print(prompt_parts)
-        response = self.model.generate_content(prompt_parts)
-        # print(response.text)
-        return response.text
+        pass
+          
 
 class Text_Processing:
     def __init__(self):
