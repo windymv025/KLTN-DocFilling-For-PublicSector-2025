@@ -6,6 +6,7 @@ Forms/
 .chainlit/
 __pycache__/
 Src/__pycache__
+TEST/
 
 #Temp file
 chainlit.md

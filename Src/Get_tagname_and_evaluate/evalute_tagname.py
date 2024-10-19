@@ -44,41 +44,56 @@ def calculate_similarity(tagnames1, tagnames2):
     
     return similarity_percentage
 
-#Run with folder 'Công dân All'/Input/Output
-Result_Folder = "Forms\Input\Output_Hung\Output_Diff"
-Data_Folder = "Forms\Input\Data1"
+def print_tagnames(tagnames):
+    print("======Tagnames======")
+    for index,tagname in enumerate(tagnames):
+        print(tagname + f"_{index}", end=", ")
+    print()
 
-overall_result = []
+def similarity_two_forms(form1, form2):
+    # Replace all ".........." by "[#another]"
+    form1 = form1.replace("..........","[#another]")
+    form2 = form2.replace("..........","[#another]")
+    # Find all matches
+    pattern = r"\[([^\]]+)\]"
+    tagnames1 = re.findall(pattern, form1)
+    tagnames2 = re.findall(pattern, form2)
+    #print tagnames to check
+    print_tagnames(tagnames1)
+    print_tagnames(tagnames2)
+    # Calculate similarity percentage
+    similarity_percentage = calculate_similarity(tagnames1, tagnames2)
+    return similarity_percentage
+
+similarity_result_forms = []
 nums_copy = 1
-for index,filename in enumerate(os.listdir(Data_Folder)):
-    # if index!=3:
-    #     continue
-    if filename.endswith(".txt"):
-        # print(inde, "Start with: ", filename)
-        overall_result.append([])
-        print("========= Index: ",index, "============", filename)
-        file_dir = Data_Folder + '/' + filename
-        # respones_dir = folder_BlankX + '/Output/' + filename
-        text = read_file(file_dir)
-        text = text.replace("..........","[another]")
-        # Find all matches
-        tagnames = re.findall(pattern, text)
-        print(tagnames)
-        # Check result with predict data
-        for index_predict,filename_predict in enumerate(os.listdir(Result_Folder)[index*nums_copy:index*nums_copy+nums_copy]):
-            if filename_predict.endswith(".txt"):
-                file_dir_predict = Result_Folder + '/' + filename_predict
-                text_predict = read_file(file_dir_predict)
-                text_predict = text_predict.replace("..........","[another]")
-                tagnames_predict = re.findall(pattern, text_predict)
-                print(tagnames_predict)
-                overall_result[index].append(calculate_similarity(tagnames, tagnames_predict))
-                
-        # print("End with: ", filename)
-        print()
-        print()
+index_result = 0
 
-df_result = pd.DataFrame(overall_result)
+#Run with folder 'Công dân All'/Input/Output
+Result_Folder = "Forms/Input/Output/Uniform_Date/Output_Diff"
+Data_Folder = "Forms/Input/Data1/Uniform_Date"
+
+Data_Input_Folder = "Forms/Data_Testing/Input"
+Data_Label_Folder = "Forms/Data_Testing/Label_Output"
+Data_Testing_Folder = "Forms/Data_Testing/Test_Fill_By_Label"
+
+Data_LLM_Filled_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung"
+Data_LLM_Filled_Processed_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung_Processed"
+
+for index,filename in enumerate(os.listdir(Data_Label_Folder)):
+    if filename.endswith(".txt"):
+        similarity_result_forms.append([])
+        print("========= Index: ",index, "============", filename)
+        file_dir_label = Data_Label_Folder + '/' + filename
+        file_dir_predict = Data_LLM_Filled_Processed_Folder + '/Output_Diff/' + filename
+        #read
+        text = read_file(file_dir_label)
+        text_predict = read_file(file_dir_predict)
+        similarity_result_forms[index_result].append(similarity_two_forms(text, text_predict))
+        index_result += 1   
+
+#Save to csv
+df_result = pd.DataFrame(similarity_result_forms)
 df_result.to_csv("result.csv")
 print(df_result)
 

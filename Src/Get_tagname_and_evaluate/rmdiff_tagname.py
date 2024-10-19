@@ -4,6 +4,7 @@ sys.path.append("./Src")
 import MyClasses
 import constant_value as CONST
 import os
+import shutil
 
 LLM_class = MyClasses.LLM_Gemini(api_key = CONST.API_KEY)
 Text_Processing_Class = MyClasses.Text_Processing()
@@ -18,6 +19,9 @@ def read_file(file_path):
         return None
     
 def write_file(file_path, text):
+    #Delete all before create
+    if os.path.exists(file_path):
+        os.remove(file_path)
     os.makedirs(os.path.dirname(file_path),exist_ok=True)
     # Write content to the file
     try:
@@ -30,6 +34,20 @@ def write_file(file_path, text):
 # Combine both lists of tagnames
 valid_tagnames_general = CONST.list_general_tagnames
 valid_tagnames_cccd_passport = CONST.list_cccd_passport_tagnames
+
+# Function to replace all '_date' tagnames with '_day', '_month', '_year'
+def replace_date_tagnames(text):
+    # Regular expression to match tagnames like [userX_something_date]
+    pattern = re.compile(r'(\[user\d+_[a-zA-Z_]+)_date\]')
+    
+    # Replace all occurrences of '_date' with '_day', '_month', and '_year'
+    def replacement(match):
+        base_tag = match.group(1)
+        return f"{base_tag}_day]/{base_tag}_month]/{base_tag}_year]"
+    
+    # Substitute all matched patterns in the text
+    updated_text = pattern.sub(replacement, text)
+    return updated_text
 
 def remove_invalid_tagnames(form_text, valid_tagnames_general, valid_tagnames_cccd_passport):
     # Regular expression to match all tagnames (e.g., [user1_full_name], [place], etc.)
@@ -57,16 +75,15 @@ def remove_invalid_tagnames(form_text, valid_tagnames_general, valid_tagnames_cc
     return cleaned_form
 
 #Run with folder 'Công dân All'/Input/Output
-folder_BlankX = "Forms\Input\Output_Hung"
-for index,filename in enumerate(os.listdir(folder_BlankX)):
-    # if index==20:
-    #     break
+Predict_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung_Processed"
+for index,filename in enumerate(os.listdir(Predict_Folder)):
     if filename.endswith(".txt"):
         print("Start with: ", filename)
-        file_dir = folder_BlankX + '/' + filename
-        respones_dir = folder_BlankX + '/Output_Diff/' + filename
+        file_dir = Predict_Folder + '/' + filename
+        respones_dir = Predict_Folder + '/Output_Diff/' + filename
         text = read_file(file_dir)
+        # text = replace_date_tagnames(text)
         cleaned_form = remove_invalid_tagnames(text, valid_tagnames_general, valid_tagnames_cccd_passport)
-        print(cleaned_form)
+        # print(cleaned_form)
         write_file(respones_dir, cleaned_form)
         print("End with: ", filename)

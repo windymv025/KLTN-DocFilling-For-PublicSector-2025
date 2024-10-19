@@ -13,7 +13,7 @@ class LLM_Gemini:
         # Set up the model  
         genai.configure(api_key=api_key)
         generation_config = {
-        "temperature": 0.5,
+        "temperature": 0.1,
         "top_p": 1,
         "top_k": 1,
         "max_output_tokens": 8291,
@@ -143,41 +143,17 @@ class LLM_Gemini:
         # print(response.text)
         return response.text
     
-    # def generate_user_tagname_Hung(self, form, personal_information_tagnames=CONST.personal_information_tagnames,remaining_tag_names=CONST.remaining_tag_names):
-    #     prompt_parts = CONST.template_PI_prompt.format(personal_information_tagnames=personal_information_tagnames,
-    #                                                     remaining_tag_names=remaining_tag_names,
-    #                                                     form = form)
-    #     # print(prompt_parts)
-    #     response = self.model.generate_content(prompt_parts)
-    #     # print(response.text)
-    #     return response.text
-
-    def generate_relationship_users(self,form):
-        prompt_parts = CONST.template_identify_relationship_prompt.format(form = form)
-        response = self.model.generate_content(prompt_parts)
-        return response.text
-    
-    def generate_tagname_without_predefined_tagname(self, form):
-        prompt_parts = CONST.template_generate_tagname_without_predefined_tagname.format(form = form)
-        response = self.model.generate_content(prompt_parts)
-        return response.text
-
-    def generate_tagname_with_predefined_tagname(self,form,specific_tagnames=CONST.specific_tagnames,general_tagnames=CONST.general_tagnames):
-        prompt_parts = CONST.template_generate_tagname_with_predefined_tagname.format(specific_tagnames=specific_tagnames,general_tagnames=general_tagnames,form = form)
-        response = self.model.generate_content(prompt_parts)
-        return response.text
-    
     def generate_tagname_cccd_passport(self,form,cccd_passport_tagnames=CONST.cccd_passport_tagnames,general_tagnames=CONST.general_tagnames):
         prompt_parts = CONST.template_generate_id_passport.format(cccd_passport_tagnames=cccd_passport_tagnames,general_tagnames=general_tagnames,form = form)
         # print("prompt parts:", prompt_parts)
         response = self.model.generate_content(prompt_parts)
         return response.text
-
-    def generate_each_tagname(self,form,input,cccd_passport_tagnames=CONST.cccd_passport_tagnames,general_tagnames=CONST.general_tagnames):
-        prompt_parts = CONST.template_generate_each_placeholder.format(cccd_passport_tagnames=cccd_passport_tagnames,general_tagnames=general_tagnames,form = form, input=input)
-        # print("prompt parts:", prompt_parts)
+    
+    def mapping_tagname(self,input_form,output_form,request):
+        prompt_parts = CONST.mapping_prompt.format(input_form = input_form,output_form = output_form,request = request)
         response = self.model.generate_content(prompt_parts)
         return response.text
+
     
 class Text_Processing:
     def __init__(self):
@@ -259,7 +235,7 @@ class Text_Processing:
                 Question = Question[:start_index]
             # Find the indices of the next placeholders
             first_index = self.min_uniform(Question.find(type1), Question.find(type2))
-        Question = re.sub(r'\(Blank\d+\)', '[#another]', Question)
+        # Question = re.sub(r'\(Blank\d+\)', '[#another]', Question)
         return Question, count
     
     def getMissItem(self, value_keys_to_context_value, translations, list_values):
