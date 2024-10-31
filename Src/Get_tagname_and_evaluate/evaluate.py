@@ -291,7 +291,7 @@ def remove_different_tagnames(folder_path):
         if filename.endswith(".txt"):
             file_dir = folder_path + '/' + filename
             respones_dir = folder_path + '/Output_Diff/' + filename
-            print(file_dir)
+            # print(file_dir)
             #Read
             text = read_file(file_dir)
             cleaned_form = remove_invalid_tagnames(text, valid_tagnames_general, valid_tagnames_cccd_passport)
@@ -307,16 +307,35 @@ pattern = r"\[([^\]]+)\]"
 
 # Function to calculate similarity percentage if lists have the same length
 def calculate_similarity(tagnames1, tagnames2):
+    '''
+    - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2
+    - Trả về:
+    + Độ đủ: điền đủ không (len = len)
+    + Độ chính xác (trong X tagnames đó thôi, không xét another)
+    + Check xem có sai chỗ nào không.
+    '''
     # Check if the lengths are different
     if len(tagnames1) != len(tagnames2):
-        return 0.0  # Return 0% similarity if lengths are different
+        return [0,0,0]  # Return 0% similarity if lengths are different
 
-    matching_tagnames = [tag1 for tag1, tag2 in zip(tagnames1, tagnames2) if tag1 == tag2]
+    matching_tagnames = []
+    count_label = 0
+    count_error = 0
+    for tag1,tag2 in zip(tagnames1,tagnames2):
+        if tag1 != "#another" and tag1 == tag2:
+            matching_tagnames.append(tag1)
+        if tag1 != "#another":
+            count_label += 1
+        if tag1 != "#another" and tag2 != "#another" and tag1!=tag2:
+            count_error += 1
+
+    # matching_tagnames = [tag1 for tag1, tag2 in zip(tagnames1, tagnames2) if tag1 == tag2]
     
     # Calculate similarity percentage as the ratio of matching tagnames to total tagnames
-    similarity_percentage = len(matching_tagnames) / len(tagnames1) * 100
+    similarity_percentage = len(matching_tagnames) / count_label * 100
+    error_percentage = count_error / count_label * 100
     
-    return similarity_percentage
+    return [100.0,similarity_percentage,error_percentage]
 
 def print_tagnames(tagnames):
     print("======Tagnames======")
@@ -340,6 +359,7 @@ def similarity_two_forms(form1, form2):
     return similarity_percentage
 
 similarity_result_forms = []
+form_names = []
 index_result = 0
 for index,filename in enumerate(os.listdir(Data_Label_Folder)):
     if filename.endswith(".txt"):
@@ -351,9 +371,18 @@ for index,filename in enumerate(os.listdir(Data_Label_Folder)):
         text = read_file(file_dir_label)
         text_predict = read_file(file_dir_predict)
         similarity_result_forms[index_result].append(similarity_two_forms(text, text_predict))
+        form_names.append(filename)
         index_result += 1   
 
+
+# print(similarity_result_forms)
 #Save to csv
-df_result = pd.DataFrame(similarity_result_forms)
-df_result.to_csv("result.csv")
-print(df_result)
+# Flatten the nested lists
+flattened_data = [item[0] for item in similarity_result_forms]
+# print(flattened_data)
+# Create the DataFrame
+df = pd.DataFrame(flattened_data, columns=['completeness', 'similarity', 'error'])
+df['form_name'] = form_names
+df.to_csv("result.csv")
+print(df)
+
