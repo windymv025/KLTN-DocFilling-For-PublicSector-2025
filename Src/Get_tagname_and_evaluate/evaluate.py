@@ -13,8 +13,10 @@ Text_Processing_Class = MyClasses.Text_Processing()
 #Path
 Data_Input_Folder = "Forms/Data_Testing/Input" #Input folder
 Data_Label_Folder = "Forms/Data_Testing/Label_Output" #Label folder
-Data_LLM_Filled_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung" #Forms filled by LLM
-Data_LLM_Filled_Processed_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung_Processed" #Processed forms filled by LLM
+# Data_LLM_Filled_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung" #Forms filled by LLM
+# Data_LLM_Filled_Processed_Folder = "Forms/Data_Testing/Result_LLM_Filled_Hung_Processed" #Processed forms filled by LLM
+Data_LLM_Filled_Folder = "Forms/Data_Testing/New_result_Hung" #Forms filled by LLM
+Data_LLM_Filled_Processed_Folder = "Forms/Data_Testing/New_result_Hung_Processed" #Processed forms filled by LLM
 
 #read, write file
 def read_file(file_path):
@@ -40,6 +42,21 @@ def write_file(file_path, text):
 
 # 1. From forms response by LLM --> get tagnames to input forms
 # Function to process a sentence
+def fix_place_dmy_error(form_text):
+    '''
+    - Hàm để đưa chỗ điền ....., ngày.... tháng.... năm về đúng format [place], ngày [day] tháng [month] năm [year]
+    '''
+    # Define the regex pattern to match the specific date format with optional spaces
+    date_pattern = re.compile(r'\s*\[[a-zA-Z0-9_]+?\]\s*,\s*ngày\s*\[.+?\]\s*tháng\s*\[.+?\]\s*năm\s*\[.+?\]')
+    
+    # Define the replacement format
+    replacement_format = '[place], ngày [day] tháng [month] năm [year]'
+    
+    # Use sub to replace matched dates with the correct format
+    fixed_text = date_pattern.sub(replacement_format, form_text)
+    
+    return fixed_text
+
 def process_sentence(sentence):
     '''
     Function to remove all number, special character.
@@ -231,9 +248,15 @@ for index,filename in enumerate(os.listdir(Data_Input_Folder)):
         #Replace all ".........." by "[another]"
         input_text = input_text.replace("..........","[#another]")
         label_text = label_text.replace("..........","[#another]")
+        
+        # Xử lý chỗ date thành [place], ngày [day] tháng [month] năm [year]
+        # input_text = fix_place_dmy_error(input_text)
+        # label_text = fix_place_dmy_error(label_text)
         # Filling input text from label text
         try:
             filled_text = fill_label_to_input_form(input_text, label_text).replace("[another]","[#another]")
+            # Xử lý chỗ date thành [place], ngày [day] tháng [month] năm [year]
+            filled_text = fix_place_dmy_error(filled_text)
             if filled_text == "wrong something":
                 print(f"Error at {index} in {filename}")
                 break
@@ -263,7 +286,7 @@ def replace_date_tagnames(text):
 
 def remove_invalid_tagnames(form_text, valid_tagnames_general, valid_tagnames_cccd_passport):
     # Regular expression to match all tagnames (e.g., [user1_full_name], [place], etc.)
-    tagname_pattern = re.compile(r'\[.*?\]')
+    tagname_pattern = re.compile(r'\[[^\d].*?\]')
 
     # Function to replace invalid tagnames
     def replace_invalid_tagname(match):
@@ -322,11 +345,17 @@ def calculate_similarity(tagnames1, tagnames2):
     count_label = 0
     count_error = 0
     for tag1,tag2 in zip(tagnames1,tagnames2):
-        if tag1 != "#another" and tag1 == tag2:
-            matching_tagnames.append(tag1)
-        if tag1 != "#another":
+        # Standardize tagnames by replacing userX with user0
+        standardized_tag1 = re.sub(r'user\d+', 'user0', tag1)
+        standardized_tag2 = re.sub(r'user\d+', 'user0', tag2)
+        # Replace "dob_date" with "dob" exactly
+        standardized_tag1 = re.sub(r'dob_date', 'dob', standardized_tag1)
+        standardized_tag2 = re.sub(r'dob_date', 'dob', standardized_tag2)
+        if standardized_tag1 != "#another": #Because tagname 1 is label, so we count it
             count_label += 1
-        if tag1 != "#another" and tag2 != "#another" and tag1!=tag2:
+        if standardized_tag1 != "#another" and standardized_tag1 == standardized_tag2:
+            matching_tagnames.append(standardized_tag1)
+        if standardized_tag1 != "#another" and standardized_tag2 != "#another" and standardized_tag1!=standardized_tag2:
             count_error += 1
 
     # matching_tagnames = [tag1 for tag1, tag2 in zip(tagnames1, tagnames2) if tag1 == tag2]
@@ -368,18 +397,14 @@ for index,filename in enumerate(os.listdir(Data_Label_Folder)):
         file_dir_label = Data_Label_Folder + '/Output_Diff/' + filename
         file_dir_predict = Data_LLM_Filled_Processed_Folder + '/Output_Diff/' + filename
         #read
-        text = read_file(file_dir_label)
+        text_label = read_file(file_dir_label)
         text_predict = read_file(file_dir_predict)
-        similarity_result_forms[index_result].append(similarity_two_forms(text, text_predict))
+        similarity_result_forms[index_result].append(similarity_two_forms(text_label, text_predict))
         form_names.append(filename)
         index_result += 1   
 
-
-# print(similarity_result_forms)
 #Save to csv
-# Flatten the nested lists
 flattened_data = [item[0] for item in similarity_result_forms]
-# print(flattened_data)
 # Create the DataFrame
 df = pd.DataFrame(flattened_data, columns=['completeness', 'similarity', 'error'])
 df['form_name'] = form_names
