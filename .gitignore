@@ -6,7 +6,14 @@ Forms/
 .chainlit/
 __pycache__/
 Src/__pycache__
+
+#Folder
 TEST/
+GenerateData/
+Src/Get_tagname_and_evaluate
+Presentation/
+Forms/
+# Result/
 
 #Temp file
 chainlit.md
@@ -17,3 +24,4 @@ vectorstore
 Result/
 #File test
 test.py
+new_requirements.txt

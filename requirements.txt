@@ -2,6 +2,7 @@ langchain
 huggingface-hub
 langchain-community
 langchain-core
+protobuf==4.25.1
 python-dotenv==1.0.1
 chainlit==1.0.401
 chromadb==0.4.24
