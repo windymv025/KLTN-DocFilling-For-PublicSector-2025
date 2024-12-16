@@ -364,10 +364,14 @@ class Text_Processing:
             raise ValueError(f"Mismatch: Found {num_placeholders} placeholders, but {len(list_tag_name)} tagnames were provided.")
         
         # Replace each occurrence of [#another] with the corresponding tagname
+        # Replace each occurrence of [#another] with the corresponding tagname
         for tag in list_tag_name:
-            form = form.replace('[#another]', f'{tag}', 1)
-        
-        return form    
+            if tag=="[#another]":
+                form = form.replace('[#another]', f'[another]', 1)
+            else:
+                form = form.replace('[#another]', f'{tag}', 1)
+        form = form.replace('[another]', '[#another]')
+        return form      
 
     # Overall function input form_llm_filled, input_form --> output filled_form
     def fill_input_by_llm_form(self, form_llm_filled, input_form):
@@ -415,10 +419,9 @@ class Text_Processing:
         valid_tagnames_general = CONST.list_general_tagnames
         cleaned_form = self.remove_invalid_tagnames(form, valid_tagnames_general, valid_tagnames_cccd_passport)
         return cleaned_form
-# Class này để sau
-# class Form_With_Tagname:
-#     def __init__(self):
-#         pass
+
+
+
 
 
 

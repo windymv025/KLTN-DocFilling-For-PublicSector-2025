@@ -94,11 +94,15 @@ def calculate_similarity(tagnames1, tagnames2):
             "A1-B": 0,
             "B-A1": 0,
             "B-B": 0,
+            "error A1-A2":[],
+            "error A1-B":[],
+            "error B-A1":[],
         }
         return metrics  # Return 0% similarity if lengths are different
 
     # Initialize counters
     A1_A1, A1_A2, A1_B, B_A1, B_B = 0, 0, 0, 0, 0
+    error_A1_A2,error_A1_B,error_B_A1 = [], [], []
     count_label = 0  # To track valid tagnames in subset_A
 
     for tag1,tag2 in zip(tagnames1,tagnames2):
@@ -115,11 +119,17 @@ def calculate_similarity(tagnames1, tagnames2):
                 if standardized_tag1 == standardized_tag2:
                     A1_A1 += 1  # Exact match
                 else:
+                    error_A1_A2.append((standardized_tag1, standardized_tag2))
+                    # print("A1_A2: ", standardized_tag1, " - ", standardized_tag2)
                     A1_A2 += 1  # Incorrect match within subset A
             else:
+                error_A1_B.append((standardized_tag1, standardized_tag2))
+                # print("A1_B: ", standardized_tag1, " - ", standardized_tag2)
                 A1_B += 1  # Missed, filled with something outside subset A
         else:
             if standardized_tag2 in our_40_tagnames:
+                error_B_A1.append((standardized_tag1, standardized_tag2))
+                # print("B-A1: ", standardized_tag1, " - ", standardized_tag2)
                 B_A1 += 1  # Incorrectly predicted a tagname in subset A
             else:
                 B_B += 1  # Both are outside subset A (#another case)
@@ -138,6 +148,9 @@ def calculate_similarity(tagnames1, tagnames2):
         "A1-B": A1_B,
         "B-A1": B_A1,
         "B-B": B_B,
+        "error A1-A2": error_A1_A2,
+        "error A1-B": error_A1_B,
+        "error B-A1": error_B_A1,
     }
 
     return metrics
@@ -153,17 +166,17 @@ def similarity_two_forms(form1, form2):
     form1 = form1.replace("..........","[#another]")
     form2 = form2.replace("..........","[#another]")
     # Find all matches
-    pattern = r"\[([^\]]+)\]"
+    pattern = r"\[(?!\d)([^\]]+)\]"
     tagnames1 = re.findall(pattern, form1)
     tagnames2 = re.findall(pattern, form2)
     #print tagnames to check
     # Calculate similarity percentage
     similarity_percentage = calculate_similarity(tagnames1, tagnames2)
-    if similarity_percentage["A1-A2"] != 0:
-        print(similarity_percentage["A1-A2"])
-        print_tagnames(tagnames1)
-        print_tagnames(tagnames2)
-        return similarity_percentage
+    # if similarity_percentage["A1-B"] != 0:
+    #     print(similarity_percentage["A1-B"])
+    #     print_tagnames(tagnames1)
+    #     print_tagnames(tagnames2)
+    #     return similarity_percentage
         # print("Lengths are different")
     return similarity_percentage
 
@@ -186,13 +199,13 @@ def similarity_result_two_folders(folder1, folder2):
             index_result += 1
     # Create the DataFrame
     flattened_data = [item[0] for item in similarity_result_forms]
-    df = pd.DataFrame(flattened_data, columns=['completeness', 'A1-A1', 'A1-A2', 'A1-B','B-A1','B-B'])
+    df = pd.DataFrame(flattened_data, columns=['completeness', 'A1-A1', 'A1-A2', 'A1-B','B-A1','B-B','error A1-A2','error A1-B','error B-A1'])
     df['form_name'] = form_names
     return df
 
 # Evaluate similarity between processed forms and label forms
 folder1 = "Forms\Process_ouput\Label_Output_By_Hand\Raw"
-folder2 = "Forms\Process_ouput\Hung_04_Nov_2024\Raw"
+folder2 = "Forms\Process_ouput\Hung_19_Oct_2024\Raw"
 df = similarity_result_two_folders(folder1, folder2)
-df.to_csv("./Result/result_11_12_20h_20.csv")
+df.to_csv("./Forms/Evaluate/Hung_19_Oct_2024_Raw.csv")
 print(df)
