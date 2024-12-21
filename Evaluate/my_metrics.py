@@ -1,77 +1,7 @@
-# Import
 import re
-import sys
-sys.path.append("./Src")
-import os
+from Utils.text_processing import *
 import pandas as pd
-import joblib
 
-# Import Classes
-import MyClasses
-import constant_value as CONST
-
-#Classes
-LLM_class = MyClasses.LLM_Gemini(api_key = CONST.API_KEY)
-Text_Processing_Class = MyClasses.Text_Processing()
-
-# 1. From forms response by LLM --> get tagnames to input forms
-def filled_input_from_filled_form(input_folder, filled_folder):
-    for index,filename in enumerate(os.listdir(input_folder)):
-        if filename.endswith(".txt"):
-            #Input - filled
-            file_input_dir = input_folder + '/' + filename
-            file_filled_dir = filled_folder + '/' + filename
-            # Read
-            input_text = Text_Processing_Class.Read_txt_file(file_input_dir)
-            filled_text = Text_Processing_Class.Read_txt_file(file_filled_dir)
-            #Replace all ".........." by "[another]"
-            input_text = input_text.replace("..........","[#another]")
-            filled_text = filled_text.replace("..........","[#another]")
-
-            #Print debug
-            try:
-                filled_input_text = Text_Processing_Class.fill_input_by_llm_form(filled_text, input_text)
-                #Save
-                output_dir = CONST.Output_folder+ '/' + filled_folder.split("/")[-1] + "/" + input_folder.split("/")[-1] + "/" + filename
-                Text_Processing_Class.Save_txt_file(output_dir, filled_input_text)
-
-                # Save to Process_ouput folder
-                process_output_dir = CONST.Process_ouput_folder + '/' + filled_folder.split("/")[-1] + "/" + input_folder.split("/")[-1] + "/" + filename
-                remove_filled_text = Text_Processing_Class.remove_different_tagnames(filled_input_text)
-                Text_Processing_Class.Save_txt_file(process_output_dir, remove_filled_text)
-            except Exception as e:
-                print(filename)
-                print(e)
-                break
-
-# File paths
-input_dirs = CONST.Input_folder
-filled_dirs = CONST.LLM_filled_folder
-label_firs = CONST.Label_folder
-
-
-# Pass values from llm filled file to input --> Output
-for input_dir in input_dirs:
-    for filled_dir in filled_dirs:
-        filled_input_from_filled_form(input_dir, filled_dir)
-        
-
-# 2. Add file to process_output_dir folder (remove different tagnames in processed forms, and label form)
-# Add label file to process_output_dir folder
-for label_dir in label_firs:
-    for index,filename in enumerate(os.listdir(label_dir)):
-        if filename.endswith(".txt"):
-            file_dir = label_dir + '/' + filename
-            # Read
-            label_text = Text_Processing_Class.Read_txt_file(file_dir)
-            # Remove different tagnames
-            label_text = Text_Processing_Class.remove_different_tagnames(label_text)
-            # Save to evaluate folder
-            output_dir = CONST.Process_ouput_folder + '/' + label_dir.split("Forms/",1)[1] + "/" + filename
-            Text_Processing_Class.Save_txt_file(output_dir, label_text)
-
-# 3. Evaluate similarity between processed forms and label forms
-# Function to calculate similarity percentage if lists have the same length
 def calculate_similarity(tagnames1, tagnames2):
     '''
     - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2(LLM-filled)
@@ -83,7 +13,7 @@ def calculate_similarity(tagnames1, tagnames2):
     + B-A1: Count of false positives (LLM incorrectly identifies subset A).
     + B-B: Count of correct non-A tagnames assigned as #another.
     '''
-    our_40_tagnames = Text_Processing_Class.Summary_tagnames()
+    our_40_tagnames = Text_Processing().Summary_tagnames()
     # Check if the lengths are different
     if len(tagnames1) != len(tagnames2):
         metrics = {
@@ -190,8 +120,8 @@ def similarity_result_two_folders(folder1, folder2):
             file_dir_label = folder1 + '/' + filename
             file_dir_predict = folder2 + '/' + filename
             # Read
-            text_label = Text_Processing_Class.Read_txt_file(file_dir_label)
-            text_predict = Text_Processing_Class.Read_txt_file(file_dir_predict)
+            text_label = Text_Processing().Read_txt_file(file_dir_label)
+            text_predict = Text_Processing().Read_txt_file(file_dir_predict)
             # Result
             similarity_result_forms[index_result].append(similarity_two_forms(text_label, text_predict))
             form_names.append(filename)
@@ -201,10 +131,3 @@ def similarity_result_two_folders(folder1, folder2):
     df = pd.DataFrame(flattened_data, columns=['completeness', 'A1-A1', 'A1-A2', 'A1-B','B-A1','B-B','error A1-A2','error A1-B','error B-A1'])
     df['form_name'] = form_names
     return df
-
-# Evaluate similarity between processed forms and label forms
-folder1 = "Forms\Process_ouput\Label_Output_By_Hand\Raw"
-folder2 = "Forms\Process_ouput\Hung_19_Oct_2024\Raw"
-df = similarity_result_two_folders(folder1, folder2)
-df.to_csv("./Forms/Evaluate/Hung_19_Oct_2024_Raw.csv")
-print(df)
