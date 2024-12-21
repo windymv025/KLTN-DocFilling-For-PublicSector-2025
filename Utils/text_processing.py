@@ -1,11 +1,10 @@
 import re
 import os
 import sys
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from Config import *
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from Config import *
 
-print()
-# print(list_cccd_passport_tagnames)
+print(list_cccd_passport_tagnames)
 
 # class Text_Processing:
 #     def __init__(self):
