@@ -31,7 +31,7 @@ project/
 │
 ├── Config/
 │   ├── tagnames.py
-│   ├── constants.py
+│   ├── folders.py
 │   └── LLM.py
 │
 ├── Utils/
@@ -39,5 +39,5 @@ project/
 │   ├── text_processing.py
 │   └── Post_processor/
 │
-├── fill_form.py
+├── run.py
 ├── .env
