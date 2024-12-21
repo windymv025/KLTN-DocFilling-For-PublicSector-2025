@@ -10,10 +10,9 @@ Src/__pycache__
 #Folder
 TEST/
 GenerateData/
-Src/Get_tagname_and_evaluate
 Presentation/
 Forms/
-# Result/
+Results/
 
 #Temp file
 chainlit.md
