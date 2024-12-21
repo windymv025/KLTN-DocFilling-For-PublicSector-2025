@@ -77,7 +77,6 @@ def calculate_similarity(tagnames1, tagnames2):
     - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2(LLM-filled)
     - Trả về các độ đo:
 
-    + Độ đủ: điền đủ không (len = len)
     + A1-A1: Count of correct matches in subset A.
     + A1-A2: Count of misclassifications in subset A.
     + A1-B: Count of unrecognized subset A tagnames (labeled as #another). 

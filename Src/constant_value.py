@@ -759,7 +759,7 @@ Label_by_hand_Hand_process_Folder = "Forms/Label_Output_By_Hand/Hand_process"
 # LLM filled form File path
 LLM_filled_form_1_Folder = "Forms/Result_LLM_Filled/Hung_19_Oct_2024" #Result1
 LLM_filled_form_2_Folder = "Forms/Result_LLM_Filled/Hung_04_Nov_2024" #Result1
-
+    
 # Summary
 Input_folder = [Input_Raw_Folder, Input_Hand_process_Folder]
 Label_folder =[Label_by_hand_Raw_Folder, Label_by_hand_Hand_process_Folder]

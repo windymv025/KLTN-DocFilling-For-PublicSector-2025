@@ -1,0 +1,43 @@
+project/
+├── Prompts/
+│   ├── define_tagnames.py
+│   ├── identify_relationship.py
+│   ├── redefine_tagname.py
+│   ├── identify_form_types.py
+│
+├── Tagnames/
+│   ├── define_tagnames.py
+│   ├── identify_relationship.py
+│   ├── redefine_tagname.py
+│   ├── identify_form_types.py
+│
+├── Evaluate/
+│   ├── analyze_tagnames.py
+│   ├── form_types.py
+│   ├── my_metrics.py
+│
+├── Forms/
+│   ├── Input/
+│   │   ├── Raw/
+│   │   ├── Hand_processor/
+│   │   └── LLM_processor/
+│   ├── Output/
+│   │   ├── Raw/
+│   │   └── Post_processor/
+│   └── Label/
+│
+├── Results/
+│   └── (output results or summaries here)
+│
+├── Config/
+│   ├── tagnames.py
+│   ├── constants.py
+│   └── LLM.py
+│
+├── Utils/
+│   ├── multi_value_dict.py # Cấu trúc dữ liệu MultiValueDict
+│   ├── text_processing.py
+│   └── Post_processor/
+│
+├── fill_form.py
+├── .env
