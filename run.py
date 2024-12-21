@@ -1,5 +1,5 @@
 from Tagnames import *
-from Config.constant_value import *
+from Config.folders import *
 from Evaluate.my_metrics import *
 import time
 
