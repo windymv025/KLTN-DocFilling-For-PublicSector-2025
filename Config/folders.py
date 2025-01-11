@@ -1,6 +1,6 @@
 # Input folder
-input_raw_folder = "Forms/Input/Raw" #Raw input folder
-input_hand_process_folder = "Forms/Input/Hand_process" #Hand process input folder
+input_raw_folder = "Forms/Input/Raw"  # Raw input folder
+input_hand_process_folder = "Forms/Input/Hand_process"  # Hand process input folder
 
 # Output
 output_folder_raw = "Forms/Output/Raw"

@@ -24,3 +24,9 @@ Result/
 #File test
 test.py
 new_requirements.txt
+
+# of Nam
+.ipynb_checkpoints/
+*.json
+*.txt
+*.ipynb

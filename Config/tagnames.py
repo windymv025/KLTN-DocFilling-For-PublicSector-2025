@@ -43,13 +43,11 @@ residence_identification_tagnames = """
 [phone]: Số điện thoại của người dùng
 [phone_home]: Số điện thoại bàn của người dùng
 [email]: Email của người dùng.
-[user1_visa_number]: Số thị thực(visa) của người dùng
-[user1_visa_country]: Quốc gia cấp thị thực(visa) cho người dùng
-[user1_visa_expiry_day]: Ngày hết hạn thị thực(visa) của người dùng
-[user1_visa_expiry_month]: Tháng hết hạn thị thực(visa) của người dùng
-[user1_visa_expiry_year]: Năm hết hạn thị thực(visa) của người dùng
-[request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
-[reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
+[visa_number]: Số thị thực(visa) của người dùng
+[visa_country]: Quốc gia cấp thị thực(visa) cho người dùng
+[visa_expiry_day]: Ngày hết hạn thị thực(visa) của người dùng
+[visa_expiry_month]: Tháng hết hạn thị thực(visa) của người dùng
+[visa_expiry_year]: Năm hết hạn thị thực(visa) của người dùng
 """
 
 study_tagnames = """
@@ -76,7 +74,7 @@ study_tagnames = """
 [school_principal]: Hiệu trưởng của trường
 [course]: Khóa học của người dùng. 
 [faculty]: Khoa của người dùng.
-[student_id_number]: Mã số sinh viên của người dùng tại trường đại học.
+[student_id_number]: Mã số sinh viên của người dùng tại trường học.
 [education_level]: Trình độ học vấn của người dùng.
 [duration_of_course]: Thời gian của khóa học của người dùng.
 [graduation_date]: Ngày tốt nghiệp của người dùng.
@@ -222,45 +220,45 @@ remaining_tag_names = """
 """
 
 list_cccd_passport_tagnames = [
-"[full_name]",
-"[alias_name]",
-"[dob_text]",
-"[dob]",
-"[dob_date]",
-"[dob_day]",
-"[dob_month]",
-"[dob_year]",
-"[gender]",
-"[id_number]",
-"[id_issue_date]",
-"[id_issue_day]",
-"[id_issue_month]",
-"[id_issue_year]",
-"[id_issue_place]",
-"[occupation]",
-"[ethnicity]",
-"[religion]",
-"[nationality]",
-"[marital_status]",
-"[blood_type]",
-"[birth_registration_place]",
-"[birthplace]",
-"[birth_registration_place_ward]",
-"[birth_registration_place_district]",
-"[birth_registration_place_province]",
-"[hometown]",
-"[permanent_address]",
-"[current_address]",
-"[current_address_ward]",
-"[current_address_district]",
-"[current_address_province]",
-"[current_status]",
-"[passport_number]",
-"[passport_issue_date]",
-"[passport_issue_day]",
-"[passport_issue_month]",
-"[passport_issue_year]",
-"[passport_issue_place]"
+    "[full_name]",
+    "[alias_name]",
+    "[dob_text]",
+    "[dob]",
+    "[dob_date]",
+    "[dob_day]",
+    "[dob_month]",
+    "[dob_year]",
+    "[gender]",
+    "[id_number]",
+    "[id_issue_date]",
+    "[id_issue_day]",
+    "[id_issue_month]",
+    "[id_issue_year]",
+    "[id_issue_place]",
+    "[occupation]",
+    "[ethnicity]",
+    "[religion]",
+    "[nationality]",
+    "[marital_status]",
+    "[blood_type]",
+    "[birth_registration_place]",
+    "[birthplace]",
+    "[birth_registration_place_ward]",
+    "[birth_registration_place_district]",
+    "[birth_registration_place_province]",
+    "[hometown]",
+    "[permanent_address]",
+    "[current_address]",
+    "[current_address_ward]",
+    "[current_address_district]",
+    "[current_address_province]",
+    "[current_status]",
+    "[passport_number]",
+    "[passport_issue_date]",
+    "[passport_issue_day]",
+    "[passport_issue_month]",
+    "[passport_issue_year]",
+    "[passport_issue_place]",
 ]
 
-list_general_tagnames = ["[receiver]","[place]","[day]","[month]","[year]"]
+list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
