@@ -1,16 +1,30 @@
 import os
 import sys
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-# print(sys.path)
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
 # from identify_form_types import identify_form_type
 from Tagnames.identify_form_types import identify_form_type
-from Prompts.define_tagnames import *
-from Config.tagnames import *
-from Config.LLM import *
+from Prompts.define_tagnames import (
+    residence_identification_template_prompt,
+    study_template_prompt,
+    health_medical_template_prompt,
+    vehicle_driver_template_prompt,
+    job_template_prompt,
+)
+from Config.tagnames import (
+    residence_identification_tagnames,
+    study_tagnames,
+    health_and_medical_tagnames,
+    vehicle_driver_tagnames,
+    job_tagnames,
+    remaining_tag_names,
+)
+from Config.LLM import gemini
 from Utils.text_processing import Text_Processing
-import time
+
 
 def define_tagname(llm, text):
     type = identify_form_type(llm, text)
@@ -40,24 +54,28 @@ def define_tagname(llm, text):
         name = "residence_identification_tagnames"
     prompt = PromptTemplate.from_template(template_prompt)
     chain = prompt | llm | StrOutputParser()
-    response = chain.invoke({name: tagnames, "remaining_tag_names": remaining_tag_names, "form": text})
+    response = chain.invoke(
+        {name: tagnames, "remaining_tag_names": remaining_tag_names, "form": text}
+    )
     return response
 
+
 def generate_tagnames(input_folder, output_folder):
-    for index,filename in enumerate(os.listdir(input_folder)):
+    for index, filename in enumerate(os.listdir(input_folder)):
         if filename.endswith(".txt"):
-            #Read txt
-            file_path = input_folder + '/' + filename
+            # Read txt
+            file_path = input_folder + "/" + filename
             text = Text_Processing().Read_txt_file(file_path)
             try:
                 llm_filled = define_tagname(gemini, text)
                 # Save to output_folder
-                output_path = output_folder + '/' + filename
+                output_path = output_folder + "/" + filename
                 Text_Processing().Save_txt_file(output_path, llm_filled)
                 print(f"File {filename} is generated successfully!!")
             except Exception as e:
                 print(f"Error: {e} at file {filename}")
                 continue
+
 
 text = """
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM

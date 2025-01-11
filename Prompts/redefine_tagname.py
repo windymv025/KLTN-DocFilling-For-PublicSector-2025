@@ -1,4 +1,4 @@
-redefine_tag_names_template_prompt =  '''
+redefine_tag_names_template_prompt = """
 Here is a form template with certain fields represented as placeholder tags. The tag names should match a predefined list, but some tags in this form don't align with the list and need to be corrected. Your task is to generate the output using only the predefined tag names.
 
 Predefined Tags List:
@@ -218,4 +218,4 @@ Input:
 {form}
 ```
 
-'''
+"""
