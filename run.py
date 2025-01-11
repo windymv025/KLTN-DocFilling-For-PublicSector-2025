@@ -1,8 +1,11 @@
-from Tagnames import *
-from Config.folders import *
-from Evaluate.my_metrics import *
-import time
-
+import os
+from Config.folders import (
+    input_raw_folder,
+    input_hand_process_folder,
+    label_by_hand_folder,
+)
+from Evaluate.my_metrics import similarity_result_two_folders
+from Utils.text_processing import Text_Processing
 
 input_folders = [input_raw_folder, input_hand_process_folder]
 version_llm_filled = "Hung_19_Oct_2024"
@@ -56,10 +59,10 @@ def filled_input_from_filled_form(input_folder, filled_folder, output_folder):
                 break
 
 
-llm_filled_folder = f"{output_folder_raw}/{version_llm_filled}"
-output_folder = f"{output_folder_post_processor}/{version_llm_filled}"
-for input_folder in input_folders:
-    filled_input_from_filled_form(input_folder, llm_filled_folder, output_folder)
+# llm_filled_folder = f"{output_folder_raw}/{version_llm_filled}"
+# output_folder = f"{output_folder_post_processor}/{version_llm_filled}"
+# for input_folder in input_folders:
+#     filled_input_from_filled_form(input_folder, llm_filled_folder, output_folder)
 
 ## 2.2 Remove different tagnames from label folder
 

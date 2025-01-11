@@ -2,9 +2,10 @@ import re
 import os
 import sys
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from Config import *
-from Utils.multi_value_dict import *
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from Utils.multi_value_dict import MultiValueDict
+from Config.tagnames import list_cccd_passport_tagnames, list_general_tagnames
+
 
 
 class Text_Processing:
@@ -347,7 +348,11 @@ class Text_Processing:
         # Replace each occurrence of [#another] with the corresponding tagname
         for tag in list_tag_name:
             if tag == "[#another]":
+<<<<<<< HEAD
                 form = form.replace("[#another]", f"[another]", 1)
+=======
+                form = form.replace("[#another]", "[another]", 1)
+>>>>>>> 5bf4af3cabce276c9eab0587b04835f567ad043a
             else:
                 form = form.replace("[#another]", f"{tag}", 1)
         form = form.replace("[another]", "[#another]")

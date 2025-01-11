@@ -1,5 +1,6 @@
 import re
-from Utils.text_processing import *
+import os
+from Utils.text_processing import Text_Processing
 import pandas as pd
 
 
@@ -83,7 +84,8 @@ def calculate_similarity(tagnames1, tagnames2):
         "error B-A1": error_B_A1,
     }
 
-    return metrics
+    return metrics, accuracy
+
 
 
 def print_tagnames(tagnames):

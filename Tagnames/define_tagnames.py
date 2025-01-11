@@ -8,11 +8,24 @@ from langchain_core.output_parsers import StrOutputParser
 
 # from identify_form_types import identify_form_type
 from Tagnames.identify_form_types import identify_form_type
-from Prompts.define_tagnames import *
-from Config.tagnames import *
-from Config.LLM import *
+from Prompts.define_tagnames import (
+    residence_identification_template_prompt,
+    study_template_prompt,
+    health_medical_template_prompt,
+    vehicle_driver_template_prompt,
+    job_template_prompt,
+)
+from Config.tagnames import (
+    residence_identification_tagnames,
+    study_tagnames,
+    health_and_medical_tagnames,
+    vehicle_driver_tagnames,
+    job_tagnames,
+    remaining_tag_names,
+)
+from Config.LLM import gemini
 from Utils.text_processing import Text_Processing
-import time
+
 
 
 def define_tagname(llm, text):
