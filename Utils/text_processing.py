@@ -348,11 +348,7 @@ class Text_Processing:
         # Replace each occurrence of [#another] with the corresponding tagname
         for tag in list_tag_name:
             if tag == "[#another]":
-<<<<<<< HEAD
-                form = form.replace("[#another]", f"[another]", 1)
-=======
                 form = form.replace("[#another]", "[another]", 1)
->>>>>>> 5bf4af3cabce276c9eab0587b04835f567ad043a
             else:
                 form = form.replace("[#another]", f"{tag}", 1)
         form = form.replace("[another]", "[#another]")
