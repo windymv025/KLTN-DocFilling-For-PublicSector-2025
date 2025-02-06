@@ -5,6 +5,7 @@ residence_identification_tagnames = """
 [dob_month]: Tháng sinh của người dùng.
 [dob_year]: Năm sinh của người dùng.
 [dob]: Ngày, tháng, năm sinh của người dùng.
+[dob_date]: Ngày, tháng, năm sinh của người dùng.
 [dob_text]: Ngày, tháng, năm sinh của người dùng được viết bằng chữ.
 [gender]: Giới tính của người dùng.
 [id_number]: Số chứng minh nhân dân(CMND) hoặc căn cước công dân(CCCD) của người dùng.
@@ -212,11 +213,10 @@ job_tagnames = """
 # Những thông tin không lưu được
 remaining_tag_names = """
 [receiver]: Cá nhân hoặc tổ chức nhận hoặc xử lý biểu mẫu được người dùng điền.
-[document_number]: Số của tài liệu hoặc hồ sơ, thường để tham chiếu hoặc lưu trữ.
+[place]: Nơi mà biểu mẫu được người dùng điền.
 [day]: Ngày khi biểu mẫu được người dùng điền.
 [month]: Tháng khi biểu mẫu được người dùng điền.
 [year]: Năm khi biểu mẫu được người dùng điền.
-[place]: Nơi mà biểu mẫu được người dùng điền.
 """
 
 list_cccd_passport_tagnames = [
@@ -241,11 +241,16 @@ list_cccd_passport_tagnames = [
     "[nationality]",
     "[marital_status]",
     "[blood_type]",
-    "[birth_registration_place]",
     "[birthplace]",
+    "[birth_registration_place]",
     "[birth_registration_place_ward]",
     "[birth_registration_place_district]",
     "[birth_registration_place_province]",
+    # Tạm thời cho registration place là trùng với trên
+    "[birth_registration]",
+    "[birth_registration_ward]",
+    "[birth_registration_district]",
+    "[birth_registration_province]",
     "[hometown]",
     "[permanent_address]",
     "[current_address]",

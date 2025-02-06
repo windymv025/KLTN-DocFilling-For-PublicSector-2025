@@ -43,6 +43,9 @@ def calculate_similarity(tagnames1, tagnames2):
         # Replace "dob_date" with "dob" exactly
         standardized_tag1 = re.sub(r"dob_date", "dob", standardized_tag1)
         standardized_tag2 = re.sub(r"dob_date", "dob", standardized_tag2)
+        # Replace "registration" with "birth_registration" exactly
+        standardized_tag1 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag1)
+        standardized_tag2 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag2)
         # Check if ground truth tagname is in subset_A
         if standardized_tag1 in our_40_tagnames:
             count_label += 1
@@ -84,7 +87,7 @@ def calculate_similarity(tagnames1, tagnames2):
         "error B-A1": error_B_A1,
     }
 
-    return metrics, accuracy
+    return metrics
 
 
 
@@ -134,6 +137,9 @@ def similarity_result_two_folders(folder1, folder2):
             )
             form_names.append(filename)
             index_result += 1
+    # print(similarity_result_forms)
+    print(similarity_result_forms[-1])
+    print(len(similarity_result_forms))
     # Create the DataFrame
     flattened_data = [item[0] for item in similarity_result_forms]
     df = pd.DataFrame(

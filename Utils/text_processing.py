@@ -7,7 +7,6 @@ from Utils.multi_value_dict import MultiValueDict
 from Config.tagnames import list_cccd_passport_tagnames, list_general_tagnames
 
 
-
 class Text_Processing:
     def __init__(self):
         pass
@@ -164,7 +163,7 @@ class Text_Processing:
         - Ví dụ: ['chỗ', 'ở', 'hiện', 'nay']
         Cách làm:
         Đầu tiên, với form đưa vào, ta bắt các vị trí có [tagname] (chú ý [^\d] vì có một số chỗ [01] là sai (form y tế),
-        từ đó ta lấy được text trước tagnames + tagname.
+        từ đó ta lấy được [text trước tagnames : tagname.]
         Sau đó, với mỗi cặp bắt được, ta chuẩn hóa nội dung trước chỗ điền
         Chuẩn hóa.
         - Lowercase, bỏ hết ký tự đặc biệt (.,:!)... chỉ để lại chữ, số và dấu / (vì chỗ ngày/tháng/năm) có mỗi / làm cách giữa hai tagnames.
@@ -192,11 +191,13 @@ class Text_Processing:
         return sentences, labels
 
     def get_hash_name_from_context_at_index(self, context, i):
-        if len(context[i]) == 0:
+        if len(context[i])==0:
             return "Empty"
         else:
-            # return f"{context[i][0]}_{context[i][-1]}_{len(context[i])}"
-            return f"{context[i][-1]}"  # chỉ lấy chữ cuối
+            if len(context[i])<=2:
+                return f"{context[i][0]}_{context[i][-1]}_{len(context[i])}" #Đầu_Cuối_Length
+            elif len(context[i])>2:
+                return f"{context[i][0]}_{context[i][1]}_{context[i][-2]}_{context[i][-1]}_{len(context[i])}" #Đầu_KeD_KeC_Cuối_Length
 
     def get_hash_name_from_context(self, context, i1, i2):
         """
@@ -214,6 +215,55 @@ class Text_Processing:
         elif i2 < i1:
             name = f"2-{name_i1}-{name_i2}"
         return name
+    
+    def map_name_to_index_contextual_llm(self,contextual_llm, label_llm):
+        '''
+        Input: contextual_llm, và label_llm
+        Goal: Xây dựng luật từ contextual_llm, duyệt qua, lấy được tên theo từng index tagname
+        Trỏ đến index của label_llm, là list tagname tương ứng
+        '''
+        LLM_contextual_to_index_tagname = MultiValueDict()
+        # Lấy tagname từ LLM filled form
+        for i in range(len(contextual_llm)):
+            if i ==0:
+                hash_name = self.get_hash_name_from_context(contextual_llm,i,i+1)
+                # LLM_contextual_to_index_tagname.add(hash_name, label_llm[i])
+                LLM_contextual_to_index_tagname.add(hash_name, i)
+            elif i == len(contextual_llm)-1:
+                hash_name = self.get_hash_name_from_context(contextual_llm,i,i-1)
+                # LLM_contextual_to_index_tagname.add(hash_name, label_llm[i])
+                LLM_contextual_to_index_tagname.add(hash_name, i)
+            else:
+                hash_name1 = self.get_hash_name_from_context(contextual_llm,i,i-1)
+                hash_name2 = self.get_hash_name_from_context(contextual_llm,i,i+1)
+                # LLM_contextual_to_index_tagname.add(hash_name1, label_llm[i])
+                # LLM_contextual_to_index_tagname.add(hash_name2, label_llm[i])
+                LLM_contextual_to_index_tagname.add(hash_name1, i)
+                LLM_contextual_to_index_tagname.add(hash_name2, i)
+        return LLM_contextual_to_index_tagname
+
+    def fill_label_input_from_hashname(self,label_llm,LLM_contextual_to_tagname,hash_name,index_filled):
+        # Process
+        tagname = None
+        T = False
+        try:
+            temp_index_tagname = LLM_contextual_to_tagname.get(hash_name)
+            if temp_index_tagname >= index_filled:
+                index_filled = temp_index_tagname + 1
+                tagname = label_llm[temp_index_tagname]
+                LLM_contextual_to_tagname.pop(hash_name)
+                T = True
+            else:
+                while temp_index_tagname<index_filled:
+                    LLM_contextual_to_tagname.pop(hash_name)
+                    temp_index_tagname = LLM_contextual_to_tagname.get(hash_name)
+                index_filled = temp_index_tagname + 1
+                tagname = label_llm[temp_index_tagname]
+                LLM_contextual_to_tagname.pop(hash_name)
+                T = True
+        except:
+            pass
+        return LLM_contextual_to_tagname,T,tagname,index_filled
 
     def get_tagnames_from_LLM_filled_form(
         self, contextual_llm, label_llm, contextual_input, label_input
@@ -235,53 +285,36 @@ class Text_Processing:
 
         Output: list tagname để điền vào input
         """
-        LLM_contextual_to_tagname = MultiValueDict()
-        # Lấy tagname từ LLM filled form
-        # print("contextual_llm",contextual_llm)
-        for i in range(len(contextual_llm)):
-            if i == 0:
-                hash_name = self.get_hash_name_from_context(contextual_llm, i, i + 1)
-                LLM_contextual_to_tagname.add(hash_name, label_llm[i])
-            elif i == len(contextual_llm) - 1:
-                hash_name = self.get_hash_name_from_context(contextual_llm, i, i - 1)
-                LLM_contextual_to_tagname.add(hash_name, label_llm[i])
-            else:
-                hash_name1 = self.get_hash_name_from_context(contextual_llm, i, i - 1)
-                hash_name2 = self.get_hash_name_from_context(contextual_llm, i, i + 1)
-                LLM_contextual_to_tagname.add(hash_name1, label_llm[i])
-                LLM_contextual_to_tagname.add(hash_name2, label_llm[i])
-        # return LLM_contextual_to_tagname
+        # Get
+        LLM_contextual_to_tagname = self.map_name_to_index_contextual_llm(contextual_llm, label_llm)
         # Từ dữ liệu LLM filled, điền vào input form (Lưu các tagname vào list)
+        index_filled = 0
         for i in range(len(contextual_input)):
-            T = False
-            if i == 0:
-                hash_name = self.get_hash_name_from_context(contextual_input, i, i + 1)
-                try:
-                    label_input[i] = LLM_contextual_to_tagname.get_and_pop(hash_name)
-                    T = True
-                except:
-                    pass
-
-            elif i == len(contextual_input) - 1:
-                hash_name = self.get_hash_name_from_context(contextual_input, i, i - 1)
-                try:
-                    label_input[i] = LLM_contextual_to_tagname.get_and_pop(hash_name)
-                    T = True
-                except:
-                    pass
+            if label_input[i]!="[#another]":
+                # print("herere")
+                continue
+            # if i == 48:
+            #     print("hello")
+            if i ==0:
+                hash_name = self.get_hash_name_from_context(contextual_input,i,i+1)
+                LLM_contextual_to_tagname,T,tagname,index_filled = self.fill_label_input_from_hashname(label_llm,LLM_contextual_to_tagname,hash_name,index_filled)
+                if T:
+                    label_input[i] = tagname
+            elif i == len(contextual_input)-1:
+                hash_name = self.get_hash_name_from_context(contextual_input,i,i-1)
+                LLM_contextual_to_tagname,T,tagname,index_filled = self.fill_label_input_from_hashname(label_llm,LLM_contextual_to_tagname,hash_name,index_filled)
+                if T:
+                    label_input[i] = tagname
             else:
-                hash_name1 = self.get_hash_name_from_context(contextual_input, i, i - 1)
-                hash_name2 = self.get_hash_name_from_context(contextual_input, i, i + 1)
-                try:
-                    label_input[i] = LLM_contextual_to_tagname.get_and_pop(hash_name1)
-                    T = True
-                except:
-                    pass
-                try:
-                    label_input[i] = LLM_contextual_to_tagname.get_and_pop(hash_name2)
-                    T = True
-                except:
-                    pass
+                hash_name1 = self.get_hash_name_from_context(contextual_input,i,i-1)
+                LLM_contextual_to_tagname,T,tagname,index_filled = self.fill_label_input_from_hashname(label_llm,LLM_contextual_to_tagname,hash_name1,index_filled)
+                if T:
+                    label_input[i] = tagname
+                else:    
+                    hash_name2 = self.get_hash_name_from_context(contextual_input,i,i+1)
+                    LLM_contextual_to_tagname,T,tagname,index_filled = self.fill_label_input_from_hashname(label_llm,LLM_contextual_to_tagname,hash_name2,index_filled)
+                    if T:
+                        label_input[i] = tagname
             if not T:
                 continue
             # Xử lý với tagname dob, date,..
@@ -294,9 +327,12 @@ class Text_Processing:
                         "tháng" in contextual_input[i + 1]
                         or "/" in contextual_input[i + 1]
                     ):
-                        label_input[i] = f"{label_input[i][:-1]}_day]"
-                        label_input[i + 1] = f"{label_input[i][:-1]}_month]"
+                        # Kiểm tra bên llm điền có tháng, năm --> tăng index filled lên, cũng như loại trong LLM_contextual_to_tagname
+                        if f"{label_input[i][:-1]}_month]" in label_llm[index_filled]:
+                            index_filled += 2
                         label_input[i + 2] = f"{label_input[i][:-1]}_year]"
+                        label_input[i + 1] = f"{label_input[i][:-1]}_month]"
+                        label_input[i] = f"{label_input[i][:-1]}_day]"
 
                 # TH2: có _date
                 pattern_date = re.compile(r"_date\]$")
@@ -310,9 +346,11 @@ class Text_Processing:
                         or "/" in contextual_input[i + 1]
                     ):
                         prefix_date = label_input[i].split("_date", 1)[0]
-                        label_input[i] = f"{prefix_date}_day]"
-                        label_input[i + 1] = f"{prefix_date}_month]"
+                        if f"{prefix_date}_month]" in label_llm[index_filled]:
+                            index_filled += 2
                         label_input[i + 2] = f"{prefix_date}_year]"
+                        label_input[i + 1] = f"{prefix_date}_month]"
+                        label_input[i] = f"{prefix_date}_day]"
 
                 # Th3: có _day
                 pattern_day = re.compile(r"_day\]$")
@@ -348,11 +386,7 @@ class Text_Processing:
         # Replace each occurrence of [#another] with the corresponding tagname
         for tag in list_tag_name:
             if tag == "[#another]":
-<<<<<<< HEAD
                 form = form.replace("[#another]", f"[another]", 1)
-=======
-                form = form.replace("[#another]", "[another]", 1)
->>>>>>> 5bf4af3cabce276c9eab0587b04835f567ad043a
             else:
                 form = form.replace("[#another]", f"{tag}", 1)
         form = form.replace("[another]", "[#another]")
@@ -411,3 +445,19 @@ class Text_Processing:
             form, valid_tagnames_general, valid_tagnames_cccd_passport
         )
         return cleaned_form
+
+    # 3. Convert label form to input form
+    def convert_label_form_to_input_form(self, label_folder, input_folder):
+        '''
+        Just need to replace all tagnames with placeholders ..........
+        '''
+        for index,filename in enumerate(os.listdir(label_folder)):
+            if filename.endswith(".txt"):
+                # print(f"{filename} at index {index}")
+                label_path = label_folder + '/' + filename
+                input_path = input_folder + '/' + filename
+                form_text = self.Read_txt_file(label_path)
+                # Replace all [tagname] with .....
+                transformed_text = re.sub(r'\[.*?\]', '..........', form_text)
+                self.Save_txt_file(input_path, transformed_text)
+                print(f"Save successfully file {filename} at index {index}")

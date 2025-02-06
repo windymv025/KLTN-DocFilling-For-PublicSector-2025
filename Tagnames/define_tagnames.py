@@ -26,8 +26,6 @@ from Config.tagnames import (
 from Config.LLM import gemini
 from Utils.text_processing import Text_Processing
 
-
-
 def define_tagname(llm, text):
     type = identify_form_type(llm, text)
     if "1" in type:
@@ -60,7 +58,6 @@ def define_tagname(llm, text):
         {name: tagnames, "remaining_tag_names": remaining_tag_names, "form": text}
     )
     return response
-
 
 def generate_tagnames(input_folder, output_folder):
     for index, filename in enumerate(os.listdir(input_folder)):
