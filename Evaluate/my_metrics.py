@@ -4,7 +4,7 @@ from Utils.text_processing import Text_Processing
 import pandas as pd
 
 
-def calculate_similarity(tagnames1, tagnames2):
+def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2):
     """
     - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2(LLM-filled)
     - Trả về các độ đo:
@@ -28,16 +28,22 @@ def calculate_similarity(tagnames1, tagnames2):
             "error A1-A2": [],
             "error A1-B": [],
             "error B-A1": [],
+            "error A1-A2 detail": [],
+            "error A1-B detail": [],
+            "error B-A1 detail": [],
         }
         return metrics  # Return 0% similarity if lengths are different
 
     # Initialize counters
     A1_A1, A1_A2, A1_B, B_A1, B_B = 0, 0, 0, 0, 0
     error_A1_A2, error_A1_B, error_B_A1 = [], [], []
+    error_A1_A2_detail, error_A1_B_detail, error_B_A1_detail = [], [], []
     count_label = 0  # To track valid tagnames in subset_A
 
-    for tag1, tag2 in zip(tagnames1, tagnames2):
-        # Standardize tagnames by replacing userX with user0
+    for index, (tag1, tag2) in enumerate(zip(tagnames1, tagnames2)):
+        tag1 = tag1.strip("[]")  # Remove square brackets
+        tag2 = tag2.strip("[]")  # Remove square brackets
+        # Standardize tagnames by replacng userX with user0
         standardized_tag1 = re.sub(r"user\d+", "user0", tag1)
         standardized_tag2 = re.sub(r"user\d+", "user0", tag2)
         # Standardize tagnames by replacing userX with user0
@@ -59,17 +65,21 @@ def calculate_similarity(tagnames1, tagnames2):
                 if standardized_tag1 == standardized_tag2:
                     A1_A1 += 1  # Exact match
                 else:
-                    error_A1_A2.append((standardized_tag1, standardized_tag2))
-                    # print("A1_A2: ", standardized_tag1, " - ", standardized_tag2)
+                    error_A1_A2.append((tag1, tag2))
+                    print(" ".join(contextual1[index]))
+                    error_A1_A2_detail.append((' '.join(contextual1[index]), tag1, ' '.join(contextual2[index]), tag2))
+                    # print("A1_A2: ", tag1, " - ", tag2)
                     A1_A2 += 1  # Incorrect match within subset A
             else:
-                error_A1_B.append((standardized_tag1, standardized_tag2))
-                # print("A1_B: ", standardized_tag1, " - ", standardized_tag2)
+                error_A1_B.append((tag1, tag2))
+                error_A1_B_detail.append((' '.join(contextual1[index]), tag1, ' '.join(contextual2[index]), tag2))
+                # print("A1_B: ", tag1, " - ", tag2)
                 A1_B += 1  # Missed, filled with something outside subset A
         else:
             if standardized_tag2 in our_40_tagnames:
-                error_B_A1.append((standardized_tag1, standardized_tag2))
-                # print("B-A1: ", standardized_tag1, " - ", standardized_tag2)
+                error_B_A1.append((tag1, tag2))
+                error_B_A1_detail.append((' '.join(contextual1[index]), tag1, ' '.join(contextual2[index]), tag2))
+                # print("B-A1: ", tag1, " - ", tag2)
                 B_A1 += 1  # Incorrectly predicted a tagname in subset A
             else:
                 B_B += 1  # Both are outside subset A (#another case)
@@ -78,7 +88,7 @@ def calculate_similarity(tagnames1, tagnames2):
 
     # Completeness and accuracy
     completeness = 100.0 if len(tagnames1) == len(tagnames2) else 0.0
-    accuracy = A1_A1 / count_label * 100 if count_label > 0 else 0.0
+    # accuracy = A1_A1 / count_label * 100 if count_label > 0 else 0.0
 
     # Compile results
     metrics = {
@@ -91,6 +101,9 @@ def calculate_similarity(tagnames1, tagnames2):
         "error A1-A2": error_A1_A2,
         "error A1-B": error_A1_B,
         "error B-A1": error_B_A1,
+        "error A1-A2 detail": error_A1_A2_detail,
+        "error A1-B detail": error_A1_B_detail,
+        "error B-A1 detail": error_B_A1_detail,
     }
 
     return metrics
@@ -109,18 +122,15 @@ def similarity_two_forms(form1, form2):
     form1 = form1.replace("..........", "[#another]")
     form2 = form2.replace("..........", "[#another]")
     # Find all matches
-    pattern = r"\[(?!\d)([^\]]+)\]"
-    tagnames1 = re.findall(pattern, form1)
-    tagnames2 = re.findall(pattern, form2)
+    # pattern = r"\[(?!\d)([^\]]+)\]"
+    # tagnames1 = re.findall(pattern, form1)
+    # tagnames2 = re.findall(pattern, form2)
+    contextual1, tagnames1 = Text_Processing().get_contextual_tagnames(form1)
+    contextual2, tagnames2 = Text_Processing().get_contextual_tagnames(form2)
+    
     # print tagnames to check
     # Calculate similarity percentage
-    similarity_percentage = calculate_similarity(tagnames1, tagnames2)
-    # if similarity_percentage["A1-B"] != 0:
-    #     print(similarity_percentage["A1-B"])
-    #     print_tagnames(tagnames1)
-    #     print_tagnames(tagnames2)
-    #     return similarity_percentage
-    # print("Lengths are different")
+    similarity_percentage = calculate_similarity(contextual1, contextual2, tagnames1, tagnames2)
     return similarity_percentage
 
 
@@ -161,6 +171,9 @@ def similarity_result_two_folders(folder1, folder2):
             "error A1-A2",
             "error A1-B",
             "error B-A1",
+            "error A1-A2 detail",
+            "error A1-B detail",
+            "error B-A1 detail",
         ],
     )
     df["form_name"] = form_names
