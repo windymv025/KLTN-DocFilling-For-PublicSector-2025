@@ -75,8 +75,15 @@ def generate_form(formatted_tagnames, remaining_tag_names,random_forms_text):
 # After above code, we have generated label forms, then simply convert them to input forms
 # Then run code to generate output forms from above input forms
 # time_now = time.strftime('%Y-%m-%d-%H-%M-%S')
-label_folder = "Temp/Data_3/Train/Label"
-input_folder = "Temp/Data_3/Train/Input"
+# General
+Data_num = 2
+Train_Test = "Train"
+# Train_Test = "Test"
+
+label_folder = f"Temp/Data_{Data_num}/{Train_Test}/Label"
+input_folder = f"Temp/Data_{Data_num}/{Train_Test}/Input"
+# Ensure the folder exists
+os.makedirs(input_folder, exist_ok=True)
 
 # Test data
 # label_folder = "Temp/Data_1/Test/Label"

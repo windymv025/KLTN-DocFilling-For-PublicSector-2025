@@ -2449,13 +2449,6 @@ Bạn có nhiệm vụ điền các tagnames vào các biểu mẫu theo định
 
 3. Các trường không có tagname trong danh sách:
 - Nếu không có tagname phù hợp, giữ nguyên .........., không điền gì vào. 
-- Ngoại lệ: Các mục thể hiện địa điểm, ngày tháng năm làm form này sẽ dùng các tagnames sau:
-- - [place] → Địa điểm điền form.
-- - [day], [month], [year] → Ngày, tháng, năm hiện tại.
-- - Lưu ý các tagname này thường xuất hiện ở cuối form, hoặc đầu, có khi giữa, thể hiện
-nơi chốn, ngày tháng năm làm form, ví dụ thường là 
-.........., ngày .......... tháng .......... năm .......... hoặc ví dụ tương tự,
-Làm tại [place], ngày [day] tháng [month] năm [year]. Tránh trùng lặp với các tagname có hậu tố year khác (như năm cấp định danh, năm cấp hộ chiếu,....).
 
 4. Lưu ý:
 - Ví dụ mục tên cha mẹ, không sử dụng user1_parent_name, mà thay vào đó, cha mẹ sẽ là đối tượng riêng biệt (user3_, user4_), tương tự với các mục khác.
@@ -2617,4 +2610,15 @@ Input:
 {form}
 ```
 Ouput: 
+"""
+
+temp = """
+- Ngoại lệ: Các mục thể hiện địa điểm, ngày tháng năm làm form này sẽ dùng các tagnames sau:
+- - [place] → Địa điểm điền form.
+- - [day], [month], [year] → Ngày, tháng, năm hiện tại.
+- - Lưu ý các tagname này thường xuất hiện ở cuối form, hoặc đầu, có khi giữa, thể hiện
+nơi chốn, ngày tháng năm làm form, ví dụ thường là 
+.........., ngày .......... tháng .......... năm .......... hoặc ví dụ tương tự,
+Làm tại [place], ngày [day] tháng [month] năm [year]. Tránh trùng lặp với các tagname có hậu tố year khác (như năm cấp định danh, năm cấp hộ chiếu,....).
+
 """

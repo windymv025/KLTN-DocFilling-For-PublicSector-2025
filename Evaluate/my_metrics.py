@@ -4,7 +4,7 @@ from Utils.text_processing import Text_Processing
 import pandas as pd
 
 
-def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2):
+def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2):
     """
     - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2(LLM-filled)
     - Trả về các độ đo:
@@ -31,6 +31,8 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2):
             "error A1-A2 detail": [],
             "error A1-B detail": [],
             "error B-A1 detail": [],
+            # "form1": form1,
+            # "form2": form2,
         }
         return metrics  # Return 0% similarity if lengths are different
 
@@ -104,6 +106,8 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2):
         "error A1-A2 detail": error_A1_A2_detail,
         "error A1-B detail": error_A1_B_detail,
         "error B-A1 detail": error_B_A1_detail,
+        # "form1": form1,
+        # "form2": form2,
     }
 
     return metrics
@@ -130,7 +134,7 @@ def similarity_two_forms(form1, form2):
     
     # print tagnames to check
     # Calculate similarity percentage
-    similarity_percentage = calculate_similarity(contextual1, contextual2, tagnames1, tagnames2)
+    similarity_percentage = calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2)
     return similarity_percentage
 
 
@@ -174,6 +178,8 @@ def similarity_result_two_folders(folder1, folder2):
             "error A1-A2 detail",
             "error A1-B detail",
             "error B-A1 detail",
+            # "form1",
+            # "form2",
         ],
     )
     df["form_name"] = form_names

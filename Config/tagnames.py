@@ -316,6 +316,9 @@ Ví dụ: Số chứng minh thư hoặc thẻ căn cước công dân: [user1_id
 - Các mục thường xuất hiện: ["nơi cấp CCCD", "nơi cấp căn cước"],
 "[user1_occupation]": Nghề nghiệp của người dùng.
 - Các mục thường xuất hiện: ["nghề nghiệp", "công việc", "công việc hiện tại"],
+Lưu ý nghề nghiệp là nghề nghiệp hiện tại, không phải là nghề nghiệp trước đó. Cũng như không phải cơ quan công tác,
+ví dụ mục công tác tại .......... thì không điền tagname occupation vào.  Tương tự thất nghiệp cũng không sử dụng tagname này.
+Và một số thông tin không phải nghề nghiệp, ví dụ bệnh nghề nghiệp thì không điền là occupation,
 "[user1_education_level]": Trình độ học vấn của người dùng.
 - Các mục thường xuất hiện: ["trình độ học vấn", "bằng cấp"],
 "[user1_ethnicity]": Dân tộc của người dùng.

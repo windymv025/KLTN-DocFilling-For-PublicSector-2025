@@ -2,18 +2,20 @@ import os
 from Tagnames.define_tagnames import generate_tagnames
 from Utils.text_processing import Text_Processing
 
+# General
+Data_num = 2
+Train_Test = "Train"
+# Train_Test = "Test"
+Output_num = 2
+
 # Folder addresses train
-input_folder = "Temp/Data_3/Train/Input"
+input_folder = f"Temp/Data_{Data_num}/{Train_Test}/Input"
 input_folders = [input_folder]
-label_folder = "Temp/Data_3/Train/Label"
-output_folder = "Temp/Data_3/Train/Output"
+label_folder = f"Temp/Data_{Data_num}/{Train_Test}/Label"
+output_folder = f"Temp/Data_{Data_num}/{Train_Test}/Output{Output_num}"
 
-
-# Testing (not modify on this result)
-# input_folder = "Temp/Data_1/Test/Input"
-# input_folders = [input_folder]
-# label_folder = "Temp/Data_1/Test/Label"
-# output_folder = "Temp/Data_1/Test/Output1"
+# Ensuse output folder exists
+os.makedirs(output_folder, exist_ok=True)
 
 # ============= 1. Generates tagnames =============
 for input_folder in input_folders:
