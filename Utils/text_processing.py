@@ -324,12 +324,15 @@ class Text_Processing:
                 if pattern_dob.search(label_input[i]) and i < len(contextual_input) - 1:
                     # Kiểm tra có tháng, năm phía sau không (nếu có thì biến đổi thành day, month, year), nếu không thì giữ nguyên
                     if (
-                        "tháng" in contextual_input[i + 1]
+                        ("tháng" in contextual_input[i + 1] and "ngày" not in contextual_input[i + 1])
                         or "/" in contextual_input[i + 1]
                     ):
                         # Kiểm tra bên llm điền có tháng, năm --> tăng index filled lên, cũng như loại trong LLM_contextual_to_tagname
-                        if f"{label_input[i][:-1]}_month]" in label_llm[index_filled]:
-                            index_filled += 2
+                        try:
+                            if f"{label_input[i][:-1]}_month]" in label_llm[index_filled]:
+                                index_filled += 2
+                        except:
+                            pass
                         label_input[i + 2] = f"{label_input[i][:-1]}_year]"
                         label_input[i + 1] = f"{label_input[i][:-1]}_month]"
                         label_input[i] = f"{label_input[i][:-1]}_day]"
@@ -342,12 +345,15 @@ class Text_Processing:
                 ):
                     # Kiểm tra có tháng, năm phía sau không (nếu có thì biến đổi thành day, month, year), nếu không thì giữ nguyên
                     if (
-                        "tháng" in contextual_input[i + 1]
+                        ("tháng" in contextual_input[i + 1] and "ngày" not in contextual_input[i + 1])
                         or "/" in contextual_input[i + 1]
                     ):
                         prefix_date = label_input[i].split("_date", 1)[0]
-                        if f"{prefix_date}_month]" in label_llm[index_filled]:
-                            index_filled += 2
+                        try:
+                            if f"{prefix_date}_month]" in label_llm[index_filled]:
+                                index_filled += 2
+                        except:
+                            pass
                         label_input[i + 2] = f"{prefix_date}_year]"
                         label_input[i + 1] = f"{prefix_date}_month]"
                         label_input[i] = f"{prefix_date}_day]"
@@ -427,6 +433,8 @@ class Text_Processing:
             for valid_tagname in valid_tagnames_cccd_passport:
                 if re.match(
                     r"\[user\d+_" + re.escape(valid_tagname[1:-1]) + r"\]", tagname
+                ) or re.match(
+                    r"\[deceased_" + re.escape(valid_tagname[1:-1]) + r"\]", tagname
                 ):
                     return tagname  # Keep valid userX_ prefixed tagnames
 
@@ -460,4 +468,4 @@ class Text_Processing:
                 # Replace all [tagname] with .....
                 transformed_text = re.sub(r'\[.*?\]', '..........', form_text)
                 self.Save_txt_file(input_path, transformed_text)
-                print(f"Save successfully file {filename} at index {index}")
+                print(f"Save successfully file {filename} at index {index} at {input_path}")
