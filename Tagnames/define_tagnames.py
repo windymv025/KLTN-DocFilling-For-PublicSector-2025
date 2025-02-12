@@ -86,8 +86,8 @@ def generate_tagnames(input_folder, output_folder):
                 file_path = input_folder + "/" + filename
                 text = Text_Processing().Read_txt_file(file_path)
                 try:
-                    # llm_filled = define_tagname(gemini, text)
-                    llm_filled = define_tagname_Nam_ver1(gemini, text)
+                    llm_filled = define_tagname(gemini, text)
+                    # llm_filled = define_tagname_Nam_ver1(gemini, text)
                     # Save to output_folder
                     output_path = output_folder + "/" + filename
                     Text_Processing().Save_txt_file(output_path, llm_filled)

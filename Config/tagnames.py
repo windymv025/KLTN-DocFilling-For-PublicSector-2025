@@ -1,4 +1,4 @@
-residence_identification_tagnames = """ 
+residence_identification_tagnames = """
 [full_name]: Họ và tên của người dùng.
 [alias_name]: Tên gọi khác của người dùng.
 [dob_day]: Ngày sinh của người dùng.
@@ -73,7 +73,7 @@ study_tagnames = """
 [class]: Tên lớp hiện tại của người dùng.
 [school]: Tên trường của người dùng.
 [school_principal]: Hiệu trưởng của trường
-[course]: Khóa học của người dùng. 
+[course]: Khóa học của người dùng.
 [faculty]: Khoa của người dùng.
 [student_id_number]: Mã số sinh viên của người dùng tại trường học.
 [education_level]: Trình độ học vấn của người dùng.
@@ -99,7 +99,7 @@ study_tagnames = """
 [decision_issuer]: Cá nhân hoặc tổ chức đã ban hành quyết định liên quan đến người dùng
 [request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
 [reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
-[suggestion]: Kiến nghị, đề xuất đối với cơ quan quản lý trực tiếp, cơ quan	
+[suggestion]: Kiến nghị, đề xuất đối với cơ quan quản lý trực tiếp, cơ quan
 """
 
 health_and_medical_tagnames = """
@@ -218,6 +218,7 @@ remaining_tag_names = """
 [month]: Tháng khi biểu mẫu được người dùng điền.
 [year]: Năm khi biểu mẫu được người dùng điền.
 """
+
 
 list_cccd_passport_tagnames = [
     "[full_name]",
