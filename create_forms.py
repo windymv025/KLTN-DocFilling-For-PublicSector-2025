@@ -14,6 +14,8 @@ from Utils.text_processing import Text_Processing
 import os
 import time
 
+from Config.config import Data_num
+
 # Get list_tagnames
 # list_tagnames = get_all_tagnames()
 # formatted_tagnames = "\n".join([f"{key}: {value}" for key, value in list_tagnames.items()])
@@ -74,19 +76,11 @@ def generate_form(formatted_tagnames, remaining_tag_names,random_forms_text):
 
 # After above code, we have generated label forms, then simply convert them to input forms
 # Then run code to generate output forms from above input forms
-# time_now = time.strftime('%Y-%m-%d-%H-%M-%S')
-# General
-Data_num = 2
-Train_Test = "Train"
-# Train_Test = "Test"
 
-label_folder = f"Temp/Data_{Data_num}/{Train_Test}/Label"
-input_folder = f"Temp/Data_{Data_num}/{Train_Test}/Input"
+label_folder = f"Temp/Data_{Data_num}/Label"
+input_folder = f"Temp/Data_{Data_num}/Input"
 # Ensure the folder exists
 os.makedirs(input_folder, exist_ok=True)
 
-# Test data
-# label_folder = "Temp/Data_1/Test/Label"
-# input_folder = "Temp/Data_1/Test/Input"
 temp = Text_Processing()
 temp.convert_label_form_to_input_form(label_folder, input_folder)

@@ -278,8 +278,8 @@ không phải là parent_name, hay guardian_name, hay representative_name, và t
 
 Với mục ngày sinh, hay ngày tháng năm sinh, có các trường hợp sau:
 - Nếu input chỉ hiện ngày sinh: .........., hay ngày tháng năm sinh: .........., hay sinh ngày: .........., hay ngày sinh đầy đủ: .........., hay sinh ngày tháng năm: .......... (tức ngày sinh đầy đủ)
-mà không có thêm thông tin về tháng, năm sinh, (tháng .......... năm .......... hay ........../..........) thì sử dụng [user1_dob] (Tagname này đã mang nghĩa đủ cả 3 mục ngày, tháng, năm).
-Ví dụ: ngày sinh: [user1_dob]
+mà không có thêm thông tin về tháng, năm sinh, (như tháng .......... năm .......... hay ........../.......... ở phía sau) thì sử dụng [user1_dob] (Tagname này đã mang nghĩa đủ cả 3 mục ngày, tháng, năm).
+Ví dụ: ngày sinh: .......... thì chỉ cần điền ngày sinh : [user1_dob]
 - Nếu input có dạng ngày sinh ngày .......... tháng .......... năm .......... (có cả ngày, tháng, năm sinh),
 ta điền riêng lẻ từng mục vào ..........
 Ví dụ ngày sinh ngày [user1_dob_day] tháng [user1_dob_month] năm [user1_dob_year]
@@ -298,9 +298,10 @@ Lưu ý nếu mục điền ngày sinh bằng chữ thì dùng mục này. Còn 
 - Các mục thường xuất hiện: ["số định danh", "giấy tờ tùy thân", "số CCCD", "số căn cước công dân"],
 "[user1_cmnd_number]": Số chứng minh nhân dân(CMND) của người dùng. (Lưu ý khác với số định danh, CCCD)
 - Các mục thường xuất hiện: ["số CMND", "số chứng minh nhân dân"],
+Lưu ý liên quan chứng minh nhân dân sử dụng cmnd_number, còn căn cước công dân, định danh sử dụng id_number.
 
-Với mục ngày cấp CCCD, hay ngày cấp CMND, hay ngày cấp căn cước, hay ngày cấp chứng minh, có các trường hợp sau:
-- Nếu input chỉ hiện ngày cấp: .........., hay ngày cấp: .........., hay cấp ngày: ..........
+Với mục ngày cấp CCCD, hay ngày cấp căn cước, có các trường hợp sau:
+- Nếu input chỉ hiện ngày cấp : .........., hay ngày cấp: .........., hay cấp ngày: ..........
 mà không có thêm thông tin về tháng, năm cấp, (tháng .......... năm .......... hay ........../..........) thì sử dụng [user1_id_issue_date] (đã mang đủ 3 mục ngày, tháng, năm).
 Ví dụ: ngày cấp: [user1_id_issue_date]
 - Nếu input có dạng ngày cấp ngày .......... tháng .......... năm .......... (có cả ngày, tháng, năm cấp),
@@ -309,8 +310,10 @@ Ví dụ ngày cấp ngày [user1_id_issue_day] tháng [user1_id_issue_month] n�
 - Nếu input có dạng ngày cấp ........../........../.......... (có cả ngày, tháng, năm cấp),
 ta điền riêng lẻ từng mục vào ..........
 Ví dụ ngày cấp [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year]
+
 - Lưu ý Nếu mục hỏi điền chứng minh thư, CMND hoặc căn cước công dân (Tức hỏi 1 trong 2), thì ưu tiên trả lời là căn cước công dân. 
-Ví dụ: Số chứng minh thư hoặc thẻ căn cước công dân: [user1_id_number]
+Ví dụ: Số chứng minh thư hoặc thẻ căn cước công dân: [user1_id_number],
+và nếu mục chứng minh nhân dân đứng riêng lẻ, thì không sử dụng tagname id_number, mà sử dụng cmnd_number.
 
 "[user1_id_issue_place]": Nơi cấp căn cước, CCCD, số định danh của người dùng công dân của người dùng. Phân biệt với nơi cấp hộ chiếu.
 - Các mục thường xuất hiện: ["nơi cấp CCCD", "nơi cấp căn cước"],
@@ -368,7 +371,8 @@ Lưu ý để phân biệt current_address hay permanent_address, ta sẽ xem x�
 Tương tự các từ phường, xã, quận huyện, tỉnh thành cư trú, hay ở hiện tại sẽ là current_address_ward, district, province.
 
 "[user1_current_status]": là tình trạng hiện tại của người dùng, lưu ý khác với nghề nghiệp là user1_occupation.
-- Các mục thường xuất hiện: ["tình trạng hiện tại", "trạng thái hiện tại"],
+- Các mục thường xuất hiện: ["trạng thái hiện tại"].
+
 "[user1_passport_number]": Số hộ chiếu của người dùng.
 - Các mục thường xuất hiện: ["số hộ chiếu", "số passport"],
 
