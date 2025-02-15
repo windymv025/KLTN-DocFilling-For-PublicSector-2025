@@ -228,46 +228,58 @@ class Text_Processing:
         index_filled_input = 0
         index_llm = 0
         while index_filled_input < len(contextual_input) and index_llm < len(contextual_llm): 
-            # print(f"Index {index_filled_input} with {len(contextual_input)}")
             name_contextual_input = self.get_hash_name_from_context_at_index(contextual_input,index_filled_input)
             name_contextual_llm = self.get_hash_name_from_context_at_index(contextual_llm,index_llm)
             if name_contextual_input == name_contextual_llm:
                 label_input[index_filled_input] = label_llm[index_llm]
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             else: # Thừa hoặc thiếu tagname chỗ này
-                # print("Wrong at line 1xx")
-                # print(label_input)
-                # print(f"name input: {name_contextual_input} index {index_filled_input}")
-                # print(f"name llm: {name_contextual_llm} index {index_llm}")
                 temp_count = 1
                 T = True
                 while (temp_count < len(contextual_input) - index_filled_input) or (temp_count < len(contextual_llm) - index_llm):
                     # Check LLM điền thiếu tagname này --> bỏ qua --> ngược lại điền từ tagname sau của input
                     if (temp_count < len(contextual_input) - index_filled_input) and ((index_filled_input+temp_count) < len(contextual_input)):
-                        # print(f"come here 1 {index_filled_input + temp_count}")
                         next_name_contextual_input = self.get_hash_name_from_context_at_index(contextual_input,index_filled_input+temp_count)
-                        # print(f"next name {next_name_contextual_input}")
                         if next_name_contextual_input == name_contextual_llm: # Bắt đầu tại đây
-                            # print(f"come here 2 {index_filled_input + temp_count}")
-                            index_filled_input = index_filled_input + temp_count
-                            T = False
-                            break
-                            # label_input[index_filled_input] = label_llm[index_llm]
+                            # Check previous contextual
+                            if (index_filled_input + temp_count)>0 and index_llm>0:
+                                if (self.get_hash_name_from_context_at_index(contextual_input,index_filled_input + temp_count - 1) == self.get_hash_name_from_context_at_index(contextual_llm,index_llm-1)):
+                                    index_filled_input = index_filled_input + temp_count
+                                    T = False
+                                    break
+                            # Check following contextual
+                            if (index_filled_input + temp_count)<len(contextual_input)-1 and index_llm<len(contextual_llm)-1:
+                                if (self.get_hash_name_from_context_at_index(contextual_input,index_filled_input + temp_count + 1) == self.get_hash_name_from_context_at_index(contextual_llm,index_llm+1)):
+                                    index_filled_input = index_filled_input + temp_count
+                                    T = False
+                                    break
                     
                     # Ngược lại check LLM điền thừa
                     if (temp_count < len(contextual_llm) - index_llm) and ((index_llm+temp_count) < len(contextual_llm)):
-                        # print(f"come here 3 {index_llm + temp_count}")
                         next_name_contextual_llm = self.get_hash_name_from_context_at_index(contextual_llm,index_llm+temp_count)
-                        # print(f"next name {next_name_contextual_llm}")
                         if next_name_contextual_llm == name_contextual_input: # Bắt đầu tại đây
-                            # print(f"come here 4 {index_llm + temp_count}")
-                            index_llm = index_llm + temp_count
-                            T = False
-                            break
+                            # Check previous contextual
+                            if index_filled_input>0 and (index_llm + temp_count)>0:
+                                if (self.get_hash_name_from_context_at_index(contextual_input,index_filled_input - 1) == self.get_hash_name_from_context_at_index(contextual_llm,index_llm + temp_count-1)):
+                                    index_llm = index_llm + temp_count
+                                    T = False
+                                    break
+                            # Check following contextual
+                            if index_filled_input<len(contextual_input)-1 and (index_llm + temp_count)<len(contextual_llm)-1:
+                                if (self.get_hash_name_from_context_at_index(contextual_input,index_filled_input + 1) == self.get_hash_name_from_context_at_index(contextual_llm,index_llm + temp_count+1)):
+                                    index_llm = index_llm + temp_count
+                                    T = False
+                                    break
                             
                     temp_count = temp_count + 1
                 if T:
-                    # print("Don't have suitable tagname, both input and llm +=1")
+                    print("Don't have suitable tagname, both input and llm +=1")
+                    try:
+                        print(f"Index {index_filled_input} with {len(contextual_input)} context {contextual_input[index_filled_input]} t {label_input[index_filled_input]}")
+                        print(f"Index {index_llm} with {len(contextual_llm)} context {contextual_llm[index_llm]} t {label_llm[index_llm]}")
+                        print() 
+                    except Exception as e:
+                        print(f"Error at here {e}")
                     index_filled_input += 1
                     index_llm += 1
                     continue
@@ -275,7 +287,9 @@ class Text_Processing:
                     # print(f"Filling {label_llm[index_llm]} to {contextual_input[index_filled_input]}")
                 label_input[index_filled_input] = label_llm[index_llm]
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
-                
+            # print(f"Index {index_filled_input} with {len(contextual_input)} context {contextual_input[index_filled_input]} t {label_input[index_filled_input]}")
+            # print(f"Index {index_llm} with {len(contextual_llm)} context {contextual_llm[index_llm]} t {label_llm[index_llm]}")
+            # print()   
             # Xử lý với tagname dob, date,..
             # TH1: Là dob
             try:
@@ -332,7 +346,10 @@ class Text_Processing:
                         # print(f"debug3.1 at {label_input[index_filled_input]}")
                         prefix_day = label_input[index_filled_input].split("_day", 1)[0]
                         label_input[index_filled_input] =f"{prefix_day}_date]"
-            except:
+                        if index_llm<len(contextual_llm)-1 and f"{prefix_day}_month]" in label_llm[index_llm+1]:
+                            index_llm += 2
+            except Exception as error:
+                print(f" === Error at here {error} === .")
                 break
             # Điền vị trí tiếp
             index_llm = index_llm + 1
@@ -433,12 +450,12 @@ class Text_Processing:
                 input_path = input_folder + '/' + filename
                 form_text = self.Read_txt_file(label_path)
                 # Replace all [tagname] with .....
-                transformed_text = re.sub(r'\[.*?\]', '..........', form_text)
+                transformed_text = re.sub(r'\[[^\d\]].*?\]', '..........', form_text)
                 self.Save_txt_file(input_path, transformed_text)
                 print(f"Save successfully file {filename} at index {index} at {input_path}")
 
 
-class Text_Processing1:
+class Text_Processing12332:
     def __init__(self):
         pass
 

@@ -8,38 +8,7 @@ residence_identification_tagnames = """
 [dob_date]: Ngày, tháng, năm sinh của người dùng.
 [dob_text]: Ngày, tháng, năm sinh của người dùng được viết bằng chữ.
 [gender]: Giới tính của người dùng.
-[id_number]: Số chứng minh nhân dân(CMND) hoặc căn cước công dân(CCCD) của người dùng.
-[id_issue_day]: Ngày cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_issue_month]: Tháng cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_issue_year]: Năm cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_issue_date]: Ngày, tháng, năm cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[id_issue_place]: Nơi cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
-[passport_number]: Số hộ chiếu của người dùng.
-[passport_issue_day]: Ngày cấp hộ chiếu của người dùng.
-[passport_issue_month]: Tháng cấp hộ chiếu của người dùng.
-[passport_issue_year]: Năm cấp hộ chiếu của người dùng.
-[passport_issue_date]: Ngày, tháng, năm cấp hộ chiếu của người dùng.
-[passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
-[passport_expiry_day]: Ngày hết hạn hộ chiếu của người dùng.
-[passport_expiry_month]: Ngày hết hạn hộ chiếu của người dùng.
-[passport_expiry_year]: Ngày hết hạn hộ chiếu của người dùng.
-[passport_issue_place]: Cấp quan cấp hộ chiếu cho người dùng
-[ethnicity]: Dân tộc của người dùng.
-[religion]: Tôn giáo của người dùng.
-[nationality]: Quốc tịch của người dùng.
-[marital_status]: Tình trạng hôn nhân của người dùng.
-[blood_type]: Nhóm máu của người dùng.
-[birth_registration_place]: Nơi đăng ký khai sinh của người dùng.
-[birth_registration_place_ward]: Phường/xã nơi đăng ký khai sinh của người dùng.
-[birth_registration_place_district]: Quận/huyện nơi đăng ký khai sinh của người dùng.
-[birth_registration_place_province]: Tỉnh/thành phố nơi đăng ký khai sinh của người dùng.
-[hometown]: Quê quán của người dùng.
-[permanent_address]: Địa chỉ thường trú của người dùng.
-[current_address]: Địa chỉ hiện tại của người dùng.
-[current_address_ward]: Phường/xã nơi ở hiện tại của người dùng.
-[current_address_district]: Quận/huyện nơi ở hiện tại của người dùng.
-[current_address_province]: Tỉnh/thành
-[occupation]: Nghề nghiệp của người dùng
+...
 [education_level]: Trình độ học vấn của người dùng
 [phone]: Số điện thoại của người dùng
 [phone_home]: Số điện thoại bàn của người dùng

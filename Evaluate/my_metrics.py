@@ -4,6 +4,7 @@ from Utils.text_processing import Text_Processing
 import pandas as pd
 from collections import Counter
 import json
+from Config.config import Data_num, Output_num
 
 def analyze_errors_type_1(error_list):
     """
@@ -55,6 +56,9 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
             # "form1": form1,
             # "form2": form2,
         }
+        # if filename == "49_00_TK1-TS.txt":
+            # print("debug3")
+            # print(len(tagnames1), len(tagnames2))
         return metrics  # Return 0% similarity if lengths are different
     
     # Initialize counters
@@ -62,7 +66,7 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     error_A1_A2, error_A1_B, error_B_A1 = [], [], []
     error_A1_A2_detail, error_A1_B_detail, error_B_A1_detail = [], [], []
     count_label = 0  # To track valid tagnames in subset_A
-    copy_contextual_input_dir = "Temp/Copy_Contextual_Input/"+ filename + ".json"
+    copy_contextual_input_dir = f"Temp/Data_{Data_num}/Output{Output_num}/Copy_Contextual_Input/"+ filename + ".json"
     # Read copy_contextual_input
     with open(copy_contextual_input_dir, "r", encoding="utf-8") as f:
         # print(copy_contextual_input_dir)
@@ -153,8 +157,8 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         "total_A1": total_A1,
         "total_B": total_B,
         # Calculate percentage (P: Percentage)
-        "P_A1_A1": (metrics["A1-A1"] / total_A1) * 100 if total_A1 > 0 else 0,
-        "P_B_B": (metrics["B-B"] / total_B) * 100 if total_B > 0 else 0,
+        "P_A1_A1": metrics["A1-A1"],
+        "P_B_B": metrics["B-B"],
         # "P_A1_A2": (metrics["A1-A2"] / total_A1) * 100 if total_A1 > 0 else 0,
         # "P_A1_B": (metrics["A1-B"] / total_A1) * 100 if total_A1 > 0 else 0,
         # "P_B_A1": (metrics["B-A1"] / total_B) * 100 if total_B > 0 else 0,
@@ -170,6 +174,10 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         "D_A1_B": analyze_errors_type_2(metrics["error A1-B detail"]),
         "D_B_A1": analyze_errors_type_2(metrics["error B-A1 detail"]),
     }
+    # if filename == "49_00_TK1-TS.txt":
+    #     print("debug2")
+    #     print(metrics)
+    #     print(metrics_detail)
 
     return metrics, metrics_detail
 
@@ -215,8 +223,10 @@ def similarity_result_two_folders(folder1, folder2):
         if filename.endswith(".txt"):
             similarity_result_forms.append([])
             similarity_result_forms_detail.append([])
-            if (index+1)%5 == 0:
+            if (index+1)%1 == 0:
                 print("========= Index: ", index+1, "============", filename)
+            # if filename == "49_00_TK1-TS.txt":
+                # print("debug")
             file_dir_label_process = folder1 + "/" + filename
             file_dir_output_process = folder2 + "/" + filename
             # Read

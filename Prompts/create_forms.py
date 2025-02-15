@@ -74,6 +74,10 @@ Dưới đây là danh sách các tagnames và ý nghĩa tương ứng:
 {formatted_tagnames}
 Tiếp theo là các tagnames chung, được điền vào form theo dạng [tagname]:
 {remaining_tag_names}
+.....
+Input:
+{random_forms_text}
+Output:
 
 **Nhiệm vụ của bạn:**
 1. Dựa trên danh sách tagnames và một số form đã được cung cấp (các form này có nhãn sẵn và những chỗ trống được thay bằng tagname [#another]), bạn sẽ:

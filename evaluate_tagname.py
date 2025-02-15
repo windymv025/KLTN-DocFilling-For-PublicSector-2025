@@ -55,8 +55,8 @@ summary_row["D_B_A1"] = analyze_errors_type_2(sum(df["error B-A1 detail"], []))
 # Append to df_detail
 df_detail = pd.concat([df_detail, pd.DataFrame([summary_row])], ignore_index=True)
 
-# Save detail to csv
-df_detail.to_csv(f"Temp/Data_{Data_num}/Result_Detail_{Output_num}_{time_now}.csv", index=False,encoding='utf-8-sig')
+# Save detail to csvgit
+df_detail.to_csv(f"Temp/Data_{Data_num}/Result_Detail_{Output_num}.csv", index=False,encoding='utf-8-sig')
 # LLM_Generate folder
 # df_detail.to_csv(f"Temp/LLM_generate/Result_Detail_{Output_num}_{time_now}.csv", index=False,encoding='utf-8-sig')
 
