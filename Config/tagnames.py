@@ -211,7 +211,7 @@ list_cccd_passport_tagnames = [
     "[nationality]",
     "[marital_status]",
     "[blood_type]",
-    # "[birthplace]",
+    "[birthplace]", #Nơi sinh
     "[birth_registration_place]",
     "[birth_registration_place_ward]",
     "[birth_registration_place_district]",
