@@ -5,10 +5,40 @@ residence_identification_tagnames = """
 [dob_month]: Tháng sinh của người dùng.
 [dob_year]: Năm sinh của người dùng.
 [dob]: Ngày, tháng, năm sinh của người dùng.
-[dob_date]: Ngày, tháng, năm sinh của người dùng.
 [dob_text]: Ngày, tháng, năm sinh của người dùng được viết bằng chữ.
 [gender]: Giới tính của người dùng.
-...
+[id_number]: Số chứng minh nhân dân(CMND) hoặc căn cước công dân(CCCD) của người dùng.
+[id_issue_day]: Ngày cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_month]: Tháng cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_year]: Năm cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_date]: Ngày, tháng, năm cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[id_issue_place]: Nơi cấp chứng minh nhân dân hoặc căn cước công dân của người dùng.
+[passport_number]: Số hộ chiếu của người dùng.
+[passport_issue_day]: Ngày cấp hộ chiếu của người dùng.
+[passport_issue_month]: Tháng cấp hộ chiếu của người dùng.
+[passport_issue_year]: Năm cấp hộ chiếu của người dùng.
+[passport_issue_date]: Ngày, tháng, năm cấp hộ chiếu của người dùng.
+[passport_issue_place]: Nơi cấp hộ chiếu của người dùng.
+[passport_expiry_day]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_expiry_month]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_expiry_year]: Ngày hết hạn hộ chiếu của người dùng.
+[passport_issue_place]: Cấp quan cấp hộ chiếu cho người dùng
+[ethnicity]: Dân tộc của người dùng.
+[religion]: Tôn giáo của người dùng.
+[nationality]: Quốc tịch của người dùng.
+[marital_status]: Tình trạng hôn nhân của người dùng.
+[blood_type]: Nhóm máu của người dùng.
+[birth_registration_place]: Nơi đăng ký khai sinh của người dùng.
+[birth_registration_place_ward]: Phường/xã nơi đăng ký khai sinh của người dùng.
+[birth_registration_place_district]: Quận/huyện nơi đăng ký khai sinh của người dùng.
+[birth_registration_place_province]: Tỉnh/thành phố nơi đăng ký khai sinh của người dùng.
+[hometown]: Quê quán của người dùng.
+[permanent_address]: Địa chỉ thường trú của người dùng.
+[current_address]: Địa chỉ hiện tại của người dùng.
+[current_address_ward]: Phường/xã nơi ở hiện tại của người dùng.
+[current_address_district]: Quận/huyện nơi ở hiện tại của người dùng.
+[current_address_province]: Tỉnh/thành
+[occupation]: Nghề nghiệp của người dùng
 [education_level]: Trình độ học vấn của người dùng
 [phone]: Số điện thoại của người dùng
 [phone_home]: Số điện thoại bàn của người dùng
@@ -211,7 +241,16 @@ list_cccd_passport_tagnames = [
     "[nationality]",
     "[marital_status]",
     "[blood_type]",
-    "[birthplace]", #Nơi sinh
+    #Nơi sinh
+    "[birthplace]",
+    "[birthplace_ward]",
+    "[birthplace_district]",
+    "[birthplace_province]",
+    "[birth_place]",
+    "[birth_place_ward]",
+    "[birth_place_district]",
+    "[birth_place_province]",
+    #Nơi đăng ký khai sinh
     "[birth_registration_place]",
     "[birth_registration_place_ward]",
     "[birth_registration_place_district]",
@@ -306,22 +345,33 @@ còn nếu để trạng thái hôn nhân thì dùng trạng thái hôn nhân: [
 - Các mục thường xuất hiện: ["tình trạng hôn nhân", "trạng thái hôn nhân"],
 "[user1_blood_type]": Nhóm máu của người dùng.
 - Các mục thường xuất hiện: ["nhóm máu", "loại máu"],
+
+Liên quan đến nơi sinh, và nơi đăng ký khai sinh, có:
 "[user1_birth_registration_place]": Nơi đăng ký khai sinh của người dùng.
 - Các mục thường xuất hiện: ["nơi đăng ký khai sinh", "nơi làm giấy khai sinh"],
 "[user1_birth_registration_place_ward]": Phường/xã nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["phường/xã đăng ký khai sinh"],
+- Các mục thường xuất hiện: ["phường/xã đăng ký khai sinh", "nơi đăng ký khai sinh(phường/xã)"],
 "[user1_birth_registration_place_district]": Quận/huyện nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["quận/huyện đăng ký khai sinh"],
+- Các mục thường xuất hiện: ["quận/huyện đăng ký khai sinh", "nơi đăng ký khai sinh(quận/huyện)"],
 "[user1_birth_registration_place_province]": Tỉnh/thành phố nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["tỉnh/thành đăng ký khai sinh"],
-"[user1_birth_registration]": Nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["đăng ký khai sinh"],
-"[user1_birth_registration_ward]": Phường/xã nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["phường/xã nơi khai sinh"],
-"[user1_birth_registration_district]": Quận/huyện nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["quận/huyện nơi khai sinh"],
-"[user1_birth_registration_province]": Tỉnh/thành phố nơi đăng ký khai sinh của người dùng.
-- Các mục thường xuất hiện: ["tỉnh/thành nơi khai sinh"],
+- Các mục thường xuất hiện: ["tỉnh/thành đăng ký khai sinh", "nơi đăng ký khai sinh(tỉnh/thành phố)"],
+"[user1_birhtplace]": Nơi sinh của người dùng.
+- Các mục thường xuất hiện: ["nơi sinh"],
+"[user1_birthplace_ward]": Phường/xã nơi sinh của người dùng.
+- Các mục thường xuất hiện: ["phường/xã nơi sinh", "nơi sinh (phường/xã)"],
+"[user1_birthplace_district]": Quận/huyện nơi sinh của người dùng.
+- Các mục thường xuất hiện: ["quận/huyện nơi sinh", "nơi sinh (quận/huyện)"],
+"[user1_birthplace_province]": Tỉnh/thành phố nơi sinh của người dùng.
+- Các mục thường xuất hiện: ["tỉnh/thành nơi sinh", "nơi sinh (tỉnh/thành phố)"],
+
+Lưu ý sự khác biệt giữa nơi sinh, và nơi đăng ký khai sinh:
+- Nơi sinh là nơi mà người đó sinh ra, là địa điểm thực tế mà một người được sinh ra, thường là tên bệnh viện,....
+Ví dụ tên thực tế như Bệnh viện Từ Dũ, TP. Hồ Chí Minh, Việt Nam.
+Vậy nên nếu mục chỉ ghi là nơi sinh: ......... thì điền nơi sinh: [user1_birthplace]
+- Còn nơi đăng ký khai sinh quá trình chính thức ghi nhận sự ra đời của một cá nhân vào hệ thống quản lý hộ tịch của chính phủ.
+Là nơi chính quyền đăng ký khai sinh của bạn.
+Vậy nên nếu chỉ mục ghi nơi đăng ký khai sinh: ......... thì điền nơi đăng ký khai sinh: [user1_birth_registration_place], không điền [user1_birthplace].
+
 "[user1_hometown]": Quê quán của người dùng. Thường là giá trị trong giấy khai sinh.
 - Các mục thường xuất hiện: ["quê quán", "nguyên quán"],
 "[user1_permanent_address]": Là nơi đăng ký hộ khẩu thường trú, thường là nơi ở cố định của một người theo hồ sơ pháp lý. Nghĩa là Địa chỉ thường trú.
