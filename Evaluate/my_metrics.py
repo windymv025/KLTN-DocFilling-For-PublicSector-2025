@@ -4,7 +4,9 @@ from Utils.text_processing import Text_Processing
 import pandas as pd
 from collections import Counter
 import json
-from Config.config import Data_num, Output_num
+from Config.config import Data_num, Output_num, Type
+# Folde address
+root_folder = f"Temp\Data_{Data_num}\{Type}"
 
 def analyze_errors_type_1(error_list):
     """
@@ -40,6 +42,10 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     our_40_tagnames = Text_Processing().Summary_tagnames()
     # Check if the lengths are different
     if len(tagnames1) != len(tagnames2):
+        # print("Lengths are different: ", len(tagnames1), len(tagnames2))
+        # print(tagnames1)
+        # print(tagnames2)
+        # print(ducnam)
         metrics = {
             "completeness": 0,
             "A1-A1": 0,
@@ -59,21 +65,21 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         # if filename == "49_00_TK1-TS.txt":
             # print("debug3")
             # print(len(tagnames1), len(tagnames2))
-        return metrics  # Return 0% similarity if lengths are different
+        return metrics, metrics  # Return 0% similarity if lengths are different
     
     # Initialize counters
     A1_A1, A1_A2, A1_B, B_A1, B_B = 0, 0, 0, 0, 0
     error_A1_A2, error_A1_B, error_B_A1 = [], [], []
     error_A1_A2_detail, error_A1_B_detail, error_B_A1_detail = [], [], []
     count_label = 0  # To track valid tagnames in subset_A
-    copy_contextual_input_dir = f"Temp/Data_{Data_num}/Output{Output_num}/Copy_Contextual_Input/"+ filename + ".json"
+    copy_contextual_input_dir = f"{root_folder}/Output{Output_num}/Copy_Contextual_Input/"+ filename + ".json"
     # Read copy_contextual_input
     with open(copy_contextual_input_dir, "r", encoding="utf-8") as f:
         # print(copy_contextual_input_dir)
         copy_contextual_input = json.load(f)
     for index, (tag1, tag2) in enumerate(zip(tagnames1, tagnames2)):
         if copy_contextual_input[index][-1][0] != "[":
-            debug_contextual_output = " ".join(copy_contextual_input[index][:-1]) + " " + "Empty"
+            debug_contextual_output = " ".join(copy_contextual_input[index]) + " " + "Empty"
         else:
             debug_contextual_output = " ".join(copy_contextual_input[index][:-1]) + " " + copy_contextual_input[index][-1]
         # Normalize
@@ -88,6 +94,9 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         # Replace "dob_date" with "dob" exactly
         standardized_tag1 = re.sub(r"dob_date", "dob", standardized_tag1)
         standardized_tag2 = re.sub(r"dob_date", "dob", standardized_tag2)
+        # Replace "birth_place" with "birthplace" exactly
+        standardized_tag1 = re.sub(r"birth_place", "birthplace", standardized_tag1)
+        standardized_tag2 = re.sub(r"birth_place", "birthplace", standardized_tag2)
         # Replace "registration" with "birth_registration" exactly
         standardized_tag1 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag1)
         standardized_tag2 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag2)
@@ -182,7 +191,6 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     return metrics, metrics_detail
 
 
-
 def print_tagnames(tagnames):
     print("======Tagnames======")
     for index, tagname in enumerate(tagnames):
@@ -214,7 +222,7 @@ def similarity_two_forms(form1, form2, filename):
 
 
 def similarity_result_two_folders(folder1, folder2):
-    # print("come here? 1")
+    print("come here? 1")
     similarity_result_forms = []
     similarity_result_forms_detail = []
     form_names = []
@@ -223,7 +231,7 @@ def similarity_result_two_folders(folder1, folder2):
         if filename.endswith(".txt"):
             similarity_result_forms.append([])
             similarity_result_forms_detail.append([])
-            if (index+1)%1 == 0:
+            if (index)%5 == 0:
                 print("========= Index: ", index+1, "============", filename)
             # if filename == "49_00_TK1-TS.txt":
                 # print("debug")

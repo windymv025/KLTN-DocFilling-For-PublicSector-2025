@@ -171,7 +171,7 @@ class Text_Processing:
         """
         form = data_form
         # Bắt các vị trí text trước tagname + tagname
-        pattern = re.compile(r"(.*?)(\[[^\d].+?\])", re.DOTALL)
+        pattern = re.compile(r"(.*?)(\[[^\d\]].+?\])", re.DOTALL)
         matches = pattern.findall(form)
         # Collecting the sentences
         sentences = []
@@ -199,6 +199,20 @@ class Text_Processing:
                 return f"{context[i][0]}_{context[i][1]}_{context[i][-2]}_{context[i][-1]}_{len(context[i])}" #Đầu_KeD_KeC_Cuối_Length    
             else:
                 return f"{context[i][0]}_{context[i][1]}_{context[i][2]}_{context[i][-3]}_{context[i][-2]}_{context[i][-1]}_{len(context[i])}" #Đầu_KeD_KeKeD_KeKeC_KeC_Cuối_Length
+
+    def get_modifed_tagname(self, contextual, tagname):
+        if "user" in tagname:
+            v_tagname = tagname[7:-1]
+            # Check birthplace
+            if "birthplace" in v_tagname:
+                if "nơi sinh" in " ".join(contextual):
+                    return tagname
+                elif "khai sinh" in " ".join(contextual) or "đăng ký" in " ".join(contextual):
+                    new_tagname = re.sub("birthplace","birth_registration",tagname)
+                    return new_tagname
+            return tagname
+        else:
+            return tagname
 
     def get_tagnames_from_LLM_filled_form(
         self, contextual_llm, label_llm, contextual_input, label_input
@@ -231,7 +245,8 @@ class Text_Processing:
             name_contextual_input = self.get_hash_name_from_context_at_index(contextual_input,index_filled_input)
             name_contextual_llm = self.get_hash_name_from_context_at_index(contextual_llm,index_llm)
             if name_contextual_input == name_contextual_llm:
-                label_input[index_filled_input] = label_llm[index_llm]
+                # label_input[index_filled_input] = label_llm[index_llm]
+                label_input[index_filled_input] = self.get_modifed_tagname(contextual_llm[index_llm], label_llm[index_llm])
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             else: # Thừa hoặc thiếu tagname chỗ này
                 temp_count = 1
@@ -285,7 +300,8 @@ class Text_Processing:
                     continue
                 # else:
                     # print(f"Filling {label_llm[index_llm]} to {contextual_input[index_filled_input]}")
-                label_input[index_filled_input] = label_llm[index_llm]
+                # label_input[index_filled_input] = label_llm[index_llm]
+                label_input[index_filled_input] = self.get_modifed_tagname(contextual_llm[index_llm], label_llm[index_llm])
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             # print(f"Index {index_filled_input} with {len(contextual_input)} context {contextual_input[index_filled_input]} t {label_input[index_filled_input]}")
             # print(f"Index {index_llm} with {len(contextual_llm)} context {contextual_llm[index_llm]} t {label_llm[index_llm]}")

@@ -52,9 +52,11 @@ def get_all_tagnames():
     tagnames = {}
     for list_tagname in list_tagnames:
         split_tagname = list_tagname.split("\n")[1:-1]
+        # print()
         # print(split_tagname)
         # print()
         for tagname in split_tagname:
+            # print(tagname.split(":")[0])
             key, value = tagname.split(":")[0], tagname.split(":")[1]
             if key not in tagnames:
                 tagnames[key] = value

@@ -4,5 +4,9 @@
 - 10: Loại 2 sinh bằng LLM.
 - 20: Data real. 
 '''
-Data_num = 0
-Output_num = 1
+output_label_input_num = 2
+Data_num = 20
+Output_num = output_label_input_num
+Label_Input_num = output_label_input_num
+Type = "Train"
+# Type = "Test"

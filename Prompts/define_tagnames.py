@@ -2407,6 +2407,190 @@ tiền công khai thuế trực tiếp với cơ quan thuế)
 tagname_Nam_ver1_prompt = """
 Bạn có nhiệm vụ điền các tagnames vào các biểu mẫu theo định dạng userX_tagname.
 
+**1. Nguyên tắc chung**
+- Giữ nguyên cấu trúc biểu mẫu: Không thay đổi nội dung gốc, chỉ điền tagnames vào các vị trí có dấu ...........
+- Điền tagnames theo danh sách có sẵn:
+- - Tôi sẽ cung cấp danh sách tagnames, ý nghĩa của chúng và các mục mà tagnames thường xuất hiện.
+- - Các tagnames đại diện cho một đối tượng duy nhất (VD: user1_ là người điền đơn, user2_ là người được khai báo, user3_, user4_ là cha/mẹ).
+- Không tự ý tạo tagnames mới: Chỉ sử dụng các tagnames được cung cấp trong danh sách.
+
+**2. Quy tắc điền tagnames**:
+- Trường có tagname phù hợp: Điền đúng tagname vào vị trí tương ứng.
+- Trường không có tagname trong danh sách: Giữ nguyên .........., không điền gì vào.
+
+- Các mục đặc biệt:
+- - Tên cha mẹ: Không sử dụng user1_parent_name, mà phải tách riêng cha (user3_) và mẹ (user4_). 
+- - Thông tin liên quan đến nước ngoài (quốc tịch, nghề nghiệp, địa chỉ...): Nếu là thông tin ngoài Việt Nam, để trống ...........
+- - Thông tin chỉ áp dụng cho hiện tại: Không điền thông tin về quá khứ hoặc tương lai (ví dụ: nơi cư trú cuối cùng, nơi làm việc cũ).
+- - Không sử dụng tagname place, day, month, year.
+- - Không thay đổi vào các vị trí đã có sẵn tagname, ví dụ ngày [Empty] tháng [Empty] năm [Empty], thì không sửa.
+- - Với mục, số CCCD/hộ chiếu: .........., thì mặc định điền số CCCD - tức định danh, tức id_number. Ví dụ Số CCCD/passport: [user1_id_number].
+
+**3. Định dạng đầu vào và đầu ra**:
+Input: 
+- Danh sách tagnames (có ý nghĩa và các mục mà tagnames thường được sử dụng)
+{tagname}
+- Biểu mẫu gốc, với vị trí cần điền là các dấu ..........
+Output:
+- Biểu mẫu đã điền tagnames đúng theo quy tắc.
+
+
+## Ví dụ:
+Input:
+```
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): ..........
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): ..........
+3. Ngày, tháng, năm sinh: ........../........../..........; 4. Giới tính (Nam/nữ): ..........
+5. Số CMND: ..........  CCCD: ..........
+6. Dân tộc: ..........; 7. Tôn giáo: .......... 8. Quốc tịch: ..........
+9. Tình trạng hôn nhân: .......... 10. Nhóm máu (nếu có): ..........
+11. Nơi đăng ký khai sinh: ..........
+12. Quê quán: ..........
+13. Nơi thường trú: ..........
+14. Nơi ở hiện tại: ..........
+15. Nghề nghiệp: .......... 16. Trình độ học vấn: ..........
+.........., ngày ..........tháng..........năm..........
+```
+Output:
+```
+TỜ KHAI CĂN CƯỚC CÔNG DÂN
+1. Họ, chữ đệm và tên(1): [user1_full_name]
+2. Họ, chữ đệm và tên gọi khác (nếu có)(1): [user1_alias_name]
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]; 4. Giới tính (Nam/nữ): [user1_gender]
+5. Số CMND: [user1_id_number]  CCCD: [user1_id_number]
+6. Dân tộc: [user1_ethnicity]; 7. Tôn giáo: [user1_religion] 8. Quốc tịch: [user1_nationality]
+9. Tình trạng hôn nhân: [user1_marital_status] 10. Nhóm máu (nếu có): [user1_blood_type]
+11. Nơi đăng ký khai sinh: [user1_birth_registration_place]
+12. Quê quán: [user1_hometown]
+13. Nơi thường trú: [user1_permanent_address]
+14. Nơi ở hiện tại: [user1_current_address]
+15. Nghề nghiệp: [user1_occupation] 16. Trình độ học vấn: ..........
+.........., ngày .......... tháng .......... năm ..........
+```
+
+## Ví dụ:
+Input:
+```
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ VIỆC THAY ĐỔI, CẢI CHÍNH,
+BỔ SUNG THÔNG TIN HỘ TỊCH, XÁC ĐỊNH LẠI DÂN TỘC
+Kính gửi: ..........
+Họ, chữ đệm, tên người yêu cầu: ..........
+Nơi cư trú: ..........
+Giấy tờ tùy thân: ..........
+Cấp ngày: ..........
+Quan hệ với người được thay đổi, cải chính, xác định lại dân tộc, bổ sung thông tin hộ tịch:..........
+Đề nghị cơ quan đăng ký việc ..........cho người có tên dưới đây:
+Họ, chữ đệm, tên: ..........
+Ngày, tháng, năm sinh: ..........
+Giới tính:..........Dân tộc:..........Quốc tịch: ..........
+Nơi cư trú:  ..........
+Giấy tờ tùy thân: ..........
+Đã đăng ký  ..........tại.......... ngày.......... tháng .......... năm .......... số: .......... Quyển số:..........
+Nội dung: ..........
+Lý do:..........
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình.
+Đề nghị cấp bản sao: Có , Không ; số lượng:..........bản
+Làm tại: .......... , ngày ..........  tháng ..........  năm ..........
+Người yêu cầu
+(Ký, ghi rõ họ, chữ đệm, tên)
+
+Output:
+```
+CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+TỜ KHAI ĐĂNG KÝ VIỆC THAY ĐỔI, CẢI CHÍNH,
+BỔ SUNG THÔNG TIN HỘ TỊCH, XÁC ĐỊNH LẠI DÂN TỘC
+Kính gửi: ..........
+Họ, chữ đệm, tên người yêu cầu: [user1_full_name]
+Nơi cư trú: [user1_current_address]
+Giấy tờ tùy thân: [user1_id_number]
+Cấp ngày: [user1_id_issue_date]
+Quan hệ với người được thay đổi, cải chính, xác định lại dân tộc, bổ sung thông tin hộ tịch: ..........
+Đề nghị cơ quan đăng ký việc .......... cho người có tên dưới đây:
+Họ, chữ đệm, tên: [user2_full_name]
+Ngày, tháng, năm sinh: [user2_dob]
+Giới tính: [user2_gender] Dân tộc: [user2_ethnicity] Quốc tịch: [user2_nationality]
+Nơi cư trú:  [user2_current_address]
+Giấy tờ tùy thân: [user2_id_number]
+Đã đăng ký  .......... tại .......... ngày .......... tháng .......... năm .......... số: [user2_registration_number] Quyển số: [user2_registration_volume]
+Nội dung: ..........
+Lý do: ..........
+Tôi cam đoan những nội dung khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình.
+Đề nghị cấp bản sao: Có , Không ; số lượng: [user1_copy_request] bản
+Làm tại: .......... , ngày ..........  tháng ..........  năm ..........
+Người yêu cầu
+(Ký, ghi rõ họ, chữ đệm, tên) 
+
+```
+
+## Ví dụ:
+Input:
+```
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1):..........
+1. Họ, chữ đệm và tên Việt Nam:..........
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	..........
+3. Ngày, tháng, năm sinh:........../........../ ..........     4. Giới tính:..........
+5. Dân tộc:..........     6. Tôn giáo:..........
+7. Số định danh cá nhân/CMND: ..........									
+8. Số điện thoại (nếu có):..........	 9. E-mail (nếu có):..........
+10. Quốc tịch nước ngoài (nếu có):..........
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	.......... Ngày cấp: ........../........../..........
+Cơ quan cấp:..........	 Có giá trị đến ngày:........../........../..........
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam:..........
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con:..........
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam:..........
+15. Nơi ở hiện tại ở Việt Nam:..........
+16. Nội dung đề nghị (2):..........
+17. Họ và tên chủ hộ:..........18. Quan hệ với chủ hộ:..........
+19. Số định danh cá nhân/ CMND của chủ hộ:..........
+20. Tên cha mẹ: ..........
+```									
+Output:
+```
+TỜ KHAI THAY ĐỔI THÔNG TIN CƯ TRÚ
+(Dùng cho công dân Việt Nam định cư ở nước ngoài 
+không có hộ chiếu Việt Nam còn giá trị sử dụng) 
+
+Kính gửi (1): ..........
+1. Họ, chữ đệm và tên Việt Nam: [user1_full_name]
+2. Họ, chữ đệm và tên trong hộ chiếu/giấy tờ do nước ngoài cấp:	..........
+3. Ngày, tháng, năm sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]     4. Giới tính: [user1_gender]
+5. Dân tộc: [user1_ethnicity]     6. Tôn giáo: [user1_religion]
+7. Số định danh cá nhân/CMND: [user1_id_number]									
+8. Số điện thoại (nếu có): ..........	 9. E-mail (nếu có): ..........
+10. Quốc tịch nước ngoài (nếu có): ..........
+11. Số hộ chiếu/ Giấy tờ đi lại quốc tế do nước ngoài cấp/ Giấy tờ do cơ quan có thẩm quyền Việt Nam cấp:
+Số:	[user1_passport_number] Ngày cấp: [user1_passport_issue_day]/[user1_passport_issue_month]/[user1_passport_issue_year]
+Cơ quan cấp: [user1_passport_issue_place]	 Có giá trị đến ngày: [user1_passport_expiry_day]/[user1_passport_expiry_month]/[user1_passport_expiry_year]
+12. Nghề nghiệp, nơi làm việc ở nước ngoài trước khi nhập cảnh Việt Nam: ..........
+13. Họ, chữ đệm và tên, năm sinh, quốc tịch, nghề nghiệp, nơi làm việc, chỗ ở hiện nay của cha, mẹ, vợ, chồng, con: [user1_family_info]
+14. Nơi cư trú ở nước ngoài trước khi nhập cảnh Việt Nam: ..........
+15. Nơi ở hiện tại ở Việt Nam: [user1_current_address]
+16. Nội dung đề nghị (2): ..........
+17. Họ và tên chủ hộ: [user2_full_name] 18. Quan hệ với chủ hộ: ..........
+19. Số định danh cá nhân/ CMND của chủ hộ: [user2_id_number]	
+20. Tên cha mẹ: [user3_full_name]
+```
+
+## Ví dụ:
+Input:
+```
+{form}
+```
+Ouput: 
+"""
+
+tagname_Nam_ver1_prompt_backup = """
+Bạn có nhiệm vụ điền các tagnames vào các biểu mẫu theo định dạng userX_tagname.
+
 **Hướng dẫn chi tiết:**
 1. Giữ nguyên cấu trúc form: Không thay đổi nội dung gốc, chỉ điền tagnames vào các vị trí có dấu ..........
 
@@ -2420,6 +2604,14 @@ Bạn có nhiệm vụ điền các tagnames vào các biểu mẫu theo định
 4. Lưu ý:
 - Ví dụ mục tên cha mẹ, không sử dụng user1_parent_name, mà thay vào đó, cha mẹ sẽ là đối tượng riêng biệt (user3_, user4_), tương tự với các mục khác.
 - Các mục như "Kính gửi" sẽ để trống ......, không tự động điền [receiver].
+- Tất cả giá trị tagnames trên đều là giá trị của người dùng tại Việt Nam, nếu thông tin yêu cầu liên quan nước ngoài,
+ví dụ quốc tịch nước ngoài, tên nước ngoài, nghề nghiệp tại nước khác Việt Nam, hãy để trống.
+- Ngoài ra các giá trị đều mang nghĩa hiện tại, không điền thông tin về quá khứ hoặc tương lai, 
+ví dụ nơi cư trú cuối cùng, nơi làm việc cũ, thì không điền.
+Ví dụ:
+Số cccd/hộ chiếu: .........., thì mặc định điền số CCCD - tức định danh, tức id_number. Ví dụ Số CCCD/passport: [user1_id_number].
+Nếu mục là cccd/hộ chiếu cũ --> vì mang nghĩa "cũ", cho nên ta sẽ để trống vị trí này, tức không điền vào.
+Tương tự, nơi cư trú cuối cùng --> không mang nghĩa hiện tại --> không điền.
 
 Input: 
 - Danh sách tagnames (có ý nghĩa và các mục mà tagnames thường được sử dụng)
@@ -2578,6 +2770,7 @@ Input:
 ```
 Ouput: 
 """
+
 
 temp = """
 - Ngoại lệ: Các mục thể hiện địa điểm, ngày tháng năm làm form này sẽ dùng các tagnames sau:
