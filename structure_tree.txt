@@ -4,12 +4,14 @@ project/
 │   ├── identify_relationship.py
 │   ├── redefine_tagname.py
 │   ├── identify_form_types.py
+│   ├── create_forms.py: Prompt --> Gemini (list_tagnames, random_forms_text) --> Form with label
 │
 ├── Tagnames/
 │   ├── define_tagnames.py
 │   ├── identify_relationship.py
 │   ├── redefine_tagname.py
 │   ├── identify_form_types.py
+│   ├── get_tagnames.py: get {#tagname: meaning} specific type, or, all.
 │
 ├── Evaluate/
 │   ├── analyze_tagnames.py

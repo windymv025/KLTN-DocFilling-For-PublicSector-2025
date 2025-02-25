@@ -11,8 +11,8 @@ Src/__pycache__
 TEST/
 GenerateData/
 Presentation/
-Forms/
 Results/
+Temp/
 
 #Temp file
 chainlit.md
@@ -30,3 +30,4 @@ new_requirements.txt
 *.json
 *.txt
 *.ipynb
+.ruff_cache/

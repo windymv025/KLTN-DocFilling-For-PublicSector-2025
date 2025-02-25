@@ -1,4 +1,4 @@
-residence_identification_tagnames = """ 
+residence_identification_tagnames = """
 [full_name]: Họ và tên của người dùng.
 [alias_name]: Tên gọi khác của người dùng.
 [dob_day]: Ngày sinh của người dùng.
@@ -72,7 +72,7 @@ study_tagnames = """
 [class]: Tên lớp hiện tại của người dùng.
 [school]: Tên trường của người dùng.
 [school_principal]: Hiệu trưởng của trường
-[course]: Khóa học của người dùng. 
+[course]: Khóa học của người dùng.
 [faculty]: Khoa của người dùng.
 [student_id_number]: Mã số sinh viên của người dùng tại trường học.
 [education_level]: Trình độ học vấn của người dùng.
@@ -98,7 +98,7 @@ study_tagnames = """
 [decision_issuer]: Cá nhân hoặc tổ chức đã ban hành quyết định liên quan đến người dùng
 [request_content]: Nội dung hoặc yêu cầu cụ thể của người dùng trong biểu mẫu. Có thể là chi tiết về lý do gửi biểu mẫu, chẳng hạn như yêu cầu cấp thẻ căn cước mới, thay đổi thông tin cá nhân, v.v.
 [reason]: Lý do do người dùng cung cấp để điền vào biểu mẫu.
-[suggestion]: Kiến nghị, đề xuất đối với cơ quan quản lý trực tiếp, cơ quan	
+[suggestion]: Kiến nghị, đề xuất đối với cơ quan quản lý trực tiếp, cơ quan
 """
 
 health_and_medical_tagnames = """
@@ -212,12 +212,12 @@ job_tagnames = """
 # Những thông tin không lưu được
 remaining_tag_names = """
 [receiver]: Cá nhân hoặc tổ chức nhận hoặc xử lý biểu mẫu được người dùng điền.
-[document_number]: Số của tài liệu hoặc hồ sơ, thường để tham chiếu hoặc lưu trữ.
+[place]: Nơi mà biểu mẫu được người dùng điền.
 [day]: Ngày khi biểu mẫu được người dùng điền.
 [month]: Tháng khi biểu mẫu được người dùng điền.
 [year]: Năm khi biểu mẫu được người dùng điền.
-[place]: Nơi mà biểu mẫu được người dùng điền.
 """
+
 
 list_cccd_passport_tagnames = [
     "[full_name]",
@@ -241,11 +241,25 @@ list_cccd_passport_tagnames = [
     "[nationality]",
     "[marital_status]",
     "[blood_type]",
-    "[birth_registration_place]",
+    #Nơi sinh
     "[birthplace]",
+    "[birthplace_ward]",
+    "[birthplace_district]",
+    "[birthplace_province]",
+    "[birth_place]",
+    "[birth_place_ward]",
+    "[birth_place_district]",
+    "[birth_place_province]",
+    #Nơi đăng ký khai sinh
+    "[birth_registration_place]",
     "[birth_registration_place_ward]",
     "[birth_registration_place_district]",
     "[birth_registration_place_province]",
+    # Tạm thời cho registration place là trùng với trên
+    "[birth_registration]",
+    "[birth_registration_ward]",
+    "[birth_registration_district]",
+    "[birth_registration_province]",
     "[hometown]",
     "[permanent_address]",
     "[current_address]",
@@ -261,4 +275,309 @@ list_cccd_passport_tagnames = [
     "[passport_issue_place]",
 ]
 
-list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
+# list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
+list_general_tagnames = [] # Now empty
+
+tagname_Nam_ver1 = '''
+Với mục liên quan họ tên, có các trường hợp sau:
+1. Họ và tên đầy đủ → [user1_full_name]
+"[user1_full_name]": Tagname dùng để điền họ và tên đầy đủ của người dùng, bao gồm cả họ, chữ đệm và tên.
+Các mục thường xuất hiện: ["họ và tên", "tên đầy đủ", "tôi tên là"].
+** Lưu ý quan trọng:
+
+Không sử dụng các tagnames khác cho cha mẹ/người đại diện
+
+Nếu biểu mẫu yêu cầu nhập họ và tên của cha, mẹ, người giám hộ, người đại diện, thì mỗi người sẽ được xem là một user mới với tagname [userX_full_name].
+Không dùng các tagnames như [parent_name], [guardian_name], [representative_name].
+Ví dụ:
+"Họ và tên cha: [user3_full_name]"
+"Họ và tên mẹ: [user4_full_name]"
+"Họ và tên người đại diện: [user5_full_name]"
+Dùng [user1_full_name] khi biểu mẫu yêu cầu nhập cả họ và tên trong một ô duy nhất
+
+Ví dụ điền:
+"Họ và tên: [user1_full_name]"
+"Tôi tên là: [user1_full_name]"
+2. Khi họ, chữ đệm và tên tách riêng → [user1_last_name], [user1_middle_name], [user1_middle_and_last_name], [user1_first_name]
+** Chọn tagname phù hợp dựa trên cách trình bày trong biểu mẫu:
+
+Nếu biểu mẫu tách riêng họ và chữ đệm + tên:
+
+Ví dụ: "Họ: .........., Chữ đệm và tên: .........."
+Điền: "Họ: [user1_last_name], Chữ đệm và tên: [user1_middle_and_last_name]"
+Nếu biểu mẫu tách riêng từng phần:
+
+Ví dụ: "Họ: .........., Chữ đệm: .........., Tên: .........."
+Điền:
+"Họ: [user1_last_name]"
+"Chữ đệm: [user1_middle_name]"
+"Tên: [user1_first_name]"
+** Lưu ý:
+- Không sử dụng [user1_first_name] khi biểu mẫu yêu cầu nhập cả chữ đệm và tên.
+- Dùng [user1_middle_and_last_name] khi chữ đệm và tên được gộp chung một ô.
+
+"[user1_alias_name]": Tên gọi khác của người dùng.
+- Các mục thường xuất hiện: ["tên gọi khác", "biệt danh", "tên thường gọi", "tên khác (nếu có)"],
+"[user1_gender]": Giới tính của người dùng.
+- Các mục thường xuất hiện: ["giới tính", "nam hay nữ"],
+
+
+Với mục ngày sinh, hay ngày tháng năm sinh, có các trường hợp sau:
+1. Ngày sinh đầy đủ → [user1_dob]
+"[user1_dob]": Tagname dùng để điền ngày sinh đầy đủ (ngày, tháng, năm) khi biểu mẫu yêu cầu nhập tất cả thông tin trong một ô duy nhất.
+Các mục thường xuất hiện: ["ngày sinh", "ngày tháng năm sinh", "sinh ngày", "ngày sinh đầy đủ", "sinh ngày tháng năm"].
+Cách điền:
+
+Nếu biểu mẫu chỉ có một ô trống để điền toàn bộ ngày sinh mà không tách riêng ngày, tháng, năm, dùng [user1_dob].
+Ví dụ:
+"Ngày sinh: .........." → "Ngày sinh: [user1_dob]"
+"Sinh ngày tháng năm: .........." → "Sinh ngày tháng năm: [user1_dob]"
+2. Khi ngày, tháng, năm sinh tách riêng → [user1_dob_day], [user1_dob_month], [user1_dob_year]
+** Chọn tagname phù hợp dựa trên cách trình bày trong biểu mẫu:
+
+Nếu biểu mẫu yêu cầu nhập ngày, tháng, năm riêng biệt, dùng các tagnames tương ứng:
+
+Ví dụ:
+"Ngày sinh ngày .......... tháng .......... năm .........."
+Điền: "Ngày sinh ngày [user1_dob_day] tháng [user1_dob_month] năm [user1_dob_year]"
+Nếu biểu mẫu sử dụng định dạng số (DD/MM/YYYY hoặc DD-MM-YYYY):
+
+Ví dụ:
+"Ngày sinh: ........../........../.........."
+Điền: "Ngày sinh: [user1_dob_day]/[user1_dob_month]/[user1_dob_year]"
+3. Ngày sinh viết bằng chữ → [user1_dob_text]
+"[user1_dob_text]": Dùng khi biểu mẫu yêu cầu nhập ngày sinh dưới dạng chữ, thay vì số.
+Các mục thường xuất hiện: ["ngày sinh viết bằng chữ", "ngày tháng năm sinh viết bằng chữ"].
+Lưu ý:
+
+Chỉ sử dụng [user1_dob_text] nếu biểu mẫu yêu cầu viết bằng chữ.
+Nếu không có yêu cầu đặc biệt, sử dụng [user1_dob] hoặc các tagnames riêng biệt như [user1_dob_day], [user1_dob_month], [user1_dob_year].
+4. Khi chỉ yêu cầu năm sinh → [user1_dob_year]
+"[user1_dob_year]": Tagname dành riêng để điền năm sinh khi biểu mẫu không yêu cầu đầy đủ ngày, tháng.
+Các mục thường xuất hiện: ["năm sinh"].
+Ví dụ:
+"Năm sinh: .........."
+Điền: "Năm sinh: [user1_dob_year]"
+
+Với mục số định danh, căn cước, chứng minh nhân dân:
+1. Số định danh cá nhân (CCCD/CMND/Số Định Danh) → [user1_id_number]
+"[user1_id_number]": Tagname dùng để điền số định danh cá nhân, bao gồm:
+Căn cước công dân (CCCD)
+Chứng minh nhân dân (CMND)
+Số định danh cá nhân
+** Lưu ý quan trọng:
+
+Dù biểu mẫu yêu cầu nhập "Số CCCD", "Số CMND" hay "Số định danh cá nhân", tất cả đều sử dụng [user1_id_number].
+Các mục thường xuất hiện: ["số định danh", "giấy tờ tùy thân", "số CCCD", "số căn cước công dân", "số chứng minh nhân dân"].
+2. Ngày cấp CCCD/CMND → [user1_id_issue_date] hoặc [user1_id_issue_day], [user1_id_issue_month], [user1_id_issue_year]
+** Chọn tagname phù hợp dựa trên cách trình bày trong biểu mẫu:
+
+Nếu biểu mẫu chỉ có một ô trống cho ngày cấp:
+
+Ví dụ: "Ngày cấp: .........."
+Điền [user1_id_issue_date] (định dạng đầy đủ ngày/tháng/năm).
+Ví dụ điền: Ngày cấp: [user1_id_issue_date]
+Nếu biểu mẫu tách riêng từng mục ngày - tháng - năm:
+
+Ví dụ: "Ngày cấp: ngày .......... tháng .......... năm .........."
+Điền [user1_id_issue_day], [user1_id_issue_month], [user1_id_issue_year].
+Ví dụ điền: Ngày cấp: ngày [user1_id_issue_day] tháng [user1_id_issue_month] năm [user1_id_issue_year]
+Nếu biểu mẫu sử dụng định dạng ngày/tháng/năm:
+
+Ví dụ: "Ngày cấp: ........../........../.........."
+Điền [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year].
+Ví dụ điền: Ngày cấp: [user1_id_issue_day]/[user1_id_issue_month]/[user1_id_issue_year]
+3. Nơi cấp CCCD/CMND → [user1_id_issue_place]
+"[user1_id_issue_place]": Tagname dùng để điền nơi cấp số định danh cá nhân, bao gồm:
+Nơi cấp CCCD
+Nơi cấp CMND
+Nơi cấp số định danh cá nhân
+Các mục thường xuất hiện: ["nơi cấp CCCD", "nơi cấp căn cước", "nơi cấp CMND", "nơi cấp số định danh"].
+** Lưu ý:
+
+Không sử dụng chung với nơi cấp hộ chiếu.
+4. Cách điền thông tin khi có cả CCCD và CMND
+** Nguyên tắc: Dùng chung tagname [user1_id_number] cho cả CCCD và CMND.
+Ví dụ trong biểu mẫu yêu cầu nhập cả CCCD và CMND:
+Số CCCD: [user1_id_number], ngày cấp: [user1_id_issue_date], nơi cấp: [user1_id_issue_place]
+Số CMND: [user1_id_number], ngày cấp: [user1_id_issue_date], nơi cấp: [user1_id_issue_place]
+
+"[user1_education_level]": Trình độ học vấn của người dùng.
+- Các mục thường xuất hiện: ["trình độ học vấn", "bằng cấp"],
+"[user1_ethnicity]": Dân tộc của người dùng.
+- Các mục thường xuất hiện: ["dân tộc", "sắc tộc"],
+"[user1_religion]": Tôn giáo của người dùng.
+- Các mục thường xuất hiện: ["tôn giáo"],
+"[user1_nationality]": Quốc tịch của người dùng. Không dùng tagname này cho mục Quốc tịch nước ngoài.
+- Các mục thường xuất hiện: ["quốc tịch"],
+"[user1_marital_status]":  Tình trạng hôn nhân của người dùng. 
+Lưu ý nếu input để tình trạng hôn nhân thì dùng tình trạng hôn nhân: [user1_marital_status], 
+còn nếu để trạng thái hôn nhân thì dùng trạng thái hôn nhân: [user1_marital_status] (không đổi input)
+- Các mục thường xuất hiện: ["tình trạng hôn nhân", "trạng thái hôn nhân"],
+"[user1_blood_type]": Nhóm máu của người dùng.
+- Các mục thường xuất hiện: ["nhóm máu", "loại máu"],
+
+Liên quan đến nơi sinh và nơi đăng ký khai sinh, có các tagnames sau:
+1. Nơi đăng ký khai sinh (Birth Registration Place)
+Nơi mà chính quyền thực hiện đăng ký khai sinh của người dùng. Không nhất thiết phải trùng với nơi sinh thực tế.
+
+"[user1_birth_registration_place]": Nơi đăng ký khai sinh của người dùng.
+Các mục thường xuất hiện: ["nơi đăng ký khai sinh", "nơi làm giấy khai sinh", "nơi khai sinh"].
+"[user1_birth_registration_place_ward]": Phường/xã nơi đăng ký khai sinh.
+Các mục thường xuất hiện: ["phường/xã đăng ký khai sinh", "nơi đăng ký khai sinh (phường/xã)"].
+"[user1_birth_registration_place_district]": Quận/huyện nơi đăng ký khai sinh.
+Các mục thường xuất hiện: ["quận/huyện đăng ký khai sinh", "nơi đăng ký khai sinh (quận/huyện)"].
+"[user1_birth_registration_place_province]": Tỉnh/thành phố nơi đăng ký khai sinh.
+Các mục thường xuất hiện: ["tỉnh/thành đăng ký khai sinh", "nơi đăng ký khai sinh (tỉnh/thành phố)"].
+
+2. Nơi sinh (Birthplace)
+Địa điểm thực tế mà người dùng sinh ra, có thể là bệnh viện, nhà riêng, hoặc một địa điểm cụ thể.
+
+"[user1_birthplace]": Nơi sinh của người dùng.
+Các mục thường xuất hiện: ["nơi sinh"].
+Ví dụ: "Bệnh viện Từ Dũ, TP. Hồ Chí Minh, Việt Nam".
+"[user1_birthplace_ward]": Phường/xã nơi sinh.
+Các mục thường xuất hiện: ["phường/xã nơi sinh", "nơi sinh (phường/xã)"].
+"[user1_birthplace_district]": Quận/huyện nơi sinh.
+Các mục thường xuất hiện: ["quận/huyện nơi sinh", "nơi sinh (quận/huyện)"].
+"[user1_birthplace_province]": Tỉnh/thành phố nơi sinh.
+Các mục thường xuất hiện: ["tỉnh/thành nơi sinh", "nơi sinh (tỉnh/thành phố)"].
+Lưu ý quan trọng về sự khác biệt giữa "nơi sinh" và "nơi đăng ký khai sinh"
+Nơi sinh là địa điểm thực tế mà một người được sinh ra. Nếu chỉ mục ghi:
+
+"Nơi sinh: .........." → Điền [user1_birthplace].
+Nếu có phân cấp (phường/xã, quận/huyện, tỉnh/thành phố), điền tagnames tương ứng như [user1_birthplace_ward], [user1_birthplace_district], [user1_birthplace_province].
+Nơi đăng ký khai sinh là nơi cơ quan chính quyền thực hiện đăng ký khai sinh, có thể khác với nơi sinh. Nếu chỉ mục ghi:
+"Nơi đăng ký khai sinh: .........." hoặc "Nơi khai sinh: .........." → Điền [user1_birth_registration_place].
+Nếu có phân cấp (phường/xã, quận/huyện, tỉnh/thành phố), điền tagnames tương ứng như [user1_birth_registration_place_ward], [user1_birth_registration_place_district], [user1_birth_registration_place_province].
+
+Liên quan quê quán, đại chỉ thường trú, địa chỉ tạm trú (cư trú):
+1. Quê quán → [user1_hometown]
+"[user1_hometown]": Là quê gốc của người dùng, thường ghi trong giấy khai sinh.
+Các mục thường xuất hiện: ["quê quán", "nguyên quán"].
+Ví dụ:
+
+"Quê quán: Huyện Củ Chi, TP. Hồ Chí Minh"
+Điền: "Quê quán: [user1_hometown]"
+** Lưu ý:
+
+Quê quán thường không thay đổi theo thời gian.
+Là quê của bố/mẹ hoặc nơi sinh ra của người đó.
+2. Địa chỉ thường trú → [user1_permanent_address]
+"[user1_permanent_address]": Địa chỉ hộ khẩu thường trú, tức là nơi ở cố định theo hồ sơ pháp lý.
+Các mục thường xuất hiện: ["địa chỉ thường trú", "hộ khẩu thường trú"].
+Ví dụ:
+
+"Địa chỉ thường trú: 123 Đường Lê Lợi, Quận 1, TP. Hồ Chí Minh"
+Điền: "Địa chỉ thường trú: [user1_permanent_address]"
+** Lưu ý:
+
+Địa chỉ thường trú có thể thay đổi nếu người đó chuyển hộ khẩu.
+Nếu có từ khóa như "thường trú", "hộ khẩu", dùng [user1_permanent_address].
+3. Địa chỉ hiện tại → [user1_current_address]
+"[user1_current_address]": Nơi đang ở hiện tại, có thể khác với địa chỉ thường trú.
+Các mục thường xuất hiện: ["địa chỉ hiện tại", "chỗ ở hiện tại", "nơi cư trú"].
+Ví dụ:
+
+"Địa chỉ hiện tại: 456 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh"
+Điền: "Địa chỉ hiện tại: [user1_current_address]"
+** Lưu ý:
+
+Nếu có từ khóa như "tạm trú", "nơi ở hiện tại", "nơi cư trú", dùng [user1_current_address].
+Không dùng [user1_temporary_address], chỉ dùng [user1_current_address].
+4. Phân tách địa chỉ hiện tại (ward, district, province)
+📌 Xã/Phường → [user1_current_address_ward]
+"[user1_current_address_ward]": Xã/phường của địa chỉ hiện tại.
+Các mục thường xuất hiện: ["phường/xã nơi ở"].
+Ví dụ:
+"Phường/Xã nơi ở: Phường Bến Nghé"
+Điền: "Phường/Xã nơi ở: [user1_current_address_ward]"
+📌 Quận/Huyện → [user1_current_address_district]
+"[user1_current_address_district]": Quận/huyện của địa chỉ hiện tại.
+Các mục thường xuất hiện: ["quận/huyện nơi ở"].
+Ví dụ:
+"Quận/Huyện nơi ở: Quận 1"
+Điền: "Quận/Huyện nơi ở: [user1_current_address_district]"
+📌 Tỉnh/Thành phố → [user1_current_address_province]
+"[user1_current_address_province]": Tỉnh/thành phố của địa chỉ hiện tại.
+Các mục thường xuất hiện: ["tỉnh/thành nơi ở"].
+Ví dụ:
+"Tỉnh/Thành phố nơi ở: TP. Hồ Chí Minh"
+Điền: "Tỉnh/Thành phố nơi ở: [user1_current_address_province]"
+📢 Tóm tắt cách phân biệt hometown, permanent_address, current_address
+Loại địa chỉ	Ý nghĩa	Có thể thay đổi không?	Từ khóa nhận diện
+hometown	Quê gốc (quê cha/mẹ hoặc nơi sinh)	❌ Không đổi	"quê quán", "nguyên quán"
+permanent_address	Địa chỉ thường trú (hộ khẩu)	✅ Có thể đổi	"địa chỉ thường trú", "hộ khẩu thường trú"
+current_address	Địa chỉ hiện tại (nơi đang ở)	✅ Có thể đổi	"địa chỉ hiện tại", "chỗ ở hiện tại", "nơi cư trú"
+
+Liên quan nghề nghiệp, trạng thái hiện tại:
+1. Nghề nghiệp → [user1_occupation]
+"[user1_occupation]": Nghề nghiệp hiện tại của người dùng, mô tả công việc chuyên môn mà họ đang làm.
+Các mục thường xuất hiện: ["nghề nghiệp", "công việc", "công việc hiện tại"].
+Ví dụ:
+✅ "Nghề nghiệp: Kỹ sư" → Điền: "Nghề nghiệp: [user1_occupation]"
+✅ "Công việc hiện tại: Giáo viên" → Điền: "Công việc hiện tại: [user1_occupation]"
+
+💡 Lưu ý:
+
+Không sử dụng [user1_occupation] nếu:
+Câu chỉ nói về nơi làm việc mà không nêu rõ nghề nghiệp.
+❌ "Công tác tại: Công ty ABC" → Không điền occupation
+Trường hợp đề cập đến "thất nghiệp".
+❌ "Thất nghiệp: ..." → Không điền occupation
+Không dùng khi nhắc đến bệnh liên quan đến nghề nghiệp.
+❌ "Bệnh nghề nghiệp: Viêm phổi mãn tính" → Không điền occupation
+2. Tình trạng hiện tại → [user1_current_status]
+"[user1_current_status]": Mô tả trạng thái làm việc hoặc học tập tại thời điểm hiện tại.
+Các mục thường xuất hiện: ["trạng thái hiện tại"].
+Ví dụ:
+✅ "Trạng thái hiện tại: Đang đi học" → Điền: "Trạng thái hiện tại: [user1_current_status]"
+✅ "Trạng thái hiện tại: Đang đi làm tại công ty ABC" → Điền: "Trạng thái hiện tại: [user1_current_status]"
+
+💡 Lưu ý:
+
+[user1_current_status] không phải là nghề nghiệp cụ thể. Nó có thể là:
+"Đang đi học"
+"Đang đi làm tại công ty XYZ"
+"Đã nghỉ hưu"
+Không sử dụng [user1_current_status] nếu:
+Chỉ đề cập đến thất nghiệp.
+❌ "Thất nghiệp: ......." → Không điền current_status
+** Tóm tắt cách phân biệt occupation và current_status
+Loại thông tin	Ý nghĩa	Ví dụ điền tagname	Không điền tagname nếu…
+occupation	Nghề nghiệp hiện tại, công việc chuyên môn	"Nghề nghiệp: [user1_occupation]"	- Nếu chỉ nhắc đến cơ quan công tác mà không có nghề nghiệp cụ thể.
+- Nếu đề cập đến "thất nghiệp".
+- Nếu nói về bệnh nghề nghiệp.
+current_status	Trạng thái học tập/làm việc hiện tại	"Trạng thái hiện tại: [user1_current_status]"	- Nếu chỉ có từ "thất nghiệp" mà không có mô tả thêm.
+
+"[user1_passport_number]": Số hộ chiếu của người dùng.
+- Các mục thường xuất hiện: ["số hộ chiếu", "số passport"],
+
+Với mục ngày cấp hộ chiếu, có các trường hợp sau:
+- Nếu input chỉ hiện ngày cấp hộ chiếu: .........., không có tháng, năm phía sau, hay không có ........../.......... dùng tagname:
+thì điền một tagname [user1_passport_issue_date] (vì một tagname này có thể hiện cả 3 mục ngày, tháng, năm, tránh nhầm lẫn với tagname user1_id_issue_date, vì đây là tagname của căn cước, định danh)
+- Nếu input có dạng ngày cấp hộ chiếu: ngày ..........,tháng .........., năm .......... (có 3 mục rõ ràng cho ta điền),
+thì điền riêng lẻ từng mục ngày, tháng, năm (vào ..........), ví dụ ngày: [user1_passport_issue_day], tháng: [user1_passport_issue_month], năm: [user1_passport_issue_year]
+- Nếu input có dạng ngày cấp hộ chiếu: ........../........../.......... (có 3 mục rõ ràng cho ta điền),
+thì điền riêng lẻ từng mục ngày, tháng, năm (vào ..........), ví dụ [user1_passport_issue_day]/[user1_passport_issue_month]/[user1_passport_issue_year]
+"[user1_passport_issue_place]": Nơi cấp hộ chiếu của người dùng.
+- Các mục thường xuất hiện: ["nơi cấp hộ chiếu"]
+
+Với mục ngày hết hạn hộ chiếu, lưu ý tagname này khác với ngày cấp (expiry khác với issue), có các trường hợp sau:
+- Nếu input chỉ hiện ngày hết hạn hộ chiếu: .........., không có tháng, năm phía sau, hay không có ........../.......... dùng tagname: 
+thì điền một tagname [user1_passport_expiry_date] (vì một tagname này có thể hiện cả 3 mục ngày, tháng, năm)
+- Nếu input có dạng ngày hết hạn hộ chiếu: ngày ..........,tháng .........., năm .......... (có 3 mục rõ ràng cho ta điền),
+thì điền riêng lẻ từng mục ngày, tháng, năm (vào ..........), ví dụ ngày: [user1_passport_expiry_day], tháng: [user1_passport_expiry_month], năm: [user1_passport_expiry_year]
+- Nếu input có dạng ngày hết hạn hộ chiếu: ........../........../.......... (có 3 mục rõ ràng cho ta điền),
+thì điền riêng lẻ từng mục ngày, tháng, năm (vào ..........), ví dụ [user1_passport_expiry_day]/[user1_passport_expiry_month]/[user1_passport_expiry_year]
+
+Một số tagname khác:
+- Tại vị trí kính gửi, người nhận, có thể sử dụng tagname [receiver] để điền tên người nhận.
+- Tại vị trí đầu, hay cuối form thường có thông tin về nơi gửi, ngày gửi, tháng gửi, năm gửi, có thể sử dụng tagname [place], [day], [month], [year] để điền thông tin này.
+Lưu ý tagname day,month,year này tránh nhầm lẫn với các tagname về ngày tháng năm sinh, ngày tháng năm cấp, hết hạn, hộ chiếu, số định danh, v.v..
+'''
+
+
+
+
+temp = None
