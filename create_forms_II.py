@@ -774,7 +774,7 @@ def map_values_to_tagnames(form: str, data: dict, data_tagname: dict) -> str:
 
     return re.sub(r'\[([^\]]+)\]', replace_match, form)
 
-Num_forms = 50
+Num_forms = 100
 for i in range(Num_forms):
     if i%1==0:
         print(f"Process until {i}") 
