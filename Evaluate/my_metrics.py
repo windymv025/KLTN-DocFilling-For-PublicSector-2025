@@ -253,7 +253,7 @@ def similarity_result_two_folders(folder1, folder2):
             # Now, folder 1 is label, folder 2 is llm_filled
             label_folder = re.sub(r"\\Differents$", "", folder1)
             output_folder = re.sub(r"\\Processed_Output\\Differents$", "", folder2)
-            input_folder = re.sub(r"Label$", r"Input", label_folder)
+            input_folder = re.sub(r"Label", r"Input", label_folder)
             # Print testing
             # print(label_folder)
             # print(output_folder)

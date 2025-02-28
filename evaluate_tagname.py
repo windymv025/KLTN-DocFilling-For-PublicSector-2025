@@ -61,6 +61,7 @@ def process_df_detail(df_detail):
 df_detail = process_df_detail(df_detail)
 
 # Save detail to csv
+# df_detail.to_csv(f"{root_folder}/Result_{Output_num}_{time_now}.csv", index=False,encoding='utf-8-sig')
 df_detail.to_csv(f"{root_folder}/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 
@@ -202,6 +203,7 @@ def df_detail_to_summary_excel(df_detail, excel_filename, name_sheet):
     print(f"Excel file '{excel_filename}' saved successfully!")
 
 # Save Summary to Excel
+# name_xlsx = f"{root_folder}/Summary_{Output_num}_{time_now}.xlsx"
 name_xlsx = f"{root_folder}/Summary_{Output_num}.xlsx"
 name_sheet = "Summary"
 df_detail_to_summary_excel (df_detail, name_xlsx, name_sheet)
@@ -259,6 +261,44 @@ add_error_to_summary_file(df_detail, error_A1_A2, name_xlsx, name_sheet=error_A1
 add_error_to_summary_file(df_detail, error_A1_B, name_xlsx, name_sheet=error_A1_B)
 add_error_to_summary_file(df_detail, error_B_A1, name_xlsx, name_sheet=error_B_A1)
 
+# Return another csv include
+# Data_Num, num_forms, sum_tagname, total_a1, a1_a1, total_b, b_b, a1_a1, b_b, a1_a1, a1_b, b_a1
+# Data_Num, num_forms, %sum_tagname, %total_a1, %a1_a1, %total_b, %b_b, %a1_a1, %b_b, %a1_a1, %a1_b, %b_a1
+# Number of  forms
+num_forms = df_detail.shape[0]-1
+# Value
+total_A1 = df_detail["total_A1"].iloc[:-1].astype(int).sum()
+total_B = df_detail["total_B"].iloc[:-1].astype(int).sum()
+real_tagnames = total_A1 + total_B
+# Seen
+real_seen_tagnames = total_A1
+real_seen_tagnames_percent = frac(real_seen_tagnames,real_tagnames)
+# Unseen
+real_unseen_tagnames = real_tagnames - real_seen_tagnames
+real_unseen_tagnames_percent = frac(real_unseen_tagnames,real_tagnames)
+# Predicted value
+true_tagname = df_detail["P_A1_A1"].iloc[:-1].astype(int).sum()
+false_tagname_tagname = df_detail["P_A1_A2"].iloc[:-1].astype(int).sum()
+false_unseen_tagname = df_detail["P_A1_B"].iloc[:-1].astype(int).sum()
+false_tagname_unseen_tagname = df_detail["P_B_A1"].iloc[:-1].astype(int).sum()
+true_unseen_tagname = df_detail["P_B_B"].iloc[:-1].astype(int).sum()
+
+# Predicted percentage value - real seen tagnames
+true_tagname_percent = frac(true_tagname,real_seen_tagnames)
+false_tagname_tagname_percent = frac(false_tagname_tagname,real_seen_tagnames)
+false_unseen_tagname_percent = frac(false_unseen_tagname,real_seen_tagnames)
+
+# Predicted percentage value - real unseen tagnames
+false_tagname_unseen_tagname_percent = frac(false_tagname_unseen_tagname,real_unseen_tagnames)
+true_unseen_tagname_percent = frac(true_unseen_tagname,real_unseen_tagnames)
+
+fist_row = [f"Data_{Label_Input_num}", num_forms, real_tagnames, total_A1, true_tagname, total_B, true_unseen_tagname, false_tagname_tagname, false_unseen_tagname, false_tagname_unseen_tagname]
+second_row = [f"Data_{Label_Input_num}", num_forms, frac(real_tagnames,real_tagnames), frac(total_A1,real_tagnames), frac(true_tagname,real_seen_tagnames), frac(total_B,real_tagnames), frac(true_unseen_tagname,real_unseen_tagnames), frac(false_tagname_tagname,real_seen_tagnames), frac(false_unseen_tagname,real_seen_tagnames), frac(false_tagname_unseen_tagname,real_unseen_tagnames)]
+# Save to statis_{Label_Input_num}.csv
+statis_csv = f"{root_folder}/Result_statis_{Label_Input_num}.csv"
+column_names = ["Data_Num", "num_forms", "sum_tagname", "total_a1", "a1_a1", "total_b", "b_b", "a1_a1", "a1_b", "b_a1"]
+df_statis = pd.DataFrame([fist_row, second_row], columns=column_names)
+df_statis.to_csv(statis_csv, index=False,encoding='utf-8-sig')
 # Print
 print("Save result successfully!!")
 
