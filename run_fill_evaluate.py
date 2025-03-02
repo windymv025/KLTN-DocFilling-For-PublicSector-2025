@@ -9,7 +9,7 @@ root_folder = f"Temp\Data_{Data_num}\{Type}"
 
 
 # Define the test cases for output_label_input_num and Data_num
-output_label_input_nums = [11,12,13,21,22,23]
+output_label_input_nums = [0,11,12,13,21,22,23]
 
 for output_label_input_num in output_label_input_nums:
     print(f"\nTesting with output_label_input_num={output_label_input_num}")
@@ -43,4 +43,4 @@ for output_label_input_num in output_label_input_nums[1:]:
 
 df_reordered = pd.concat([sum_df.iloc[0::2], sum_df.iloc[1::2]]).reset_index(drop=True)
 
-df_reordered.to_csv(f"{root_folder}/C_result.csv", index=False)
+df_reordered.to_csv(f"{root_folder}/B_result.csv", index=False)

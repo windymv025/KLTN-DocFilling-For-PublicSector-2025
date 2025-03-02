@@ -31,6 +31,8 @@ def filled_input_from_filled_form(input_folder, output_folder, process_folder):
         if index%5==0:
             print(f"Process until {index}")
         if filename.endswith(".txt") :
+            if filename != "input_14.txt":
+                continue
             # Input - filled
             file_input_dir = input_folder + "/" + filename
             file_filled_dir = output_folder + "/" + filename

@@ -298,7 +298,7 @@ Quê quán: [Trống]
 Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
 
 Thông tin giấy tờ cá nhân:
-
+    
 Ngày cấp CCCD: [11/11/2021]
 Nơi cấp CCCD: [Công an TP.HCM 11]
 Ngày cấp hộ chiếu: [20/07/2020]

@@ -266,7 +266,7 @@ list_cccd_passport_tagnames = [
     "[current_address_ward]",
     "[current_address_district]",
     "[current_address_province]",
-    "[current_status]",
+    # "[current_status]",
     "[passport_number]",
     "[passport_issue_date]",
     "[passport_issue_day]",
@@ -510,7 +510,7 @@ hometown	Quê gốc (quê cha/mẹ hoặc nơi sinh)	❌ Không đổi	"quê qu�
 permanent_address	Địa chỉ thường trú (hộ khẩu)	✅ Có thể đổi	"địa chỉ thường trú", "hộ khẩu thường trú"
 current_address	Địa chỉ hiện tại (nơi đang ở)	✅ Có thể đổi	"địa chỉ hiện tại", "chỗ ở hiện tại", "nơi cư trú"
 
-Liên quan nghề nghiệp, trạng thái hiện tại:
+Liên quan nghề nghiệp
 1. Nghề nghiệp → [user1_occupation]
 "[user1_occupation]": Nghề nghiệp hiện tại của người dùng, mô tả công việc chuyên môn mà họ đang làm.
 Các mục thường xuất hiện: ["nghề nghiệp", "công việc", "công việc hiện tại"].
@@ -527,28 +527,6 @@ Trường hợp đề cập đến "thất nghiệp".
 ❌ "Thất nghiệp: ..." → Không điền occupation
 Không dùng khi nhắc đến bệnh liên quan đến nghề nghiệp.
 ❌ "Bệnh nghề nghiệp: Viêm phổi mãn tính" → Không điền occupation
-2. Tình trạng hiện tại → [user1_current_status]
-"[user1_current_status]": Mô tả trạng thái làm việc hoặc học tập tại thời điểm hiện tại.
-Các mục thường xuất hiện: ["trạng thái hiện tại"].
-Ví dụ:
-✅ "Trạng thái hiện tại: Đang đi học" → Điền: "Trạng thái hiện tại: [user1_current_status]"
-✅ "Trạng thái hiện tại: Đang đi làm tại công ty ABC" → Điền: "Trạng thái hiện tại: [user1_current_status]"
-
-💡 Lưu ý:
-
-[user1_current_status] không phải là nghề nghiệp cụ thể. Nó có thể là:
-"Đang đi học"
-"Đang đi làm tại công ty XYZ"
-"Đã nghỉ hưu"
-Không sử dụng [user1_current_status] nếu:
-Chỉ đề cập đến thất nghiệp.
-❌ "Thất nghiệp: ......." → Không điền current_status
-** Tóm tắt cách phân biệt occupation và current_status
-Loại thông tin	Ý nghĩa	Ví dụ điền tagname	Không điền tagname nếu…
-occupation	Nghề nghiệp hiện tại, công việc chuyên môn	"Nghề nghiệp: [user1_occupation]"	- Nếu chỉ nhắc đến cơ quan công tác mà không có nghề nghiệp cụ thể.
-- Nếu đề cập đến "thất nghiệp".
-- Nếu nói về bệnh nghề nghiệp.
-current_status	Trạng thái học tập/làm việc hiện tại	"Trạng thái hiện tại: [user1_current_status]"	- Nếu chỉ có từ "thất nghiệp" mà không có mô tả thêm.
 
 "[user1_passport_number]": Số hộ chiếu của người dùng.
 - Các mục thường xuất hiện: ["số hộ chiếu", "số passport"],
