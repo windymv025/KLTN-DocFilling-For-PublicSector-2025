@@ -251,17 +251,20 @@ class Text_Processing:
                     new_tagname = re.sub("id","passport",tagname)
                     # return new_tagname
                 else: # Must check previouse is cccd, or passport --> follow it
-                    if id_or_passport == "id":
+                    # Case "giấy tờ tùy thân"
+                    if "giấy tờ tùy thân" in contextual_value:
+                        new_tagname = re.sub("passport","id",tagname)
+                    elif id_or_passport == "id":
                         new_tagname = re.sub("passport","id",tagname)
                     elif id_or_passport == "passport":
                         new_tagname = re.sub("id","passport",tagname)
                     # return new_tagname
                 # check suffix _date, _place
                 if "_place" in new_tagname:
-                    print(new_tagname)
-                    print(contextual_value)
+                    # print(new_tagname)
+                    # print(contextual_value)
                     if "ngày cấp" in contextual_value:
-                        print(contextual_value)
+                        # print(contextual_value)
                         new_tagname = re.sub("_place","_date",tagname)
                 elif "_date" in new_tagname:
                     if "nơi cấp" in contextual_value:
