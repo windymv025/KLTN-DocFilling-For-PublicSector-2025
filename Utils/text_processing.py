@@ -200,81 +200,168 @@ class Text_Processing:
             else:
                 return f"{context[i][0]}_{context[i][1]}_{context[i][2]}_{context[i][-3]}_{context[i][-2]}_{context[i][-1]}_{len(context[i])}" #Đầu_KeD_KeKeD_KeKeC_KeC_Cuối_Length
 
-    # def get_modifed_tagname(self, contextual, tagname):
-    #     if "user" in tagname:
-    #         v_tagname = tagname[7:-1]
-    #         # Check birthplace
-    #         if "birthplace" in v_tagname:
-    #             if "nơi sinh" in " ".join(contextual):
-    #                 return tagname
-    #             elif "khai sinh" in " ".join(contextual) or "đăng ký" in " ".join(contextual):
-    #                 new_tagname = re.sub("birthplace","birth_registration",tagname)
-    #                 return new_tagname
-    #         ## Check with id, passport
-    #         if "id" in v_tagname:
-    #             if "cccd/hộ chiếu" in " ".join(contextual):
-    #                 return tagname
-    #             elif "hộ chiếu" in " ".join(contextual):
-    #                 new_tagname = re.sub("id","passport",tagname)
-    #                 return new_tagname
-    #         if "passport" in v_tagname:
-    #             if "cccd/hộ chiếu" in " ".join(contextual):
-    #                 new_tagname = re.sub("passport","id",tagname)
-    #             elif "hộ chiếu" not in " ".join(contextual) :
-    #                 new_tagname = re.sub("passport","id",tagname)
-    #                 return new_tagname
-    #         return tagname
-    #     else:
-    #         return tagname
-
-    def get_modifed_tagname(self, contextual, tagname, id_or_passport="id"):
+    def get_modifed_tagname(self, list_contextual, tagname):
+        # print(tagname)
+        # print(list_contextual)
+        contextual = list_contextual[-1]
+        def extract_user_and_tag(var):
+            pattern = r"\[user(\d+)_(\w+)\]"
+            match = re.search(pattern, var)
+            if match:
+                user_id = f"user{match.group(1)}"
+                tagname = match.group(2)
+                return user_id, tagname
+            return None, None  # Return None if no match
         if "user" in tagname:
-            v_tagname = tagname[7:-1]
-            # Birthplace error
-            if "birthplace" in v_tagname:
-                if "nơi sinh" in " ".join(contextual):
-                    return tagname
-                elif "khai sinh" in " ".join(contextual) or "đăng ký" in " ".join(contextual):
-                    new_tagname = re.sub("birthplace","birth_registration",tagname)
+            # Standardize tagname
+            tagname = re.sub(r"dob_date", "dob", tagname)
+            # Replace "cmnd" with "id" exactly
+            tagname = re.sub(r"cmnd", "id", tagname)
+            # Replace "birth_place" with "birthplace" exactly
+            tagname = re.sub(r"birth_place", "birthplace", tagname)
+            # Replace "registration" with "birth_registration" exactly
+            tagname = re.sub(r"birth_registration", "birth_registration_place", tagname)
+            userX, value_tagname = extract_user_and_tag(tagname)
+            value_bracket_tagname = "["+value_tagname+"]"
+            #  Define group
+            group_id_tagname = ["id_number", "id_issue_date", "id_issue_day", "id_issue_month", "id_issue_year", "id_issue_place"]
+            group_passport_tagname = ["passport_number", "passport_issue_date", "passport_issue_day", "passport_issue_month", "passport_issue_year", "passport_issue_place"]
+            group_current_address_tagname = ["current_address","current_address_ward","current_address_district","current_address_province"]
+            group_permanent_address_tagname = ["permanent_address","permanent_address_ward","permanent_address_district","permanent_address_province"]
+            group_hometown = ["hometown"]
+            group_birth_registration_tagname = ["birth_registration_place", "birth_registration_place_ward", "birth_registration_place_district", "birth_registration_place_province"]
+            group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_district", "birthplace_province"]
+            group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob_year"]
+            group_name_tagname = ["full_name", "alias_name"]
+            if value_bracket_tagname in list_cccd_passport_tagnames:
+                sentence_contextual = " ".join(contextual)
+                # Check fullname group
+                if value_tagname in group_name_tagname:
+                    if "full_name" in value_tagname:
+                        if "ký" in sentence_contextual or "(ký" in sentence_contextual :
+                            return "[#another]"
+                    if "khác" in sentence_contextual:
+                        new_tagname = re.sub("full_name","alias_name",tagname)
+                    else:
+                        new_tagname = re.sub("alias_name","full_name",tagname)
                     return new_tagname
-            # Check with id, passport
-            list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh"]
-            list_contextual_passport = ["hộ chiếu","passport"]
-            if "id" in v_tagname or "passport" in v_tagname:
-                contextual_value = " ".join(contextual)
-                if any(context in contextual_value for context in list_contextual_id_number):
-                    # Return id_number
-                    new_tagname = re.sub("passport","id",tagname)
-                    # return new_tagname
-                elif any(context in contextual_value for context in list_contextual_passport):
-                    # return passport
-                    new_tagname = re.sub("id","passport",tagname)
-                    # return new_tagname
-                else: # Must check previouse is cccd, or passport --> follow it
-                    # Case "giấy tờ tùy thân"
-                    if "giấy tờ tùy thân" in contextual_value:
-                        new_tagname = re.sub("passport","id",tagname)
-                    elif id_or_passport == "id":
-                        new_tagname = re.sub("passport","id",tagname)
-                    elif id_or_passport == "passport":
-                        new_tagname = re.sub("id","passport",tagname)
-                    # return new_tagname
-                # check suffix _date, _place
-                if "_place" in new_tagname:
-                    # print(new_tagname)
-                    # print(contextual_value)
-                    if "ngày cấp" in contextual_value:
+                    
+                # Check Birthplace - birth_registration group
+                if value_tagname in group_birthplace_tagname or value_tagname in group_birth_registration_tagname:
+                    i_temp = -1
+                    while i_temp != 0 and i_temp>=(-len(list_contextual)):
+                        contextual_value = " ".join(list_contextual[i_temp])
+                        if "nơi sinh" in contextual_value:
+                            new_tagname = re.sub("birth_registration","birthplace",tagname)
+                            i_temp = 0
+                        elif "khai sinh" in contextual_value or "đăng ký" in contextual_value:
+                            new_tagname = re.sub("birthplace","birth_registration",tagname)
+                            i_temp = 0
+                        else:
+                            i_temp -= 1
+                    if (i_temp < -len(list_contextual)):
+                        return "[#another]"
+                    return new_tagname
+                
+                # Check id - passport group
+                list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd"]
+                list_contextual_passport = ["hộ chiếu","passport"]
+                if value_tagname in group_id_tagname or value_tagname in group_passport_tagname:
+                    new_tagname = tagname
+                    # First, right id or passport
+                    i_temp = -1
+                    while i_temp != 0 and i_temp>=(-len(list_contextual)):
+                        contextual_value = " ".join(list_contextual[i_temp])
+                        if any(context in contextual_value for context in list_contextual_id_number):
+                            # Return id_number
+                            new_tagname = re.sub("passport","id",tagname)
+                            i_temp = 0
+                            # return new_tagname
+                        elif any(context in contextual_value for context in list_contextual_passport):
+                            # return passport
+                            new_tagname = re.sub("id","passport",tagname)
+                            i_temp = 0
+                            # return new_tagname
+                        else: # Must check previouse is cccd, or passport --> follow it
+                            # Case "giấy tờ tùy thân"
+                            if "giấy tờ tùy thân" in contextual_value:
+                                new_tagname = re.sub("passport","id",tagname)
+                                i_temp = 0
+                            else:
+                                i_temp -= 1
+                        # return new_tagname
+                    if (i_temp < -len(list_contextual)):
+                        return "[#another]"
+                    # Second, check suffix _date, _place
+                    if "_place" in new_tagname:
+                        # print(new_tagname)
                         # print(contextual_value)
-                        new_tagname = re.sub("_place","_date",tagname)
-                elif "_date" in new_tagname:
-                    if "nơi cấp" in contextual_value:
-                        new_tagname = re.sub("_date","_place",tagname)
+                        if "ngày cấp" in contextual_value:
+                            # print(contextual_value)
+                            new_tagname = re.sub("_place","_date",tagname)
+                    elif "_date" in new_tagname:
+                        if "nơi cấp" in contextual_value:
+                            new_tagname = re.sub("_date","_place",tagname)
 
-                return new_tagname
-            return tagname
+                    # Third, _date with _number
+                    if "_number" in new_tagname:
+                        if "ngày cấp" in contextual_value or "cấp ngày" in contextual_value:
+                            new_tagname = re.sub("_number","_date",tagname)
+                        elif "nơi cấp" in contextual_value or "cấp nơi" in contextual_value:
+                            new_tagname = re.sub("_number","_place",tagname)
+                    elif "_date" in new_tagname:
+                        if "số" in contextual_value and "ngày cấp" not in contextual_value and "cấp ngày" not in contextual_value:
+                            new_tagname = re.sub("_date","_number",tagname)
+                    elif "_place" in new_tagname:
+                        if "số" in contextual_value and "nơi cấp" not in contextual_value and "cấp nơi" not in contextual_value:
+                            new_tagname = re.sub("_place","_number",tagname)
+                    return new_tagname
+                
+                # Check dob group
+                if value_tagname in group_dob_tagname:
+                    if "bằng chữ" in sentence_contextual:
+                        new_tagname = f"[{userX}_dob_text]"
+                        return new_tagname
+                    elif value_tagname in ["dob_year", "dob"]:
+                        if "năm" in sentence_contextual and "tháng" not in sentence_contextual and "ngày" not in sentence_contextual:
+                            new_tagname = f"[{userX}_dob_year]"
+                        else:
+                            new_tagname = f"[{userX}_dob]"
+                            return new_tagname
+                    else:
+                        return tagname
+            
+                # Check address group
+                list_permanent_address = ["thường trú"]
+                list_current_address = ["hiện tại", "tạm trú"]
+                list_hometown = ["quê quán", "nguyên quán", "quê gốc"]
+                if value_tagname in group_current_address_tagname or value_tagname in group_permanent_address_tagname or value_tagname in group_hometown:
+                    new_tagname = tagname
+                    if any(temp in sentence_contextual for temp in list_hometown):
+                        new_tagname = f"[{userX}_hometown]"
+                        # return new_tagname
+                    if any(temp in sentence_contextual for temp in list_permanent_address):
+                        new_tagname = f"[{userX}_permanent_address]"
+                        # return new_tagname
+                    if any(temp in sentence_contextual for temp in list_current_address):
+                        new_tagname = f"[{userX}_current_address]"
+                        # return new_tagname
+                    if extract_user_and_tag(new_tagname)[1] == "current_address":
+                        if "địa chỉ" not in sentence_contextual and ("tình trạng" in sentence_contextual or "trạng thái" in sentence_contextual):
+                            new_tagname = "[#another]"
+                    return new_tagname
+                
+                # Check marial_status
+                if "marital_status" in value_tagname:
+                    if "hôn nhân" not in sentence_contextual:
+                        new_tagname = "[#another]"
+                        return new_tagname
+
+                return tagname
+            else:
+                return tagname
         else:
             return tagname
-
 
     def get_tagnames_from_LLM_filled_form(
         self, contextual_llm, label_llm, contextual_input, label_input
@@ -303,19 +390,13 @@ class Text_Processing:
         # Từ dữ liệu LLM filled, điền vào input form (Lưu các tagname vào list)
         index_filled_input = 0
         index_llm = 0
-        # Test id or passport filling
-        id_or_passport = "id"
         while index_filled_input < len(contextual_input) and index_llm < len(contextual_llm): 
             name_contextual_input = self.get_hash_name_from_context_at_index(contextual_input,index_filled_input)
             name_contextual_llm = self.get_hash_name_from_context_at_index(contextual_llm,index_llm)
             if name_contextual_input == name_contextual_llm:
                 # label_input[index_filled_input] = label_llm[index_llm]
-                tagname_fill = self.get_modifed_tagname(contextual_llm[index_llm], label_llm[index_llm], id_or_passport)
+                tagname_fill = self.get_modifed_tagname(contextual_input[:index_filled_input+1], label_llm[index_llm])
                 label_input[index_filled_input] = tagname_fill
-                if "id" in tagname_fill:
-                    id_or_passport = "id"
-                elif "passport" in tagname_fill:
-                    id_or_passport = "passport"
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             else: # Thừa hoặc thiếu tagname chỗ này
                 temp_count = 1
@@ -415,12 +496,8 @@ class Text_Processing:
                 # else:
                     # print(f"Filling {label_llm[index_llm]} to {contextual_input[index_filled_input]}")
                 # label_input[index_filled_input] = label_llm[index_llm]
-                tagname_fill = self.get_modifed_tagname(contextual_llm[index_llm], label_llm[index_llm], id_or_passport)
+                tagname_fill = self.get_modifed_tagname(contextual_input[:index_filled_input+1], label_llm[index_llm])
                 label_input[index_filled_input] = tagname_fill
-                if "id" in tagname_fill:
-                    id_or_passport = "id"
-                elif "passport" in tagname_fill:
-                    id_or_passport = "passport"
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             # print(f"Index {index_filled_input} with {len(contextual_input)} context {contextual_input[index_filled_input]} t {label_input[index_filled_input]}")
             # print(f"Index {index_llm} with {len(contextual_llm)} context {contextual_llm[index_llm]} t {label_llm[index_llm]}")
@@ -476,7 +553,7 @@ class Text_Processing:
                 if pattern_day.search(label_input[index_filled_input]) and index_filled_input<len(contextual_input):
                     # print(f"debug3 at {label_input[index_filled_input]}")
                     # Kiểm tra có tháng, năm phía sau không (nếu không thì biến đổi thành date), nếu có thì giữ nguyên
-                    if (index_filled_input == len(contextual_input) - 1) or ("tháng" not in contextual_input[index_filled_input + 1] and "/" not in contextual_input[index_filled_input + 1]):
+                    if (index_filled_input == len(contextual_input) - 1) or ("tháng" not in contextual_input[index_filled_input + 1] and "/" not in contextual_input[index_filled_input + 1]) or ("ngày" in contextual_input[index_filled_input + 1] and "tháng" in contextual_input[index_filled_input + 1]):
                         # print(f"debug3.1 at {label_input[index_filled_input]}")
                         # print(f"debug3.1 at {label_input[index_filled_input]}")
                         prefix_day = label_input[index_filled_input].split("_day", 1)[0]
@@ -530,18 +607,60 @@ class Text_Processing:
                 form = form.replace("[#another]", f"{tag}", 1)
         form = form.replace("[another]", "[#another]")
         return form
+    
+    def extract_user_number(self, tagname):
+        match = re.search(r'user(\d+)_', tagname)
+        if match:
+            return int(match.group(1))  # Convert to integer
+        raise ValueError('Must have index')
+
+    def renumber_users(self, text):
+        count_user = 1
+        # Find all occurrences of userX_
+        user_pattern = re.compile(r'user\d+_')
+        user_matches = user_pattern.findall(text)
+        user_matches = list(dict.fromkeys(user_matches))
+        i = 0
+        num_user = len(user_matches)
+        while (i<num_user):
+            index_user = self.extract_user_number(user_matches[i])
+            if index_user != count_user:
+                temp_index = -1
+                for j in range(len(user_matches)):
+                    if user_matches[j] == f"user{count_user}_":
+                        temp_index = j
+                        break
+                # Swap
+                text = re.sub(rf"user{count_user}", "userT",text)
+                text = re.sub(rf"user{index_user}", f"user{count_user}",text)
+                text = re.sub(r"userT", f"user{index_user}",text)
+                if temp_index != -1:
+                    user_matches[temp_index] = f"user{index_user}_"
+                
+            i += 1
+            count_user += 1
+        return text
 
     # Overall function input form_llm_filled, input_form --> output filled_form
     def fill_input_by_llm_form(self, form_llm_filled, input_form):
         # Fix place, day, month, year format
         form_llm_filled = self.process_declaration_date_and_place(form_llm_filled)
+        # Reorder userX 
+        form_llm_filled = self.renumber_users(form_llm_filled)
+        print("debug1")
         # Get contextual
         contextual_llm, label_llm = self.get_contextual_tagnames(form_llm_filled)
+        print("debug1.2")
+
         contextual_input, label_input = self.get_contextual_tagnames(input_form)
+        print("debug2")
+
         # List tagname
         tagname_for_input,copy_contextual_input = self.get_tagnames_from_LLM_filled_form(
             contextual_llm, label_llm, contextual_input, label_input
         )
+        print("debug3")
+
         # Fill
         filled_form = self.fill_tagname_to_form(tagname_for_input, input_form)
         filled_form = self.process_declaration_date_and_place(filled_form)

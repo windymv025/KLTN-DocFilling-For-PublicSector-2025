@@ -44,34 +44,34 @@ def generate_form(formatted_tagnames, remaining_tag_names, random_forms_text):
     response = chain.invoke({})
     return response
 
-Num = 80
-num_forms_generate = Num
-forms = folder_form[list(folder_form.keys())[0]]
-# Create Num label forms --> Save to Temp/Label_time folder
+# Num = 80
+# num_forms_generate = Num
+# forms = folder_form[list(folder_form.keys())[0]]
+# # Create Num label forms --> Save to Temp/Label_time folder
 
-def gen_forms(num_forms_generate, label_folder):
-    os.makedirs(label_folder, exist_ok=True)
-    for i in range(num_forms_generate):
-        try:
-            random_forms = []
-            # Get N random forms from each type
-            N = random.randint(5,10) # In future, get N is random value
-            random_files = random.sample(list(forms.items()), N)  # Randomly pick N forms
-            for filename, form_content in random_files:
-                form_content = form_content.replace("..........", "[#another]")
-                random_forms.append(form_content)
-            random_forms_text = "\n".join([form for form in random_forms])
+# def gen_forms(num_forms_generate, label_folder):
+#     os.makedirs(label_folder, exist_ok=True)
+#     for i in range(num_forms_generate):
+#         try:
+#             random_forms = []
+#             # Get N random forms from each type
+#             N = random.randint(5,10) # In future, get N is random value
+#             random_files = random.sample(list(forms.items()), N)  # Randomly pick N forms
+#             for filename, form_content in random_files:
+#                 form_content = form_content.replace("..........", "[#another]")
+#                 random_forms.append(form_content)
+#             random_forms_text = "\n".join([form for form in random_forms])
 
-            # Generate
-            response = generate_form(formatted_tagnames, remaining_tag_names,random_forms_text)
-            print(response)
-            # Save file
-            with open(f"{label_folder}/input_{i+20}.txt", "w", encoding="utf-8") as f:
-                f.write(response)
-                print(f"\n==============End of form {i}==============\n")
-        except Exception as e:
-            print(f"Error: {e} at form {i}")
-            continue
+#             # Generate
+#             response = generate_form(formatted_tagnames, remaining_tag_names,random_forms_text)
+#             print(response)
+#             # Save file
+#             with open(f"{label_folder}/input_{i+20}.txt", "w", encoding="utf-8") as f:
+#                 f.write(response)
+#                 print(f"\n==============End of form {i}==============\n")
+#         except Exception as e:
+#             print(f"Error: {e} at form {i}")
+#             continue
 
 # gen_forms(num_forms_generate, label_folder)
 

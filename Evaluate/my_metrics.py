@@ -61,6 +61,10 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
             "error B-A1 detail": [],
             # "form1": form1,
             # "form2": form2,
+            "user_X_X": [], # Correct
+            "user_X_Y": [], # Wrong
+            "debug_user_X_Y_label": [],
+            "debug_user_X_Y_predict": [],
         }
         # if filename == "49_00_TK1-TS.txt":
             # print("debug3")
@@ -77,6 +81,10 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     with open(copy_contextual_input_dir, "r", encoding="utf-8") as f:
         # print(copy_contextual_input_dir)
         copy_contextual_input = json.load(f)
+    num_user_X_X = 0
+    num_user_X_Y = 0
+    debug_user_X_Y_label = []
+    debug_user_X_Y_predict = []
     for index, (tag1, tag2) in enumerate(zip(tagnames1, tagnames2)):
         if copy_contextual_input[index][-1][0] != "[":
             debug_contextual_output = " ".join(copy_contextual_input[index]) + " " + "Empty"
@@ -85,24 +93,46 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         # Normalize
         tag1 = tag1.strip("[]")  # Remove square brackets
         tag2 = tag2.strip("[]")  # Remove square brackets
+        # Take value of userX
+        def extract_user_number(tagname):
+            match = re.search(r'user(\d+)_', tagname)
+            if match:
+                return int(match.group(1))
+            return -1  # Return None if no match is found
+        user_tag1 = extract_user_number(tag1)
+        user_tag2 = extract_user_number(tag2)
+        if user_tag1 == user_tag2:
+            num_user_X_X += 1
+        elif user_tag1 != -1 and user_tag2 != -1:
+            num_user_X_Y += 1
+            debug_user_X_Y_label.append(tag1)
+            debug_user_X_Y_predict.append(tag2)
+        # print(user_tag1, user2_tag2)
+        # print(tag1, tag2)
+        # if user_tag1 != -1 and user2_tag2 != -1:
+        #     print(ducnam)
+
         # Standardize tagnames by replacng userX with user0
         standardized_tag1 = re.sub(r"user\d+", "user0", tag1)
         standardized_tag2 = re.sub(r"user\d+", "user0", tag2)
         # Standardize tagnames by replacing userX with user0
-        standardized_tag1 = re.sub(r"deceased", "user0", standardized_tag1)
-        standardized_tag2 = re.sub(r"deceased", "user0", standardized_tag2)
+        # standardized_tag1 = re.sub(r"deceased", "user0", standardized_tag1)
+        # standardized_tag2 = re.sub(r"deceased", "user0", standardized_tag2)
         # Replace "dob_date" with "dob" exactly
         standardized_tag1 = re.sub(r"dob_date", "dob", standardized_tag1)
         standardized_tag2 = re.sub(r"dob_date", "dob", standardized_tag2)
-        # Replace "birth_place" with "birthplace" exactly
-        standardized_tag1 = re.sub(r"birth_place", "birthplace", standardized_tag1)
-        standardized_tag2 = re.sub(r"birth_place", "birthplace", standardized_tag2)
-        # Replace "registration" with "birth_registration" exactly
-        standardized_tag1 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag1)
-        standardized_tag2 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag2)
-        # Now if tagname is receiver --> convert to #another
-        standardized_tag1 = re.sub(r"receiver", "#another", standardized_tag1)
-        standardized_tag2 = re.sub(r"receiver", "#another", standardized_tag2)
+        # # Replace "cmnd" with "id" exactly
+        # standardized_tag1 = re.sub(r"cmnd", "id", standardized_tag1)
+        # standardized_tag2 = re.sub(r"cmnd", "id", standardized_tag2)
+        # # Replace "birth_place" with "birthplace" exactly
+        # standardized_tag1 = re.sub(r"birth_place", "birthplace", standardized_tag1)
+        # standardized_tag2 = re.sub(r"birth_place", "birthplace", standardized_tag2)
+        # # Replace "registration" with "birth_registration" exactly
+        # standardized_tag1 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag1)
+        # standardized_tag2 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag2)
+        # # Now if tagname is receiver --> convert to #another
+        # standardized_tag1 = re.sub(r"receiver", "#another", standardized_tag1)
+        # standardized_tag2 = re.sub(r"receiver", "#another", standardized_tag2)
         
 
         # Check if ground truth tagname is in subset_A
@@ -156,6 +186,10 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         "error B-A1 detail": error_B_A1_detail,
         # "form1": form1,
         # "form2": form2,
+        "user_X_X": num_user_X_X, # Correct
+        "user_X_Y": num_user_X_Y, #
+        "debug_user_X_Y_label": debug_user_X_Y_label,
+        "debug_user_X_Y_predict": debug_user_X_Y_predict,
     }
 
     # Metrics2 (more detail), from above number
@@ -251,9 +285,10 @@ def similarity_result_two_folders(folder1, folder2):
             similarity_result_forms_detail[index_result].append(similarity_result_detail)
             # Process to get output folder, label folder
             # Now, folder 1 is label, folder 2 is llm_filled
-            label_folder = re.sub(r"\\Differents$", "", folder1)
+            label_folder = f"{root_folder}/Label{Output_num}"
             output_folder = re.sub(r"\\Processed_Output\\Differents$", "", folder2)
-            input_folder = re.sub(r"Label", r"Input", label_folder)
+            # input_folder = re.sub(r"Label", r"Input", label_folder)
+            input_folder = f"{root_folder}/Input{Output_num}"
             # Print testing
             # print(label_folder)
             # print(output_folder)
@@ -295,6 +330,10 @@ def similarity_result_two_folders(folder1, folder2):
             "error B-A1 detail",
             # "form1",
             # "form2",
+            "user_X_X",
+            "user_X_Y",
+            "debug_user_X_Y_label",
+            "debug_user_X_Y_predict",
         ],
     )
     # Detail dataframe

@@ -2425,6 +2425,7 @@ Bạn có nhiệm vụ điền các tagnames vào các biểu mẫu theo định
 - - Không sử dụng tagname place, day, month, year.
 - - Không thay đổi vào các vị trí đã có sẵn tagname, ví dụ ngày [Empty] tháng [Empty] năm [Empty], thì không sửa.
 - - Với mục, số CCCD/hộ chiếu: .........., thì mặc định điền số CCCD - tức định danh, tức id_number. Ví dụ Số CCCD/passport: [user1_id_number].
+- - Với các mục ngành nghề, nghề nghiệp, nghề nghiệp hiện tại, thông tin nghề nghiệp, hãy điền tagname [occupation].
 
 **3. Định dạng đầu vào và đầu ra**:
 Input: 

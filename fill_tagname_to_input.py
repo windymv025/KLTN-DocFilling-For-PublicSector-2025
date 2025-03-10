@@ -23,16 +23,18 @@ for input_folder in input_folders:
 
 # ============= 2. Process the output =============
 # 2.1 From forms response by LLM --> get tagnames to input forms --> remove different tagnames
-
+list_input_debug = ["input_125.txt", "data_167.txt", "data_198.txt", "data_22.txt"]
 # For filling just some form (Chỉ định chỉ điền một số form để test --> debugging)
 def filled_input_from_filled_form(input_folder, output_folder, process_folder):
     for index, filename in enumerate(os.listdir(output_folder)):
-    # for index, filename in enumerate(list_specific_forms): # Debugging
-        if index%5==0:
+        if index%1==0:
             print(f"Process until {index}")
         if filename.endswith(".txt") :
-            if filename != "input_14.txt":
+            print(filename)
+            if filename == "data_125.txt":
                 continue
+            # else:
+            #     print("found")
             # Input - filled
             file_input_dir = input_folder + "/" + filename
             file_filled_dir = output_folder + "/" + filename
@@ -78,6 +80,13 @@ os.makedirs(process_folder, exist_ok=True)
 for input_folder in input_folders:
     filled_input_from_filled_form(input_folder, output_folder, process_folder)
 
+process_label_folder = f"{label_folder}\Processed_Label"
+os.makedirs(process_label_folder, exist_ok=True)
+for input_folder in input_folders:
+    filled_input_from_filled_form(input_folder, label_folder, process_label_folder)
+
+
+
 # 2.2 Remove different tagnames from process output folder
 for index, filename in enumerate(os.listdir(process_folder)):
 # for index, filename in enumerate(list_specific_forms): # Debugging
@@ -102,10 +111,10 @@ for index, filename in enumerate(os.listdir(process_folder)):
 
 
 # 2.2 Remove different tagnames from label folder
-for index, filename in enumerate(os.listdir(label_folder)):
+for index, filename in enumerate(os.listdir(process_label_folder)):
     if filename.endswith(".txt"):
         # Input - filled
-        file_label_dir = label_folder + "/" + filename
+        file_label_dir = process_label_folder + "/" + filename
         # Read
         label_text = Text_Processing().Read_txt_file(file_label_dir).strip()
         # Print debug
@@ -115,7 +124,7 @@ for index, filename in enumerate(os.listdir(label_folder)):
                 label_text
             )
             # Save
-            output_path_different = label_folder + "/Differents/" + filename
+            output_path_different = process_label_folder + "/Differents/" + filename
             Text_Processing().Save_txt_file(output_path_different, label_text_different)
 
         except Exception as e:
