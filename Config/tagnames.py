@@ -284,6 +284,18 @@ list_cccd_passport_tagnames = [
     "[passport_issue_place]",
 ]
 
+#  Define group
+group_id_tagname = ["id_number", "id_issue_date", "id_issue_day", "id_issue_month", "id_issue_year", "id_issue_place"]
+group_passport_tagname = ["passport_number", "passport_issue_date", "passport_issue_day", "passport_issue_month", "passport_issue_year", "passport_issue_place"]
+group_current_address_tagname = ["current_address","current_address_ward","current_address_district","current_address_province"]
+group_permanent_address_tagname = ["permanent_address","permanent_address_ward","permanent_address_district","permanent_address_province"]
+group_hometown_tagname = ["hometown"]
+group_birth_registration_tagname = ["birth_registration_place", "birth_registration_place_ward", "birth_registration_place_district", "birth_registration_place_province"]
+group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_district", "birthplace_province"]
+group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob_year"]
+group_name_tagname = ["full_name", "alias_name"]
+
+
 # list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
 list_general_tagnames = [] # Now empty
 

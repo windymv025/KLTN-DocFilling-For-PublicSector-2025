@@ -255,22 +255,26 @@ def similarity_two_forms(form1, form2, filename):
     return similarity_percentage, similarity_percentage_detail
 
 
-def similarity_result_two_folders(folder1, folder2):
+def similarity_result_two_folders(label_folder1, output_folder2):
+    '''
+    label_folder1: label
+    output_folder2: output
+    '''
     print("come here? 1")
     similarity_result_forms = []
     similarity_result_forms_detail = []
     form_names = []
     index_result = 0
-    for index, filename in enumerate(os.listdir(folder1)):
+    for index, filename in enumerate(os.listdir(output_folder2)):
         if filename.endswith(".txt"):
             similarity_result_forms.append([])
             similarity_result_forms_detail.append([])
-            if (index)%5 == 0:
+            if (index+1)%5 == 0:
                 print("========= Index: ", index+1, "============", filename)
             # if filename == "49_00_TK1-TS.txt":
                 # print("debug")
-            file_dir_label_process = folder1 + "/" + filename
-            file_dir_output_process = folder2 + "/" + filename
+            file_dir_label_process = label_folder1 + "/" + filename
+            file_dir_output_process = output_folder2 + "/" + filename
             # Read
             text_label = Text_Processing().Read_txt_file(file_dir_label_process)
             text_predict = Text_Processing().Read_txt_file(file_dir_output_process)
@@ -286,7 +290,7 @@ def similarity_result_two_folders(folder1, folder2):
             # Process to get output folder, label folder
             # Now, folder 1 is label, folder 2 is llm_filled
             label_folder = f"{root_folder}/Label{Output_num}"
-            output_folder = re.sub(r"\\Processed_Output\\Differents$", "", folder2)
+            output_folder = re.sub(r"\\Processed_Output\\Differents$", "", output_folder2)
             # input_folder = re.sub(r"Label", r"Input", label_folder)
             input_folder = f"{root_folder}/Input{Output_num}"
             # Print testing

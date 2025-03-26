@@ -15,6 +15,11 @@ label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Processed_La
 llm_filled_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output\Differents"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
 
+#ensure root_folder/Resulst folder exist
+import os
+if not os.path.exists(f"{root_folder}/Results"):
+    os.makedirs(f"{root_folder}/Results")
+
 
 # Function to process df_detail
 def analyze_errors_type_1(error_list):
@@ -60,6 +65,7 @@ def process_df_detail(df_detail):
     df_detail = pd.concat([df_detail, pd.DataFrame([summary_row])], ignore_index=True)
     
     return df_detail
+
 df_detail = process_df_detail(df_detail)
 # Add user_X_X, user_X_Y column
 df_detail["user_X_X"] = df["user_X_X"]
@@ -68,7 +74,7 @@ df_detail["debug_user_X_Y_label"] = df["debug_user_X_Y_label"]
 df_detail["debug_user_X_Y_predict"] = df["debug_user_X_Y_predict"]
 # Save detail to csv
 # df_detail.to_csv(f"{root_folder}/Result_{Output_num}_{time_now}.csv", index=False,encoding='utf-8-sig')
-df_detail.to_csv(f"{root_folder}/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
+df_detail.to_csv(f"{root_folder}/Results/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 
 # Summary data
@@ -210,7 +216,7 @@ def df_detail_to_summary_excel(df_detail, excel_filename, name_sheet):
 
 # Save Summary to Excel
 # name_xlsx = f"{root_folder}/Summary_{Output_num}_{time_now}.xlsx"
-name_xlsx = f"{root_folder}/Summary_{Output_num}.xlsx"
+name_xlsx = f"{root_folder}/Results/Summary_{Output_num}.xlsx"
 name_sheet = "Summary"
 df_detail_to_summary_excel (df_detail, name_xlsx, name_sheet)
 
@@ -302,13 +308,20 @@ true_unseen_tagname_percent = frac(true_unseen_tagname,real_unseen_tagnames)
 num_form_error_X_Y = int(sum(df_detail["user_X_Y"]!=0)-1)
 detail_form_error_X_Y = df_detail.loc[df_detail["user_X_Y"] != 0, "user_X_Y"][:-1].astype("int").tolist()
 
-fist_row = [f"Data_{Label_Input_num}", num_forms, real_tagnames, total_A1, true_tagname, total_B, true_unseen_tagname, false_tagname_tagname, false_unseen_tagname, false_tagname_unseen_tagname]
-second_row = [f"Data_{Label_Input_num}", num_forms, frac(real_tagnames,real_tagnames), frac(total_A1,real_tagnames), frac(true_tagname,real_seen_tagnames), frac(total_B,real_tagnames), frac(true_unseen_tagname,real_unseen_tagnames), frac(false_tagname_tagname,real_seen_tagnames), frac(false_unseen_tagname,real_seen_tagnames), frac(false_tagname_unseen_tagname,real_unseen_tagnames)]
-third_row = [f"Data_{Label_Input_num}",num_forms, num_form_error_X_Y, detail_form_error_X_Y]
+# fist_row = [f"Data_{Label_Input_num}", num_forms, f"{real_tagnames}", f"{total_A1} ({frac(total_A1,real_tagnames)})", f"{true_tagname} ({frac(true_tagname,real_seen_tagnames)})", f"{total_B} ({frac(total_B,real_tagnames)})", f"{true_unseen_tagname} ({frac(true_unseen_tagname,real_unseen_tagnames)})", f"{false_tagname_tagname} ({frac(false_tagname_tagname,real_seen_tagnames)})", f"{false_unseen_tagname} ({frac(false_unseen_tagname,real_seen_tagnames)})", f"{false_tagname_unseen_tagname} ({frac(false_tagname_unseen_tagname,real_unseen_tagnames)})"]
+fist_row = [f"Data_{Label_Input_num}", num_forms, f"{real_tagnames}", f"{total_A1} ({frac(total_A1,real_tagnames)}%)", f"{false_unseen_tagname} ({frac(false_unseen_tagname,real_seen_tagnames)}%)", f"{false_tagname_tagname} ({frac(false_tagname_tagname,real_seen_tagnames)}%)",f"{false_tagname_unseen_tagname} ({frac(false_tagname_unseen_tagname,real_unseen_tagnames)}%)"]
+# second_row = [f"Data_{Label_Input_num}", num_forms, frac(real_tagnames,real_tagnames), frac(total_A1,real_tagnames), frac(true_tagname,real_seen_tagnames), frac(total_B,real_tagnames), frac(true_unseen_tagname,real_unseen_tagnames), frac(false_tagname_tagname,real_seen_tagnames), frac(false_unseen_tagname,real_seen_tagnames), frac(false_tagname_unseen_tagname,real_unseen_tagnames)]
+third_row = [f"Data_{Label_Input_num}",num_forms, f"{num_form_error_X_Y} ({frac(num_form_error_X_Y,num_forms)}%)", detail_form_error_X_Y]
 # Save to statis_{Label_Input_num}.csv
-statis_csv = f"{root_folder}/Result_statis_{Label_Input_num}.csv"
-column_names = ["Data_Num", "num_forms", "sum_tagname", "total_a1", "a1_a1", "total_b", "b_b", "a1_a1", "a1_b", "b_a1"]
-df_statis = pd.DataFrame([fist_row, second_row, third_row], columns=column_names)
+statis_csv = f"{root_folder}/Results/Result_statis_{Label_Input_num}.csv"
+column_names = ["Loại dữ liệu", "Số forms", "Tổng tagname", "Seen Tagname","FUT", "FT-T", "FT-UT"]
+df_statis = pd.DataFrame([fist_row, third_row], columns=column_names)
+# Replace values in the "Loại dữ liệu" column
+df_statis["Loại dữ liệu"] = df_statis["Loại dữ liệu"].replace({
+    "Data_31": "Thực tế",
+    "Data_21": "LLM",
+    "Data_11": "Quy tắc"
+})
 df_statis.to_csv(statis_csv, index=False,encoding='utf-8-sig')
 # Print
 print("Save result successfully!!")

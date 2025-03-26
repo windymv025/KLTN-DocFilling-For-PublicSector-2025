@@ -7,7 +7,6 @@ from Config.tagnames import remaining_tag_names
 from Config.LLM import gemini
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from Tagnames.get_tagnames import get_tagnames, get_all_tagnames
 from Prompts.create_forms import gen_forms_tagnames_label_forms
 # Text Processing
 from Utils.text_processing import Text_Processing
@@ -798,185 +797,6 @@ Output:
 
 """
 
-prompt_backup = """
-Bạn là một AI có nhiệm vụ tạo ra các biểu mẫu hành chính từ thông tin cá nhân được cung cấp. 
-Bạn sẽ nhận đầu vào là thông tin của một cá nhân và sinh ra một biểu mẫu phù hợp với ngữ cảnh sử dụng.
-Dữ liệu đầu vào có dạng một danh sách cặp khóa-giá trị (key-value), trong đó:
-- Key là tên thông tin (ví dụ: "họ và tên", "năm sinh", "giới tính", v.v.).
-- Value là giá trị tương ứng (ví dụ: "Nguyễn Đức Anh", "2011", "Nam", v.v.).
-
-**Quy tắc tạo form:**
-1. Chỉ sử dụng dữ liệu được cung cấp. 
-Nếu một thông tin không có trong dữ liệu đầu vào, điền [Trống] thay vì bỏ trống hoặc sử dụng placeholder chung.
-Định dạng dữ liệu:
-Dữ liệu điền vào phải giữ nguyên định dạng [Giá trị], ví dụ [Nguyễn Đức Anh], [2011], [Nam], v.v.
-2. Chọn một loại form phù hợp với các trường dữ liệu có sẵn. Ví dụ:
-- Đơn đăng ký tạm trú
-- Đơn xin cấp hộ chiếu
-- Tờ khai căn cước công dân
-- Đơn xin việc
-- Đơn đăng ký kết hôn
-- Giấy khai sinh
-- ...
-3. Bảo đảm form đúng chuẩn hành chính với đầy đủ tiêu đề, định dạng, bố cục.
-4. Giữ nguyên thông tin mà không sửa đổi hoặc diễn giải lại.
-5. Đảm bảo văn phong hành chính rõ ràng, trang trọng.
-6. Một số quy tắc tạo dữ liệu:
-- Nếu chỉ có "Ngày sinh" hay "Sinh ngày",... thì điền giá trị ngày tháng năm đầy đủ (dd/mm/yyyy). (VD Ngày sinh: [11/11/2011]),
-tránh nhầm lẫn với các thông tin khác như "Ngày sinh bằng chữ", "Năm sinh", "Tên gọi", "Tên gọi khác",..
-- Nếu "Ngày sinh bằng chữ", thì giữ nguyên giá trị chữ. (VD Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011])
-- Nếu chỉ có "Năm sinh", thì điền chỉ năm (yyyy). (VD Năm sinh: [2011])
-- Ví dụ tên gọi khác, dùng mục Tên gọi khác : [Anh Nguyễn]
-- Với các mục A/B, ví dụ  Số CCCD/Hộ chiếu, thì mặc định điền theo nội dung là CCCD, tức id_number, hay số định danh.
-Ví dụ: 
-Có giá trị:
-"số định danh": "11111111", và "số hộ chiếu": "C12345678", thì mục
-Số CCCD/Hộ chiếu: .......... ta cần điền: Số CCCD/Hộ chiếu: [11111111]
-
-- Ngày sinh: Nếu có "Ngày sinh" hoặc "Sinh ngày" → dùng định dạng đầy đủ dd/mm/yyyy (VD: Ngày sinh : [11/11/2011] hay sinh ngày : [11/11/2011]).
-- Ngày sinh bằng chữ: Nếu có "Ngày sinh bằng chữ", điền ngày sinh bằng chữ (VD: Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]).
-Năm sinh: Nếu chỉ có "Năm sinh", điền năm sinh: [2011].
-Tên gọi khác: Nếu có "Tên gọi khác", ghi vào "Tên gọi khác:" [Anh Nguyễn].
-Số CCCD/Hộ chiếu: Mặc định điền giá trị "Số CCCD", tức số định danh. 
-VD: 
-Số CCCD/Hộ chiếu: [11111111]
-Ngày cấp: [11/11/2021]
-Nơi cấp: [Công an TP.HCM 11]
-
-- Tất cả các thông tin cung cấp đều mang nghĩa giá trị hiện tại, nếu mục để nội dung liên quan quá khứ,
-như số căn cước cũ, số hộ chiếu cũ, thì sẽ không điền giá trị vào các mục này.
-Tức chỉ điền nếu là mục số căn cước, hộ chiếu, không điền với mục là số hộ chiếu cũ, số căn cước cũ.
-- Với giá trị liên quan tình trạng hiện tại (tiêu biểu như đang làm việc, học tập tại đâu), chỉ điền giá trị đó
-nếu mục là tình trạng hiện tại, trạng thái hiện tại.
-Ví dụ: 
-- Tình trạng hiện tại: [Đang làm việc tại công ty FPT]
-- Trạng thái hiện tại: [Học tại trường HCMUS] 
-Còn các mục như lý do tạm trú, nơi làm việc, thì không điền vào mục tình trạng hiện tại, cũng như trạng thái hiện tại, và tương tự.
-
-Ví dụ:
-Input:
-```
-**Thông tin của User1:**
-
-họ và tên: Nguyễn Đức Anh,
-ngày tháng năm sinh: 11/11/2011,
-tên gọi khác: Anh Nguyễn,
-ngày sinh bằng chữ: Mười một tháng Mười một năm 2011,
-năm sinh: 2011,
-giới tính: Nam,
-số định danh: 11111111,
-ngày cấp CCCD: 11/11/2021,
-nơi cấp CCCD: Công an TP.HCM 11,
-nghề nghiệp: Kỹ sư phần mềm,
-trình độ học vấn: Đại học,
-dân tộc: Kinh,
-tôn giáo: Không,
-quốc tịch: Việt Nam,
-tình trạng hôn nhân: Độc thân,
-nhóm máu: O,
-nơi sinh: Bệnh viện Từ Dũ, TP.HCM,
-nơi đăng ký khai sinh: UBND Quận 1, TP.HCM,
-quê quán: Nam Định,
-địa chỉ thường trú: 5 Lê Lợi, Hà Nội,
-địa chỉ hiện tại: 111 Trần Hưng Đạo, TP.HCM,
-tình trạng hiện tại: Đang làm việc tại công ty FPT,
-số hộ chiếu: C12345678,
-ngày cấp hộ chiếu: 20/07/2020,
-nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Hà Nội,
-ngày hết hạn hộ chiếu: 20/07/2030
-```
-
-Output:
-```
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-ĐƠN ĐĂNG KÝ TẠM TRÚ
-Kính gửi: Công an phường/xã
-
-Họ và tên: [NGUYỄN ĐỨC ANH]
-Tên gọi khác: [Anh Nguyễn]
-Ngày sinh: [11/11/2011] (Bằng chữ: [Mười một tháng Mười một năm 2011])
-Giới tính: [Nam]
-Số CCCD: [11111111]
-Ngày cấp: [11/11/2021]
-Nơi cấp: [Công an TP.HCM 11]
-
-Quê quán: [Nam Định]
-Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
-Địa chỉ tạm trú: [111 Trần Hưng Đạo, TP.HCM]
-
-Lý do đăng ký tạm trú: Làm việc tại TP.HCM
-
-Tôi xin cam đoan những thông tin trên là đúng sự thật và cam kết chấp hành đầy đủ quy định về tạm trú theo pháp luật Việt Nam.
-
-[Trống], ngày [Trống] tháng [Trống] năm [Trống]
-Người làm đơn
-(Ký và ghi rõ họ tên)
-[Nguyễn Đức Anh]
-```
-
-Input:
-```
-**Thông tin của User1:**
-
-họ và tên: Nguyễn Đức Anh
-ngày tháng năm sinh: 11/11/2011
-năm sinh: 2011
-giới tính: Nam
-tôn giáo: Không
-nơi sinh: Bệnh viện Từ Dũ, TP.HCM
-ngày cấp CCCD: 11/11/2021
-nơi đăng ký khai sinh: UBND Quận 1, TP.HCM
-nhóm máu: O
-quốc tịch: Việt Nam
-số định danh: 11111111
-địa chỉ thường trú: 5 Lê Lợi, Hà Nội
-nơi cấp CCCD: Công an TP.HCM 11
-nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Hà Nội
-ngày cấp hộ chiếu: 20/07/2020
-tình trạng hiện tại: Đang làm việc tại công ty FPT
-```
-Output:
-```
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-TỜ KHAI CĂN CƯỚC CÔNG DÂN
-Họ và tên: [NGUYỄN ĐỨC ANH]
-Ngày sinh: [11/11/2011]
-Năm sinh: [2011]
-Giới tính: [Nam]
-Tôn giáo: [Không]
-Quốc tịch: [Việt Nam]
-Nhóm máu: [O]
-
-Số định danh cá nhân: [11111111]
-Nơi sinh: [Bệnh viện Từ Dũ, TP.HCM]
-Nơi đăng ký khai sinh: [UBND Quận 1, TP.HCM]
-Quê quán: [Trống]
-
-Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
-
-Thông tin giấy tờ cá nhân:
-
-Ngày cấp CCCD: [11/11/2021]
-Nơi cấp CCCD: [Công an TP.HCM 11]
-Ngày cấp hộ chiếu: [20/07/2020]
-Nơi cấp hộ chiếu: [Cục Quản lý Xuất nhập cảnh Hà Nội]
-Tình trạng hiện tại: [Đang làm việc tại công ty FPT]
-
-Tôi xin cam đoan những thông tin trên là chính xác và hoàn toàn chịu trách nhiệm trước pháp luật.
-
-[Trống], ngày [Trống] tháng [Trống] năm [Trống]
-```
-
-Input:
-```
-{input_form}
-```
-Output:
-
-"""
-
 def random_merge(*datasets):
     """
     Hàm chọn ngẫu nhiên một số tập dữ liệu từ danh sách đầu vào và hợp nhất chúng.
@@ -987,11 +807,16 @@ def random_merge(*datasets):
     if not datasets:
         return {}
 
-    selected_datasets = random.sample(datasets, k=random.randint(1, len(datasets)))
+    selected_datasets = random.sample(datasets, k=random.randint(len(datasets), len(datasets)))
     merged_data = defaultdict(list)
 
     for i, dataset in enumerate(selected_datasets):
         for key, value in dataset.items():
+            # if key == "họ và tên":
+            #     names = ['Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam']
+            #     for name in names:
+            #         merged_data[key].append(name)
+            # else:
             merged_data[key].append(value)
 
     return dict(merged_data)
@@ -1166,6 +991,7 @@ for i in range(Num_forms):
     file_save_path_label = f"{label_folder}/{file_name}"
     file_save_path_info = f"{info_folder}/{file_name}"
     user_data = random_merge(data, data2, data3, data4)
+    # print(user)
     merged_data = {**user_data, **noise_data}
     data_form = extract_random_data(merged_data, noise_data)
     # print(data_form)
