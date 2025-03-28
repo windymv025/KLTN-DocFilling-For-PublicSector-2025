@@ -669,7 +669,7 @@ class Text_Processing:
         contextual_llm, label_llm = self.get_contextual_tagnames(form_llm_filled)
         contextual_input, label_input = self.get_contextual_tagnames(input_form)
         # List tagname
-        tagname_for_input,copy_contextual_input = self.get_tagnames_from_LLM_filled_form(
+        tagname_for_input, copy_contextual_input = self.get_tagnames_from_LLM_filled_form(
             contextual_llm, label_llm, contextual_input, label_input
         )
         # Fill
