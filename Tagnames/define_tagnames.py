@@ -21,7 +21,6 @@ def define_tagname_Nam_ver1(llm, text):
     )
     return response
 
-
 def generate_tagnames(input_folder, output_folder):
     T = True
     while T:
@@ -38,7 +37,8 @@ def generate_tagnames(input_folder, output_folder):
                 text = Text_Processing().Read_txt_file(file_path)
                 try:
                     llm_filled = define_tagname_Nam_ver1(gemini, text)
-                    # llm_filled = define_tagname_deepseek_r1_free(text)
+                    while not llm_filled.strip():  # Check if empty or contains only whitespace
+                        llm_filled = define_tagname_Nam_ver1(gemini, text)
                     # print(llm_filled)
                     # Save to output_folder
                     output_path = output_folder + "/" + filename

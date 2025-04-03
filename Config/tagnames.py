@@ -271,6 +271,9 @@ list_cccd_passport_tagnames = [
     "[hometown_district]",
     "[hometown_province]",
     "[permanent_address]",
+    "[permanent_address_ward]",
+    "[permanent_address_district]",
+    "[permanent_address_province]",
     "[current_address]",
     "[current_address_ward]",
     "[current_address_district]",
@@ -294,6 +297,14 @@ group_birth_registration_tagname = ["birth_registration_place", "birth_registrat
 group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_district", "birthplace_province"]
 group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob_year"]
 group_name_tagname = ["full_name", "alias_name"]
+
+
+list_permanent_address = ["thường trú"]
+list_current_address = ["hiện tại", "tạm trú"]
+list_hometown = ["quê quán", "nguyên quán", "quê gốc"]
+list_occupation = ["nghề nghiệp", "công việc", "công việc hiện tại", "chức vụ"] 
+list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd"]
+list_contextual_passport = ["hộ chiếu","passport"]
 
 
 # list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
