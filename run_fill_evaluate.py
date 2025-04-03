@@ -6,16 +6,42 @@ from Config import Data_num, Type
 import openpyxl
 
 config_file = "Config/config.py"
+fill_tagname_file = "fill_tagname_to_input.py"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
 name_result = "A"
 
 
 # Define the test cases for output_label_input_num and Data_num
 # output_label_input_nums = [201, 202]
-# output_label_input_nums = [1, 3]
 output_label_input_nums = [1]
-# output_label_input_nums = [21, 22, 23, 24]
 
+# Run with process_tagname = False in fill_tagname_to_input.py
+for output_label_input_num in output_label_input_nums:
+    print(f"\nTesting with output_label_input_num={output_label_input_num}")
+
+    # Read and modify config.py content
+    with open(config_file, "r") as file:
+        content = file.read()
+    # Modify the variables
+    content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
+    # Write back the modified content
+    with open(config_file, "w") as file:
+        file.write(content)
+    print("Updated config.py ✅")
+    
+    # Read and modify fill_tagname_to_input.py (process_tagname=False) content
+    with open(fill_tagname_file, "r") as file:
+        content = file.read()
+    # Modify the variables
+    content = re.sub(r'process_tagname\s*=\s*\w+', 'process_tagname = False', content)
+    # Write back the modified content  
+    with open(fill_tagname_file, "w") as file:
+        file.write(content)
+    print("Updated fill_tagname_to_input.py ✅")
+
+    # Run fill.py
+    subprocess.run(["python", "fill_tagname_to_input.py"])
+    print("Executed fill.py ✅")
 
 for output_label_input_num in output_label_input_nums:
     print(f"\nTesting with output_label_input_num={output_label_input_num}")
@@ -23,16 +49,22 @@ for output_label_input_num in output_label_input_nums:
     # Read config.py content
     with open(config_file, "r") as file:
         content = file.read()
-
     # Modify the variables
     content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
-    # print(content)
-
     # Write back the modified content
     with open(config_file, "w") as file:
         file.write(content)
-
     print("Updated config.py ✅")
+
+    # Read and modify fill_tagname_to_input.py (process_tagname=True) content
+    with open(fill_tagname_file, "r") as file:
+        content = file.read()
+    # Modify the variables
+    content = re.sub(r'process_tagname\s*=\s*\w+', 'process_tagname = True', content)
+    # Write back the modified content  
+    with open(fill_tagname_file, "w") as file:
+        file.write(content)
+    print("Updated fill_tagname_to_input.py ✅")
 
     # Run fill.py
     subprocess.run(["python", "fill_tagname_to_input.py"])

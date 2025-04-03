@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-
 load_dotenv()
 gemini_key = os.getenv("GEMINI_KEY")
 

@@ -13,6 +13,7 @@ import ast
 # label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Differents"
 label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Processed_Label\Differents"
 llm_filled_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output\Differents"
+llm_filled_truthLLM_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output_trustLLM\Differents"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
 
 #ensure root_folder/Resulst folder exist
@@ -42,9 +43,12 @@ def analyze_errors_type_2(error_list):
                   key=lambda x: x[3], reverse=True)
 
 # ============= Evaluate between label and llm_filled folders=============
-df, df_detail = similarity_result_two_folders(label_folder, llm_filled_folder)
+df, df_detail, df_debug_llm_truthLLM_dict = similarity_result_two_folders(label_folder, llm_filled_folder, llm_filled_truthLLM_folder=llm_filled_truthLLM_folder)
 # Save to csv
 time_now = time.strftime('%Y-%m-%d-%H-%M-%S')
+
+# to csv debug_llm_truthLLM_dict
+df_debug_llm_truthLLM_dict.to_csv(f"{root_folder}/Results/debug_llm_truthLLM_dict_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 def process_df_detail(df_detail):
     # Process df detail

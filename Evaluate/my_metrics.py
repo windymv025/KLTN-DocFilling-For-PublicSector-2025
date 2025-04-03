@@ -27,7 +27,7 @@ def analyze_errors_type_2(error_list):
     return sorted([(tag1, tag2, context, count) for (tag1, tag2, context), count in counter.items()], 
                   key=lambda x: x[3], reverse=True)
 
-def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2, filename):
+def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2, filename, tagnames_truthLLM=None):
     # print("come here? 3")
     """
     - Hàm kiểm tra độ tương đồng hai list tagname1 (label), tagname2(LLM-filled)
@@ -38,14 +38,13 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     + A1-B: Count of unrecognized subset A tagnames (labeled as #another).
     + B-A1: Count of false positives (LLM incorrectly identifies subset A).
     + B-B: Count of correct non-A tagnames assigned as #another.
+
+    tagnames1: List of tagnames from the label.
+    tagnames2: List of tagnames from the LLM-filled form.
     """
     our_40_tagnames = Text_Processing().Summary_tagnames()
     # Check if the lengths are different
     if len(tagnames1) != len(tagnames2):
-        # print("Lengths are different: ", len(tagnames1), len(tagnames2))
-        # print(tagnames1)
-        # print(tagnames2)
-        # print(ducnam)
         metrics = {
             "completeness": 0,
             "A1-A1": 0,
@@ -66,11 +65,7 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
             "debug_user_X_Y_label": [],
             "debug_user_X_Y_predict": [],
         }
-        # if filename == "49_00_TK1-TS.txt":
-            # print("debug3")
-            # print(len(tagnames1), len(tagnames2))
         return metrics, metrics  # Return 0% similarity if lengths are different
-    
     # Initialize counters
     A1_A1, A1_A2, A1_B, B_A1, B_B = 0, 0, 0, 0, 0
     error_A1_A2, error_A1_B, error_B_A1 = [], [], []
@@ -79,13 +74,24 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
     copy_contextual_input_dir = f"{root_folder}/Output{Output_num}/Copy_Contextual_Input/"+ filename + ".json"
     # Read copy_contextual_input
     with open(copy_contextual_input_dir, "r", encoding="utf-8") as f:
-        # print(copy_contextual_input_dir)
         copy_contextual_input = json.load(f)
     num_user_X_X = 0
     num_user_X_Y = 0
     debug_user_X_Y_label = []
     debug_user_X_Y_predict = []
+    true_llm_truthLLM = 0
+    false_llm_truthLLM = 0
+    debug_llm_truthLLM = []
     for index, (tag1, tag2) in enumerate(zip(tagnames1, tagnames2)):
+        llm_truthLLM = False
+        
+        if tagnames_truthLLM is not None:
+            tag_truthLLM = tagnames_truthLLM[index]
+            if tag_truthLLM != tag2:
+                # print("Error: tag_truthLLM != tag2")
+                # print(tag_truthLLM, tag2)
+                llm_truthLLM = True
+
         if copy_contextual_input[index][-1][0] != "[":
             debug_contextual_output = " ".join(copy_contextual_input[index]) + " " + "Empty"
         else:
@@ -107,61 +113,64 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
             num_user_X_Y += 1
             debug_user_X_Y_label.append(tag1)
             debug_user_X_Y_predict.append(tag2)
-        # print(user_tag1, user2_tag2)
-        # print(tag1, tag2)
-        # if user_tag1 != -1 and user2_tag2 != -1:
-        #     print(ducnam)
 
         # Standardize tagnames by replacng userX with user0
         standardized_tag1 = re.sub(r"user\d+", "user0", tag1)
         standardized_tag2 = re.sub(r"user\d+", "user0", tag2)
         # Standardize tagnames by replacing userX with user0
-        # standardized_tag1 = re.sub(r"deceased", "user0", standardized_tag1)
-        # standardized_tag2 = re.sub(r"deceased", "user0", standardized_tag2)
-        # Replace "dob_date" with "dob" exactly
         standardized_tag1 = re.sub(r"dob_date", "dob", standardized_tag1)
         standardized_tag2 = re.sub(r"dob_date", "dob", standardized_tag2)
-        # # Replace "cmnd" with "id" exactly
-        # standardized_tag1 = re.sub(r"cmnd", "id", standardized_tag1)
-        # standardized_tag2 = re.sub(r"cmnd", "id", standardized_tag2)
-        # # Replace "birth_place" with "birthplace" exactly
-        # standardized_tag1 = re.sub(r"birth_place", "birthplace", standardized_tag1)
-        # standardized_tag2 = re.sub(r"birth_place", "birthplace", standardized_tag2)
-        # # Replace "registration" with "birth_registration" exactly
-        # standardized_tag1 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag1)
-        # standardized_tag2 = re.sub(r"user0_birth_registration_place", "user0_birth_registration", standardized_tag2)
-        # # Now if tagname is receiver --> convert to #another
-        # standardized_tag1 = re.sub(r"receiver", "#another", standardized_tag1)
-        # standardized_tag2 = re.sub(r"receiver", "#another", standardized_tag2)
         
-
         # Check if ground truth tagname is in subset_A
         if standardized_tag1 in our_40_tagnames:
             count_label += 1
             if standardized_tag2 in our_40_tagnames:
                 if standardized_tag1 == standardized_tag2:
                     A1_A1 += 1  # Exact match
+                    if llm_truthLLM:
+                        # print("ADD")
+                        # print(true_llm_truthLLM)
+                        true_llm_truthLLM += 1
+                        # print(true_llm_truthLLM)
                 else:
+                    if llm_truthLLM:
+                        # print("ADD")
+                        # print(false_llm_truthLLM)
+                        false_llm_truthLLM += 1
+                        # print(false_llm_truthLLM)
+                        debug_llm_truthLLM.append(('A1-A2: ',' '.join(contextual1[index]), tag1, debug_contextual_output))
                     # error_A1_A2.append((tag1, tag2))
                     error_A1_A2.append((standardized_tag1, standardized_tag2))
-                    # print(" ".join(contextual1[index]))
                     error_A1_A2_detail.append((' '.join(contextual1[index]), tag1, debug_contextual_output))
-                    # print("A1_A2: ", tag1, " - ", tag2)
                     A1_A2 += 1  # Incorrect match within subset A
             else:
+                if llm_truthLLM:
+                    # print("ADD")
+                    # print(false_llm_truthLLM)
+                    false_llm_truthLLM += 1
+                    # print(false_llm_truthLLM)
+                    debug_llm_truthLLM.append(('A1-B: ',' '.join(contextual1[index]), tag1, debug_contextual_output))
                 # error_A1_B.append((tag1, tag2))
                 error_A1_B.append((standardized_tag1, standardized_tag2))
                 error_A1_B_detail.append((' '.join(contextual1[index]), tag1, debug_contextual_output))
-                # print("A1_B: ", tag1, " - ", tag2)
                 A1_B += 1  # Missed, filled with something outside subset A
         else:
             if standardized_tag2 in our_40_tagnames:
-                # error_B_A1.append((tag1, tag2))
+                if llm_truthLLM:
+                    # print("ADD")
+                    # print(false_llm_truthLLM)
+                    false_llm_truthLLM += 1
+                    # print(false_llm_truthLLM)
+                    debug_llm_truthLLM.append(('B-A1: ',' '.join(contextual1[index]), tag1, debug_contextual_output))
                 error_B_A1.append((standardized_tag1, standardized_tag2))
                 error_B_A1_detail.append((' '.join(contextual1[index]), tag1, debug_contextual_output))
-                # print("B-A1: ", tag1, " - ", tag2)
                 B_A1 += 1  # Incorrectly predicted a tagname in subset A
             else:
+                if llm_truthLLM:
+                    # print("ADD")
+                    # print(true_llm_truthLLM)
+                    true_llm_truthLLM += 1
+                    # print(true_llm_truthLLM)
                 B_B += 1  # Both are outside subset A (#another case)
 
     # matching_tagnames = [tag1 for tag1, tag2 in zip(tagnames1, tagnames2) if tag1 == tag2]
@@ -217,12 +226,20 @@ def calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, 
         "D_A1_B": analyze_errors_type_2(metrics["error A1-B detail"]),
         "D_B_A1": analyze_errors_type_2(metrics["error B-A1 detail"]),
     }
-    # if filename == "49_00_TK1-TS.txt":
-    #     print("debug2")
-    #     print(metrics)
-    #     print(metrics_detail)
 
-    return metrics, metrics_detail
+    # Debug truth LLM
+    # print(true_llm_truthLLM)
+    # print(false_llm_truthLLM)
+    debug_llm_truthLLM_dict = {
+        "true_llm_truthLLM": true_llm_truthLLM,
+        "false_llm_truthLLM": false_llm_truthLLM,
+        "debug_llm_truthLLM": debug_llm_truthLLM,
+    }
+    # print("Test") 
+    # print(true_llm_truthLLM, false_llm_truthLLM)
+    # print(debug_llm_truthLLM_dict)
+    # print()
+    return metrics, metrics_detail, debug_llm_truthLLM_dict
 
 
 def print_tagnames(tagnames):
@@ -232,43 +249,41 @@ def print_tagnames(tagnames):
     print()
 
 
-def similarity_two_forms(form1, form2, filename):
+def similarity_two_forms(form1, form2, filename, text_truthLLM=None):
     # print("come here? 2")
     # Replace all ".........." by "[#another]"
     form1 = form1.replace("..........", "[#another]")
     form2 = form2.replace("..........", "[#another]")
+    if text_truthLLM is not None:
+        text_truthLLM = text_truthLLM.replace("..........", "[#another]")
     # Find all matches
-    # pattern = r"\[(?!\d)([^\]]+)\]"
-    # tagnames1 = re.findall(pattern, form1)
-    # tagnames2 = re.findall(pattern, form2)
-    # print("debug 2.1")
     contextual1, tagnames1 = Text_Processing().get_contextual_tagnames(form1)
-    # print("debug 2.2")
-    contextual2, tagnames2 = Text_Processing().get_contextual_tagnames(form2)
+    contextual2, tagnames2 = Text_Processing().get_contextual_tagnames(form2)   
+    tagnames_truthLLM = None
+    if text_truthLLM is not None:
+        contextual_truthLLM, tagnames_truthLLM = Text_Processing().get_contextual_tagnames(text_truthLLM)
     
-    # print tagnames to check
     # Calculate similarity percentage
-    # print("debug 2.3")
-    similarity_percentage, similarity_percentage_detail = calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2, filename)
-    # print("debug 2.4")
+    similarity_percentage, similarity_percentage_detail, debug_llm_truthLLM_dict = calculate_similarity(contextual1, contextual2, tagnames1, tagnames2, form1, form2, filename, tagnames_truthLLM)
     
-    return similarity_percentage, similarity_percentage_detail
+    return similarity_percentage, similarity_percentage_detail, debug_llm_truthLLM_dict
 
 
-def similarity_result_two_folders(label_folder1, output_folder2):
+def similarity_result_two_folders(label_folder1, output_folder2,llm_filled_truthLLM_folder=None):
     '''
     label_folder1: label
     output_folder2: output
     '''
-    print("come here? 1")
     similarity_result_forms = []
     similarity_result_forms_detail = []
+    list_debug_llm_truthLLM_dict = []
     form_names = []
     index_result = 0
     for index, filename in enumerate(os.listdir(output_folder2)):
         if filename.endswith(".txt"):
             similarity_result_forms.append([])
             similarity_result_forms_detail.append([])
+            list_debug_llm_truthLLM_dict.append([])
             if (index+1)%5 == 0:
                 print("========= Index: ", index+1, "============", filename)
             # if filename == "49_00_TK1-TS.txt":
@@ -278,25 +293,30 @@ def similarity_result_two_folders(label_folder1, output_folder2):
             # Read
             text_label = Text_Processing().Read_txt_file(file_dir_label_process)
             text_predict = Text_Processing().Read_txt_file(file_dir_output_process)
+            text_truthLLM = None
+            if llm_filled_truthLLM_folder is not None:
+                file_dir_output_truthLLM_process = llm_filled_truthLLM_folder + "/" + filename
+                text_truthLLM = Text_Processing().Read_txt_file(file_dir_output_truthLLM_process)
+                text_truthLLM = text_truthLLM.strip()
             # Strip
             text_label = text_label.strip()
             text_predict = text_predict.strip()
             # Result
             # print("debug1")
-            similarity_result, similarity_result_detail = similarity_two_forms(text_label, text_predict, filename)
+            similarity_result, similarity_result_detail, debug_llm_truthLLM_dict = similarity_two_forms(text_label, text_predict, filename, text_truthLLM)
             # print("debug2")
             similarity_result_forms[index_result].append(similarity_result)
             similarity_result_forms_detail[index_result].append(similarity_result_detail)
+
+            # Add debug_llm_truthLLM_dict
+            list_debug_llm_truthLLM_dict[index_result].append(debug_llm_truthLLM_dict)
+
             # Process to get output folder, label folder
             # Now, folder 1 is label, folder 2 is llm_filled
             label_folder = f"{root_folder}/Label{Output_num}"
             output_folder = re.sub(r"\\Processed_Output\\Differents$", "", output_folder2)
             # input_folder = re.sub(r"Label", r"Input", label_folder)
             input_folder = f"{root_folder}/Input{Output_num}"
-            # Print testing
-            # print(label_folder)
-            # print(output_folder)
-            # print(input_folder)
             # Add form names
             file_dir_label = label_folder + "/" + filename
             file_dir_output = output_folder + "/" + filename
@@ -310,12 +330,10 @@ def similarity_result_two_folders(label_folder1, output_folder2):
             # Add to form_names to store it
             form_names.append([file_dir_input_hyperlink, file_dir_output_hyperlink, file_dir_output_process_hyperlink, file_dir_label_hyperlink, file_dir_label_process_hyperlink])
             index_result += 1
-    # print(similarity_result_forms)
-    # print(similarity_result_forms[-1])
-    # print(len(similarity_result_forms))
     # Create the DataFrame
     flattened_data = [item[0] for item in similarity_result_forms]
     flattened_data_detail = [item[0] for item in similarity_result_forms_detail]
+    flattened_data_debug_llm_truthLLM_dict = [item[0] for item in list_debug_llm_truthLLM_dict]
     # Create the DataFrame
     df = pd.DataFrame(
         flattened_data,
@@ -375,8 +393,18 @@ def similarity_result_two_folders(label_folder1, output_folder2):
     # Add form_names to the end of df detail verison
     df_detail = pd.concat([df_detail, df_form_names], axis=1)
     
+    # df debug
+    # print(list_debug_llm_truthLLM_dict)
+    df_debug_llm_truthLLM_dict = pd.DataFrame(
+        flattened_data_debug_llm_truthLLM_dict,
+        columns=[
+            "true_llm_truthLLM",
+            "false_llm_truthLLM",
+            "debug_llm_truthLLM",
+        ],
+    )
 
     # Concatenate
     # df_detail = pd.concat([df_detail, pd.DataFrame([summary_row])], ignore_index=True)
 
-    return sub_df, df_detail
+    return sub_df, df_detail, df_debug_llm_truthLLM_dict
