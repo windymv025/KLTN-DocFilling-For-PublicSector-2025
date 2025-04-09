@@ -8,12 +8,11 @@ import openpyxl
 config_file = "Config/config.py"
 fill_tagname_file = "fill_tagname_to_input.py"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
-name_result = "A"
+name_result = "B"
 
 
 # Define the test cases for output_label_input_num and Data_num
-# output_label_input_nums = [201, 202]
-output_label_input_nums = [1]
+output_label_input_nums = [11, 21, 31, 12, 22, 32]
 
 # Run with process_tagname = False in fill_tagname_to_input.py
 for output_label_input_num in output_label_input_nums:
@@ -70,9 +69,22 @@ for output_label_input_num in output_label_input_nums:
     subprocess.run(["python", "fill_tagname_to_input.py"])
     print("Executed fill.py ✅")
 
+# Run evaluate
+for output_label_input_num in output_label_input_nums:
+    print(f"\nTesting with output_label_input_num={output_label_input_num}")
+    # Read config.py content
+    with open(config_file, "r") as file:
+        content = file.read()
+    # Modify the variables
+    content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
+    # Write back the modified content
+    with open(config_file, "w") as file:
+        file.write(content)
+    print("Updated config.py ✅")
     # Run evaluate.py
     subprocess.run(["python", "evaluate_tagname.py"])
     print("Executed evaluate.py ✅")
+    
 
 sum_df = pd.read_csv(f"{root_folder}/Results/Result_statis_{output_label_input_nums[0]}.csv")
 X_Y_error = sum_df.iloc[1:,:]

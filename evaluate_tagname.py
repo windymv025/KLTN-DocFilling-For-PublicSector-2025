@@ -318,13 +318,16 @@ fist_row = [f"Data_{Label_Input_num}", num_forms, f"{real_tagnames}", f"{total_A
 third_row = [f"Data_{Label_Input_num}",num_forms, f"{num_form_error_X_Y} ({frac(num_form_error_X_Y,num_forms)}%)", detail_form_error_X_Y]
 # Save to statis_{Label_Input_num}.csv
 statis_csv = f"{root_folder}/Results/Result_statis_{Label_Input_num}.csv"
-column_names = ["Loại dữ liệu", "Số forms", "Tổng tagname", "Seen Tagname","FUT", "FT-T", "FT-UT"]
+column_names = ["Loại dữ liệu", "Số forms", "Tổng tagname", "Seen Tagname","F-UF", "FF-F", "FF-UF"]
 df_statis = pd.DataFrame([fist_row, third_row], columns=column_names)
 # Replace values in the "Loại dữ liệu" column
 df_statis["Loại dữ liệu"] = df_statis["Loại dữ liệu"].replace({
     "Data_31": "Thực tế",
+    "Data_32": "Thực tế",
     "Data_21": "LLM",
-    "Data_11": "Quy tắc"
+    "Data_22": "LLM",
+    "Data_11": "Quy tắc",
+    "Data_12": "Quy tắc"
 })
 df_statis.to_csv(statis_csv, index=False,encoding='utf-8-sig')
 # Print

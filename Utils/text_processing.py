@@ -20,8 +20,10 @@ from Config.tagnames import (
     group_birthplace_tagname,
     group_dob_tagname,
     group_name_tagname,
+    group_tagname_ward_district_province,
     list_contextual_id_number,
     list_contextual_passport,
+    list_context_current_address,
     list_current_address,
     list_hometown,
     list_permanent_address,
@@ -199,6 +201,8 @@ class Text_Processing:
             elif "đăng ký" in sentence_contextual and "birthplace" in tagname:
                 new_tagname = re.sub("birthplace","birth_registration_place",tagname)
                 label_llm = self.modified_label_llm(label_llm, index_llm, "birthplace", "birth_registration_place")
+            
+
             # return new_tagname
         # # Check id - passport group
         elif value_tagname in group_id_tagname or value_tagname in group_passport_tagname:
@@ -208,7 +212,9 @@ class Text_Processing:
             - Tiếp theo, cần check hậu tố _place, _date
             - Và, check nhầm giữa _place, _date với _number
             '''
-            
+            #Check if any list_contextual_id_number, list_contextual_passport in sentence_contextual
+            # if not any(temp in sentence_contextual for temp in list_contextual_id_number+list_contextual_passport):
+            #     return "[#another]"
             if any(temp in sentence_contextual for temp in list_contextual_id_number):
                 if "passport" in tagname:
                     new_tagname = re.sub("passport","id_number",tagname)
@@ -280,6 +286,9 @@ class Text_Processing:
             - Check nhầm lần với "Trạng thái HIỆN TẠI", "tình trạng HIỆN TẠI" --> return
             - Tương tự check current, và permanent có đúng hay không như birthplace.
             '''
+            # if value_tagname in group_current_address_tagname:
+            #     if not any(temp in sentence_contextual for temp in list_context_current_address):
+            #         return "[#another]"
             # Check if current address mixed with current status
             if ("tình trạng" in sentence_contextual or "trạng thái" in sentence_contextual) and ("địa chỉ" not in sentence_contextual):
                 return "[#another]"
@@ -314,8 +323,18 @@ class Text_Processing:
             else:
                 new_tagname = "[#another]"
         
-        if new_tagname != tagname:
-            pass
+        # Take again userX, value_tagname
+        userX, value_tagname = self.extract_user_and_tag(tagname)
+        # Now check if tagname missing suffix ward, district, province
+        if value_tagname in group_tagname_ward_district_province:
+            if ("phường" in sentence_contextual or "xã" in sentence_contextual) and "ward" not in new_tagname:
+                new_tagname = re.sub("]","_ward]",new_tagname)
+            elif ("quận" in sentence_contextual or "huyện" in sentence_contextual) and "district" not in new_tagname:
+                new_tagname = re.sub("]","_district]",new_tagname)
+            elif ("tỉnh" in sentence_contextual or "thành" in sentence_contextual) and "district" not in new_tagname:
+                new_tagname = re.sub("]","_province]",new_tagname)
+        # if new_tagname != tagname:
+        #     pass
         label_llm[index_llm] = new_tagname
         return new_tagname
     
@@ -388,6 +407,7 @@ class Text_Processing:
                                 index_llm = index_llm + 2
                         # index_llm = index_llm + 2
                         index_filled_input = index_filled_input + 2
+            return contextual_input, copy_contextual_input, label_input, index_filled_input, contextual_llm, label_llm, index_llm
         except Exception as error:
             print(f" === Error at here {error} === .")
             raise Exception("Sorry, error at mofidy dob, date, day, month, year!!")
@@ -541,7 +561,7 @@ class Text_Processing:
                     label_input[index_filled_input] = tagname_fill
                 copy_contextual_input[index_filled_input] = contextual_llm[index_llm] + [":"] +  [label_llm[index_llm]]
             # Xử lý với tagname dob, date,..
-            self.modify_tagname_dob_date_day_month_year(contextual_input, copy_contextual_input, label_input, index_filled_input, contextual_llm, label_llm, index_llm)
+            contextual_input, copy_contextual_input, label_input, index_filled_input, contextual_llm, label_llm, index_llm = self.modify_tagname_dob_date_day_month_year(contextual_input, copy_contextual_input, label_input, index_filled_input, contextual_llm, label_llm, index_llm)
             # Điền vị trí tiếp
             index_llm = index_llm + 1
             index_filled_input = index_filled_input + 1

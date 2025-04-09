@@ -298,7 +298,9 @@ group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_distric
 group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob_year"]
 group_name_tagname = ["full_name", "alias_name"]
 
+group_tagname_ward_district_province = ["current_address", "permanent_address", "hometown", "birth_registration_place", "birthplace"]
 
+list_context_current_address = ["địa chỉ", "ở", "nơi", "trú", "sống"]
 list_permanent_address = ["thường trú"]
 list_current_address = ["hiện tại", "tạm trú"]
 list_hometown = ["quê quán", "nguyên quán", "quê gốc"]
