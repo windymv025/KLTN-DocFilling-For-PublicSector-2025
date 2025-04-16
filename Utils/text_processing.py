@@ -136,7 +136,8 @@ class Text_Processing:
         tagname = re.sub(r"lastname", "last_name", tagname)
         # Replace _hamlet to _village
         tagname = re.sub(r"_hamlet", "_village", tagname)
-        # Replace "dob_date" with "dob" exactly
+        # Replace "dob_date", full_dob with "dob" exactly
+        tagname = re.sub(r"full_dob", "dob", tagname)
         tagname = re.sub(r"dob_date", "dob", tagname)
         # birthdate, birth_date --> dob
         tagname = re.sub(r"birthdate", "dob", tagname)
