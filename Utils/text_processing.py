@@ -130,10 +130,28 @@ class Text_Processing:
         return label_llm
     
     def standard_tagname(self, tagname):
+        # phone_number --> phone
+        tagname = re.sub(r"phone_number", "phone", tagname)
+        # lastname --> last_name
+        tagname = re.sub(r"lastname", "last_name", tagname)
+        # Replace _hamlet to _village
+        tagname = re.sub(r"_hamlet", "_village", tagname)
         # Replace "dob_date" with "dob" exactly
         tagname = re.sub(r"dob_date", "dob", tagname)
+        # birthdate, birth_date --> dob
+        tagname = re.sub(r"birthdate", "dob", tagname)
+        tagname = re.sub(r"birth_date", "dob", tagname)
+        # day_of_birth, month_of_birth, year_of_birth, date_of_birth, full_date_of_birth
+        tagname = re.sub(r"day_of_birth", "dob_day", tagname)
+        tagname = re.sub(r"month_of_birth", "dob_month", tagname)
+        tagname = re.sub(r"year_of_birth", "dob_year", tagname)
+        tagname = re.sub(r"date_of_birth", "dob", tagname)
+        tagname = re.sub(r"full_date_of_birth", "dob", tagname)
         # Replace "cmnd" with "id" exactly
         tagname = re.sub(r"cmnd", "id", tagname)
+        # personal_identification_number, personal_papers to id_number
+        tagname = re.sub(r"personal_identification_number", "id_number", tagname)
+        tagname = re.sub(r"personal_papers", "id_number", tagname)
         # Replace "birth_place" with "birthplace" exactly
         tagname = re.sub(r"birth_place", "birthplace", tagname)
         # Replace "registration" with "birth_registration" exactly
@@ -198,7 +216,7 @@ class Text_Processing:
             if "nơi sinh" in sentence_contextual and "birth_registration_place" in tagname:
                 new_tagname = re.sub("birth_registration_place","birthplace",tagname)
                 label_llm = self.modified_label_llm(label_llm, index_llm, "birth_registration_place", "birthplace")
-            elif "đăng ký" in sentence_contextual and "birthplace" in tagname:
+            elif ("đăng ký" in sentence_contextual or "làm" in sentence_contextual) and "birthplace" in tagname:
                 new_tagname = re.sub("birthplace","birth_registration_place",tagname)
                 label_llm = self.modified_label_llm(label_llm, index_llm, "birthplace", "birth_registration_place")
             
@@ -302,7 +320,9 @@ class Text_Processing:
                     label_llm = self.modified_label_llm(label_llm, index_llm, "current_address", "hometown")
                 return new_tagname
             # check right field current, permanent
-            if any(temp in sentence_contextual for temp in list_current_address):
+            if any(temp in sentence_contextual for temp in list_current_address+ list_permanent_address):
+                pass
+            elif any(temp in sentence_contextual for temp in list_current_address):
                 if "_permanent_address" in tagname:
                     new_tagname = re.sub("_permanent_address","_current_address",tagname)
                     label_llm = self.modified_label_llm(label_llm, index_llm, "permanent_address", "current_address")
@@ -650,15 +670,6 @@ class Text_Processing:
         if userX is None or value_tagname is None:
             return tagname
             
-        # # First Standardize tagname
-        # tagname = re.sub(r"dob_date", "dob", tagname)
-        # # Replace "cmnd" with "id" exactly
-        # tagname = re.sub(r"cmnd", "id", tagname)
-        # # Replace "birth_place" with "birthplace" exactly
-        # tagname = re.sub(r"birth_place", "birthplace", tagname)
-        # # Replace "registration" with "birth_registration" exactly
-        # tagname = re.sub(r"birth_registration_place", "birth_registration", tagname)
-        # tagname = re.sub(r"birth_registration", "birth_registration_place", tagname)
         userX, value_tagname = extract_user_and_tag(tagname)
         if userX is None or value_tagname is None:
             return tagname
