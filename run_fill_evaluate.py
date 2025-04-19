@@ -8,33 +8,33 @@ import openpyxl
 config_file = "Config/config.py"
 fill_tagname_file = "fill_tagname_to_input.py"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
-name_result = "B"
+name_result = "A"
 
 
 # Define the test cases for output_label_input_num and Data_num
-output_label_input_nums = [11, 21, 31, 12, 22, 32]
+output_label_input_nums = [31]
 
 # Run with process_tagname = False in fill_tagname_to_input.py
 for output_label_input_num in output_label_input_nums:
     print(f"\nTesting with output_label_input_num={output_label_input_num}")
 
     # Read and modify config.py content
-    with open(config_file, "r") as file:
+    with open(config_file, "r", encoding="utf-8") as file:
         content = file.read()
     # Modify the variables
     content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
     # Write back the modified content
-    with open(config_file, "w") as file:
+    with open(config_file, "w", encoding="utf-8") as file:
         file.write(content)
     print("Updated config.py ✅")
     
     # Read and modify fill_tagname_to_input.py (process_tagname=False) content
-    with open(fill_tagname_file, "r") as file:
+    with open(fill_tagname_file, "r", encoding="utf-8") as file:
         content = file.read()
     # Modify the variables
     content = re.sub(r'process_tagname\s*=\s*\w+', 'process_tagname = False', content)
     # Write back the modified content  
-    with open(fill_tagname_file, "w") as file:
+    with open(fill_tagname_file, "w", encoding="utf-8") as file:
         file.write(content)
     print("Updated fill_tagname_to_input.py ✅")
 
@@ -42,26 +42,27 @@ for output_label_input_num in output_label_input_nums:
     subprocess.run(["python", "fill_tagname_to_input.py"])
     print("Executed fill.py ✅")
 
+# Run with process_tagname = True in fill_tagname_to_input.py
 for output_label_input_num in output_label_input_nums:
     print(f"\nTesting with output_label_input_num={output_label_input_num}")
 
     # Read config.py content
-    with open(config_file, "r") as file:
+    with open(config_file, "r", encoding="utf-8") as file:
         content = file.read()
     # Modify the variables
     content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
     # Write back the modified content
-    with open(config_file, "w") as file:
+    with open(config_file, "w", encoding="utf-8") as file:
         file.write(content)
     print("Updated config.py ✅")
 
     # Read and modify fill_tagname_to_input.py (process_tagname=True) content
-    with open(fill_tagname_file, "r") as file:
+    with open(fill_tagname_file, "r", encoding="utf-8") as file:
         content = file.read()
     # Modify the variables
     content = re.sub(r'process_tagname\s*=\s*\w+', 'process_tagname = True', content)
     # Write back the modified content  
-    with open(fill_tagname_file, "w") as file:
+    with open(fill_tagname_file, "w", encoding="utf-8") as file:
         file.write(content)
     print("Updated fill_tagname_to_input.py ✅")
 
@@ -73,12 +74,12 @@ for output_label_input_num in output_label_input_nums:
 for output_label_input_num in output_label_input_nums:
     print(f"\nTesting with output_label_input_num={output_label_input_num}")
     # Read config.py content
-    with open(config_file, "r") as file:
+    with open(config_file, "r", encoding="utf-8") as file:
         content = file.read()
     # Modify the variables
     content = re.sub(r'output_label_input_num\s*=\s*\d+', f'output_label_input_num = {output_label_input_num}', content)
     # Write back the modified content
-    with open(config_file, "w") as file:
+    with open(config_file, "w", encoding="utf-8") as file:
         file.write(content)
     print("Updated config.py ✅")
     # Run evaluate.py
@@ -97,9 +98,6 @@ for output_label_input_num in output_label_input_nums[1:]:
     X_Y_error = pd.concat([X_Y_error, X_Y_error_Df], ignore_index=True)
 
 # df_reordered = pd.concat([sum_df.iloc[0:-1:2], sum_df.iloc[1:-1:2]]).reset_index(drop=True)
-
-# , X_Y_error
-
 
 
 sum_df.to_csv(f"{root_folder}/{name_result}_result_fieldname.csv", index=False, encoding="utf-8-sig")

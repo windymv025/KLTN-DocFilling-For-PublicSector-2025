@@ -14,6 +14,7 @@ label_folder = f"Temp/Data_{Data_num}/{Type}/Label{Label_Input_num}"
 output_folder = f"Temp/Data_{Data_num}/{Type}/Output{Output_num}"
 
 
+
 # Ensuse output folder exists
 os.makedirs(output_folder, exist_ok=True)
 
@@ -32,15 +33,17 @@ def fix_infinity_space(text):
     return text.strip()
 
 
-# 2.1 From forms response by LLM --> get tagnames to input forms --> remove different tagnames
+# # 2.1 From forms response by LLM --> get tagnames to input forms --> remove different tagnames
 process_tagname = True
 def filled_input_from_filled_form(input_folder, output_folder, process_folder):
     for index, filename in enumerate(os.listdir(output_folder)):
         if (index+1)%1==0:
             print(f"Process until {index+1}")
+        # if index!=18:
+        #     continue
         if filename.endswith(".txt") :
             # print(filename)
-            # if filename != "59_01_to_khai_thue_thu_nhap_ca_nhan.txt":
+            # if filename != "40_01_mau_giay_gioi_thieu_denghi_giam_dinh.txt":
             #     continue
             # else:
             #     print("found")
@@ -53,6 +56,7 @@ def filled_input_from_filled_form(input_folder, output_folder, process_folder):
             # Replace "cơ quản quản lý" --> "cơ quan quản lý"
             input_text = input_text.replace("Cơ quản quản lý", "Cơ quan quản lý")
             filled_text = filled_text.replace("Cơ quản quản lý", "Cơ quan quản lý")
+            
             # Fix infinity space
             input_text = fix_infinity_space(input_text)
             filled_text = fix_infinity_space(filled_text)
@@ -63,11 +67,10 @@ def filled_input_from_filled_form(input_folder, output_folder, process_folder):
             
             try:
                 # Fill input by LLM form
-                
                 filled_input_text,copy_contextual_input = Text_Processing().fill_input_by_llm_form(
                     filled_text, input_text, process_tagname
                 )
-                
+
                 # Debugging: Save copy_contextual_input to Temp/Copy_Contextual_Input/filename.json
                 os.makedirs(f"{output_folder}/Copy_Contextual_Input", exist_ok=True)
                 # Save the list to a JSON file
@@ -92,7 +95,6 @@ else:
 os.makedirs(process_folder, exist_ok=True)
 for input_folder in input_folders:
     filled_input_from_filled_form(input_folder, output_folder, process_folder)
-
 
 def filled_input_from_label_form(input_folder, label_folder, process_folder):
     for index, filename in enumerate(os.listdir(label_folder)):
@@ -136,13 +138,11 @@ def filled_input_from_label_form(input_folder, label_folder, process_folder):
                 break
 
 process_label_folder = f"{label_folder}\Processed_Label"
-os.makedirs(process_label_folder, exist_ok=True)
+# os.makedirs(process_label_folder, exist_ok=True)
 for input_folder in input_folders:
     filled_input_from_label_form(input_folder, label_folder, process_label_folder)
 
-
-
-# 2.2 Remove different tagnames from process output folder
+# # 2.2 Remove different tagnames from process output folder
 for index, filename in enumerate(os.listdir(process_folder)):
 # for index, filename in enumerate(list_specific_forms): # Debugging
     if filename.endswith(".txt"):
@@ -165,7 +165,7 @@ for index, filename in enumerate(os.listdir(process_folder)):
             break
 
 
-# 2.2 Remove different tagnames from label folder
+# # 2.2 Remove different tagnames from label folder
 for index, filename in enumerate(os.listdir(process_label_folder)):
     if filename.endswith(".txt"):
         # Input - filled

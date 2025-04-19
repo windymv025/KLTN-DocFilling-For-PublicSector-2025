@@ -4,15 +4,16 @@
 - 10: Loại 2 sinh bằng LLM.
 - 20: Data real. 
 '''
-output_label_input_num = 32
-# Data_num = "25_3_Gemini"
-# Data_num = "1_4_GPT"
-Data_num = "Sum"
+output_label_input_num = 31
+
+
+Data_num = "0416"
+Data_num = "0417"
+# Data_num = "0418"
 Output_num = output_label_input_num
 Label_Input_num = output_label_input_num
-# Type = "Rule"
-# Type = "LLM"
-# Type = "Real"
-Type = "Test"
-# Type = "Gemini"
-# Type = "Data_25_3"
+
+Type = "Rule"
+Type = "LLM"
+Type = "Real"
+

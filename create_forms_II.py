@@ -3,11 +3,9 @@ import json
 import random
 # Get random forms
 from collections import defaultdict
-from Config.tagnames import remaining_tag_names
 from Config.LLM import gemini
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from Prompts.create_forms import gen_forms_tagnames_label_forms
 # Text Processing
 from Utils.text_processing import Text_Processing
 # os and Time 
@@ -27,9 +25,16 @@ os.makedirs(info_folder, exist_ok=True)
 os.makedirs(label_folder, exist_ok=True)
 os.makedirs(input_folder, exist_ok=True)
 
+names = {'Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam'}
+
 data = {
   "họ và tên": "Nguyễn Đức Anh",
   "ngày tháng năm sinh": "11/11/2011",
+  "họ" : "Nguyễn",
+  "chữ đệm và tên ": "Đức Anh",
+  "email": "nguyenducanh@gmail.com",
+  "số điện thoại": "0351111111",
+  "số điện thoại cố định": "0981111111",
   "tên gọi khác": "Anh Nguyễn",
   "ngày sinh bằng chữ": "Mười một tháng Mười một năm 2011",
   "năm sinh": "2011",
@@ -53,12 +58,19 @@ data = {
   "số hộ chiếu": "C12345678",
   "ngày cấp hộ chiếu": "20/07/2020",
   "nơi cấp hộ chiếu": "Cục Quản lý Xuất nhập cảnh Hà Nội",
-  "ngày hết hạn hộ chiếu": "20/07/2030"
+  "ngày hết hạn hộ chiếu": "20/07/2030",
+  "số bảo hiểm y tế": "BT1234567890123",
+  "số bảo hiểm xã hội": "7901234567"
 }
 
 data2 = {
   "họ và tên": "Trần Minh Khoa",
   "ngày tháng năm sinh": "05/06/1995",
+  "họ" : "Trần",
+  "chữ đệm và tên ": "Minh Khoa",
+  "email": "tranminhkhoa@gmail.com",
+  "số điện thoại": "0352222222",
+  "số điện thoại cố định": "0982222222",
   "tên gọi khác": "Khoa Trần",
   "ngày sinh bằng chữ": "Năm tháng Sáu năm 1995",
   "năm sinh": "1995",
@@ -82,12 +94,19 @@ data2 = {
   "số hộ chiếu": "B98765432",
   "ngày cấp hộ chiếu": "12/03/2019",
   "nơi cấp hộ chiếu": "Cục Quản lý Xuất nhập cảnh TP.HCM",
-  "ngày hết hạn hộ chiếu": "12/03/2029"
+  "ngày hết hạn hộ chiếu": "12/03/2029",
+  "số bảo hiểm y tế": "HN9876543210987",
+  "số bảo hiểm xã hội": "0123456789"
 }
 
 data3 = {
   "họ và tên": "Lê Thanh Hằng",
   "ngày tháng năm sinh": "21/09/1988",
+  "họ" : "Lê",
+  "chữ đệm và tên ": "Thanh Hằng",
+  "email": "lethanhhang@gmail.com",
+  "số điện thoại": "0353333333",
+  "số điện thoại cố định": "0983333333",
   "tên gọi khác": "Hằng Lê",
   "ngày sinh bằng chữ": "Hai mươi mốt tháng Chín năm 1988",
   "năm sinh": "1988",
@@ -111,12 +130,19 @@ data3 = {
   "số hộ chiếu": "D24681012",
   "ngày cấp hộ chiếu": "08/09/2021",
   "nơi cấp hộ chiếu": "Cục Quản lý Xuất nhập cảnh Đà Nẵng",
-  "ngày hết hạn hộ chiếu": "08/09/2031"
+  "ngày hết hạn hộ chiếu": "08/09/2031",
+  "số bảo hiểm y tế": "DN1239876543210",
+  "số bảo hiểm xã hội": "7987654321"
 }
 
 data4 = {
   "họ và tên": "Phạm Hoàng Nam",
   "ngày tháng năm sinh": "14/02/2000",
+  "họ" : "Phạm",
+  "chữ đệm và tên ": "Hoàng Nam",
+  "email": "phamhoangnam@gmail.com",
+  "số điện thoại": "0354444444",
+  "số điện thoại cố định": "0984444444",
   "tên gọi khác": "Nam Phạm",
   "ngày sinh bằng chữ": "Mười bốn tháng Hai năm 2000",
   "năm sinh": "2000",
@@ -140,14 +166,12 @@ data4 = {
   "số hộ chiếu": "E13579246",
   "ngày cấp hộ chiếu": "19/06/2022",
   "nơi cấp hộ chiếu": "Cục Quản lý Xuất nhập cảnh Cần Thơ",
-  "ngày hết hạn hộ chiếu": "19/06/2032"
+  "ngày hết hạn hộ chiếu": "19/06/2032",
+  "số bảo hiểm y tế": "HN9876543210987",
+  "số bảo hiểm xã hội": "1234567890"
 }
 
-
 noise_data = {
-    "Email": "nguyenvantoi@gmail.com",
-    "Số điện thoại": "0123456789",
-    "Số điện thoại di động": "0987654321",
     "Trường học": "Đại học Khoa học Tự nhiên",
     "Ngành học": "Trí tuệ nhân tạo",
     "Chuyên ngành": "NLP",
@@ -173,6 +197,11 @@ noise_data = {
 data_tagname = {
     "họ và tên": "user0_full_name",
     "tên gọi khác": "user0_alias_name",
+    "họ" : "user0_last_name",
+    "chữ đệm và tên ": "user0_middle_and_first_name",
+    "email": "user0_email",
+    "số điện thoại": "user0_phone",
+    "số điện thoại cố định": "user0_home_phone",
     "ngày sinh bằng chữ": "user0_dob_text",
     "ngày tháng năm sinh": "user0_dob",
     "năm sinh": "user0_dob_year",
@@ -196,13 +225,12 @@ data_tagname = {
     "số hộ chiếu": "user0_passport_number",
     "ngày cấp hộ chiếu": "user0_passport_issue_date",
     "nơi cấp hộ chiếu": "user0_passport_issue_place",
-    "ngày hết hạn hộ chiếu": "user0_passport_expiry_date"
+    "ngày hết hạn hộ chiếu": "user0_passport_expiry_date",
+    "số bảo hiểm y tế": "user0_health_insurance_number",
+    "số bảo hiểm xã hội": "user0_social_insurance_number",
 }
 
 data_tagname_noise = {
-    "Email": "user0_email",
-    "Số điện thoại": "user0_phone",
-    "Số điện thoại di động": "user0_phone",
     "Trường học": "user0_school",
     "Ngành học": "user0_major",
     "Chuyên ngành": "user0_major",
@@ -232,75 +260,80 @@ merged_data_tagname = {**data_tagname, **data_tagname_noise}
 prompt = """
 # AI Tạo Biểu Mẫu Từ Thông Tin Cá Nhân
 
-## **1. Đầu vào:**  
-Dữ liệu đầu vào là danh sách chứa thông tin của **một hoặc nhiều cá nhân** dưới dạng **cặp khóa - giá trị** (*key-value*).  
-- **Key**: Tên thông tin (VD: `"họ và tên"`, `"năm sinh"`, `"giới tính"`, v.v.).  
-- **Value**: Giá trị tương ứng (VD: `"Nguyễn Đức Anh"`, `"2011"`, `"Nam"`, v.v.).  
+## **1. Đầu vào:**
+Dữ liệu đầu vào là danh sách chứa thông tin của **một hoặc nhiều cá nhân** dưới dạng **cặp khóa - giá trị** (*key-value*).
+- **Key**: Tên thông tin (VD: `"họ và tên"`, `"năm sinh"`, `"giới tính"`, v.v.).
+- **Value**: Giá trị tương ứng (VD: `"Nguyễn Đức Anh"`, `"2011"`, `"Nam"`, v.v.).
 
 ---
 
-## **2. Quy tắc chung khi tạo biểu mẫu:**  
+## **2. Quy tắc chung khi tạo biểu mẫu:**
 
-### **2.1. Chỉ sử dụng dữ liệu được cung cấp**  
-- Nếu một thông tin không có trong dữ liệu đầu vào, điền **[Trống]** thay vì để trống hoặc sử dụng placeholder chung.  
-- **Mỗi cá nhân sẽ có một biểu mẫu riêng biệt**, không trộn lẫn dữ liệu giữa nhiều cá nhân.  
+### **2.1. Chỉ sử dụng dữ liệu được cung cấp**
+- Nếu một thông tin không có trong dữ liệu đầu vào, điền **[Trống]** thay vì để trống hoặc sử dụng placeholder chung.
+- **Mỗi cá nhân sẽ có một biểu mẫu riêng biệt**, không trộn lẫn dữ liệu giữa nhiều cá nhân.
+- Bối cảnh phía trước có thể thay đổi, nhưng giá trị thì không.
 
-### **2.2. Chọn loại biểu mẫu phù hợp**  
-Mỗi cá nhân sẽ được tạo một biểu mẫu phù hợp với các trường dữ liệu có sẵn, ví dụ:  
-- **Tờ khai căn cước công dân**  
-- **Đơn xin cấp hộ chiếu**  
-- **Đơn đăng ký tạm trú**  
-- **Đơn xin việc**  
-- **Đơn đăng ký kết hôn**  
-- **Giấy khai sinh**, v.v.  
-
----
-
-## **3. Quy tắc xử lý dữ liệu khi điền vào form:**  
-
-### **3.1. Ngày tháng năm**  
-- **Ngày sinh**: Ghi theo định dạng `dd/mm/yyyy` (VD: `Ngày sinh: [11/11/2011]`).  
-- **Ngày sinh bằng chữ**: Giữ nguyên giá trị chữ nếu có (VD: `Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]`).  
-- **Năm sinh**: Nếu chỉ có "Năm sinh", điền năm đầy đủ (VD: `Năm sinh: [2011]`).  
-
-### **3.2. Danh tính cá nhân**  
-- **Tên gọi khác**: Nếu có "Tên gọi khác", ghi vào mục "Tên gọi khác" (VD: `Tên gọi khác: [Anh Nguyễn]`).  
-- **Số CCCD/Hộ chiếu**: Nếu có cả số CCCD và số hộ chiếu, ưu tiên điền số CCCD.  
-  - VD:  
-    - `Số CCCD/Hộ chiếu: [11111111]`  
-    - `Ngày cấp: [11/11/2021]`  
-    - `Nơi cấp: [Công an TP.HCM]`  
-
-### **3.3. Thông tin về tình trạng cá nhân**  
-- **Tình trạng hiện tại** / **Trạng thái hiện tại**: Nếu có dữ liệu, điền theo từng cá nhân.  
-  - VD:  
-    - `Tình trạng hiện tại: [Đang làm việc tại công ty FPT]`  
-    - `Trạng thái hiện tại: [Học tại trường HCMUS]`  
-
-### **3.4. Kinh nghiệm làm việc**  
-- Nếu không có dữ liệu, điền **[Trống]**.  
-
-### **3.5. Quy tắc xử lý số liệu cũ**  
-- Chỉ điền số hiện tại vào mục chính thống.  
-
----
-## **4. Cách trình bày biểu mẫu nhiều cá nhân**  
-- **Dạng danh sách liệt kê**: Khi cần mô tả chi tiết từng cá nhân.  
+### **2.2. Chọn loại biểu mẫu phù hợp**
+Mỗi cá nhân sẽ được tạo một biểu mẫu phù hợp với các trường dữ liệu có sẵn, ví dụ:
+- **Tờ khai căn cước công dân**
+- **Đơn xin cấp hộ chiếu**
+- **Đơn đăng ký tạm trú**
+- **Đơn xin việc**
+- **Đơn đăng ký kết hôn**
+- **Giấy khai sinh**, v.v.
 
 ---
 
-**Lưu ý:**  
-- **Không chỉnh sửa hoặc diễn giải lại dữ liệu**.  
-- **Đảm bảo văn phong hành chính rõ ràng, trang trọng**.  
+## **3. Quy tắc xử lý dữ liệu khi điền vào form:**
 
--- Ví dụ:
+### **3.1. Ngày tháng năm**
+- **Ngày sinh**: Ghi theo định dạng `dd/mm/yyyy` (VD: `Ngày sinh: [11/11/2011]`).
+- **Ngày sinh bằng chữ**: Giữ nguyên giá trị chữ nếu có (VD: `Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]`).
+- **Năm sinh**: Nếu chỉ có "Năm sinh", điền năm đầy đủ (VD: `Năm sinh: [2011]`).
 
+### **3.2. Danh tính cá nhân**
+- **Tên gọi khác**: Nếu có "Tên gọi khác", ghi vào mục "Tên gọi khác" (VD: `Tên gọi khác: [Anh Nguyễn]`).
+- **Số CCCD/Hộ chiếu**: Nếu có cả số CCCD và số hộ chiếu, ưu tiên điền số CCCD.
+  - VD:
+    - `Số CCCD/Hộ chiếu: [11111111]`
+    - `Ngày cấp: [11/11/2021]`
+    - `Nơi cấp: [Công an TP.HCM]`
+
+### **3.3. Thông tin về tình trạng cá nhân**
+- **Tình trạng hiện tại** / **Trạng thái hiện tại**: Nếu có dữ liệu, điền theo từng cá nhân.
+  - VD:
+    - `Tình trạng hiện tại: [Đang làm việc tại công ty FPT]`
+    - `Trạng thái hiện tại: [Học tại trường HCMUS]`
+
+### **3.4. Kinh nghiệm làm việc**
+- Nếu không có dữ liệu, điền **[Trống]**.
+
+### **3.5. Quy tắc xử lý số liệu cũ**
+- Chỉ điền số hiện tại vào mục chính thống. Không điền giá trị cũ, hay của tương lai, ví dụ trong quá khứ, số cũ...
+
+---
+## **4. Cách trình bày biểu mẫu nhiều cá nhân**
+- **Dạng danh sách liệt kê**: Khi cần mô tả chi tiết từng cá nhân.
+
+---
+
+**Lưu ý:**
+- **Không chỉnh sửa hoặc diễn giải lại dữ liệu**.
+- **Đảm bảo văn phong hành chính rõ ràng, trang trọng**.
+
+
+## Ví dụ:
+
+<Example>
 Input:
 ```
 **Thông tin của User1:**
 
 họ và tên: Nguyễn Đức Anh,
 ngày tháng năm sinh: 11/11/2011,
+họ : Nguyễn,
+chữ đệm và tên: Đức Anh,
 tên gọi khác: Anh Nguyễn,
 ngày sinh bằng chữ: Mười một tháng Mười một năm 2011,
 năm sinh: 2011,
@@ -332,18 +365,21 @@ Output:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 ĐƠN ĐĂNG KÝ TẠM TRÚ
-Kính gửi: Công an phường/xã
+
+Kính gửi: [Trống]
 
 Họ và tên: [NGUYỄN ĐỨC ANH]
 Tên gọi khác: [Anh Nguyễn]
+Họ: [Nguyễn] Chữ đệm và tên :[Đức Anh]
 Ngày sinh: [11/11/2011] (Bằng chữ: [Mười một tháng Mười một năm 2011])
+Dân tộc: [Kinh]
 Giới tính: [Nam]
 Số CCCD: [11111111]
 Ngày cấp: [11/11/2021]
 Nơi cấp: [Công an TP.HCM 11]
 
 Quê quán: [Nam Định]
-Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
+Hộ khẩu thường trú: [5 Lê Lợi, Hà Nội]
 Địa chỉ tạm trú: [111 Trần Hưng Đạo, TP.HCM]
 
 Lý do đăng ký tạm trú: Làm việc tại TP.HCM
@@ -355,11 +391,12 @@ Người làm đơn
 (Ký và ghi rõ họ tên)
 [Nguyễn Đức Anh]
 ```
+</Example>
 
+<Example>
 Input:
 ```
 **Thông tin của User1:**
-
 họ và tên: Nguyễn Đức Anh
 ngày tháng năm sinh: 11/11/2011
 năm sinh: 2011
@@ -382,7 +419,10 @@ Output:
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc
 TỜ KHAI CĂN CƯỚC CÔNG DÂN
-Họ và tên: [NGUYỄN ĐỨC ANH]
+
+Kính gửi: [Trống]
+
+Tên đầy đủ: [NGUYỄN ĐỨC ANH]
 Ngày sinh: [11/11/2011]
 Năm sinh: [2011]
 Giới tính: [Nam]
@@ -390,7 +430,7 @@ Tôn giáo: [Không]
 Quốc tịch: [Việt Nam]
 Nhóm máu: [O]
 
-Số định danh cá nhân: [11111111]
+Số căn cước công dân: [11111111]
 Nơi sinh: [Bệnh viện Từ Dũ, TP.HCM]
 Nơi đăng ký khai sinh: [UBND Quận 1, TP.HCM]
 Quê quán: [Trống]
@@ -409,110 +449,17 @@ Tôi xin cam đoan những thông tin trên là chính xác và hoàn toàn ch�
 
 [Trống], ngày [Trống] tháng [Trống] năm [Trống]
 ```
+</Example>
 
-Input:
-```
-**Thông tin của User1:**
-
-họ và tên: Nguyễn Đức Anh
-ngày tháng năm sinh: 11/11/2011
-giới tính: Nam
-tôn giáo: Không
-địa chỉ thường trú: 5 Lê Lợi, Hà Nội
-ngày cấp CCCD: 11/11/2021
-trình độ học vấn: Đại học
-nơi đăng ký khai sinh: UBND Quận 1, TP.HCM
-nghề nghiệp: Kỹ sư phần mềm
-ngày hết hạn hộ chiếu: 20/07/2030
-quê quán: Nam Định
-số định danh: 11111111
-tên gọi khác: Anh Nguyễn
-tình trạng hiện tại: Đang làm việc tại công ty FPT
-nơi cấp CCCD: Công an TP.HCM 11
-quốc tịch: Việt Nam
-nhóm máu: O
-ngày cấp hộ chiếu: 20/07/2020
-dân tộc: Kinh
-địa chỉ hiện tại: 111 Trần Hưng Đạo, TP.HCM
-số hộ chiếu: C12345678
-nơi sinh: Bệnh viện Từ Dũ, TP.HCM
-nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Hà Nội
-tình trạng hôn nhân: Độc thân
-ngày sinh bằng chữ: Mười một tháng Mười một năm 2011
-năm sinh: 2011/nEmail: nguyenvantoi@gmail.com
-Số điện thoại: 0123456789
-Số điện thoại di động: 0987654321
-Thời gian thất nghiệp: 3 tháng
-Thuộc đối tượng: Sinh viên chính quy
-Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
-Ngân hàng: Vietcombank
-Tài liệu kèm theo: Bản sao CMND, giấy khai sinh
-Ngành học: Trí tuệ nhân tạo
-Khóa học: 2022-2026
-Niên khóa: 2022-2026
-Mã số học sinh/ sinh viên: 22122212
-Số tài khoản: 0123123123
-Quyết định cử đi học: Số 123/QĐ-ĐHKHTN
-Chuyên ngành: NLP
-Khoa: Công nghệ Thông tin
-Lớp học: 22CTT01
-Hệ đào tạo: Chính quy
-Bệnh nghề nghiệp: Không có
-Trường học: Đại học Khoa học Tự nhiên
-Học kì: Học kỳ 1
-Năm học: 2024-2025
-Đề tài luận văn: Ứng dụng LLM trong Doc Filling
-```
-
-Output:
-```
-CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
-Độc lập - Tự do - Hạnh phúc
-GIẤY CHỨNG NHẬN SINH VIÊN
-
-Kính gửi: [Trống]
-
-Chúng tôi xác nhận rằng:
-
-Họ và tên: [Nguyễn Đức Anh]
-Ngày tháng năm sinh: [11/11/2011]
-Giới tính: [Nam]
-Quốc tịch: [Việt Nam]
-Dân tộc: [Kinh]
-Tôn giáo: [Không]
-Số CCCD/định danh cá nhân: [11111111]
-Ngày cấp CCCD: [11/11/2021]
-Nơi cấp CCCD: [Công an TP.HCM 11]
-Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
-Địa chỉ hiện tại: [111 Trần Hưng Đạo, TP.HCM]
-Số điện thoại: [0123456789]
-Email: [nguyenvantoi@gmail.com]
-Trường học: [Đại học Khoa học Tự nhiên]
-Khoa: [Công nghệ Thông tin]
-Ngành học: [Trí tuệ nhân tạo]
-Chuyên ngành: [NLP]
-Hệ đào tạo: [Chính quy]
-Mã số học sinh/ sinh viên: [22122212]
-Khóa học: [2022-2026]
-Đề tài luận văn: [Ứng dụng LLM trong Doc Filling]
-Sinh viên [Nguyễn Đức Anh] hiện đang theo học tại [Đại học Khoa học Tự nhiên], 
-thuộc [Khoa Công nghệ Thông tin], chuyên ngành [NLP], hệ [Chính quy].
-
-Giấy chứng nhận này được cấp để xác nhận thông tin sinh viên theo yêu cầu.
-
-Ngày [Trống] tháng [Trống] năm [Trống]
-
-XÁC NHẬN CỦA TRƯỜNG
-(Ký, đóng dấu)
-
-```
-
+<Example>
 Input:
 ```
 **Thông tin của User1:**
 
 họ và tên: Phạm Hoàng Nam
 ngày tháng năm sinh: 14/02/2000
+Chữ đệm và tên: Hoàng Nam
+số định danh: 44444444
 Ngân hàng: Vietcombank
 Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
 Khoa: Công nghệ Thông tin
@@ -531,12 +478,14 @@ tôn giáo: Không
 Học kì: Học kỳ 1
 Thuộc đối tượng: Sinh viên chính quy
 Hệ đào tạo: Chính quy
-Email: nguyenvantoi@gmail.com
+Email: phamhoangnam@gmail.com
 
 **Thông tin của User2:**
 
 họ và tên: Lê Thanh Hằng
 ngày tháng năm sinh: 21/09/1988
+họ: Lê
+chữ đệm và tên: Thanh Hằng
 ngày sinh bằng chữ: Hai mươi mốt tháng Chín năm 1988
 Quyết định cử đi học: Số 123/QĐ-ĐHKHTN
 Số tài khoản: 0123123123
@@ -546,6 +495,7 @@ Thời gian thất nghiệp: 3 tháng
 tên gọi khác: Hằng Lê
 Học kì: Học kỳ 1
 dân tộc: Kinh
+số định danh: 33333333,
 Bệnh nghề nghiệp: Không có
 Ngành học: Trí tuệ nhân tạo
 Lớp học: 22CTT01
@@ -559,6 +509,8 @@ Năm học: 2024-2025
 **Thông tin của User3:**
 
 họ và tên: Nguyễn Đức Anh
+họ: Nguyễn
+chữ đệm và tên: Đức Anh
 ngày tháng năm sinh: 11/11/2011
 nơi sinh: Bệnh viện Từ Dũ, TP.HCM
 tình trạng hiện tại: Đang làm việc tại công ty FPT
@@ -587,7 +539,7 @@ Năm học: 2024-2025
 quốc tịch: Việt Nam
 địa chỉ hiện tại: 111 Trần Hưng Đạo, TP.HCM
 nghề nghiệp: Kỹ sư phần mềm
-Email: nguyenvantoi@gmail.com
+Email: nguyenducanh@gmail.com
 Đề tài luận văn: Ứng dụng LLM trong Doc Filling
 quê quán: Nam Định
 ```
@@ -599,16 +551,22 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 
 BIỂU MẪU THÔNG TIN CÁ NHÂN
 
+Kính gửi: [Trống]
+
 1. Thông tin cá nhân
 
 Họ và tên: [Phạm Hoàng Nam]
 Ngày tháng năm sinh: [14/02/2000]
 Tên gọi khác: [Nam Phạm]
-Giới tính: [Nam]Dân tộc: [Kinh]
-Tôn giáo: [Không]Quốc tịch: [Việt Nam]
+Chữ đệm và tên: [Hoàng Nam]
+Số định danh: [44444444]
+Giới tính: [Nam]
+Dân tộc: [Kinh]
+Tôn giáo: [Không]
+Quốc tịch: [Việt Nam]
 Nơi đăng ký khai sinh: [UBND TP. Huế]
 Nơi cấp CCCD: [Công an TP.Cần Thơ]
-Địa chỉ hiện tại: [27 Nguyễn Văn Linh, Cần Thơ]
+Nơi ở hiện tại: [27 Nguyễn Văn Linh, Cần Thơ]
 Ngân hàng: [Vietcombank]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
 Hệ đào tạo: [Chính quy]
@@ -617,16 +575,19 @@ Khoa: [Công nghệ Thông tin]
 Lớp học: [22CTT01]
 Năm học: [2024-2025]
 Học kỳ: [Học kỳ 1]
-Email: [nguyenvantoi@gmail.com]
+Địa chỉ thư điện tử: [phamhoangnam@gmail.com]
 Ngày cấp hộ chiếu: [19/06/2022]
 
 
 Họ và tên: [Lê Thanh Hằng]
 Ngày tháng năm sinh: [21/09/1988]
+Họ: [Lê]
+Chữ đệm và tên: [Thanh Hằng]
 Ngày sinh bằng chữ: [Hai mươi mốt tháng Chín năm 1988]
 Tên gọi khác: [Hằng Lê]
 Giới tính: [Nữ]
 Dân tộc: [Kinh]
+Số CCCD/Hộ chiếu: [33333333]
 Trình độ học vấn: [Đại học]
 Ngành học: [Trí tuệ nhân tạo]
 Lớp học: [22CTT01]
@@ -644,6 +605,8 @@ Số điện thoại di động: [0987654321]
 
 
 Họ và tên: [Nguyễn Đức Anh]
+Họ: [Nguyễn]
+Chữ đệm và tên: [Đức Anh]
 Ngày tháng năm sinh: [11/11/2011]
 Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]
 Tên gọi khác: [Anh Nguyễn]
@@ -654,7 +617,7 @@ Quốc tịch: [Việt Nam]
 Nơi sinh: [Bệnh viện Từ Dũ, TP.HCM]
 Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
 Địa chỉ hiện tại: [111 Trần Hưng Đạo, TP.HCM]
-Số định danh: [11111111]
+Số căn cước: [11111111]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
 Tình trạng hiện tại: [Đang làm việc tại công ty FPT]
 Nghề nghiệp: [Kỹ sư phần mềm]
@@ -670,7 +633,7 @@ Tình trạng hôn nhân: [Độc thân]
 Thời gian thất nghiệp: [3 tháng]
 Đề tài luận văn: [Ứng dụng LLM trong Doc Filling]
 Ngày hết hạn hộ chiếu: [20/07/2030]
-Email: [nguyenvantoi@gmail.com]
+Email: [nguyenducanh@gmail.com]
 Quê quán: [Nam Định]
 
 
@@ -679,8 +642,13 @@ Người khai thông tin 1(Ký, ghi rõ họ tên): [Phạm Hoàng Nam]
 Người khai thông tin 2(Ký, ghi rõ họ tên): [Lê Thanh Hằng]
 
 Người khai thông tin 3(Ký, ghi rõ họ tên): [Nguyễn Đức Anh]
-```
 
+[Trống], ngày [Trống] tháng [Trống] năm [Trống]
+```
+</Example>
+
+
+<Example>
 Input:
 ```
 **Thông tin của User1:**
@@ -688,6 +656,7 @@ Input:
 họ và tên: Trần Minh Khoa
 ngày tháng năm sinh: 05/06/1995
 Năm học: 2024-2025
+giới tính: Nam
 trình độ học vấn: Cao học
 Số tài khoản: 0123123123
 Bệnh nghề nghiệp: Không có
@@ -702,6 +671,7 @@ nghề nghiệp: Bác sĩ
 nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh TP.HCM
 Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
 Số điện thoại: 0123456789
+Họ: Trần
 số định danh: 22222222
 ngày sinh bằng chữ: Năm tháng Sáu năm 1995
 số hộ chiếu: B98765432
@@ -718,7 +688,7 @@ quốc tịch: Việt Nam
 Quyết định cử đi học: Số 123/QĐ-ĐHKHTN
 Thuộc đối tượng: Sinh viên chính quy
 nhóm máu: O
-Email: nguyenvantoi@gmail.com
+Email: nguyenducanh@gmail.com
 ngày sinh bằng chữ: Mười một tháng Mười một năm 2011
 Tài liệu kèm theo: Bản sao CMND, giấy khai sinh
 Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
@@ -731,6 +701,7 @@ nơi cấp CCCD: Công an TP.HCM 11
 Số điện thoại: 0123456789
 số hộ chiếu: C12345678
 tôn giáo: Không
+số định danh: 11111111
 ```
 Output:
 ```
@@ -739,14 +710,18 @@ CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 
 BIỂU MẪU THÔNG TIN CÁ NHÂN
 
+Kính gửi: [Trống]
+
 1. Họ và tên: [Trần Minh Khoa]
+Họ: [Trần]
 Ngày tháng năm sinh: [05/06/1995]
+Giới tính (Nam/Nữ): [Nam]
 Năm học: [2024-2025]
 Trình độ học vấn: [Cao học]
 Số tài khoản: [0123123123]
 Bệnh nghề nghiệp: [Không có]
 Thuộc đối tượng: [Sinh viên chính quy]
-Địa chỉ hiện tại: [56 Võ Văn Kiệt, Đà Nẵng]
+Nơi cư trú: [56 Võ Văn Kiệt, Đà Nẵng]
 Quốc tịch: [Việt Nam]
 Ngân hàng: [Vietcombank]
 Tài liệu kèm theo: [Bản sao CMND, giấy khai sinh]
@@ -756,7 +731,7 @@ Nghề nghiệp: [Bác sĩ]
 Nơi cấp hộ chiếu: [Cục Quản lý Xuất nhập cảnh TP.HCM]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
 Số điện thoại: [0123456789]
-Số định danh: [22222222]
+Số cccd: [22222222]
 Ngày sinh bằng chữ: [Năm tháng Sáu năm 1995]
 Số hộ chiếu: [B98765432]
 Nhóm máu: [A]
@@ -765,12 +740,13 @@ Nhóm máu: [A]
 Ngày tháng năm sinh: [11/11/2011]
 Giới tính: [Nam]
 Tên gọi khác: [Anh Nguyễn]
+SỐ ĐỊNH DANH: [11111111]
 Khoa: [Công nghệ Thông tin]
 Quốc tịch: [Việt Nam]
 Quyết định cử đi học: [Số 123/QĐ-ĐHKHTN]
 Thuộc đối tượng: [Sinh viên chính quy]
 Nhóm máu: [O]
-Email: [nguyenvantoi@gmail.com]
+Email: [nguyenducanh@gmail.com]
 Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]
 Tài liệu kèm theo: [Bản sao CMND, giấy khai sinh]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
@@ -787,20 +763,27 @@ Tôn giáo: [Không]
 Người khai thông tin 1 (Ký, ghi rõ họ tên): [Trần Minh Khoa]
 
 Người khai thông tin 2 (Ký, ghi rõ họ tên): [Nguyễn Đức Anh]
-```
 
+[Trống], ngày [Trống] tháng [Trống] năm [Trống]
+```
+</Example>
+
+## Input của tôi
 Input:
 ```
 {input_form}
 ```
 Output:
+```
+Tạo ra một biểu mẫu từ thông tin cá nhân của người dùng.
+```
 
 """
 
 def random_merge(*datasets):
     """
     Hàm chọn ngẫu nhiên một số tập dữ liệu từ danh sách đầu vào và hợp nhất chúng.
-    
+
     :param datasets: Các dictionary dữ liệu có thể truyền vào
     :return: Một dictionary hợp nhất từ các dictionary được chọn ngẫu nhiên
     """
@@ -812,11 +795,6 @@ def random_merge(*datasets):
 
     for i, dataset in enumerate(selected_datasets):
         for key, value in dataset.items():
-            # if key == "họ và tên":
-            #     names = ['Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam']
-            #     for name in names:
-            #         merged_data[key].append(name)
-            # else:
             merged_data[key].append(value)
 
     return dict(merged_data)
@@ -828,27 +806,48 @@ def extract_random_data(data, noise_data):
     for i in range(num_user):
         selected_data = {keys[0]: data[keys[0]][i]}  # Always keep the first key (full_name)
         selected_data[keys[1]] = data[keys[1]][i]  # Always keep the second key (dob)
-        
+
         remaining_keys = keys[2:]
-        sample_size = int(random.uniform(0.4, 0.7) * len(remaining_keys))
+        sample_size = int(random.uniform(0.7, 0.9) * len(remaining_keys))
         selected_keys = random.sample(remaining_keys, sample_size)
-        
+
         for key in selected_keys:
             if key in noise_data.keys():
                 selected_data[key] = data[key]
             else:
                 selected_data[key] = data[key][i]
-        
+
         text = f'**Thông tin của User{i+1}:**\n\n' + '\n'.join(f"{key}: {value}" for key, value in selected_data.items())
         res += text + '\n\n'
     return res
 
-def generate_form(prompt, form_data):  
+def generate_form(prompt, form_data):
     prompt_gen_forms = PromptTemplate.from_template(prompt)
     chain = prompt_gen_forms | gemini | StrOutputParser()
     response = chain.invoke({"input_form": form_data})
 
     return response
+
+def fill_template_fields(text):
+    """
+    Thay thế các cụm:
+    1. [#another], ngày [#another] tháng [#another] năm [#another]
+       ➜ [place], ngày [day] tháng [month] năm [year]
+    # 2. Kính gửi: [Cơ quan A]
+    #    ➜ Kính gửi: [receiver]
+    """
+    # Thay thế ngày tháng
+    date_pattern = r"\[#another\], ngày \[#another\] tháng \[#another\] năm \[#another\]"
+    date_replacement = "[place], ngày [day] tháng [month] năm [year]"
+    text = re.sub(date_pattern, date_replacement, text, flags=re.IGNORECASE)
+
+    # Thay thế Kính gửi
+    receiver_pattern = r"Kính gửi:\s*\[.*?\]"
+    receiver_replacement = "Kính gửi: [receiver]"
+    text = re.sub(receiver_pattern, receiver_replacement, text, flags=re.IGNORECASE)
+
+    return text
+
 
 def check_generated_form(form: str, data: dict) -> tuple[bool, str]:
     """
@@ -863,7 +862,7 @@ def check_generated_form(form: str, data: dict) -> tuple[bool, str]:
         data (dict of array): The dictionary containing personal data.
 
     Returns:
-        tuple[bool, str]: 
+        tuple[bool, str]:
             - True if all bracketed values are valid, otherwise False.
             - The modified form with replacements.
     """
@@ -876,13 +875,8 @@ def check_generated_form(form: str, data: dict) -> tuple[bool, str]:
                 allowed_values.append(value[i].strip())
             else:
                 allowed_values.append(value)
-    list_name = ['Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam']
-    list_dob = ['11/11/2011', '05/06/1995', '21/09/1988', '14/02/2000']
-    allowed_values.extend(list_name)
-    allowed_values.extend(list_dob)
+
     allowed_values = list(set(allowed_values))
-    # print("Alloweed values: ",allowed_values)
-    # print()
     # Initialize valid flag
     is_valid = True
     # Replace values in form
@@ -936,15 +930,16 @@ def map_values_to_tagnames(form: str, data: dict, data_tagname: dict) -> str:
                         return f"[{data_tagname[key].replace('0', str(count))}]"
             elif val == value and key in data_tagname:
                 return f"[{data_tagname[key].replace('0', str(count))}]"
-        
+
         return match.group(0)  # Giữ nguyên nếu không tìm thấy
-    
+
     return re.sub(pattern, replace_match, form)
+
 
 def merge_all(*datasets):
     """
     Hợp nhất tất cả các tập dữ liệu được truyền vào.
-    
+
     :param datasets: Các dictionary dữ liệu có thể truyền vào
     :return: Một dictionary hợp nhất từ tất cả các dictionary
     """
@@ -961,32 +956,13 @@ def merge_all(*datasets):
                 merged_data[key].append(value)
 
     return dict(merged_data)
-
-def process_response_LLM_II(response, names):
-    """
-    Xử lý kết quả sinh ra từ mô hình LLM.
-
-    Parameters:
-        response (str): Kết quả sinh ra từ mô hình LLM.
-
-    # Task
-    - Chuyển 4 tên users trên thành [Giá trị] nếu chưa có
-
-    Returns:
-        str: Kết quả đã được xử lý.
-    """
-    # Xử lý kết quả sinh ra từ mô hình LLM
-    for name in names:
-        pattern = rf"(?<!\[)({name})(?!\])"
-        response = re.sub(pattern, r"[\1]", response)
-    return response
-    
+ 
 names = ['Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam']
 
-Num_forms = 500
-for i in range(Num_forms):
-    if i%1==0:
-        print(f"Process until {i}") 
+Num_forms = 100
+
+for i in range(0, Num_forms):
+    print(f"Process until {i}")
     file_name = f"input_{i}.txt"
     file_save_path_label = f"{label_folder}/{file_name}"
     file_save_path_info = f"{info_folder}/{file_name}"
@@ -994,22 +970,14 @@ for i in range(Num_forms):
     # print(user)
     merged_data = {**user_data, **noise_data}
     data_form = extract_random_data(merged_data, noise_data)
-    # print(data_form)
     # Check if not file_save_path exist file already
-    if not os.path.exists(file_save_path_info):    
-        print("ERRORRRRROROROROR")
+    if not os.path.exists(file_save_path_info):
         response = generate_form(prompt, data_form)
-        # Process response
-        response = process_response_LLM_II(response, names)
         is_valid, input_form = check_generated_form(response, merged_data)
     else:
         with open(file_save_path_info, "r", encoding="utf-8") as f:
             response = f.read()
-        # Process response
-        response = process_response_LLM_II(response, names)
-        # print(response)
         is_valid, input_form = check_generated_form(response, merged_data)
-        is_valid = True
     while True:
         if is_valid:
             # Save to info folder
@@ -1018,6 +986,7 @@ for i in range(Num_forms):
             # Take label tagname form
             # label_tagname_form = map_values_to_tagnames(response, data, data_tagname)
             label_tagname_form = map_values_to_tagnames(response, merged_data, merged_data_tagname)
+            label_tagname_form = fill_template_fields(label_tagname_form)
             # Save to label folder
             with open(file_save_path_label, "w", encoding="utf-8") as f:
                 f.write(label_tagname_form)

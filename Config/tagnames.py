@@ -1,7 +1,7 @@
 list_cccd_passport_tagnames = [
     "[full_name]",
     "[last_name]",
-    "[middle_and_first_name]"
+    "[middle_and_first_name]",
     "[alias_name]",
     "[dob_text]",
     "[dob]",
@@ -54,7 +54,7 @@ list_cccd_passport_tagnames = [
     "[passport_issue_place]",
     "[email]",
     "[home_phone]",
-    "[phone]	",
+    "[phone]",
     "[health_insurance_number]",
     "[social_insurance_number]",
     "[education_level]",
@@ -73,17 +73,32 @@ group_hometown_tagname = ["hometown"]
 group_birth_registration_tagname = ["birth_registration_place", "birth_registration_place_ward", "birth_registration_place_district", "birth_registration_place_province"]
 group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_district", "birthplace_province"]
 group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob_year"]
-group_name_tagname = ["full_name", "alias_name"]
+group_name_tagname = ["full_name", "alias_name", "last_name", "middle_and_first_name"]
+group_education_tagname = ["education_level"]
+group_day_month_year = ["_day", "_month", "_year"]
 
-group_tagname_ward_district_province = ["current_address", "permanent_address", "hometown", "birth_registration_place", "birthplace"]
+group_tagname_have_ward_district_province = ["current_address", "permanent_address", "hometown", "birth_registration_place", "birthplace"]
 
 list_context_current_address = ["địa chỉ", "ở", "nơi", "trú", "sống"]
 list_permanent_address = ["thường trú"]
 list_current_address = ["hiện tại", "tạm trú"]
 list_hometown = ["quê quán", "nguyên quán", "quê gốc"]
 list_occupation = ["nghề nghiệp", "công việc", "công việc hiện tại", "chức vụ"] 
-list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd"]
+list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd", "giấy tờ"]
 list_contextual_passport = ["hộ chiếu","passport"]
+list_contextual_social_number = ["xã hội", "bhxh", "xh"]
+list_contextual_health_number = ["y tế", "bhyt", "yt"]
+list_education = ["trình độ", "học vấn", "học lực"]
+list_village = ["thôn", "xóm"]
+list_ward = ["phường", "xã"]
+list_district = ["quận", "huyện"]
+list_province = ["tỉnh", "phố"]
+list_not_village = ["phường", "xã", "quận", "huyện", "tỉnh", "phố"]
+list_not_ward = ["thôn", "xóm", "quận", "huyện", "tỉnh", "phố"]
+list_not_district = ["thôn", "xóm", "phường", "xã", "tỉnh", "phố"]
+list_not_province = ["thôn", "xóm", "phường", "xã", "quận", "huyện"]
+
+
 
 
 list_general_tagnames = ["[receiver]", "[place]", "[day]", "[month]", "[year]"]
@@ -410,12 +425,8 @@ Ví dụ điền:
 Địa chỉ hiện tại: [user1_current_address]
 ```
 **Lưu ý:**
-
 - Hoặc nếu chỉ nói là Địa chỉ mà không nói là thường trú hay tạm trú thì dùng [userX_current_address].
-
-
 - Nếu có từ khóa như "tạm trú", "nơi ở hiện tại", "nơi cư trú", dùng [user1_current_address]. Không dùng [user1_temporary_address], chỉ dùng [user1_current_address].
-
 
 ### 5. Phân tách địa chỉ hiện tại (village, ward, district, province)
 Tagnames:
@@ -431,6 +442,8 @@ Các mục thường xuất hiện:
 Ví dụ điền:
 ```
 Tỉnh/Thành phố nơi ở: [user1_current_address_province]
+Nơi cư trú: [user1_current_address]
+Nếu thông tin không phải hiện tại thì không điền, ví dụ nơi cư trú trước đây: ..........
 ```
 
 ### 6. Cách phân biệt hometown, permanent_address, current_address
@@ -495,11 +508,9 @@ Ví dụ điền:
 ```
 Ngày cấp hộ chiếu: [user1_passport_issue_date]
 ```
-
 **Lưu ý:**
-
-- Nếu input chỉ hiện ngày cấp hộ chiếu: .........., không có tháng, năm phía sau, hay không có ........../.......... dùng tagname:
-thì điền một tagname [user1_passport_issue_date] (vì một tagname này có thể hiện cả 3 mục ngày, tháng, năm, tránh nhầm lẫn với tagname user1_id_issue_date, vì đây là tagname của căn cước, định danh)
+- Nếu input chỉ hiện ngày cấp hộ chiếu: .........., không có tháng, năm phía sau dùng tagname:
+thì điền một tagname [user1_passport_issue_date] (vì một tagname này có thể hiện cả 3 mục ngày, tháng, năm)
 
 ### 3. Ngày cấp hộ chiếu - Phân tách
 Tagnames:

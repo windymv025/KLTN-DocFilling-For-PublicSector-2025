@@ -284,7 +284,7 @@ def similarity_result_two_folders(label_folder1, output_folder2,llm_filled_truth
             similarity_result_forms.append([])
             similarity_result_forms_detail.append([])
             list_debug_llm_truthLLM_dict.append([])
-            if (index+1)%5 == 0:
+            if (index+1)%1 == 0:
                 print("========= Index: ", index+1, "============", filename)
             # if filename == "49_00_TK1-TS.txt":
                 # print("debug")
