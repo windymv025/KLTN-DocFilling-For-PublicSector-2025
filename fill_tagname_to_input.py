@@ -1,3 +1,4 @@
+# Import
 import os
 from Tagnames.define_tagnames import generate_tagnames
 from Utils.text_processing import Text_Processing
@@ -5,9 +6,7 @@ import json
 from Config.config import Data_num, Output_num, Type, Label_Input_num
 import re
 
-# General
-
-# Folder addresses Data_x
+# Folder addresses
 input_folder = f"Temp/Data_{Data_num}/{Type}/Input{Label_Input_num}"
 input_folders = [input_folder]
 label_folder = f"Temp/Data_{Data_num}/{Type}/Label{Label_Input_num}"
@@ -18,12 +17,18 @@ output_folder = f"Temp/Data_{Data_num}/{Type}/Output{Output_num}"
 # Ensuse output folder exists
 os.makedirs(output_folder, exist_ok=True)
 
-# ============= 1. Generates tagnames =============
+# ============= 1. Generates tagnames ===========
+'''
+Kiểm tra nếu trong folder, file input chưa có output tương ứng --> dùng LLM điền
+'''
 for input_folder in input_folders:
     generate_tagnames(input_folder, output_folder)
 
 # ============= 2. Process the output =============
 def fix_infinity_space(text):
+    '''
+    Fix lỗi khi LLM điền vô hạn khoảng trắng
+    '''
     # Replace more than 2 consecutive spaces with exactly 2 spaces
     text = re.sub(r' {3,}', '  ', text)
     
@@ -34,7 +39,7 @@ def fix_infinity_space(text):
 
 
 # # 2.1 From forms response by LLM --> get tagnames to input forms --> remove different tagnames
-process_tagname = True
+process_tagname = True # Biến để xác định tagname có qua hàm xử lý hay không
 def filled_input_from_filled_form(input_folder, output_folder, process_folder):
     for index, filename in enumerate(os.listdir(output_folder)):
         if (index+1)%1==0:
@@ -43,7 +48,7 @@ def filled_input_from_filled_form(input_folder, output_folder, process_folder):
         #     continue
         if filename.endswith(".txt") :
             # print(filename)
-            # if filename != "40_01_mau_giay_gioi_thieu_denghi_giam_dinh.txt":
+            # if filename != "24_00_don_de_nghi_ho_tro.txt":
             #     continue
             # else:
             #     print("found")
@@ -53,14 +58,12 @@ def filled_input_from_filled_form(input_folder, output_folder, process_folder):
             # Read
             input_text = Text_Processing().Read_txt_file(file_input_dir).strip()
             filled_text = Text_Processing().Read_txt_file(file_filled_dir).strip()
-            # Replace "cơ quản quản lý" --> "cơ quan quản lý"
+            # Replace "cơ quản quản lý" --> "cơ quan quản lý" (chuẩn hóa text)
             input_text = input_text.replace("Cơ quản quản lý", "Cơ quan quản lý")
             filled_text = filled_text.replace("Cơ quản quản lý", "Cơ quan quản lý")
-            
             # Fix infinity space
             input_text = fix_infinity_space(input_text)
             filled_text = fix_infinity_space(filled_text)
-
             # Replace all ".........." by "[another]"
             input_text = input_text.replace("..........", "[#another]")
             filled_text = filled_text.replace("..........", "[#another]")
@@ -96,6 +99,7 @@ os.makedirs(process_folder, exist_ok=True)
 for input_folder in input_folders:
     filled_input_from_filled_form(input_folder, output_folder, process_folder)
 
+# Đối với label form, chỉ tác động vào chỗ chữ ký full_name --> another.
 def filled_input_from_label_form(input_folder, label_folder, process_folder):
     for index, filename in enumerate(os.listdir(label_folder)):
         if (index+1)%1==0:

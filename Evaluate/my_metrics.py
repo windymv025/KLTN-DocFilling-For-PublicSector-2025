@@ -250,7 +250,13 @@ def print_tagnames(tagnames):
 
 
 def similarity_two_forms(form1, form2, filename, text_truthLLM=None):
-    # print("come here? 2")
+    '''
+    form1: label
+    form2: output
+    filename: name of the file
+    text_truthLLM: Lưu thêm một bản điền không qua get modifed --> kiểm tra qua hàm get modifed có đúng hết không
+    Return: Trả về các độ đo
+    '''
     # Replace all ".........." by "[#another]"
     form1 = form1.replace("..........", "[#another]")
     form2 = form2.replace("..........", "[#another]")
@@ -273,6 +279,11 @@ def similarity_result_two_folders(label_folder1, output_folder2,llm_filled_truth
     '''
     label_folder1: label
     output_folder2: output
+    llm_filled_truthLLM_folder: Lưu thêm một bản điền không qua get modifed --> kiểm tra qua hàm get modifed có đúng hết không
+    Return: Trả về các file trong folder results/
+    - df: Thống kê các lỗi, các con số
+    - df_detail: Thống kê lại các số quan trọng từ df.
+    - df_debug_llm_truthLLM_dict: debug kết quả tagname qua hàm xử lý/không qua hàm xử lý.
     '''
     similarity_result_forms = []
     similarity_result_forms_detail = []

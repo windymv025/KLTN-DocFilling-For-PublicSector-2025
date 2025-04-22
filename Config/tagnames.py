@@ -67,8 +67,8 @@ list_cccd_passport_tagnames = [
 #  Define group
 group_id_tagname = ["id_number", "id_issue_date", "id_issue_day", "id_issue_month", "id_issue_year", "id_issue_place"]
 group_passport_tagname = ["passport_number", "passport_issue_date", "passport_issue_day", "passport_issue_month", "passport_issue_year", "passport_issue_place"]
-group_current_address_tagname = ["current_address","current_address_ward","current_address_district","current_address_province"]
-group_permanent_address_tagname = ["permanent_address","permanent_address_ward","permanent_address_district","permanent_address_province"]
+group_current_address_tagname = ["current_address","current_address_village","current_address_ward","current_address_district","current_address_province"]
+group_permanent_address_tagname = ["permanent_address","permanent_address_village","permanent_address_ward","permanent_address_district","permanent_address_province"]
 group_hometown_tagname = ["hometown"]
 group_birth_registration_tagname = ["birth_registration_place", "birth_registration_place_ward", "birth_registration_place_district", "birth_registration_place_province"]
 group_birthplace_tagname = ["birthplace", "birthplace_ward", "birthplace_district", "birthplace_province"]
@@ -76,15 +76,17 @@ group_dob_tagname = ["dob_text", "dob", "dob_date", "dob_day", "dob_month", "dob
 group_name_tagname = ["full_name", "alias_name", "last_name", "middle_and_first_name"]
 group_education_tagname = ["education_level"]
 group_day_month_year = ["_day", "_month", "_year"]
+group_phone_tagname = ["phone", "home_phone"]
+group_social_insurance_tagname = ["social_insurance_number", "health_insurance_number"]
 
 group_tagname_have_ward_district_province = ["current_address", "permanent_address", "hometown", "birth_registration_place", "birthplace"]
 
 list_context_current_address = ["địa chỉ", "ở", "nơi", "trú", "sống"]
-list_permanent_address = ["thường trú"]
-list_current_address = ["hiện tại", "tạm trú"]
+list_permanent_address = ["thường trú", "thương trú", "thương tru"]
+list_current_address = ["hiện tại", "tạm trú", "cư trú", "nơi ở", "hiện nay"]
 list_hometown = ["quê quán", "nguyên quán", "quê gốc"]
-list_occupation = ["nghề nghiệp", "công việc", "công việc hiện tại", "chức vụ"] 
-list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd", "giấy tờ"]
+list_occupation = ["nghề nghiệp", "công việc"] 
+list_contextual_id_number = ["cmnd", "chứng minh", "cccd", "căn cước", "định danh", "cmtnd", "giấy tờ tùy thân"]
 list_contextual_passport = ["hộ chiếu","passport"]
 list_contextual_social_number = ["xã hội", "bhxh", "xh"]
 list_contextual_health_number = ["y tế", "bhyt", "yt"]
@@ -97,6 +99,7 @@ list_not_village = ["phường", "xã", "quận", "huyện", "tỉnh", "phố"]
 list_not_ward = ["thôn", "xóm", "quận", "huyện", "tỉnh", "phố"]
 list_not_district = ["thôn", "xóm", "phường", "xã", "tỉnh", "phố"]
 list_not_province = ["thôn", "xóm", "phường", "xã", "quận", "huyện"]
+
 
 
 

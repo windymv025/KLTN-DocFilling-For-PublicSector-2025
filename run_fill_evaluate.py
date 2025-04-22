@@ -1,3 +1,9 @@
+'''
+Hàm run từ fill, đến evaluate folder
+Dựa vào việc sửa đổi giá trị trong config.py --> run fill (cả process name False, True)
+Sau đó chạy evaluate
+'''
+# Import
 import re
 import subprocess
 import pandas as pd
@@ -5,14 +11,15 @@ import pandas as pd
 from Config import Data_num, Type
 import openpyxl
 
+# Config
 config_file = "Config/config.py"
 fill_tagname_file = "fill_tagname_to_input.py"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
-name_result = "A"
+name_result = "C"
 
 
 # Define the test cases for output_label_input_num and Data_num
-output_label_input_nums = [31]
+output_label_input_nums = [11, 21, 31]
 
 # Run with process_tagname = False in fill_tagname_to_input.py
 for output_label_input_num in output_label_input_nums:

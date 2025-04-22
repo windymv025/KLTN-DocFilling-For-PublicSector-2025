@@ -17,6 +17,8 @@ from Config.tagnames import (
     group_permanent_address_tagname,
     group_dob_tagname,
     group_tagname_have_ward_district_province,
+    group_phone_tagname,
+    group_social_insurance_tagname,
     list_village,list_ward,list_district,list_province,
     list_not_village, list_not_ward, list_not_district, list_not_province,
     group_education_tagname,
@@ -133,6 +135,8 @@ class Text_Processing:
         return label_llm
     
     def standard_tagname(self, tagname):
+        # temporary_address --> current_address
+        tagname = re.sub(r"temporary_address", "current_address", tagname)
         # personal_id, personal_identification_number, personal_identification --> id_number
         tagname = re.sub(r"personal_id", "id_number", tagname)
         tagname = re.sub(r"personal_identification", "id_number", tagname)
@@ -194,8 +198,11 @@ class Text_Processing:
         userX, value_tagname = self.extract_user_and_tag(tagname)
         sentence_contextual = " ".join(contextual)
         if userX is None or value_tagname is None:
+            # Modify receiver
+            if any(kw in sentence_contextual for kw in ["Kính gửi", "kính gửi"]):
+                return "[receiver]"
             # giấy tờ tùy thân
-            if "giấy tờ tùy thân" in sentence_contextual:
+            try:
                 temp_index = len(list_prev_tag)-1
                 while temp_index>=0:
                     temp_userX, temp_value_tagname = self.extract_user_and_tag(list_prev_tag[temp_index])
@@ -203,11 +210,17 @@ class Text_Processing:
                         temp_index -= 1
                     else:
                         break
+            except:
+                pass
+            if "giấy tờ tùy thân" in sentence_contextual:
                 return f"[{temp_userX}_id_number]" # Return id_number
-            # Modify receiver
-            if any(kw in sentence_contextual for kw in ["Kính gửi", "kính gửi"]):
-                return "[receiver]"
-            return tagname
+            # Cư trú --> dễ bỏ trống --> cho thành current
+            elif re.search(r'nơi\s*(.*?)\s*cư trú', sentence_contextual, re.IGNORECASE):
+                tagname = f"[{temp_userX}_current_address]"
+                userX, value_tagname = self.extract_user_and_tag(tagname)
+                new_tagname = tagname
+            else:
+                return tagname
         # Check if tagname is in list_cccd_passport_tagnames
         if "["+value_tagname+"]" not in list_cccd_passport_tagnames:
             # giấy tờ tùy thân
@@ -304,7 +317,10 @@ class Text_Processing:
             #Check if any list_contextual_id_number, list_contextual_passport in sentence_contextual
             # if not any(temp in sentence_contextual for temp in list_contextual_id_number+list_contextual_passport):
             #     return "[#another]"
-            if any(temp in sentence_contextual for temp in list_contextual_id_number):
+            # if context exist both in id, passport --> Trust LLM
+            if any(temp in sentence_contextual for temp in list_contextual_id_number) and any(temp in sentence_contextual for temp in list_contextual_passport):
+                pass
+            elif any(temp in sentence_contextual for temp in list_contextual_id_number):
                 if "passport" in tagname:
                     new_tagname = re.sub("passport","id_number",tagname)
                     label_llm = self.modified_label_llm(label_llm, index_llm, "passport", "id_number")
@@ -402,7 +418,7 @@ class Text_Processing:
                     label_llm = self.modified_label_llm(label_llm, index_llm, "current_address", "hometown")
                 return new_tagname
             # check right field current, permanent
-            if any(temp in sentence_contextual for temp in list_current_address+ list_permanent_address):
+            elif any(temp in sentence_contextual for temp in list_current_address) and any(temp in sentence_contextual for temp in list_permanent_address):
                 pass
             elif any(temp in sentence_contextual for temp in list_current_address):
                 if "_permanent_address" in tagname:
@@ -427,6 +443,20 @@ class Text_Processing:
         elif value_tagname in group_education_tagname:
             if all(temp not in sentence_contextual for temp in list_education):
                 new_tagname = "[#another]"
+        # Check group phone
+        # Check phone
+        elif value_tagname in group_phone_tagname:
+            if 'cố định' in sentence_contextual or 'bàn' in sentence_contextual:
+                new_tagname = f"[{userX}_home_phone]"
+        # Check social insurance
+        elif value_tagname in group_social_insurance_tagname:
+            if "social_insurance_number" in value_tagname:
+                if any(temp in sentence_contextual for temp in list_contextual_health_number):
+                    new_tagname = re.sub("social_insurance_number","health_insurance_number",tagname)
+            if "health_insurance_number" in value_tagname:
+                if any(temp in sentence_contextual for temp in list_contextual_social_number):
+                    new_tagname = re.sub("health_insurance_number","social_insurance_number",tagname)
+        
         # Take again userX, value_tagname
         userX, value_tagname = self.extract_user_and_tag(tagname)
         # Now check if tagname missing suffix ward, district, province
@@ -723,7 +753,24 @@ class Text_Processing:
                 
         return text
     # Filling receiver, place, day, month, year
-    def normalize_filled_date_expression(self, text):
+    def normalize_receiver_expression(text):
+        """
+        - 'Kính gửi: [#another]'
+        - 'Kính gửi: text [#another]'
+        - 'Kính gửi: Trung tâm [user_tag]'
+        - 'Kính gửi : ABC XYZ [user_tag]'
+        - 'Kính gửi (1): [#another]'
+        - 'Kính gửi: (1) [#another]'
+
+        """
+        def replace_tag(match):
+            prefix = match.group(1)
+            return f"{prefix}[receiver]"
+
+        pattern = r"(Kính\s+gửi\s*(?:\(\d+\))?\s*:\s*(?:\(\d+\))?\s*.*?)(\[[^\]]+\])"
+        return re.sub(pattern, replace_tag, text)
+
+    def normalize_filled_date_expression(text):
         """
         Các trường hợp được hỗ trợ:
 
@@ -741,29 +788,35 @@ class Text_Processing:
 
         # Mẫu chính cho các kiểu ngày
         date_pattern = re.compile(
-            r"(?:\[(?P<place>#another)\],*\s*)?"                      # [place], (tùy chọn)
-            r"(?:ngày|Ngày)\s*\[(?P<day>#another)\]\s*,?\s*"          # ngày [day],
-            r"(?:tháng|Tháng)\s*\[(?P<month>#another)\]\s*,?\s*"      # tháng [month],
-            r"(?:năm|Năm)\s*(?:20\s*)?\[(?P<year>#another)\]"         # năm 20 [year]
-        )
+            r"(?:\[(?P<place>#another)\],*\s*)?"                          # [place], (tùy chọn)
+            r"(?:ngày|Ngày)\s*\[(?P<day>#another)\]\s*,?\s*"              # ngày [day],
+            r"(?:tháng|Tháng)\s*\[(?P<month>#another)\]\s*,?\s*"          # tháng [month],
+            r"(?:năm|Năm)\s*(?P<number>\d+)?\s*\[(?P<year>#another)\]"             # năm [year], có hoặc không có tiền tố "20"
 
+        )
 
         # Mẫu loại trừ
         exclude_patterns = [
             r"^[^:]+:\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]",
             r"ngày\s*\[user[^\]]+\]\s*tháng\s*\[user[^\]]+\]\s*năm\s*\[user[^\]]+\]",
             r"\w+\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]",
-            r"\b(?!tại\b)\w+\s*\[#another\],*\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]"
+            r"\b(?!tại\b)\w+\s*\[#another\],*\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]",
+            r"\w+\s*\[[^\]]+\]\s*tại\s*,*\s*\[#another\]",
         ]
 
         exclude_regexes = [re.compile(p) for p in exclude_patterns]
 
         # Hàm thay thế ngày
         def replace_date(match):
+            # Lấy tiền tố từ nhóm năm
+            year_prefix = ""
+            if match.group("number"):
+                year_prefix = match.group("number")
+            # Thay thế ngày
             if match.group("place"):
-                return "[place], ngày [day] tháng [month] năm [year]"
+                return f"[place], ngày [day] tháng [month] năm {year_prefix} [year]"
             else:
-                return "ngày [day] tháng [month] năm [year]"
+                return f"ngày [day] tháng [month] năm {year_prefix} [year]"
 
         # Xử lý từng dòng một
         lines = text.splitlines()
@@ -779,54 +832,34 @@ class Text_Processing:
 
         return "\n".join(normalized_lines)
 
-    def normalize_filled_date_expression_nam(self, input_text):
-        output = input_text
-        # Regex pattern:
-        pattern1 = r'((?:\n+|\t+)|^)ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
-        replacement1 = r'\1ngày [day] tháng [month] năm [year]'
+    # def normalize_filled_date_expression_nam(self, input_text):
+    #     output = input_text
+    #     # Regex pattern:
+    #     pattern1 = r'((?:\n+|\t+)|^)ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
+    #     replacement1 = r'\1ngày [day] tháng [month] năm [year]'
         
-        pattern2 = r'((?:\n+|\t+)|^)\[#another\]\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
-        replacement2 = r'\1[place]\2 ngày [day] tháng [month] năm [year]'
+    #     pattern2 = r'((?:\n+|\t+)|^)\[#another\]\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
+    #     replacement2 = r'\1[place]\2 ngày [day] tháng [month] năm [year]'
 
-        pattern3 = r'((?:\n+|\t+)|^)([^\s]*.*?)tại([^\s]*.*?)\[#another\]\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
-        replacement3 = r'\1\2tại\3[place]\4 ngày [day] tháng [month] năm [year]'
+    #     pattern3 = r'((?:\n+|\t+)|^)([^\s]*.*?)tại([^\s]*.*?)\[#another\]\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
+    #     replacement3 = r'\1\2tại\3[place]\4 ngày [day] tháng [month] năm [year]'
 
-        pattern4 = r'((?:\n+|\t+)|^)([^\s]*.*?)tại([^\s]*.*?),\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
-        replacement4 = r'\1\2tại\3,\4 ngày [day] tháng [month] năm [year]'
-
-
-        patterns = [
-        (pattern1, replacement1),
-        (pattern2, replacement2),
-        (pattern3, replacement3),
-        (pattern4, replacement4)
-        ]
-        # Apply
-        for pattern, replacement in patterns:
-            output = re.sub(pattern, replacement, output)
-            # print(output)
-
-        return output
+    #     pattern4 = r'((?:\n+|\t+)|^)([^\s]*.*?)tại([^\s]*.*?),\s*(,?)\s*ngày\s*\[#another\]\s*tháng\s*\[#another\]\s*năm\s*\[#another\]'
+    #     replacement4 = r'\1\2tại\3,\4 ngày [day] tháng [month] năm [year]'
 
 
-    def normalize_receiver_expression(self, text):
-        """
-        Chuẩn hóa dòng người nhận từ 'Kính gửi: [#another]' hoặc 'Kính gửi : [#another]'
-        thành 'Kính gửi: [receiver]'.
+    #     patterns = [
+    #     (pattern1, replacement1),
+    #     (pattern2, replacement2),
+    #     (pattern3, replacement3),
+    #     (pattern4, replacement4)
+    #     ]
+    #     # Apply
+    #     for pattern, replacement in patterns:
+    #         output = re.sub(pattern, replacement, output)
+    #         # print(output)
 
-        Tham số:
-        text (str): Chuỗi văn bản đầu vào.
-
-        Trả về:
-        str: Văn bản sau khi thay thế.
-        """
-
-        def replace_tag(match):
-            prefix = match.group(1)
-            return f"{prefix}[receiver]"
-
-        pattern = r"(kính\s+gửi\s*(?:\(\d+\))?\s*:\s*(?:\(\d+\))?\s*.*?)(\[[^\]]+\])"
-        return re.sub(pattern, replace_tag, text, flags=re.IGNORECASE)
+    #     return output
 
     # Overall function input form_llm_filled, input_form --> output filled_form
     def fill_input_by_llm_form(self, form_llm_filled, input_form, process_tagname=True):

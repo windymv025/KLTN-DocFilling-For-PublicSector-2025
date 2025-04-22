@@ -1,19 +1,12 @@
-# ===== Ask LLM generates form =====
-import json
-import random
+# ===== Import =====
 # Get random forms
+import random
 from collections import defaultdict
 from Config.LLM import gemini
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-# Text Processing
-from Utils.text_processing import Text_Processing
-# os and Time 
 import os
-import time
-import json
 import re
-
 from Config.config import Data_num, Type, Label_Input_num
 
 # Folder
@@ -25,6 +18,7 @@ os.makedirs(info_folder, exist_ok=True)
 os.makedirs(label_folder, exist_ok=True)
 os.makedirs(input_folder, exist_ok=True)
 
+# Data
 names = {'Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam'}
 
 data = {
@@ -171,6 +165,7 @@ data4 = {
   "số bảo hiểm xã hội": "1234567890"
 }
 
+
 noise_data = {
     "Trường học": "Đại học Khoa học Tự nhiên",
     "Ngành học": "Trí tuệ nhân tạo",
@@ -256,7 +251,7 @@ data_tagname_noise = {
 
 merged_data_tagname = {**data_tagname, **data_tagname_noise}
 
-# Gen form 11
+# Prompt --> gen form type II
 prompt = """
 # AI Tạo Biểu Mẫu Từ Thông Tin Cá Nhân
 
@@ -321,6 +316,7 @@ Mỗi cá nhân sẽ được tạo một biểu mẫu phù hợp với các tr�
 **Lưu ý:**
 - **Không chỉnh sửa hoặc diễn giải lại dữ liệu**.
 - **Đảm bảo văn phong hành chính rõ ràng, trang trọng**.
+- **Khi dữ liệu người dùng không được cung cấp thì bỏ qua**
 
 
 ## Ví dụ:
@@ -407,7 +403,6 @@ ngày cấp CCCD: 11/11/2021
 nơi đăng ký khai sinh: UBND Quận 1, TP.HCM
 nhóm máu: O
 quốc tịch: Việt Nam
-số định danh: 11111111
 địa chỉ thường trú: 5 Lê Lợi, Hà Nội
 nơi cấp CCCD: Công an TP.HCM 11
 nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Hà Nội
@@ -430,7 +425,7 @@ Tôn giáo: [Không]
 Quốc tịch: [Việt Nam]
 Nhóm máu: [O]
 
-Số căn cước công dân: [11111111]
+Số căn cước công dân: [Trống]
 Nơi sinh: [Bệnh viện Từ Dũ, TP.HCM]
 Nơi đăng ký khai sinh: [UBND Quận 1, TP.HCM]
 Quê quán: [Trống]
@@ -494,14 +489,13 @@ Số điện thoại: 0123456789
 Thời gian thất nghiệp: 3 tháng
 tên gọi khác: Hằng Lê
 Học kì: Học kỳ 1
-dân tộc: Kinh
 số định danh: 33333333,
 Bệnh nghề nghiệp: Không có
+dân tộc: Kinh
 Ngành học: Trí tuệ nhân tạo
 Lớp học: 22CTT01
 Đề tài luận văn: Ứng dụng LLM trong Doc Filling
 Số điện thoại di động: 0987654321
-giới tính: Nữ
 số hộ chiếu: D24681012
 trình độ học vấn: Đại học
 Năm học: 2024-2025
@@ -520,7 +514,6 @@ Mã số học sinh/ sinh viên: 22122212
 địa chỉ thường trú: 5 Lê Lợi, Hà Nội
 Khoa: Công nghệ Thông tin
 tình trạng hôn nhân: Độc thân
-số định danh: 11111111
 Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
 ngày sinh bằng chữ: Mười một tháng Mười một năm 2011
 Thuộc đối tượng: Sinh viên chính quy
@@ -532,7 +525,6 @@ Tài liệu kèm theo: Bản sao CMND, giấy khai sinh
 Trường học: Đại học Khoa học Tự nhiên
 Khóa học: 2022-2026
 tôn giáo: Không
-dân tộc: Kinh
 tên gọi khác: Anh Nguyễn
 giới tính: Nam
 Năm học: 2024-2025
@@ -585,7 +577,6 @@ Họ: [Lê]
 Chữ đệm và tên: [Thanh Hằng]
 Ngày sinh bằng chữ: [Hai mươi mốt tháng Chín năm 1988]
 Tên gọi khác: [Hằng Lê]
-Giới tính: [Nữ]
 Dân tộc: [Kinh]
 Số CCCD/Hộ chiếu: [33333333]
 Trình độ học vấn: [Đại học]
@@ -611,13 +602,11 @@ Ngày tháng năm sinh: [11/11/2011]
 Ngày sinh bằng chữ: [Mười một tháng Mười một năm 2011]
 Tên gọi khác: [Anh Nguyễn]
 Giới tính: [Nam]
-Dân tộc: [Kinh]
 Tôn giáo: [Không]
 Quốc tịch: [Việt Nam]
 Nơi sinh: [Bệnh viện Từ Dũ, TP.HCM]
 Địa chỉ thường trú: [5 Lê Lợi, Hà Nội]
 Địa chỉ hiện tại: [111 Trần Hưng Đạo, TP.HCM]
-Số căn cước: [11111111]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
 Tình trạng hiện tại: [Đang làm việc tại công ty FPT]
 Nghề nghiệp: [Kỹ sư phần mềm]
@@ -672,7 +661,6 @@ nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh TP.HCM
 Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
 Số điện thoại: 0123456789
 Họ: Trần
-số định danh: 22222222
 ngày sinh bằng chữ: Năm tháng Sáu năm 1995
 số hộ chiếu: B98765432
 nhóm máu: A
@@ -681,7 +669,6 @@ nhóm máu: A
 
 họ và tên: Nguyễn Đức Anh
 ngày tháng năm sinh: 11/11/2011
-giới tính: Nam
 tên gọi khác: Anh Nguyễn
 Khoa: Công nghệ Thông tin
 quốc tịch: Việt Nam
@@ -731,16 +718,16 @@ Nghề nghiệp: [Bác sĩ]
 Nơi cấp hộ chiếu: [Cục Quản lý Xuất nhập cảnh TP.HCM]
 Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
 Số điện thoại: [0123456789]
-Số cccd: [22222222]
+Số cccd: [Trống]
 Ngày sinh bằng chữ: [Năm tháng Sáu năm 1995]
 Số hộ chiếu: [B98765432]
 Nhóm máu: [A]
 
 2. Họ và tên: [Nguyễn Đức Anh]
 Ngày tháng năm sinh: [11/11/2011]
-Giới tính: [Nam]
+Giới tính: [Trống]
 Tên gọi khác: [Anh Nguyễn]
-SỐ ĐỊNH DANH: [11111111]
+Số căn cước: [11111111]
 Khoa: [Công nghệ Thông tin]
 Quốc tịch: [Việt Nam]
 Quyết định cử đi học: [Số 123/QĐ-ĐHKHTN]
@@ -767,6 +754,161 @@ Người khai thông tin 2 (Ký, ghi rõ họ tên): [Nguyễn Đức Anh]
 [Trống], ngày [Trống] tháng [Trống] năm [Trống]
 ```
 </Example>
+
+<Example>
+Input:
+```
+**Thông tin của User1:**
+
+họ và tên: Phạm Hoàng Nam
+ngày tháng năm sinh: 14/02/2000
+họ: Phạm
+Thời gian thất nghiệp: 3 tháng
+Chuyên ngành: NLP
+nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Cần Thơ
+Ngân hàng: Vietcombank
+số điện thoại cố định: 0984444444
+quê quán: Thừa Thiên Huế
+tôn giáo: Không
+Năm học: 2024-2025
+nơi cấp CCCD: Công an TP.Cần Thơ
+giới tính: Nam
+số hộ chiếu: E13579246
+ngày cấp CCCD: 22/05/2023
+ngày cấp hộ chiếu: 19/06/2022
+chữ đệm và tên : Hoàng Nam
+Quyết định cử đi học: Số 123/QĐ-ĐHKHTN
+tên gọi khác: Nam Phạm
+Niên khóa: 2022-2026
+Ngành học: Trí tuệ nhân tạo
+số bảo hiểm y tế: HN9876543210987
+Thuộc đối tượng: Sinh viên chính quy
+số bảo hiểm xã hội: 1234567890
+Bệnh nghề nghiệp: Không có
+địa chỉ hiện tại: 27 Nguyễn Văn Linh, Cần Thơ
+Trường học: Đại học Khoa học Tự nhiên
+ngày sinh bằng chữ: Mười bốn tháng Hai năm 2000
+Học kì: Học kỳ 1
+địa chỉ thường trú: 10 Hoàng Diệu, Huế
+Khóa học: 2022-2026
+tình trạng hiện tại: Chủ doanh nghiệp tư nhân
+tình trạng hôn nhân: Độc thân
+nghề nghiệp: Kinh doanh
+Nơi đăng ký khám bệnh: Bệnh viện Đại học Y Dược
+ngày hết hạn hộ chiếu: 19/06/2032
+Mã số học sinh/ sinh viên: 22122212
+năm sinh: 2000
+email: phamhoangnam@gmail.com
+nơi sinh: Bệnh viện Trung ương Huế
+Số tài khoản: 0123123123
+nơi đăng ký khai sinh: UBND TP. Huế
+số định danh: 44444444
+Đề tài luận văn: Ứng dụng LLM trong Doc Filling
+Khoa: Công nghệ Thông tin
+Hệ đào tạo: Chính quy
+
+**Thông tin của User2:**
+
+họ và tên: Nguyễn Đức Anh
+ngày tháng năm sinh: 11/11/2011
+Trường học: Đại học Khoa học Tự nhiên
+Tài liệu kèm theo: Bản sao CMND, giấy khai sinh
+dân tộc: Kinh
+Lớp học: 22CTT01
+số điện thoại: 0351111111
+địa chỉ thường trú: 5 Lê Lợi, Hà Nội
+Chuyên ngành: NLP
+Học kì: Học kỳ 1
+số hộ chiếu: C12345678
+Quyết định cử đi học: Số 123/QĐ-ĐHKHTN
+Khoa: Công nghệ Thông tin
+Thời gian thất nghiệp: 3 tháng
+Hệ đào tạo: Chính quy
+số điện thoại cố định: 0981111111
+số định danh: 11111111
+nơi cấp hộ chiếu: Cục Quản lý Xuất nhập cảnh Hà Nội
+Mã số học sinh/ sinh viên: 22122212
+email: nguyenducanh@gmail.com
+số bảo hiểm y tế: BT1234567890123
+Ngân hàng: Vietcombank
+nơi sinh: Bệnh viện Từ Dũ, TP.HCM
+ngày cấp CCCD: 11/11/2021
+Bệnh nghề nghiệp: Không có
+Đề tài luận văn: Ứng dụng LLM trong Doc Filling
+Khóa học: 2022-2026
+Năm học: 2024-2025
+Số tài khoản: 0123123123
+quê quán: Nam Định
+tình trạng hôn nhân: Độc thân
+tên gọi khác: Anh Nguyễn
+Niên khóa: 2022-2026
+họ: Nguyễn
+nhóm máu: O
+tôn giáo: Không
+năm sinh: 2011
+quốc tịch: Việt Nam
+```
+Output:
+```
+CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+
+BIỂU MẪU THÔNG TIN CÁ NHÂN
+
+Kính gửi: [Trống]
+
+Thông tin của User 1: Trần Minh Khoa
+
+Họ và tên: [Trần Minh Khoa]
+Họ: [Trần]
+Ngày tháng năm sinh: [05/06/1995]
+Ngày sinh bằng chữ: [Năm tháng Sáu năm 1995]
+Giới tính: [Nam]
+Dân tộc: [Kinh]
+Tôn giáo: [Không]
+Quốc tịch: [Việt Nam]
+Tình trạng hiện tại: [Đang công tác tại Bệnh viện Chợ Rẫy]
+Trình độ học vấn: [Trống]
+Ngành học: [Trí tuệ nhân tạo]
+Trường học: [Đại học Khoa học Tự nhiên]
+Khoa: [Trống]
+Lớp học: [22CTT01]
+Mã số học sinh/ sinh viên: [Trống]
+Niên khóa: [2022-2026]
+Khóa học: [2022-2026]
+Số điện thoại cố định: [0982222222]
+Nhóm máu: [A]
+Số bảo hiểm y tế: [HN9876543210987]
+Ngân hàng: [Vietcombank]
+Số tài khoản: [0123123123]
+Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
+
+Thông tin của User 2: Phạm Hoàng Nam
+
+Họ và tên: [Phạm Hoàng Nam]
+Họ: [Phạm]
+Ngày tháng năm sinh: [14/02/2000]
+Ngày sinh bằng chữ: [Mười bốn tháng Hai năm 2000]
+Giới tính: [Nam]
+Dân tộc: [Kinh]
+Tôn giáo: [Không]
+Quốc tịch: [Việt Nam]
+Quê quán: [Thừa Thiên Huế]
+Nơi sinh: [Bệnh viện Trung ương Huế]
+Nơi đăng ký khai sinh: [UBND TP. Huế]
+Số tài khoản: [0123123123]
+Nơi đăng ký khám bệnh: [Bệnh viện Đại học Y Dược]
+Hệ đào tạo: [Chính quy]
+Thuộc đối tượng: [Sinh viên chính quy]
+Quyết định cử đi học: [Số 123/QĐ-ĐHKHTN]
+Bệnh nghề nghiệp: [Không có]
+Thời gian thất nghiệp: [3 tháng]
+Tên gọi khác: [Nam Phạm]
+Chữ đệm và tên: [Hoàng Nam]
+```
+</Example>
+
+
 
 ## Input của tôi
 Input:
@@ -959,6 +1101,7 @@ def merge_all(*datasets):
  
 names = ['Nguyễn Đức Anh', 'Trần Minh Khoa', 'Lê Thanh Hằng', 'Phạm Hoàng Nam']
 
+# Gen Num_forms forms
 Num_forms = 100
 
 for i in range(0, Num_forms):

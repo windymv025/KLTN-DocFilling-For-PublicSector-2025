@@ -1,3 +1,4 @@
+# Evaluate by folders
 from Evaluate.my_metrics import similarity_result_two_folders
 import pandas as pd
 import time
@@ -10,13 +11,12 @@ from openpyxl.styles import Alignment, Font, Border, Side
 import ast
 
 # === Folder Addresses (All path should be here) ===
-# label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Differents"
 label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Processed_Label\Differents"
 llm_filled_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output\Differents"
 llm_filled_truthLLM_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output_trustLLM\Differents"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
 
-#ensure root_folder/Resulst folder exist
+# Ensure root_folder/Resulst folder exist
 import os
 if not os.path.exists(f"{root_folder}/Results"):
     os.makedirs(f"{root_folder}/Results")
@@ -81,7 +81,7 @@ df_detail["debug_user_X_Y_predict"] = df["debug_user_X_Y_predict"]
 df_detail.to_csv(f"{root_folder}/Results/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 
-# Summary data
+# Get fraction with decision 2 decimal
 def frac(a,b):
     temp = a/b*100
     if int(temp)==temp:
@@ -90,6 +90,9 @@ def frac(a,b):
         return round(temp,2)
     
 def df_detail_to_summary_excel(df_detail, excel_filename, name_sheet):
+    '''
+    Tạo summary excel file (Trong folder results/)
+    '''
     # Number of  forms
     num_forms = df_detail.shape[0]-1
     # Value
@@ -330,6 +333,7 @@ df_statis["Loại dữ liệu"] = df_statis["Loại dữ liệu"].replace({
     "Data_12": "Quy tắc"
 })
 df_statis.to_csv(statis_csv, index=False,encoding='utf-8-sig')
+# df_statis để lấy các con số tổng hợp.
 # Print
 print("Save result successfully!!")
 
