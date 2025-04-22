@@ -1,3 +1,4 @@
+# Evaluate by folders
 from Evaluate.my_metrics import similarity_result_two_folders
 import pandas as pd
 import time
@@ -10,9 +11,15 @@ from openpyxl.styles import Alignment, Font, Border, Side
 import ast
 
 # === Folder Addresses (All path should be here) ===
-label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Differents"
+label_folder = f"Temp\Data_{Data_num}\{Type}\Label{Label_Input_num}\Processed_Label\Differents"
 llm_filled_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output\Differents"
+llm_filled_truthLLM_folder = f"Temp\Data_{Data_num}\{Type}\Output{Output_num}\Processed_Output_trustLLM\Differents"
 root_folder = f"Temp\Data_{Data_num}\{Type}"
+
+# Ensure root_folder/Resulst folder exist
+import os
+if not os.path.exists(f"{root_folder}/Results"):
+    os.makedirs(f"{root_folder}/Results")
 
 
 # Function to process df_detail
@@ -36,9 +43,12 @@ def analyze_errors_type_2(error_list):
                   key=lambda x: x[3], reverse=True)
 
 # ============= Evaluate between label and llm_filled folders=============
-df, df_detail = similarity_result_two_folders(label_folder, llm_filled_folder)
+df, df_detail, df_debug_llm_truthLLM_dict = similarity_result_two_folders(label_folder, llm_filled_folder, llm_filled_truthLLM_folder=llm_filled_truthLLM_folder)
 # Save to csv
 time_now = time.strftime('%Y-%m-%d-%H-%M-%S')
+
+# to csv debug_llm_truthLLM_dict
+df_debug_llm_truthLLM_dict.to_csv(f"{root_folder}/Results/debug_llm_truthLLM_dict_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 def process_df_detail(df_detail):
     # Process df detail
@@ -57,14 +67,21 @@ def process_df_detail(df_detail):
     summary_row["D_B_A1"] = analyze_errors_type_2(sum(df["error B-A1 detail"], []))
     # concat
     df_detail = pd.concat([df_detail, pd.DataFrame([summary_row])], ignore_index=True)
+    
     return df_detail
+
 df_detail = process_df_detail(df_detail)
-
+# Add user_X_X, user_X_Y column
+df_detail["user_X_X"] = df["user_X_X"]
+df_detail["user_X_Y"] = df["user_X_Y"]
+df_detail["debug_user_X_Y_label"] = df["debug_user_X_Y_label"]
+df_detail["debug_user_X_Y_predict"] = df["debug_user_X_Y_predict"]
 # Save detail to csv
-df_detail.to_csv(f"{root_folder}/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
+# df_detail.to_csv(f"{root_folder}/Result_{Output_num}_{time_now}.csv", index=False,encoding='utf-8-sig')
+df_detail.to_csv(f"{root_folder}/Results/Result_{Output_num}.csv", index=False,encoding='utf-8-sig')
 
 
-# Summary data
+# Get fraction with decision 2 decimal
 def frac(a,b):
     temp = a/b*100
     if int(temp)==temp:
@@ -73,6 +90,9 @@ def frac(a,b):
         return round(temp,2)
     
 def df_detail_to_summary_excel(df_detail, excel_filename, name_sheet):
+    '''
+    Tạo summary excel file (Trong folder results/)
+    '''
     # Number of  forms
     num_forms = df_detail.shape[0]-1
     # Value
@@ -202,7 +222,8 @@ def df_detail_to_summary_excel(df_detail, excel_filename, name_sheet):
     print(f"Excel file '{excel_filename}' saved successfully!")
 
 # Save Summary to Excel
-name_xlsx = f"{root_folder}/Summary_{Output_num}.xlsx"
+# name_xlsx = f"{root_folder}/Summary_{Output_num}_{time_now}.xlsx"
+name_xlsx = f"{root_folder}/Results/Summary_{Output_num}.xlsx"
 name_sheet = "Summary"
 df_detail_to_summary_excel (df_detail, name_xlsx, name_sheet)
 
@@ -259,6 +280,60 @@ add_error_to_summary_file(df_detail, error_A1_A2, name_xlsx, name_sheet=error_A1
 add_error_to_summary_file(df_detail, error_A1_B, name_xlsx, name_sheet=error_A1_B)
 add_error_to_summary_file(df_detail, error_B_A1, name_xlsx, name_sheet=error_B_A1)
 
+# Return another csv include
+# Data_Num, num_forms, sum_tagname, total_a1, a1_a1, total_b, b_b, a1_a1, b_b, a1_a1, a1_b, b_a1
+# Data_Num, num_forms, %sum_tagname, %total_a1, %a1_a1, %total_b, %b_b, %a1_a1, %b_b, %a1_a1, %a1_b, %b_a1
+# Number of  forms
+num_forms = df_detail.shape[0]-1
+# Value
+total_A1 = df_detail["total_A1"].iloc[:-1].astype(int).sum()
+total_B = df_detail["total_B"].iloc[:-1].astype(int).sum()
+real_tagnames = total_A1 + total_B
+# Seen
+real_seen_tagnames = total_A1
+real_seen_tagnames_percent = frac(real_seen_tagnames,real_tagnames)
+# Unseen
+real_unseen_tagnames = real_tagnames - real_seen_tagnames
+real_unseen_tagnames_percent = frac(real_unseen_tagnames,real_tagnames)
+# Predicted value
+true_tagname = df_detail["P_A1_A1"].iloc[:-1].astype(int).sum()
+false_tagname_tagname = df_detail["P_A1_A2"].iloc[:-1].astype(int).sum()
+false_unseen_tagname = df_detail["P_A1_B"].iloc[:-1].astype(int).sum()
+false_tagname_unseen_tagname = df_detail["P_B_A1"].iloc[:-1].astype(int).sum()
+true_unseen_tagname = df_detail["P_B_B"].iloc[:-1].astype(int).sum()
+
+# Predicted percentage value - real seen tagnames
+true_tagname_percent = frac(true_tagname,real_seen_tagnames)
+false_tagname_tagname_percent = frac(false_tagname_tagname,real_seen_tagnames)
+false_unseen_tagname_percent = frac(false_unseen_tagname,real_seen_tagnames)
+
+# Predicted percentage value - real unseen tagnames
+false_tagname_unseen_tagname_percent = frac(false_tagname_unseen_tagname,real_unseen_tagnames)
+true_unseen_tagname_percent = frac(true_unseen_tagname,real_unseen_tagnames)
+
+# Info about error X_Y
+num_form_error_X_Y = int(sum(df_detail["user_X_Y"]!=0)-1)
+detail_form_error_X_Y = df_detail.loc[df_detail["user_X_Y"] != 0, "user_X_Y"][:-1].astype("int").tolist()
+
+# fist_row = [f"Data_{Label_Input_num}", num_forms, f"{real_tagnames}", f"{total_A1} ({frac(total_A1,real_tagnames)})", f"{true_tagname} ({frac(true_tagname,real_seen_tagnames)})", f"{total_B} ({frac(total_B,real_tagnames)})", f"{true_unseen_tagname} ({frac(true_unseen_tagname,real_unseen_tagnames)})", f"{false_tagname_tagname} ({frac(false_tagname_tagname,real_seen_tagnames)})", f"{false_unseen_tagname} ({frac(false_unseen_tagname,real_seen_tagnames)})", f"{false_tagname_unseen_tagname} ({frac(false_tagname_unseen_tagname,real_unseen_tagnames)})"]
+fist_row = [f"Data_{Label_Input_num}", num_forms, f"{real_tagnames}", f"{total_A1} ({frac(total_A1,real_tagnames)}%)", f"{false_unseen_tagname} ({frac(false_unseen_tagname,real_seen_tagnames)}%)", f"{false_tagname_tagname} ({frac(false_tagname_tagname,real_seen_tagnames)}%)",f"{false_tagname_unseen_tagname} ({frac(false_tagname_unseen_tagname,real_unseen_tagnames)}%)"]
+# second_row = [f"Data_{Label_Input_num}", num_forms, frac(real_tagnames,real_tagnames), frac(total_A1,real_tagnames), frac(true_tagname,real_seen_tagnames), frac(total_B,real_tagnames), frac(true_unseen_tagname,real_unseen_tagnames), frac(false_tagname_tagname,real_seen_tagnames), frac(false_unseen_tagname,real_seen_tagnames), frac(false_tagname_unseen_tagname,real_unseen_tagnames)]
+third_row = [f"Data_{Label_Input_num}",num_forms, f"{num_form_error_X_Y} ({frac(num_form_error_X_Y,num_forms)}%)", detail_form_error_X_Y]
+# Save to statis_{Label_Input_num}.csv
+statis_csv = f"{root_folder}/Results/Result_statis_{Label_Input_num}.csv"
+column_names = ["Loại dữ liệu", "Số forms", "Tổng tagname", "Seen Tagname","F-UF", "FF-F", "FF-UF"]
+df_statis = pd.DataFrame([fist_row, third_row], columns=column_names)
+# Replace values in the "Loại dữ liệu" column
+df_statis["Loại dữ liệu"] = df_statis["Loại dữ liệu"].replace({
+    "Data_31": "Thực tế",
+    "Data_32": "Thực tế",
+    "Data_21": "LLM",
+    "Data_22": "LLM",
+    "Data_11": "Quy tắc",
+    "Data_12": "Quy tắc"
+})
+df_statis.to_csv(statis_csv, index=False,encoding='utf-8-sig')
+# df_statis để lấy các con số tổng hợp.
 # Print
 print("Save result successfully!!")
 
