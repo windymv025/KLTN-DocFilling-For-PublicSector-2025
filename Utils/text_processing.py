@@ -753,7 +753,7 @@ class Text_Processing:
                 
         return text
     # Filling receiver, place, day, month, year
-    def normalize_receiver_expression(text):
+    def normalize_receiver_expression(self, text):
         """
         - 'Kính gửi: [#another]'
         - 'Kính gửi: text [#another]'
@@ -770,7 +770,7 @@ class Text_Processing:
         pattern = r"(Kính\s+gửi\s*(?:\(\d+\))?\s*:\s*(?:\(\d+\))?\s*.*?)(\[[^\]]+\])"
         return re.sub(pattern, replace_tag, text)
 
-    def normalize_filled_date_expression(text):
+    def normalize_filled_date_expression(self, text):
         """
         Các trường hợp được hỗ trợ:
 

@@ -706,3 +706,59 @@ Số bảo hiểm xã hội: [user1_social_insurance_number]
 '''
 
 temp = None
+
+
+"""
+1  & [full\_name] & Họ và tên đầy đủ của cá nhân \\
+2  & [alias\_name] & Tên gọi khác (bí danh) nếu có \\
+3  & [dob\_text] & \makecell[l]{Ngày tháng năm sinh \\ dưới dạng văn bản} \\
+4  & [dob] & Ngày tháng năm sinh đầy đủ \\
+5  & [dob\_day] & Ngày sinh (chỉ lấy ngày) \\
+6  & [dob\_month] & Tháng sinh (chỉ lấy tháng) \\
+7  & [dob\_year] & Năm sinh (chỉ lấy năm) \\
+8  & [gender] & Giới tính của cá nhân (Nam/Nữ) \\
+9  & [id\_number] & Số CMND/CCCD của cá nhân \\
+10 & [id\_issue\_date] & Ngày cấp CMND/CCCD \\
+11 & [id\_issue\_day] & Ngày cấp (chỉ lấy ngày) \\
+12 & [id\_issue\_month] & Tháng cấp (chỉ lấy tháng) \\
+13 & [id\_issue\_year] & Năm cấp (chỉ lấy năm) \\
+14 & [id\_issue\_place] & Nơi cấp CMND/CCCD \\
+15 & [occupation] & Nghề nghiệp hiện tại \\
+16 & [ethnicity] & Dân tộc của cá nhân \\
+17 & [religion] & Tôn giáo của cá nhân \\
+18 & [nationality] & Quốc tịch của cá nhân \\
+19 & [marital\_status] & 
+\makecell[l]{Tình trạng hôn nhân \\ (Độc thân/Kết hôn/Ly hôn)}
+\\
+20 & [blood\_type] & Nhóm máu của cá nhân \\
+21 & [birthplace] & Nơi sinh đầy đủ \\
+22 & [birthplace\_ward] & Phường/Xã nơi sinh \\
+23 & [birthplace\_district] & Quận/Huyện nơi sinh \\
+24 & [birthplace\_province] & Tỉnh/Thành phố nơi sinh \\
+25 & [birth\_registration\_place] & Nơi đăng ký khai sinh \\
+26 & [birth\_registration\_place\_ward] & Phường/Xã nơi đăng ký \\
+27 & [birth\_registration\_place\_district] & Quận/Huyện nơi đăng ký khai sinh \\
+28 & [birth\_registration\_place\_province] & Tỉnh/Thành phố nơi đăng ký khai sinh \\
+29 & [hometown] & Quê quán đầy đủ \\
+30 & [hometown\_ward] & Phường/Xã quê quán \\
+31 & [hometown\_district] & Quận/Huyện quê quán \\
+32 & [hometown\_province] & Tỉnh/Thành phố quê quán \\
+33 & [permanent\_address] & Địa chỉ thường trú \\
+34 & [current\_address] & Địa chỉ tạm trú hiện tại \\
+35 & [current\_address\_ward] & Phường/Xã của địa chỉ tạm trú \\
+36 & [current\_address\_district] & Quận/Huyện của địa chỉ tạm trú \\
+37 & [current\_address\_province] & Tỉnh/Thành phố của địa chỉ tạm trú \\
+38 & [passport\_number] & Số hộ chiếu \\
+39 & [passport\_issue\_date] & Ngày cấp hộ chiếu \\
+40 & [passport\_issue\_day] & Ngày cấp hộ chiếu (chỉ lấy ngày) \\
+41 & [passport\_issue\_month] & Tháng cấp hộ chiếu (chỉ lấy tháng) \\
+42 & [passport\_issue\_year] & Năm cấp hộ chiếu (chỉ lấy năm) \\
+43 & [passport\_issue\_place] & Nơi cấp hộ chiếu \\
+44 & [passport\_expiry\_date] & Ngày hết hạn hộ chiếu\\
+45 & [passport\_expiry\_day] & Ngày hết hạn chiếu (chỉ lấy ngày) \\
+46 & [passport\_expiry\_month] & Tháng hết hạn hộ chiếu (chỉ lấy tháng) \\
+47 & [passport\_expiry\_year] & Năm hết hạn hộ chiếu (chỉ lấy năm) \\
+48 & [phone] & Số điện thoại cá nhân \\
+49 & [home\_phone] & Số điện thoại cố định \\
+50 & [social\_insurance\_number] & Số bảo hiểm xã hội \\
+"""
