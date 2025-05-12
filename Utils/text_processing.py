@@ -702,6 +702,8 @@ class Text_Processing:
             index_llm = index_llm + 1
             index_filled_input = index_filled_input + 1
         # print(label_input)
+        # standard label_input
+        label_input = [self.standard_tagname(tagname) for tagname in label_input]
         return label_input, copy_contextual_input
     
     # Sau đó đơn giản tạo hàm đưa label vào input form

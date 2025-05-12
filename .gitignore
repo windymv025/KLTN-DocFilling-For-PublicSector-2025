@@ -12,6 +12,7 @@ GenerateData/
 Presentation/
 Results/
 Temp/
+Demo/
 
 #Temp file
 chainlit.md
@@ -31,3 +32,4 @@ new_requirements.txt
 *.ipynb
 .ruff_cache/
 .env
+.gradio/
