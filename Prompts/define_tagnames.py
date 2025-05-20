@@ -53,6 +53,7 @@ Bạn sẽ được cung cấp:
 ## 3. Định dạng đầu vào và đầu ra
 ### Input:
 - **Danh sách tagnames** (bao gồm mô tả, ví dụ, và các cụm từ thường gặp).
+- {tagname}
 - **Biểu mẫu gốc**, các vị trí cần điền được đánh dấu bằng `..........`.
 ### Output:
 - **Biểu mẫu đã điền tagname** chính xác vào từng vị trí `..........` theo các nguyên tắc trên.
