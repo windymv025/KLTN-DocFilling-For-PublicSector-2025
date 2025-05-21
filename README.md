@@ -1,4 +1,7 @@
 # Leveraging Large Language Models for Automated Completion of Public Service Forms
+
+![Demo](assets/demo.gif)
+
 ## Project Overview
 This project is created as part of a graduation thesis at the University of Science, Ho Chi Minh City (HCMUS) focusing on Natural Language Processing (NLP) research and its application in automating the completion of public service forms. The goal is to leverage large language models (LLMs) to automatically fill out information in forms using a pre-defined set of tagnames, improving the efficiency of form completion and reducing human error.
 
