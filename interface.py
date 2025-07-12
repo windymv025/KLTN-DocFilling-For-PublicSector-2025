@@ -1,23 +1,116 @@
 # Inference to fill tagname to string form
 import gradio as gr
 import os
+import re
+from datetime import datetime
 from Config.LLM import gemini
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from Prompts.define_tagnames import tagname_Nam_ver1_prompt
 from Config.tagnames import tagname_Nam_ver1
 from Utils.text_processing import Text_Processing
-from datetime import datetime
-import re
+from pydantic import BaseModel
+from typing import List
+
+
+
+# --- Global variables to store generated content ---
+generated_tagnames = None
+detected_user_tags = None
+current_file = None
+role_dict = None
+def reset_global_variables():
+    global generated_tagnames, detected_user_tags, current_file, role_dict
+    generated_tagnames = None
+    detected_user_tags = None
+    role_dict = None    
+    current_file = None
 
 def define_tagname_Nam_ver1(llm, text):
     prompt = PromptTemplate.from_template(tagname_Nam_ver1_prompt)
     chain = prompt | llm | StrOutputParser()
+    return chain.invoke({"tagname": tagname_Nam_ver1, "form": text})
+
+def map_roles_to_dict(roles_text):
+    role_dict = {}
     
-    response = chain.invoke(
-        {"tagname": tagname_Nam_ver1, "form": text}
-    )
-    return response
+    # Split the input text into lines
+    lines = roles_text.strip().split('\n')
+    
+    for role in lines:
+        # Remove leading "- " and any extra spaces
+        role = role.lstrip('- ').strip()
+        
+        # Check if the line has the valid format "userX: description"
+        if ": " in role:
+            user, description = role.split(": ", 1)
+            role_dict[user] = description.strip()  # Store the description as a string
+    
+    return role_dict
+
+def define_name_of_user(llm, file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        form = f.read()
+
+    prompt_template = """
+    Dựa vào nội dung biểu mẫu dưới đây, hãy xác định vai trò của từng cá nhân được đề cập và ánh xạ họ với định danh người dùng tương ứng (nếu có).
+    Trả về kết quả dưới dạng format sau:
+
+    - user1: vai trò của user1
+    - user2: vai trò của user2
+    - user3: vai trò của user3
+    - user4: vai trò của user4
+
+    Lưu ý: Chỉ liệt kê vai trò và ánh xạ tương ứng nếu có thông tin về người dùng (user). Nếu không có thông tin về người dùng nào, không cần đưa vào ánh xạ.
+
+    ---
+
+    Ví dụ:
+
+    Biểu mẫu:
+    ```
+        CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+        
+    Độc lập - Tự do - Hạnh phúc
+    TỜ KHAI ĐĂNG KÝ KHAI SINH
+    Kính gửi: (1)..........
+    Họ, chữ đệm, tên người yêu cầu: ..........
+    Nơi cư trú: (2)..........
+    Giấy tờ tùy thân: (3)..........
+    Quan hệ với người được khai sinh: ..........
+    Đề nghị cơ quan đăng ký khai sinh cho người dưới đây:
+    Họ, chữ đệm, tên:..........
+    Ngày, tháng, năm sinh: ........../........../..........ghi bằng chữ: ..........
+    Giới tính:.......... Dân tộc:..........Quốc tịch: ..........
+    Nơi sinh: (4)..........
+    Quê quán: ..........
+    Họ, chữ đệm, tên người mẹ: ..........
+    Năm sinh: (5)..........Dân tộc:..........Quốc tịch: ..........
+    Nơi cư trú: (2) ..........
+    Họ, chữ đệm, tên người cha: ..........
+    Năm sinh: (5)..........Dân tộc:..........Quốc tịch: ..........
+    Nơi cư trú: (2) ..........
+    Tôi cam đoan nội dung đề nghị đăng ký khai sinh trên đây là đúng sự thật, được sự thỏa thuận nhất trí của các bên liên quan theo quy định pháp luật.
+    Tôi chịu hoàn toàn trách nhiệm trước pháp luật về nội dung cam đoan của mình.
+    Làm tại: .........., ngày .......... tháng .......... năm ..........
+    ```
+    Kết quả:
+    ```
+    - user1: Người đi khai (người yêu cầu đăng ký khai sinh)
+    - user2: Người được khai sinh
+    - user3: Mẹ của người được khai sinh
+    - user4: Cha của người được khai sinh
+    ```
+
+    Biểu mẫu: {form}
+    """
+    prompt = PromptTemplate.from_template(prompt_template)
+    chain = prompt | llm | StrOutputParser()
+    result = chain.invoke({"form": form})
+    print("Debug - LLM result:", result)
+    role_dict = map_roles_to_dict(result)
+    print("Debug - Mapped role_dict:", role_dict)
+    return role_dict
 
 def fix_infinity_space(text):
     '''
@@ -30,6 +123,7 @@ def fix_infinity_space(text):
     text = re.sub(r'\n{3,}', '\n\n', text)
 
     return text.strip()
+
 
 def generate_tagnames(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -50,13 +144,10 @@ def generate_tagnames(file_path):
     input_text = input_text.replace("..........", "[#another]")
     filled_text = filled_text.replace("..........", "[#another]")
 
-    # print("Filled text:\n", filled_text)
-
     filled_input_text, copy_contextual_input = Text_Processing().fill_input_by_llm_form(
         filled_text, input_text, process_tagname=True
     )
-
-    # print("Filled text 2:\n", filled_input_text)
+    # print(copy_contextual_input)
     print("Post-processing successfully!!")
 
     # Final output
@@ -69,8 +160,7 @@ def generate_tagnames(file_path):
     results_folder = os.path.join(input_folder, "Results")
     
     # Create the Results folder if it doesn't exist
-    if not os.path.exists(results_folder):
-        os.makedirs(results_folder)
+    os.makedirs(results_folder, exist_ok=True)
 
     # Create a file name based on the input file name (adding '_processed' to the original name)
     base_filename = os.path.basename(file_path)
@@ -91,7 +181,7 @@ user_db = {
         "full_name": "Nguyễn Văn A",
         "last_name": "Nguyễn",
         "middle_and_first_name": "Văn A",
-        "alias_name": "",
+        "alias_name": "NVA",
         "dob_text": "01 tháng 01 năm 1990",
         "dob": "01/01/1990",
         "dob_day": "01",
@@ -288,8 +378,7 @@ provinces = [
 
 def detect_user_tags(form_text):
     tags = re.findall(r'\[user(\d+)_\w+\]', form_text)
-    unique_userx = sorted(set(f"user{num}" for num in tags), key=lambda x: int(x[4:]))
-    return unique_userx
+    return sorted(set(f"user{num}" for num in tags), key=lambda x: int(x[4:]))
 
 def fill_user_data(form_text, user_id, user_tag):
     user_data = user_db.get(user_id, {})
@@ -303,30 +392,11 @@ def fill_user_data(form_text, user_id, user_tag):
 
     return re.sub(r"\[([a-zA-Z0-9_#]+)\]", replace, form_text)
 
-def update_userx_dropdowns(form_text):
-    userx_list = detect_user_tags(form_text)
-    updates = []
-    for i in range(5):
-        if i < len(userx_list):
-            updates.append(gr.update(visible=True, label=f"👤 Select {userx_list[i]}", value=None))
-        else:
-            updates.append(gr.update(visible=False, value=None))
-    return updates
-
-def fill_all_users(form_text, receiver, place, *user_names):
-    userx_list = detect_user_tags(form_text)
-    filled = form_text
-    for i, name in enumerate(user_names):
-        if i >= len(userx_list) or not name:
-            continue
-        user_id = next((uid for uid, info in user_db.items() if info["full_name"] == name), None)
-        if user_id:
-            filled = fill_user_data(filled, user_id, userx_list[i])
-
+def fill_extra_fields(form_text, receiver, place):
     today = datetime.today()
     extra_fields = {
-        "receiver": receiver,
-        "place": place,
+        "receiver": receiver if receiver else "[receiver]",
+        "place": place if place else "[place]",
         "day": today.strftime("%d"),
         "month": today.strftime("%m"),
         "year": today.strftime("%Y")
@@ -334,56 +404,134 @@ def fill_all_users(form_text, receiver, place, *user_names):
 
     def replace_extra(match):
         tag = match.group(1)
-        if tag in extra_fields:
-            return extra_fields[tag]
-        else:
-            return ".........."
+        return extra_fields.get(tag, f"[{tag}]")
 
-    final = re.sub(r"\[([a-zA-Z0-9_#]+)\]", replace_extra, filled)
-    return final
+    return re.sub(r"\[([a-zA-Z0-9_#]+)\]", replace_extra, form_text)
+
+
+def generate_tagnames_and_fill_form(file_obj, receiver, place, *user_names):
+    global generated_tagnames, detected_user_tags, current_file, role_dict
+    
+    if file_obj is None:
+        return "Please upload a form file first."
+    
+    # Generate tagnames and detect user tags only if not already done or if file changed
+    if (generated_tagnames is None or current_file != file_obj.name):
+        generated_tagnames = generate_tagnames(file_obj.name)
+        detected_user_tags = detect_user_tags(generated_tagnames)
+        if len(detected_user_tags) > 1:
+            role_dict = define_name_of_user(gemini, file_obj.name)
+        current_file = file_obj.name
+    
+    form_text = generated_tagnames
+    userx_list = detected_user_tags
+    
+    # Fill data for each user
+    for i, user_name in enumerate(user_names):
+        if i >= len(userx_list) or not user_name:
+            continue
+            
+        # Find user ID from the selected name
+        user_id = next((uid for uid, info in user_db.items() if info["full_name"] == user_name), None)
+        if user_id:
+            form_text = fill_user_data(form_text, user_id, userx_list[i])
+    
+    return fill_extra_fields(form_text, receiver, place)
+
+def update_ui(file_obj):
+    global generated_tagnames, detected_user_tags, current_file, role_dict
+    
+    if file_obj is None:
+        reset_global_variables()
+        return [gr.update(visible=False) for _ in range(4)] + [gr.update(visible=False)]
+    
+    # Generate tagnames and detect user tags only if not already done or if file changed
+    if generated_tagnames is None or current_file != file_obj.name:
+        generated_tagnames = generate_tagnames(file_obj.name)
+        detected_user_tags = detect_user_tags(generated_tagnames)
+        if len(detected_user_tags) > 1:
+            role_dict = define_name_of_user(gemini, file_obj.name)
+        current_file = file_obj.name
+    
+    userx_list = detected_user_tags
+    
+    print("Debug - userx_list:", userx_list)
+    print("Debug - role_dict:", role_dict)
+    
+    if len(userx_list) == 1:
+        return [gr.update(visible=False) for _ in range(4)] + [gr.update(visible=False)]
+    
+    updates = []
+    for i in range(4):
+        if i < len(userx_list):
+            if i == 0:  # Show dropdown for user1 with first user as default
+                first_user = list(user_db.values())[0]["full_name"]
+                try:
+                    role_label = role_dict[userx_list[i]] if role_dict else f"Select {userx_list[i]}"
+                    updates.append(gr.update(visible=True, label=f"👤{role_label}", value=first_user))
+                except KeyError as e:
+                    print(f"Debug - KeyError for {userx_list[i]}: {e}")
+                    updates.append(gr.update(visible=True, label=f"👤Select {userx_list[i]}", value=first_user))
+            else:  # Show dropdowns for user2 onwards
+                try:
+                    role_label = role_dict[userx_list[i]] if role_dict else f"Select {userx_list[i]}"
+                    updates.append(gr.update(visible=True, label=f"👤{role_label}"))
+                except KeyError as e:
+                    print(f"Debug - KeyError for {userx_list[i]}: {e}")
+                    updates.append(gr.update(visible=True, label=f"👤Select {userx_list[i]}"))
+        else:
+            updates.append(gr.update(visible=False))
+    updates.append(gr.update(visible=True))
+    return updates
 
 # --- Gradio UI ---
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
-    gr.Markdown("## 📋 Fill Form")
-    gr.Markdown("Upload form ➔ Generate tagnames ➔ Select users ➔ Fill form")
+    gr.Markdown("## 📋 Form Filling Interface")
+    gr.Markdown("Upload your form and fill it with user data")
 
     with gr.Column():
         with gr.Row():
-            form_file = gr.File(label="📌 Upload Form (.txt)")
-            load_btn = gr.Button("📄 Generate tagnames")
+            form_file = gr.File(label="📂 Upload Form (.txt)")
+            gen_btn = gr.Button("🔍 Generate Tagnames")
+            gen_and_fill_btn = gr.Button("🔍 & ✍️ Generate & Fill Form")
 
-        form_text = gr.Textbox(label="📑 Form with Tagnames", lines=15)
-        load_btn.click(fn=generate_tagnames, inputs=form_file, outputs=form_text)
+        receiver_input = gr.Textbox(label="📥 Receiver Name")
+        place_input = gr.Dropdown(choices=provinces, label="📍 Select Place")
 
-        form_text.change(fn=update_userx_dropdowns, inputs=form_text, outputs=[])
+        # User selection section
+        user_section = gr.Column(visible=False)
+        with user_section:
+            gr.Markdown("### 👥 Select Users for Each [userX] Tag:")
+            userx_dropdowns = []
+            for i in range(4):  # max 4 userX
+                dropdown = gr.Dropdown(
+                    choices=[user["full_name"] for user in user_db.values()],
+                    label=f"User {i+1}",
+                    visible=False
+                )
+                userx_dropdowns.append(dropdown)
+        fill_btn = gr.Button("✍️ Fill Form")
+        output_textbox = gr.Textbox(label="📄 Filled Form Output", lines=20)
 
-        receiver_input = gr.Textbox(label="📝 Receiver")
-        place_input = gr.Dropdown(choices=provinces, label="🌐 Place")
-
-        gr.Markdown("### 👥 Select users for each [userX] tag:")
-        userx_dropdowns = []
-        for i in range(5):  # max 5 userX
-            dropdown = gr.Dropdown(
-                choices=[user["full_name"] for user in user_db.values()],
-                label=f"user{i+1}",
-                visible=False
-            )
-            userx_dropdowns.append(dropdown)
-
-        fill_btn = gr.Button("📝 Fill Form")
-
-        output_textbox = gr.Textbox(label="📨 Filled Form Output", lines=20)
-
-        form_text.change(fn=update_userx_dropdowns, inputs=form_text, outputs=userx_dropdowns)
-
-        fill_btn.click(
-            fn=fill_all_users,
-            inputs=[form_text, receiver_input, place_input] + userx_dropdowns,
+        form_file.change(fn=update_ui, inputs=form_file, outputs=userx_dropdowns + [user_section])
+        # Generate tagnames
+        gen_btn.click(
+            fn=generate_tagnames,
+            inputs=form_file,
             outputs=output_textbox
         )
-
-
-
+        # Generate tagnames and fill form   
+        gen_and_fill_btn.click(
+            fn=generate_tagnames_and_fill_form,
+            inputs=[form_file, receiver_input, place_input] + userx_dropdowns,
+            outputs=output_textbox
+        )
+        # Fill form
+        fill_btn.click(
+            fn=generate_tagnames_and_fill_form,
+            inputs=[form_file, receiver_input, place_input] + userx_dropdowns,
+            outputs=output_textbox
+        )
 
 if __name__ == "__main__":
     demo.launch(share=True)
