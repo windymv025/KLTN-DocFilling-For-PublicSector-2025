@@ -31,6 +31,7 @@ new_requirements.txt
 *.txt
 *.ipynb
 .ruff_cache/
-.env
+./.env
 .gradio/
 anhLatex/
+.env
